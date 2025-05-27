@@ -19,7 +19,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        
+        return view('frontend.register');
+
     }
 
     /**
@@ -31,20 +33,27 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', Rules\Password::defaults()],
+            'address' => ['required', 'string', 'max:255'],
+            'dob' => ['required', 'date'],
+            'phone' => ['required', 'string', 'max:15'],
         ]);
-
+    
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'address' => $request->address,
+            'dob' => $request->dob,
+            'phone' => $request->phone,
         ]);
-
+    
         event(new Registered($user));
-
+    
         Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+    
+        return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
     }
+    
 }

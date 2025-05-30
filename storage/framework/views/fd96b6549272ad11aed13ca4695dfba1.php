@@ -245,7 +245,8 @@
         <!-- Jquery js -->
         <script src="<?php echo e(asset('frontend/assets/js/jquery-3.7.1.min.js')); ?>"></script>
         <!-- Bootstrap Bundle Js -->
-        <script src="<?php echo e(asset('frontend/assets/js/bootstrap.bundle.min.js')); ?>"></script>
+        
+        <script src="<?php echo e(asset('frontend/assets/js/boostrap.bundle.min.js')); ?>"></script>
          <!-- Phosphor Icon -->
          <script src="<?php echo e(asset('frontend/assets/js/phosphor-icon.js')); ?>"></script>
         <!-- Select 2 -->

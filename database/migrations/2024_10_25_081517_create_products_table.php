@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('product_id')->unique();
             $table->string('product_name');
             $table->text('product_description')->nullable();
-            $table->unsignedBigInteger('category_id'); 
-            $table->unsignedBigInteger('subcategory_id')->nullable(); 
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('brand_id')->nullable();
+            $table->unsignedBigInteger('subcategory_id')->nullable();
             $table->unsignedBigInteger('sub_subcategory_id')->nullable();
             $table->integer('quantity')->nullable();
             $table->string('tags')->nullable();
@@ -27,13 +28,14 @@ return new class extends Migration
             $table->decimal('commission_percentage', 5, 2)->nullable();
             $table->decimal('total_price', 8, 2);
             $table->timestamps();
-        
+
             // Define the foreign key constraints
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('set null'); 
-            $table->foreign('sub_subcategory_id')->references('id')->on('sub_subcategories')->onDelete('set null'); 
+            $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('set null');
+            $table->foreign('sub_subcategory_id')->references('id')->on('sub_subcategories')->onDelete('set null');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('set null');
         });
-        
+
     }
 
 

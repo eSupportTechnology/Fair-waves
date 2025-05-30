@@ -1,383 +1,483 @@
 @extends ('frontend.master')
 
 @section('content')
-<div class="banner-two">
-    <div class="container container-lg">
-        <div class="banner-two-wrapper d-flex align-items-start">
-                <div class="mb-0 overflow-hidden banner-item-two-wrapper rounded-24 position-relative arrow-center flex-grow-1">
-                    <img src="{{ asset('frontend/assets/images/bg/banner-two-bg.png') }}" alt="" class="banner-img position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 z-n1 object-fit-cover rounded-24">
-                    <div class="banner-item-two__slider">
-                        <div class="banner-item-two">
-                            <div class="banner-item-two__content">
-                                <span class="mb-8 text-white h6 wow bounceInDown">Starting at only Rs 500</span>
-                                <h2 class="text-white banner-item-two__title bounce wow bounceInLeft">Get The Sound You Love For Less</h2>
-                                <a href="/shop" class="gap-8 mt-48 btn btn-outline-white d-inline-flex align-items-center rounded-pill wow bounceInUp">
-                                    Shop Now<span class="text-xl icon d-flex"><i class="ph ph-shopping-cart-simple"></i> </span>
-                                </a>
-                            </div>
-                            <div class="bottom-0 banner-item-two__thumb position-absolute wow bounceInUp" data-wow-duration="1s" data-tilt data-tilt-max="12" data-tilt-speed="500" data-tilt-perspective="5000" data-tilt-scale="1.06">
-                                <img src="frontend/assets/images/imgs/music-cover1.png" alt="">
-                            </div>
-                        </div>
-                        <div class="banner-item-two">
-                            <div class="banner-item-two__content">
-                                <span class="mb-8 text-white h6 wow bounceInDown">Starting at only Rs 500</span>
-                                <h2 class="text-white banner-item-two__title bounce wow bounceInLeft">Get The Sound You Love For Less</h2>
-                                <a href="{{ route('shop.index') }}" class="gap-8 mt-48 btn btn-outline-white d-inline-flex align-items-center rounded-pill wow bounceInUp">
-                                    Shop Now<span class="text-xl icon d-flex"><i class="ph ph-shopping-cart-simple"></i> </span>
-                                </a>
-                            </div>
-                            <div class="bottom-0 banner-item-two__thumb position-absolute wow bounceInUp" data-wow-duration="1s" data-tilt data-tilt-max="12" data-tilt-speed="500" data-tilt-perspective="5000" data-tilt-scale="1.06">
-                                <img src="frontend/assets/images/imgs/music-cover1.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+
+
+<!--
+
+
+==============================================================================================================================================================
+
+
+                                                                        home page
+
+
+=============================================================================================================================================================== -->
+
+
+
+<style>
+   /* Custom styles */
+   .carousel-item {
+       background-size: cover;
+       background-position: center;
+       height: 400px; /* Adjust height as needed */
+       width: 100%;
+       position: relative;
+   }
+
+/* Mobile (up to 576px) */
+@media (max-width: 576px) {
+    .carousel-item {
+        height: 30vh; /* Adjust height for mobile */
+
+    }
+
+    .carousel{
+       margin-top: 65px;
+    }
+}
+
+/* Tablet (576px to 768px) */
+@media (min-width: 577px){
+    .carousel-item {
+        height: 45vh; /* Adjust height for tablets */
+        margin-top: 125px;
+
+    }
+}
+
+
+
+   /* Each carousel item with a different image */
+
+
+   .carousel-item-next, .carousel-item-prev, .carousel-item.active {
+       transition: transform 0.5s ease;
+   }
+
+   /* Optional: Ensure the carousel controls are visible */
+   .carousel-control-prev-icon, .carousel-control-next-icon {
+       background-color: black; /* For better visibility */
+   }
+
+   /* Hide the carousel control buttons */
+   .carousel-control-prev, .carousel-control-next {
+       display: none;
+   }
+
+   /* Style the dots (indicators) */
+   .carousel-indicators li {
+       background-color: transparent;
+       width: 20px;
+       height: 20px;
+       border-radius: 0;
+       border: 2px solid white;
+       margin: 0 5px; /* Adds some space between dots */
+   }
+
+   .carousel-indicators .active {
+       background-color: white;
+       transform: scale(1.2);
+   }
+
+
+   .owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-prev, .owl-carousel button.owl-dot {
+    background: 0 0;
+    color: inherit;
+    border: none;
+    padding: 0 !important;
+    font: inherit;
+    font-size: 37px!important;
+}
+
+
+.product-image {
+    width: 100%;
+    height: 178px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+.grid-product-img {
+    width: 100%;
+    height: 178px;
+    object-fit: cover;
+    display: block;
+}
+
+
+</style>
+
+<body>
+
+
+
+    <!-- Carousel Section -->
+    <!-- Carousel Section -->
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel" s>
+    <div class="carousel-inner">
+        <!-- Loop through the sliders and display each one -->
+        @foreach($sliders as $index => $slider)
+            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}" style="background-image: url('{{ asset('storage/' . $slider->image) }}');">
+                <!-- You can optionally add text or content inside each carousel item -->
             </div>
-        </div>
+        @endforeach
     </div>
-    <!-- ============================ Banner Section End =============================== -->
-
-    <!-- ============================ promotional banner Start ========================== -->
-    <section class="mt-32 promotional-banner">
-        <div class="container container-lg">
-            <div class="row gy-4">
-                <div class="col-lg-4 col-sm-6" data-aos="fade-up" data-aos-duration="600">
-                    <div class="p-32 overflow-hidden position-relative rounded-16 z-1">
-                        <img src="frontend/assets/images/bg/promo-bg-img1.png" alt="" class="position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 object-fit-cover z-n1">
-                        <div class="flex-wrap gap-16 flex-between">
-                            <div class="">
-                                <span class="mb-8 text-sm text-heading">Latest Deal</span>
-                                <h6 class="mb-0">iPhone 15 Pro Max</h6>
-                                <a href="/shop" class="gap-8 mt-16 border border-gray-900 d-inline-flex align-items-center text-heading text-md fw-medium border-top-0 border-end-0 border-start-0 hover-text-main-two-600 hover-border-main-two-600">
-                                    Shop Now
-                                    <span class="icon text-md d-flex"><i class="ph ph-plus"></i></span>
-                                </a>
-                            </div>
-                            <div class="pe-xxl-4">
-                                <img src="frontend/assets/images/imgs/phone.png" alt="" style="width: 130px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6" data-aos="fade-up" data-aos-duration="800">
-                    <div class="p-32 overflow-hidden position-relative rounded-16 z-1">
-                        <img src="frontend/assets/images/bg/promo-bg-img2.png" alt="" class="position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 object-fit-cover z-n1">
-                        <div class="flex-wrap gap-16 flex-between">
-                            <div class="">
-                                <span class="mb-8 text-sm text-heading">Get 60% Off</span>
-                                <h6 class="mb-0">Instax Mini 11 Camera</h6>
-                                <a href="/shop" class="gap-8 mt-16 border border-gray-900 d-inline-flex align-items-center text-heading text-md fw-medium border-top-0 border-end-0 border-start-0 hover-text-main-two-600 hover-border-main-two-600">
-                                    Shop Now
-                                    <span class="icon text-md d-flex"><i class="ph ph-plus"></i></span>
-                                </a>
-                            </div>
-                            <div class="pe-xxl-4">
-                                <img src="frontend/assets/images/imgs/category-3.png" alt="" style="width: 100px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6" data-aos="fade-up" data-aos-duration="1000">
-                    <div class="p-32 overflow-hidden position-relative rounded-16 z-1">
-                        <img src="frontend/assets/images/bg/promo-bg-img3.png" alt="" class="position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 object-fit-cover z-n1">
-                        <div class="flex-wrap gap-16 flex-between">
-                            <div class="">
-                                <span class="mb-8 text-sm text-heading">Start From Rs 250</span>
-                                <h6 class="mb-0">Airpod Headphone</h6>
-                                <a href="/shop" class="gap-8 mt-16 border border-gray-900 d-inline-flex align-items-center text-heading text-md fw-medium border-top-0 border-end-0 border-start-0 hover-text-main-two-600 hover-border-main-two-600">
-                                    Shop Now
-                                    <span class="icon text-md d-flex"><i class="ph ph-plus"></i></span>
-                                </a>
-                            </div>
-                            <div class="pe-xxl-4">
-                                <img src="frontend/assets/images/imgs/headphones.png" alt="" style="width: 90px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ============================ promotional banner End ========================== -->
-
-<!-- ============================ new section add leatest product========================== -->
-  <!-- ========================= Deals Week Start ================================ -->
-  <section class="overflow-hidden deals-weeek pt-80">
-    <div class="container container-lg">
-        <div class="p-24 border border-gray-100 rounded-16">
-            <div class="mb-24 section-heading">
-                <div class="flex-wrap gap-8 flex-between">
-                    <h5 class="mb-0 wow bounceInLeft">Latest products</h5>
-                    <div class="gap-16 flex-align wow bounceInRight">
-                        <a href="/shop" class="text-sm text-gray-700 fw-medium hover-text-main-600 hover-text-decoration-underline">View All Deals</a>
-                        <div class="gap-10 flex-align">
-                            <button type="button" id="deal-week-prev" class="text-xl border border-gray-100 slick-prev slick-arrow flex-center rounded-circle hover-border-neutral-600 hover-bg-neutral-600 hover-text-white transition-1">
-                                <i class="ph ph-caret-left"></i>
-                            </button>
-                            <button type="button" id="deal-week-next" class="text-xl border border-gray-100 slick-next slick-arrow flex-center rounded-circle hover-border-neutral-600 hover-bg-neutral-600 hover-text-white transition-1">
-                                <i class="ph ph-caret-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            
-
-            <div class="deals-week-slider arrow-style-two">
-                @foreach ($products->slice(0, 10) as $product)
-                    <div data-aos="fade-up" data-aos-duration="200">
-                        <div class="p-16 border border-gray-100 product-card h-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                            <a href="{{ route('showProductDetails', $product->product_id) }}" class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                                @if($product->quantity == 0)
-                                    <span class="px-8 py-4 text-sm text-white product-card__badge bg-main-600 position-absolute inset-inline-start-0 inset-block-start-0">Sold</span>
-                                @endif
-                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->product_name }}" class="w-auto max-w-unset" style="width: 200px; height: 200px; object-fit: cover;">
-                            </a>
-                            <div class="mt-16 product-card__content">
-                                <div class="gap-6 mt-16 mb-20 flex-align">
-                                 @if ($product->total_reviews!=0)
-                                    <div class="rating-info d-flex gap-2">
-                                        @php
-                                        $fullStars = floor($product->average_rating); // Number of full stars
-                                        $hasHalfStar = ($product->average_rating - $fullStars) >= 0.5; // Half-star condition
-                                        @endphp
-                                        @for ($i = 0; $i < $fullStars; $i++)
-                                            <span class="text-15 fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                        @endfor
-                                        @if ($hasHalfStar)
-                                            <span class="text-15 fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star-half"></i></span>
-                                        @endif
-                                        <span class="text-xs fw-medium text-gray-500">{{ number_format($product->average_rating, 1) }}</span>
-                                        &nbsp;<span class="text-xs fw-medium text-gray-500">({{ $product->total_reviews }})</span>
-                                    </div>
-                                    @endif
-                                    <!-- Heart Icon -->
-                                    <button type="button" class="heart-icon ms-auto" 
-                                            id="wishlist-icon-{{ $product->product_id }}" 
-                                            onclick="toggleWishlist(this, '{{ $product->product_id }}')">
-                                        <i class="fa-regular fa-heart" style="font-size: 15px;"></i>
-                                    </button>
-                                </div>
-                                <h6 class="mt-12 mb-8 text-lg title fw-semibold">
-                                    <a href="{{ route('showProductDetails', $product->product_id) }}" class="link text-line-2" tabindex="0">{{ $product->product_name }}</a>
-                                </h6>
-                                <div class="gap-4 flex-align">
-                                    <span class="text-tertiary-600 text-md d-flex">
-                                        <i class="ph-fill ph-storefront"></i>
-                                    </span>
-                                    @if($product->shop_id && $product->shop) 
-                                        <span class="text-xs text-gray-500">By {{ $product->shop->shop_name }}</span>
-                                    @endif
-                                </div>
-
-                                <div class="mt-8">
-                                    @php
-                                        // Calculate the percentage sold
-                                        $percentageSold = $product->total_quantity > 0 
-                                            ? ($product->sold_quantity / $product->total_quantity) * 100 
-                                            : 0;
-                                    @endphp
-
-                                    <div class="h-4 progress w-100 bg-color-three rounded-pill" role="progressbar" aria-label="Basic example" aria-valuenow="{{ $percentageSold }}" aria-valuemin="0" aria-valuemax="100">
-                                        <div class="progress-bar bg-main-two-600 rounded-pill" style="width: {{ $percentageSold }}%;"></div>
-                                    </div>
-                                    <span class="mt-8 text-xs text-gray-900 fw-medium">
-                                        Sold: {{ $product->sold_quantity }}/{{ $product->total_quantity }}
-                                    </span>
-                                </div>
-                                <div class="my-20 product-card__price">
-                                    <span class="text-heading text-md fw-semibold ">Rs {{ $product->normal_price }} <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                                </div>
-
-                                <a href="{{ route('showProductDetails', $product->product_id) }}" style="width:230px" class="gap-8 px-24 product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 rounded-8 flex-center fw-medium" tabindex="0">
-                                    Add To Cart <i class="ph ph-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-        </div>
+    <div class="carousel-indicators">
+        <!-- Loop through sliders to generate the correct indicators -->
+        @foreach($sliders as $index => $slider)
+            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}"></button>
+        @endforeach
     </div>
-</section>
-<!-- ========================= Deals Week End ================================ -->
-
-   
-
-<!-- ========================= new section end================================ -->
+</div>
 
 
- <!-- ========================= categories section Start ================================ -->
-    <section class="overflow-hidden popular-products pt-80"> 
-        <div class="container container-lg">
-            <div class="p-24 border border-gray-100 rounded-16">
-                <div class="mb-24 section-heading">
-                    <div class="flex-wrap gap-8 flex-between">
-                        <h5 class="mb-0 wow bounceInLeft">Categories</h5>
-                        <div class="gap-16 flex-align wow bounceInRight">
-                            <a href="/shop" class="text-sm text-gray-700 fw-medium hover-text-main-600 hover-text-decoration-underline">View All Products</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row gy-4">
-                    @foreach ($categories->slice(0, 8) as $category)
-                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-xs-6 wow bounceIn">
-                            <div class="gap-16 p-16 border border-gray-100 product-card h-100 d-flex hover-border-main-600 rounded-16 position-relative transition-2">
-                                <a href="{{ route('shop.index') }}" class="flex-shrink-0 p-0 product-card__thumb flex-center h-unset rounded-8 position-relative w-unset" tabindex="0">
-                                    <img src="
-                                        @if (Str::contains(strtolower($category->name), 'women'))
-                                            {{ asset('frontend/assets/images/imgs/category-1.jpg') }}
-                                        @elseif (Str::contains(strtolower($category->name), 'men'))
-                                            {{ asset('frontend/assets/images/imgs/category-2.jpg') }}
-                                        @elseif (Str::contains(strtolower($category->name), 'health'))
-                                            {{ asset('frontend/assets/images/imgs/category-4.jpg') }}
-                                        @elseif (Str::contains(strtolower($category->name), 'electronic'))
-                                            {{ asset('frontend/assets/images/imgs/category-3.jpg') }}
-                                        @elseif (Str::contains(strtolower($category->name), 'sports'))
-                                            {{ asset('frontend/assets/images/imgs/category-5.jpg') }}
-                                        @elseif (Str::contains(strtolower($category->name), 'watch'))
-                                            {{ asset('frontend/assets/images/imgs/category-6.jpg') }}
-                                        @elseif (Str::contains(strtolower($category->name), 'appliances'))
-                                            {{ asset('frontend/assets/images/imgs/category-7.jpg') }}
-                                        @elseif (Str::contains(strtolower($category->name), 'home'))
-                                            {{ asset('frontend/assets/images/imgs/category-8.jpg') }}
-                                        @elseif (Str::contains(strtolower($category->name), 'groceries'))
-                                            {{ asset('frontend/assets/images/imgs/category-9.jpg') }}
-                                        @else
-                                            {{ asset('frontend/assets/images/imgs/default-1.png') }}
-                                        @endif
-                                    " alt="{{ $category->name }}" class="w-100 max-w-unset">
-                                </a>
-                                <div class="product-card__content flex-grow-1">
-                                    <h6 class="mb-12 text-lg title fw-semibold">
-                                        <a href="{{ route('shop.index') }}" class="link text-line-2" tabindex="0">{{ $category->name }}</a>
-                                    </h6>
-                                    @foreach ($category->subcategories->take(4) as $subcategory)
-                                        <span class="mb-4 text-sm text-gray-600">{{ $subcategory->name }}</span><br>
-                                    @endforeach
-
-                                    <a href="{{ route('shop.index') }}" class="gap-8 mt-24 text-tertiary-600 flex-align">
-                                        All Categories
-                                        <i class="ph ph-arrow-right d-flex"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
+    <div class="site-common-con">
+        <div class="home-product d-flex">
+            <div class="home-product-title exclusive">
+                <p class="home-page-product-title">Online Exclusive</p>
+            </div>
+            <div class="view-all-txt">
+                <a class="view-all-link" href="/shop">VIEW ALL</a>
             </div>
         </div>
-    </section>
-    <!-- ========================= categories section End ================================ -->
 
-    <!-- ========================= Deals Week Start ================================ -->
-    <section class="overflow-hidden deals-weeek pt-80">
-        <div class="container container-lg">
-            <div class="p-24 border border-gray-100 rounded-16">
-                <div class="mb-24 section-heading">
-                    <div class="flex-wrap gap-8 flex-between">
-                        <h5 class="mb-0 wow bounceInLeft">Deal of The Week</h5>
-                        <div class="gap-16 flex-align wow bounceInRight">
-                            <a href="/shop" class="text-sm text-gray-700 fw-medium hover-text-main-600 hover-text-decoration-underline">View All Deals</a>
-                            <div class="gap-8 flex-align">
-                                <button type="button" id="deal-week-prev" class="text-xl border border-gray-100 slick-prev slick-arrow flex-center rounded-circle hover-border-neutral-600 hover-bg-neutral-600 hover-text-white transition-1">
-                                    <i class="ph ph-caret-left"></i>
-                                </button>
-                                <button type="button" id="deal-week-next" class="text-xl border border-gray-100 slick-next slick-arrow flex-center rounded-circle hover-border-neutral-600 hover-bg-neutral-600 hover-text-white transition-1">
-                                    <i class="ph ph-caret-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div id="category_products_list_28" class="products-grid row">
+            <div class="home-product-list owl-carousel owl-theme owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all; width: 2600px;">
+                    @foreach ($Onlineexclusive as $product)
+                            <div class="owl-item active" style="width: 216.638px;">
+                                <div class="item items-28">
+                                    <div class="grid-product-wapper">
+                                        <!-- Discount Tag -->
+                                        @if($product->discount > 0)
+                                            <div class="normal-pro-promo-tags">
+                                                <div class="discout-tag">
+                                                    <span class="discount-amount">{{ $product->discount }}%</span>
+                                                    <span class="off-txt">OFF</span>
+                                                </div>
+                                            </div>
+                                        @endif
 
-
-
-                <div class="deals-week-slider arrow-style-two">
-                    @foreach ($products->slice(0, 10) as $product)
-                        <div data-aos="fade-up" data-aos-duration="200">
-                            <div class="p-16 border border-gray-100 product-card h-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                                <a href="{{ route('showProductDetails', $product->product_id) }}" class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                                    @if($product->quantity == 0)
-                                        <span class="px-8 py-4 text-sm text-white product-card__badge bg-main-600 position-absolute inset-inline-start-0 inset-block-start-0">Sold</span>
-                                    @endif
-                                    <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->product_name }}" class="w-auto max-w-unset" style="width: 200px; height: 200px; object-fit: cover;">
-                                </a>
-                                <div class="mt-16 product-card__content">
-                                    <div class="gap-6 mt-16 mb-20 flex-align">
-                                        @if ($product->total_reviews!=0)
-                                        <div class="rating-info d-flex gap-2">
-                                            @php
-                                            $fullStars = floor($product->average_rating); // Number of full stars
-                                            $hasHalfStar = ($product->average_rating - $fullStars) >= 0.5; // Half-star condition
-                                            @endphp
-                                            @for ($i = 0; $i < $fullStars; $i++)
-                                                <span class="text-15 fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                            @endfor
-                                            @if ($hasHalfStar)
-                                                <span class="text-15 fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star-half"></i></span>
-                                            @endif
-                                            <span class="text-xs fw-medium text-gray-500">{{ number_format($product->average_rating, 1) }}</span>
-                                            &nbsp;<span class="text-xs fw-medium text-gray-500">({{ $product->total_reviews }})</span>
+                                        <!-- Product Image -->
+                                        <div class="product-image">
+                                            <a href="{{ route('showProductDetails', $product->product_id) }}">
+                                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->product_name }}" class="grid-product-img" loading="eager" width="178" height="178">
+                                            </a>
+                                            <div class="products-btn-set">
+                                                <a href="{{ route('showProductDetails', $product->product_id) }}" class="home-buynow">BUY NOW</a>
+                                            </div>
                                         </div>
-                                        @endif
-                                        <!-- Heart Icon -->
-                                        <button type="button" class="heart-icon ms-auto" 
-                                                id="wishlist-icon-{{ $product->product_id }}" 
-                                                onclick="toggleWishlist(this, '{{ $product->product_id }}')">
-                                            <i class="fa-regular fa-heart" style="font-size: 15px;"></i>
-                                        </button>
+
+                                        <!-- Product Title & Prices -->
+                                        <div class="grid-pro-drtail-con">
+                                            <div class="col-md-12 grid-product-title">
+                                                <div class="pro-name-compact" title="{{ $product->product_name }}">
+                                                    {{ $product->product_name }}
+                                                </div>
+                                            </div>
+                                            <div class="u">
+                                                <span class="market-price">Rs. {{ number_format($product->regular_price, 2) }}</span>
+                                                <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <h6 class="mt-12 mb-8 text-lg title fw-semibold">
-                                        <a href="{{ route('showProductDetails', $product->product_id) }}" class="link text-line-2" tabindex="0">{{ $product->product_name }}</a>
-                                    </h6>
-                                    <div class="gap-4 flex-align">
-                                    <span class="text-tertiary-600 text-md d-flex">
-                                        <i class="ph-fill ph-storefront"></i>
-                                    </span>
-                                    @if($product->shop_id && $product->shop) 
-                                        <span class="text-xs text-gray-500">By {{ $product->shop->shop_name }}</span>
-                                    @endif
-                                </div>
-
-                                <div class="mt-8">
-                                    @php
-                                        // Calculate the percentage sold
-                                        $percentageSold = $product->total_quantity > 0 
-                                            ? ($product->sold_quantity / $product->total_quantity) * 100 
-                                            : 0;
-                                    @endphp
-
-                                    <div class="h-4 progress w-100 bg-color-three rounded-pill" role="progressbar" aria-label="Basic example" aria-valuenow="{{ $percentageSold }}" aria-valuemin="0" aria-valuemax="100">
-                                        <div class="progress-bar bg-main-two-600 rounded-pill" style="width: {{ $percentageSold }}%;"></div>
-                                    </div>
-                                    <span class="mt-8 text-xs text-gray-900 fw-medium">
-                                        Sold: {{ $product->sold_quantity }}/{{ $product->total_quantity }}
-                                    </span>
-                                </div>
-
-                                    <div class="my-20 product-card__price">
-                                        <span class="text-heading text-md fw-semibold ">Rs {{ $product->normal_price }} <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                                    </div>
-
-                                    <a href="{{ route('showProductDetails', $product->product_id) }}" style="width:230px" class="gap-8 px-24 product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 rounded-8 flex-center fw-medium" tabindex="0">
-                                        Add To Cart <i class="ph ph-shopping-cart"></i>
-                                    </a>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
-
             </div>
         </div>
-    </section>
-    <!-- ========================= Deals Week End ================================ -->
+
+    </div>
+
+
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Owl Carousel CSS -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/frontend/newstyle/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.theme.default.min.css"> -->
+
+<!-- Include Owl Carousel JS -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js"></script> -->
+
+
+<script>
+    $(document).ready(function() {
+    $(".owl-carousel").owlCarousel({
+        loop: true,              // Enable looping
+        margin: 10,              // Margin between items
+        nav: true,               // Show next/prev arrows
+
+        dots: false,             // Disable dots navigation
+        autoplay: false,          // Enable auto-scrolling
+        autoplayTimeout: 2000,   // Auto-scroll interval in ms
+        responsive: {
+            0: {
+                items: 2         // Show 1 item for small screens
+            },
+            600: {
+                items: 3         // Show 3 items for medium screens
+            },
+            1000: {
+                items: 5         // Show 5 items for large screens
+            }
+        }
+    });
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="site-common-con">
+        <div class="home-product d-flex">
+            <div class="home-product-title">
+                <p class="home-page-product-title">Top Selling</p>
+            </div>
+            <div class="view-all-txt">
+                <a class="view-all-link" href="/shop">VIEW ALL</a>
+            </div>
+        </div>
+
+        <div id="category_products_list_28" class="products-grid row">
+            <div class="home-product-list owl-carousel owl-theme owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all; width: 2600px;">
+                    @foreach ($topSellingProducts as $product)
+                            <div class="owl-item active" style="width: 216.638px;">
+                                <div class="item items-28">
+                                    <div class="grid-product-wapper">
+                                        <!-- Discount Tag -->
+                                        @if($product->discount > 0)
+                                            <div class="normal-pro-promo-tags">
+                                                <div class="discout-tag">
+                                                    <span class="discount-amount">{{ $product->discount }}%</span>
+                                                    <span class="off-txt">OFF</span>
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        <!-- Product Image -->
+                                        <div class="product-image">
+                                            <a href="{{ route('showProductDetails', $product->product_id) }}">
+                                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->product_name }}" class="grid-product-img" loading="eager" width="178" height="178">
+                                            </a>
+                                            <div class="products-btn-set">
+                                                <a href="{{ route('showProductDetails', $product->product_id) }}" class="home-buynow">BUY NOW</a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Product Title & Prices -->
+                                        <div class="grid-pro-drtail-con">
+                                            <div class="col-md-12 grid-product-title">
+                                                <div class="pro-name-compact" title="{{ $product->product_name }}">
+                                                    {{ $product->product_name }}
+                                                </div>
+                                            </div>
+                                            <div class="u">
+                                                <span class="market-price">Rs. {{ number_format($product->regular_price, 2) }}</span>
+                                                <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="site-common-con">
+        <div class="home-product d-flex">
+            <div class="home-product-title">
+                <p class="home-page-product-title">Below Rs.10,000</p>
+            </div>
+            <div class="view-all-txt">
+                <a class="view-all-link" href="/shop">VIEW ALL</a>
+            </div>
+        </div>
+
+        <div id="category_products_list_28" class="products-grid row">
+            <div class="home-product-list owl-carousel owl-theme owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all; width: 2600px;">
+                    @foreach ($belowrs as $product)
+                            <div class="owl-item active" style="width: 216.638px;">
+                                <div class="item items-28">
+                                    <div class="grid-product-wapper">
+                                        <!-- Discount Tag -->
+                                        @if($product->discount > 0)
+                                            <div class="normal-pro-promo-tags">
+                                                <div class="discout-tag">
+                                                    <span class="discount-amount">{{ $product->discount }}%</span>
+                                                    <span class="off-txt">OFF</span>
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        <!-- Product Image -->
+                                        <div class="product-image">
+                                            <a href="{{ route('showProductDetails', $product->product_id) }}">
+                                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->product_name }}" class="grid-product-img" loading="eager" width="178" height="178">
+                                            </a>
+                                            <div class="products-btn-set">
+                                                <a href="{{ route('showProductDetails', $product->product_id) }}" class="home-buynow">BUY NOW</a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Product Title & Prices -->
+                                        <div class="grid-pro-drtail-con">
+                                            <div class="col-md-12 grid-product-title">
+                                                <div class="pro-name-compact" title="{{ $product->product_name }}">
+                                                    {{ $product->product_name }}
+                                                </div>
+                                            </div>
+                                            <div class="u">
+                                                <span class="market-price">Rs. {{ number_format($product->regular_price, 2) }}</span>
+                                                <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="site-common-con" style="margin-bottom: 50px; margin-top: 30px;">
+    <div class="row m-0">
+        <!-- First Banner Image (Left Side) -->
+        @if(isset($banners[0]))
+            <div class="col-12 col-sm-6 custom-4-banner">
+                <img src="{{ asset('storage/' . $banners[0]->image) }}" class="img-fluid" alt="Banner 1">
+            </div>
+        @endif
+
+        <!-- Second Banner Image (Right Side) -->
+        @if(isset($banners[1]))
+            <div class="col-12 col-sm-6 custom-4-banner">
+                <img src="{{ asset('storage/' . $banners[1]->image) }}" class="img-fluid" alt="Banner 2">
+            </div>
+        @endif
+    </div>
+
+    <!-- Single Banner Image (Full Width) -->
+    @if(isset($banners[2]))
+        <a href="{{ $banners[2]->url ?? '#' }}">
+            <div class="col-12 col-sm-12 single-banner-m">
+                <img src="{{ asset('storage/' . $banners[2]->image) }}" class="img-fluid" alt="Single Banner">
+            </div>
+        </a>
+    @endif
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+=====================================================================================================================================================
+                                     Home page end
+
+===================================================================================================================================================== -->
+
+
 
 
 
@@ -443,4 +543,7 @@ function toggleWishlist(button, productId) {
     .catch(error => console.error('Error:', error));
 }
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

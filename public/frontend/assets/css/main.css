@@ -40,6 +40,7 @@
 /* ======================== Functions Css End ======================= */
 /* Font Family*/
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Exo:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Quicksand:wght@300..700&display=swap");
+
 /* ========================= Variable Css Start ======================== */
 :root {
     /* Font Family Variable */
@@ -122,102 +123,64 @@
     --size-144: 9rem;
     --size-160: 10rem;
     --size-210: 13.125rem;
-    --main-50: hsl(
-        var(--main-h),
-        var(--main-s),
-        calc(var(--main-l) + (100% - var(--main-l)) * 0.9)
-    );
-    --main-100: hsl(
-        var(--main-h),
-        var(--main-s),
-        calc(var(--main-l) + (100% - var(--main-l)) * 0.8)
-    );
-    --main-200: hsl(
-        var(--main-h),
-        var(--main-s),
-        calc(var(--main-l) + (100% - var(--main-l)) * 0.7)
-    );
-    --main-300: hsl(
-        var(--main-h),
-        var(--main-s),
-        calc(var(--main-l) + (100% - var(--main-l)) * 0.6)
-    );
-    --main-400: hsl(
-        var(--main-h),
-        var(--main-s),
-        calc(var(--main-l) + (100% - var(--main-l)) * 0.5)
-    );
-    --main-500: hsl(
-        var(--main-h),
-        var(--main-s),
-        calc(var(--main-l) + (100% - var(--main-l)) * 0.4)
-    );
+    --main-50: hsl(var(--main-h),
+            var(--main-s),
+            calc(var(--main-l) + (100% - var(--main-l)) * 0.9));
+    --main-100: hsl(var(--main-h),
+            var(--main-s),
+            calc(var(--main-l) + (100% - var(--main-l)) * 0.8));
+    --main-200: hsl(var(--main-h),
+            var(--main-s),
+            calc(var(--main-l) + (100% - var(--main-l)) * 0.7));
+    --main-300: hsl(var(--main-h),
+            var(--main-s),
+            calc(var(--main-l) + (100% - var(--main-l)) * 0.6));
+    --main-400: hsl(var(--main-h),
+            var(--main-s),
+            calc(var(--main-l) + (100% - var(--main-l)) * 0.5));
+    --main-500: hsl(var(--main-h),
+            var(--main-s),
+            calc(var(--main-l) + (100% - var(--main-l)) * 0.4));
     --main-600: hsl(var(--main-h), var(--main-s), var(--main-l));
-    --main-700: hsl(
-        var(--main-h),
-        var(--main-s),
-        calc(var(--main-l) - var(--main-l) * 0.1)
-    );
-    --main-800: hsl(
-        var(--main-h),
-        var(--main-s),
-        calc(var(--main-l) - var(--main-l) * 0.2)
-    );
-    --main-900: hsl(
-        var(--main-h),
-        var(--main-s),
-        calc(var(--main-l) - var(--main-l) * 0.3)
-    );
-    --main-two-50: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.9)
-    );
-    --main-two-100: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.8)
-    );
-    --main-two-200: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.7)
-    );
-    --main-two-300: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.6)
-    );
-    --main-two-400: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.5)
-    );
-    --main-two-500: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.4)
-    );
-    --main-two-600: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        var(--main-two-l)
-    );
-    --main-two-700: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        calc(var(--main-two-l) - var(--main-two-l) * 0.1)
-    );
-    --main-two-800: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        calc(var(--main-two-l) - var(--main-two-l) * 0.2)
-    );
-    --main-two-900: hsl(
-        var(--main-two-h),
-        var(--main-two-s),
-        calc(var(--main-two-l) - var(--main-two-l) * 0.3)
-    );
+    --main-700: hsl(var(--main-h),
+            var(--main-s),
+            calc(var(--main-l) - var(--main-l) * 0.1));
+    --main-800: hsl(var(--main-h),
+            var(--main-s),
+            calc(var(--main-l) - var(--main-l) * 0.2));
+    --main-900: hsl(var(--main-h),
+            var(--main-s),
+            calc(var(--main-l) - var(--main-l) * 0.3));
+    --main-two-50: hsl(var(--main-two-h),
+            var(--main-two-s),
+            calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.9));
+    --main-two-100: hsl(var(--main-two-h),
+            var(--main-two-s),
+            calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.8));
+    --main-two-200: hsl(var(--main-two-h),
+            var(--main-two-s),
+            calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.7));
+    --main-two-300: hsl(var(--main-two-h),
+            var(--main-two-s),
+            calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.6));
+    --main-two-400: hsl(var(--main-two-h),
+            var(--main-two-s),
+            calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.5));
+    --main-two-500: hsl(var(--main-two-h),
+            var(--main-two-s),
+            calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.4));
+    --main-two-600: hsl(var(--main-two-h),
+            var(--main-two-s),
+            var(--main-two-l));
+    --main-two-700: hsl(var(--main-two-h),
+            var(--main-two-s),
+            calc(var(--main-two-l) - var(--main-two-l) * 0.1));
+    --main-two-800: hsl(var(--main-two-h),
+            var(--main-two-s),
+            calc(var(--main-two-l) - var(--main-two-l) * 0.2));
+    --main-two-900: hsl(var(--main-two-h),
+            var(--main-two-s),
+            calc(var(--main-two-l) - var(--main-two-l) * 0.3));
     --neutral-50: #ecf1f9;
     --neutral-100: #e6e6e6;
     --neutral-200: #cccccc;
@@ -400,6 +363,7 @@
 }
 
 @media screen and (max-width: 575px) {
+
     .common-accordion .accordion-button[aria-expanded="true"]::after,
     .common-accordion .accordion-button[aria-expanded="false"]::after {
         inset-inline-end: 20px;
@@ -413,11 +377,11 @@
 
 /* ================================= Accordion Css End =========================== */
 /* ================================= Button Css Start =========================== */
-.btn-check:checked + .btn,
+.btn-check:checked+.btn,
 .btn.active,
 .btn.show,
 .btn:first-child:active,
-:not(.btn-check) + .btn:active {
+:not(.btn-check)+.btn:active {
     color: none;
     background-color: none;
     border-color: none;
@@ -447,6 +411,7 @@
         font-size: 0.875rem;
     }
 }
+
 .common-input {
     box-shadow: none !important;
 }
@@ -461,69 +426,78 @@
 
 /* Main Button */
 .btn-main {
-    background-color: #ce1616 !important; /* Red color */
-    border-color: #ce1616 !important; /* Red border */
+    background-color: #001ed4 !important;
+    /* Red color */
+    border-color: #001ed4 !important;
+    /* Red border */
 }
 
 .btn-main:hover {
-    background-color: #801111 !important; /* Darker red for hover */
-    border-color: #801111 !important; /* Darker red border */
+    background-color: #001ed4 !important;
+    /* Darker red for hover */
+    border-color: #001ed4 !important;
+    /* Darker red border */
 }
 
 /* Main Outline Button */
 .btn-outline-main {
     background-color: transparent !important;
-    border-color: #ce1616 !important; /* Red border */
-    color: #ce1616 !important; /* Red text */
+    border-color: #001ed4 !important;
+    /* Red border */
+    color: #001ed4 !important;
+    /* Red text */
 }
 
 .btn-outline-main:hover {
-    background-color: rgba(
-        206,
-        22,
-        22,
-        0.15
-    ) !important; /* Light red background on hover */
-    border-color: rgba(
-        206,
-        22,
-        22,
-        0.4
-    ) !important; /* Light red border on hover */
+    background-color: rgba(206,
+            22,
+            22,
+            0.15) !important;
+    /* Light red background on hover */
+    border-color: rgba(206,
+            22,
+            22,
+            0.4) !important;
+    /* Light red border on hover */
 }
 
 /* Main Two Button */
 .btn-main-two {
-    background-color: #bd0f0f !important; /* Darker red */
-    border-color: #bd0f0f !important; /* Darker red border */
-    color: #ffffff !important; /* White text */
+    background-color: #bd0f0f !important;
+    /* Darker red */
+    border-color: #bd0f0f !important;
+    /* Darker red border */
+    color: #ffffff !important;
+    /* White text */
 }
 
 .btn-main-two:hover {
-    background-color: #801111 !important; /* Darker red for hover */
-    border-color: #801111 !important; /* Darker red border */
+    background-color: #801111 !important;
+    /* Darker red for hover */
+    border-color: #801111 !important;
+    /* Darker red border */
 }
 
 /* Main Two Outline Button */
 .btn-outline-main-two {
     background-color: transparent !important;
-    border-color: #bd0f0f !important; /* Darker red border */
-    color: #bd0f0f !important; /* Darker red text */
+    border-color: #bd0f0f !important;
+    /* Darker red border */
+    color: #bd0f0f !important;
+    /* Darker red text */
 }
 
 .btn-outline-main-two:hover {
-    background-color: rgba(
-        189,
-        15,
-        15,
-        0.15
-    ) !important; /* Light red background on hover */
-    border-color: rgba(
-        189,
-        15,
-        15,
-        0.4
-    ) !important; /* Light red border on hover */
+    background-color: rgba(189,
+            15,
+            15,
+            0.15) !important;
+    /* Light red background on hover */
+    border-color: rgba(189,
+            15,
+            15,
+            0.4) !important;
+    /* Light red border on hover */
 }
 
 .btn-white {
@@ -697,7 +671,7 @@
     inset-inline-end: auto;
 }
 
-textarea + .input-icon {
+textarea+.input-icon {
     inset-block-start: 15px;
     transform: translateY(0);
 }
@@ -794,6 +768,7 @@ textarea.common-input {
         height: 110px;
     }
 }
+
 /* Autofill Css */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -1067,9 +1042,12 @@ input[type="number"] {
 
 /* Active Pagination Link */
 .pagination .page-item.active .page-link {
-    background-color: #801111 !important; /* Darker red for active */
-    border-color: #801111 !important; /* Darker red border */
-    color: #ffffff !important; /* White text */
+    background-color: #801111 !important;
+    /* Darker red for active */
+    border-color: #801111 !important;
+    /* Darker red border */
+    color: #ffffff !important;
+    /* White text */
 }
 
 /* Default Pagination Link */
@@ -1081,9 +1059,12 @@ input[type="number"] {
 .pagination .page-item .page-link:hover,
 .pagination .page-item .page-link:active,
 .pagination .page-item .page-link:focus {
-    color: #801111 !important; /* Darker red text */
-    background-color: #f5d1d1 !important; /* Lighter red background */
-    border-color: #b34c4c !important; /* Slightly darker red border */
+    color: #801111 !important;
+    /* Darker red text */
+    background-color: #f5d1d1 !important;
+    /* Lighter red background */
+    border-color: #b34c4c !important;
+    /* Slightly darker red border */
 }
 
 /* ================================= Pagination Css End =========================== */
@@ -1119,12 +1100,15 @@ input[type="number"] {
 
 .common-tab .nav-item .nav-link.active {
     color: hsl(var(--white)) !important;
-    border-color: #ce1616 !important; /* Updated border color */
-    background-color: #ce1616 !important; /* Updated background color */
+    border-color: #ce1616 !important;
+    /* Updated border color */
+    background-color: #ce1616 !important;
+    /* Updated background color */
 }
 
 .common-tab .nav-item .nav-link:hover {
-    color: #ce1616; /* Updated hover color */
+    color: #ce1616;
+    /* Updated hover color */
 }
 
 .common-tab.style-two .nav-link {
@@ -1134,12 +1118,15 @@ input[type="number"] {
 
 .common-tab.style-two .nav-link.active {
     color: hsl(var(--white)) !important;
-    border-color: #ce1616 !important; /* Updated border color */
-    background-color: #ce1616 !important; /* Updated background color */
+    border-color: #ce1616 !important;
+    /* Updated border color */
+    background-color: #ce1616 !important;
+    /* Updated background color */
 }
 
 .common-tab.style-two .nav-link:hover {
-    color: #ce1616; /* Updated hover color */
+    color: #ce1616;
+    /* Updated hover color */
 }
 
 /* ================================= Tab Css End =========================== */
@@ -1156,7 +1143,7 @@ input[type="number"] {
     min-width: max-content;
 }
 
-.table > :not(caption) > * > * {
+.table> :not(caption)>*>* {
     border-bottom: 0;
 }
 
@@ -1267,6 +1254,7 @@ input[type="number"] {
 }
 
 @media screen and (max-width: 424px) {
+
     .common-card .card-header,
     .common-card .card-footer {
         padding: 12px 16px;
@@ -1303,18 +1291,12 @@ input[type="number"] {
     border: 0;
 }
 
-.select2-container--default.select2-container--open
-    .select2-selection--single
-    .select2-selection__arrow
-    b {
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
     border: 0;
     position: relative;
 }
 
-.select2-container--default
-    .select2-selection--single
-    .select2-selection__arrow
-    b::before {
+.select2-container--default .select2-selection--single .select2-selection__arrow b::before {
     position: relative;
     content: "\e136";
     font-family: "Phosphor";
@@ -1323,17 +1305,11 @@ input[type="number"] {
     transition: 0.2s linear;
 }
 
-.select2-container--open.select2-container--default
-    .select2-selection--single
-    .select2-selection__arrow
-    b::before {
+.select2-container--open.select2-container--default .select2-selection--single .select2-selection__arrow b::before {
     content: "\e13c" !important;
 }
 
-.select2-container--default
-    .select2-selection--single
-    .select2-selection__arrow
-    b {
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
     border: 0 !important;
     margin: 0 !important;
     inset-block-start: 0 !important;
@@ -1426,9 +1402,7 @@ input[type="number"] {
     padding: 4px 10px;
 }
 
-.select2-container--default
-    .select2-search--dropdown
-    .select2-search__field:focus-visible {
+.select2-container--default .select2-search--dropdown .select2-search__field:focus-visible {
     outline: 1px solid var(--main-200);
 }
 
@@ -1450,8 +1424,7 @@ input[type="number"] {
     }
 }
 
-.select2-container--default
-    .select2-results__option--highlighted.select2-results__option--selectable {
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
     background-color: #ce1616 !important;
     color: white !important;
 }
@@ -1467,53 +1440,37 @@ input[type="number"] {
     color: #fff !important;
 }
 
-.select2-container--default .select2-results > .select2-results__options {
+.select2-container--default .select2-results>.select2-results__options {
     padding-inline-end: 8px;
 }
 
-.select2-container--default
-    .select2-results
-    > .select2-results__options::-webkit-scrollbar {
+.select2-container--default .select2-results>.select2-results__options::-webkit-scrollbar {
     width: 6px;
 }
 
-.select2-container--default
-    .select2-results
-    > .select2-results__options::-webkit-scrollbar-track {
+.select2-container--default .select2-results>.select2-results__options::-webkit-scrollbar-track {
     background: #e4e4e4;
 }
 
-.select2-container--default
-    .select2-results
-    > .select2-results__options::-webkit-scrollbar-thumb {
+.select2-container--default .select2-results>.select2-results__options::-webkit-scrollbar-thumb {
     background: #a2a2a2;
     border-radius: 50px;
 }
 
-.select2-container--default
-    .select2-results
-    > .select2-results__options::-webkit-scrollbar-thumb:hover {
+.select2-container--default .select2-results>.select2-results__options::-webkit-scrollbar-thumb:hover {
     background: #6d6d6d;
 }
 
-.select2-container--open.select2-container--default
-    .select2-selection--single
-    .select2-selection__rendered {
+.select2-container--open.select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #ce1616 !important;
 }
 
-.select2-container--open.select2-container--default
-    .select2-selection--single
-    .select2-selection__arrow
-    b::before {
+.select2-container--open.select2-container--default .select2-selection--single .select2-selection__arrow b::before {
     color: #ce1616 !important;
 }
 
 /* Location Box Css  */
-.location-box
-    .select2-container
-    .select2-selection--single
-    .select2-selection__rendered {
+.location-box .select2-container .select2-selection--single .select2-selection__rendered {
     padding-inline-start: 0px !important;
     padding-inline-end: 50px !important;
 }
@@ -1527,10 +1484,7 @@ input[type="number"] {
     border: 0 !important;
 }
 
-.location-box
-    .select2-container--default
-    .select2-selection--single
-    .select2-selection__rendered {
+.location-box .select2-container--default .select2-selection--single .select2-selection__rendered {
     line-height: 14px;
     color: var(--gray-900);
     font-weight: 700;
@@ -1550,6 +1504,7 @@ input[type="number"] {
 }
 
 @media screen and (max-width: 991px) {
+
     .location-box,
     .search-category.h-48 {
         height: 40px !important;
@@ -1560,6 +1515,7 @@ input[type="number"] {
         font-size: 12px;
     }
 }
+
 /* ======================= Select 2 Css End =========================== */
 /* ========================== Count Down Css Start =============================== */
 .countdown-list {
@@ -1574,8 +1530,7 @@ input[type="number"] {
 
 .countdown-list__item {
     background-color: hsl(var(--white));
-    padding: clamp(0.375rem, -2.248rem + 3vw, 0.75rem)
-        clamp(0.5rem, -2.998rem + 4vw, 1rem);
+    padding: clamp(0.375rem, -2.248rem + 3vw, 0.75rem) clamp(0.5rem, -2.998rem + 4vw, 1rem);
     border-radius: 8px;
     position: relative;
 }
@@ -1673,6 +1628,7 @@ input[type="number"] {
 }
 
 @keyframes notification {
+
     0%,
     100% {
         opacity: 1;
@@ -1682,6 +1638,7 @@ input[type="number"] {
         opacity: 0.3;
     }
 }
+
 /* ================================= Range Slider Css Start =========================== */
 .custom--range #slider-range {
     height: 4px;
@@ -1694,7 +1651,8 @@ input[type="number"] {
 .custom--range #slider-range .ui-slider-handle {
     width: 16px !important;
     height: 16px !important;
-    background-color: #b61a1a !important; /* Darker red for the slider handle */
+    background-color: #b61a1a !important;
+    /* Darker red for the slider handle */
     border-radius: 50%;
     top: 50%;
     transform: translateY(-50%);
@@ -1707,28 +1665,33 @@ input[type="number"] {
 .custom--range #slider-range .ui-slider-handle:hover,
 .custom--range #slider-range .ui-slider-handle.ui-state-active {
     transform: translateY(-50%) scale(1.3);
-    background-color: #c61c1c !important; /* Lighter red for hover/active */
+    background-color: #c61c1c !important;
+    /* Lighter red for hover/active */
 }
 
 /* Active Slider Handle Shadow */
 .custom--range #slider-range .ui-slider-handle.ui-state-active {
-    box-shadow: 0px 0px 12px 4px rgba(149, 89, 89, 0.25) !important; /* Softer shadow */
+    box-shadow: 0px 0px 12px 4px rgba(149, 89, 89, 0.25) !important;
+    /* Softer shadow */
 }
 
 /* Slider Track (Background) */
 .custom--range #slider-range .ui-widget-header {
-    background-color: #aa1d1d; /* Darker red for track background */
+    background-color: #aa1d1d;
+    /* Darker red for track background */
     transition: 0.2s linear;
 }
 
 /* Focused Slider Span */
 .custom--range #slider-range span:focus {
-    background-color: #a21313; /* Lighter red on focus */
+    background-color: #a21313;
+    /* Lighter red on focus */
 }
 
 .custom--range__prices {
     width: 150px;
 }
+
 .color-filter-list {
     display: flex;
     flex-wrap: wrap;
@@ -1829,12 +1792,12 @@ h6,
     font-size: var(--heading-six);
 }
 
-h1 > a,
-h2 > a,
-h3 > a,
-h4 > a,
-h5 > a,
-h6 > a {
+h1>a,
+h2>a,
+h3>a,
+h4>a,
+h5>a,
+h6>a {
     font-weight: inherit;
     font-size: inherit;
     color: inherit;
@@ -1842,12 +1805,12 @@ h6 > a {
     line-height: inherit;
 }
 
-h1 > a:hover,
-h2 > a:hover,
-h3 > a:hover,
-h4 > a:hover,
-h5 > a:hover,
-h6 > a:hover {
+h1>a:hover,
+h2>a:hover,
+h3>a:hover,
+h4>a:hover,
+h5>a:hover,
+h6>a:hover {
     color: hsl(var(--main));
 }
 
@@ -3136,6 +3099,7 @@ input:focus-visible {
         margin-block-end: 60px !important;
     }
 }
+
 /* ================================= Margin Css End =========================== */
 /* ================================= Padding Css Start =========================== */
 .p-2 {
@@ -4390,6 +4354,7 @@ input:focus-visible {
         padding-block-end: 60px !important;
     }
 }
+
 /* ================================= Padding Css End =========================== */
 /* ================================= Classes Css Start =========================== */
 /* Section Background */
@@ -4570,25 +4535,19 @@ input:focus-visible {
     height: 100%;
     left: 0;
     top: 0;
-    background: linear-gradient(
-        0deg,
-        rgba(18, 21, 53, 0.7) 0%,
-        rgba(18, 21, 53, 0.7) 100%
-    );
+    background: linear-gradient(0deg,
+            rgba(18, 21, 53, 0.7) 0%,
+            rgba(18, 21, 53, 0.7) 100%);
     z-index: -1;
 }
 
 .bg-overlay.style-two::before {
-    background: linear-gradient(
-            180deg,
+    background: linear-gradient(180deg,
             rgba(18, 21, 53, 0.47) 34.18%,
-            rgba(18, 21, 53, 0.5) 75.48%
-        ),
-        linear-gradient(
-            180deg,
+            rgba(18, 21, 53, 0.5) 75.48%),
+        linear-gradient(180deg,
             rgba(18, 21, 53, 0) 27.17%,
-            rgba(18, 21, 53, 0.5) 79.35%
-        );
+            rgba(18, 21, 53, 0.5) 79.35%);
     z-index: 0;
 }
 
@@ -5063,86 +5022,107 @@ input:focus-visible {
 .end-n4 {
     inset-inline-end: -6px;
 }
+
 /* Text colors for text-main shades */
 .text-main-50 {
-    color: #ffe5e5 !important; /* Very light pink */
+    color: #ffe5e5 !important;
+    /* Very light pink */
 }
 
 .text-main-100 {
-    color: #ffcccc !important; /* Light pink */
+    color: #ffcccc !important;
+    /* Light pink */
 }
 
 .text-main-200 {
-    color: #ffb2b2 !important; /* Soft pink */
+    color: #ffb2b2 !important;
+    /* Soft pink */
 }
 
 .text-main-300 {
-    color: #ff9999 !important; /* Warm pink */
+    color: #ff9999 !important;
+    /* Warm pink */
 }
 
 .text-main-400 {
-    color: #ff6666 !important; /* Medium pink-red */
+    color: #ff6666 !important;
+    /* Medium pink-red */
 }
 
 .text-main-500 {
-    color: #ff3333 !important; /* Slightly lighter red */
+    color: #ff3333 !important;
+    /* Slightly lighter red */
 }
 
 .text-main-600 {
-    color: #ce1616 !important; /* Original color */
+    color: #ce1616 !important;
+    /* Original color */
 }
 
 .text-main-700 {
-    color: #a11414 !important; /* Darker red */
+    color: #a11414 !important;
+    /* Darker red */
 }
 
 .text-main-800 {
-    color: #801111 !important; /* Deep red */
+    color: #801111 !important;
+    /* Deep red */
 }
 
 .text-main-900 {
-    color: #4d0a0a !important; /* Darkest red/maroon */
+    color: #4d0a0a !important;
+    /* Darkest red/maroon */
 }
 
 /* Text colors for text-main-two shades */
 .text-main-two-50 {
-    color: #ffe5e5 !important; /* Very light pink */
+    color: #ffe5e5 !important;
+    /* Very light pink */
 }
 
 .text-main-two-100 {
-    color: #ffcccc !important; /* Light pink */
+    color: #ffcccc !important;
+    /* Light pink */
 }
 
 .text-main-two-200 {
-    color: #ffb2b2 !important; /* Soft pink */
+    color: #ffb2b2 !important;
+    /* Soft pink */
 }
 
 .text-main-two-300 {
-    color: #ff9999 !important; /* Warm pink */
+    color: #ff9999 !important;
+    /* Warm pink */
 }
 
 .text-main-two-400 {
-    color: #ff6666 !important; /* Medium pink-red */
+    color: #ff6666 !important;
+    /* Medium pink-red */
 }
 
 .text-main-two-500 {
-    color: #ff3333 !important; /* Slightly lighter red */
+    color: #ff3333 !important;
+    /* Slightly lighter red */
 }
 
 .text-main-two-600 {
-    color: #bd0f0f !important; /* Darker shade of original color */
+    color: #001ed4 !important;
+    /* Darker shade of original color */
 }
 
 .text-main-two-700 {
-    color: #a11414 !important; /* Darker red */
+    color: #a11414 !important;
+    /* Darker red */
 }
 
 .text-main-two-800 {
-    color: #801111 !important; /* Deep red */
+    color: #801111 !important;
+    /* Deep red */
 }
 
 .text-main-two-900 {
-    color: #4d0a0a !important; /* Darkest red/maroon */
+    color: #4d0a0a !important;
+    /* Darkest red/maroon */
 }
 
 .text-neutral-50 {
@@ -5467,84 +5447,104 @@ input:focus-visible {
 
 /* Text color for hover-text-main shades */
 .hover-text-main-50:hover {
-    color: #ffe5e5 !important; /* Very light pink */
+    color: #ffe5e5 !important;
+    /* Very light pink */
 }
 
 .hover-text-main-100:hover {
-    color: #ffcccc !important; /* Light pink */
+    color: #ffcccc !important;
+    /* Light pink */
 }
 
 .hover-text-main-200:hover {
-    color: #ffb2b2 !important; /* Soft pink */
+    color: #ffb2b2 !important;
+    /* Soft pink */
 }
 
 .hover-text-main-300:hover {
-    color: #ff9999 !important; /* Warm pink */
+    color: #ff9999 !important;
+    /* Warm pink */
 }
 
 .hover-text-main-400:hover {
-    color: #ff6666 !important; /* Medium pink-red */
+    color: #ff6666 !important;
+    /* Medium pink-red */
 }
 
 .hover-text-main-500:hover {
-    color: #ff3333 !important; /* Slightly lighter red */
+    color: #ff3333 !important;
+    /* Slightly lighter red */
 }
 
 .hover-text-main-600:hover {
-    color: #ce1616 !important; /* Original color */
+    color: #ce1616 !important;
+    /* Original color */
 }
 
 .hover-text-main-700:hover {
-    color: #a11414 !important; /* Darker red */
+    color: #a11414 !important;
+    /* Darker red */
 }
 
 .hover-text-main-800:hover {
-    color: #801111 !important; /* Deep red */
+    color: #801111 !important;
+    /* Deep red */
 }
 
 .hover-text-main-900:hover {
-    color: #4d0a0a !important; /* Darkest red/maroon */
+    color: #4d0a0a !important;
+    /* Darkest red/maroon */
 }
 
 /* Text color for hover-text-main-two shades */
 .hover-text-main-two-50:hover {
-    color: #ffe5e5 !important; /* Very light pink */
+    color: #ffe5e5 !important;
+    /* Very light pink */
 }
 
 .hover-text-main-two-100:hover {
-    color: #ffcccc !important; /* Light pink */
+    color: #ffcccc !important;
+    /* Light pink */
 }
 
 .hover-text-main-two-200:hover {
-    color: #ffb2b2 !important; /* Soft pink */
+    color: #ffb2b2 !important;
+    /* Soft pink */
 }
 
 .hover-text-main-two-300:hover {
-    color: #ff9999 !important; /* Warm pink */
+    color: #ff9999 !important;
+    /* Warm pink */
 }
 
 .hover-text-main-two-400:hover {
-    color: #ff6666 !important; /* Medium pink-red */
+    color: #ff6666 !important;
+    /* Medium pink-red */
 }
 
 .hover-text-main-two-500:hover {
-    color: #ff3333 !important; /* Slightly lighter red */
+    color: #ff3333 !important;
+    /* Slightly lighter red */
 }
 
 .hover-text-main-two-600:hover {
-    color: #bd0f0f !important; /* Darker shade of original color */
+    color: #bd0f0f !important;
+    /* Darker shade of original color */
 }
 
 .hover-text-main-two-700:hover {
-    color: #a11414 !important; /* Darker red */
+    color: #a11414 !important;
+    /* Darker red */
 }
 
 .hover-text-main-two-800:hover {
-    color: #801111 !important; /* Deep red */
+    color: #801111 !important;
+    /* Deep red */
 }
 
 .hover-text-main-two-900:hover {
-    color: #4d0a0a !important; /* Darkest red/maroon */
+    color: #4d0a0a !important;
+    /* Darkest red/maroon */
 }
 
 .hover-text-neutral-50:hover {
@@ -6270,84 +6270,104 @@ input:focus-visible {
 
 /* Hover border colors for hover-border-main shades */
 .hover-border-main-50:hover {
-    border-color: #ffe5e5 !important; /* Very light pink */
+    border-color: #ffe5e5 !important;
+    /* Very light pink */
 }
 
 .hover-border-main-100:hover {
-    border-color: #ffcccc !important; /* Light pink */
+    border-color: #ffcccc !important;
+    /* Light pink */
 }
 
 .hover-border-main-200:hover {
-    border-color: #ffb2b2 !important; /* Soft pink */
+    border-color: #ffb2b2 !important;
+    /* Soft pink */
 }
 
 .hover-border-main-300:hover {
-    border-color: #ff9999 !important; /* Warm pink */
+    border-color: #ff9999 !important;
+    /* Warm pink */
 }
 
 .hover-border-main-400:hover {
-    border-color: #ff6666 !important; /* Medium pink-red */
+    border-color: #ff6666 !important;
+    /* Medium pink-red */
 }
 
 .hover-border-main-500:hover {
-    border-color: #ff3333 !important; /* Slightly lighter red */
+    border-color: #ff3333 !important;
+    /* Slightly lighter red */
 }
 
 .hover-border-main-600:hover {
-    border-color: #ce1616 !important; /* Original color */
+    border-color: #ce1616 !important;
+    /* Original color */
 }
 
 .hover-border-main-700:hover {
-    border-color: #a11414 !important; /* Darker red */
+    border-color: #a11414 !important;
+    /* Darker red */
 }
 
 .hover-border-main-800:hover {
-    border-color: #801111 !important; /* Deep red */
+    border-color: #801111 !important;
+    /* Deep red */
 }
 
 .hover-border-main-900:hover {
-    border-color: #4d0a0a !important; /* Darkest red/maroon */
+    border-color: #4d0a0a !important;
+    /* Darkest red/maroon */
 }
 
 /* Hover border colors for hover-border-main-two shades */
 .hover-border-main-two-50:hover {
-    border-color: #ffe5e5 !important; /* Very light pink */
+    border-color: #ffe5e5 !important;
+    /* Very light pink */
 }
 
 .hover-border-main-two-100:hover {
-    border-color: #ffcccc !important; /* Light pink */
+    border-color: #ffcccc !important;
+    /* Light pink */
 }
 
 .hover-border-main-two-200:hover {
-    border-color: #ffb2b2 !important; /* Soft pink */
+    border-color: #ffb2b2 !important;
+    /* Soft pink */
 }
 
 .hover-border-main-two-300:hover {
-    border-color: #ff9999 !important; /* Warm pink */
+    border-color: #ff9999 !important;
+    /* Warm pink */
 }
 
 .hover-border-main-two-400:hover {
-    border-color: #ff6666 !important; /* Medium pink-red */
+    border-color: #ff6666 !important;
+    /* Medium pink-red */
 }
 
 .hover-border-main-two-500:hover {
-    border-color: #ff3333 !important; /* Slightly lighter red */
+    border-color: #ff3333 !important;
+    /* Slightly lighter red */
 }
 
 .hover-border-main-two-600:hover {
-    border-color: #bd0f0f !important; /* Darker shade of original color */
+    border-color: #bd0f0f !important;
+    /* Darker shade of original color */
 }
 
 .hover-border-main-two-700:hover {
-    border-color: #a11414 !important; /* Darker red */
+    border-color: #a11414 !important;
+    /* Darker red */
 }
 
 .hover-border-main-two-800:hover {
-    border-color: #801111 !important; /* Deep red */
+    border-color: #801111 !important;
+    /* Deep red */
 }
 
 .hover-border-main-two-900:hover {
-    border-color: #4d0a0a !important; /* Darkest red/maroon */
+    border-color: #4d0a0a !important;
+    /* Darkest red/maroon */
 }
 
 .hover-border-neutral-50:hover {
@@ -6672,7 +6692,8 @@ input:focus-visible {
 
 /* Lighter shades */
 .bg-main-50 {
-    background-color: #ffe5e5 !important; /* Lightest pink */
+    background-color: #ffe5e5 !important;
+    /* Lightest pink */
 }
 
 .bg-main-100 {
@@ -6714,35 +6735,43 @@ input:focus-visible {
 }
 
 .bg-main-two-50 {
-    background-color: #ffe5e5 !important; /* Very light pink */
+    background-color: #ffe5e5 !important;
+    /* Very light pink */
 }
 
 .bg-main-two-100 {
-    background-color: #ffcccc !important; /* Light pink */
+    background-color: #ffcccc !important;
+    /* Light pink */
 }
 
 .bg-main-two-200 {
-    background-color: #ffb2b2 !important; /* Soft pink */
+    background-color: #ffb2b2 !important;
+    /* Soft pink */
 }
 
 .bg-main-two-300 {
-    background-color: #ff9999 !important; /* Warm pink */
+    background-color: #ff9999 !important;
+    /* Warm pink */
 }
 
 .bg-main-two-400 {
-    background-color: #ff6666 !important; /* Medium pink-red */
+    background-color: #ff6666 !important;
+    /* Medium pink-red */
 }
 
 .bg-main-two-500 {
-    background-color: #ff3333 !important; /* Slightly lighter red */
+    background-color: #ff3333 !important;
+    /* Slightly lighter red */
 }
 
 .bg-main-two-600 {
-    background-color: #ce1616 !important; /* Original color */
+    background-color: #ce1616 !important;
+    /* Original color */
 }
 
 .bg-main-two-700 {
-    background-color: #a11414 !important; /* Darker red */
+    background-color: #a11414 !important;
+    /* Darker red */
 }
 
 .bg-main-two-800 {
@@ -7067,84 +7096,104 @@ input:focus-visible {
 
 /* Hover colors for bg-main shades */
 .hover-bg-main-50:hover {
-    background-color: #ffe5e5 !important; /* Very light pink */
+    background-color: #ffe5e5 !important;
+    /* Very light pink */
 }
 
 .hover-bg-main-100:hover {
-    background-color: #ffcccc !important; /* Light pink */
+    background-color: #ffcccc !important;
+    /* Light pink */
 }
 
 .hover-bg-main-200:hover {
-    background-color: #ffb2b2 !important; /* Soft pink */
+    background-color: #ffb2b2 !important;
+    /* Soft pink */
 }
 
 .hover-bg-main-300:hover {
-    background-color: #ff9999 !important; /* Warm pink */
+    background-color: #ff9999 !important;
+    /* Warm pink */
 }
 
 .hover-bg-main-400:hover {
-    background-color: #ff6666 !important; /* Medium pink-red */
+    background-color: #ff6666 !important;
+    /* Medium pink-red */
 }
 
 .hover-bg-main-500:hover {
-    background-color: #ff3333 !important; /* Slightly lighter red */
+    background-color: #ff3333 !important;
+    /* Slightly lighter red */
 }
 
 .hover-bg-main-600:hover {
-    background-color: #ce1616 !important; /* Original color */
+    background-color: #ce1616 !important;
+    /* Original color */
 }
 
 .hover-bg-main-700:hover {
-    background-color: #a11414 !important; /* Darker red */
+    background-color: #a11414 !important;
+    /* Darker red */
 }
 
 .hover-bg-main-800:hover {
-    background-color: #801111 !important; /* Deep red */
+    background-color: #801111 !important;
+    /* Deep red */
 }
 
 .hover-bg-main-900:hover {
-    background-color: #4d0a0a !important; /* Darkest red/maroon */
+    background-color: #4d0a0a !important;
+    /* Darkest red/maroon */
 }
 
 /* Hover colors for bg-main-two shades */
 .hover-bg-main-two-50:hover {
-    background-color: #ffe5e5 !important; /* Very light pink */
+    background-color: #ffe5e5 !important;
+    /* Very light pink */
 }
 
 .hover-bg-main-two-100:hover {
-    background-color: #ffcccc !important; /* Light pink */
+    background-color: #ffcccc !important;
+    /* Light pink */
 }
 
 .hover-bg-main-two-200:hover {
-    background-color: #ffb2b2 !important; /* Soft pink */
+    background-color: #ffb2b2 !important;
+    /* Soft pink */
 }
 
 .hover-bg-main-two-300:hover {
-    background-color: #ff9999 !important; /* Warm pink */
+    background-color: #ff9999 !important;
+    /* Warm pink */
 }
 
 .hover-bg-main-two-400:hover {
-    background-color: #ff6666 !important; /* Medium pink-red */
+    background-color: #ff6666 !important;
+    /* Medium pink-red */
 }
 
 .hover-bg-main-two-500:hover {
-    background-color: #ff3333 !important; /* Slightly lighter red */
+    background-color: #ff3333 !important;
+    /* Slightly lighter red */
 }
 
 .hover-bg-main-two-600:hover {
-    background-color: #bd0f0f !important; /* Darker shade of original color */
+    background-color: #bd0f0f !important;
+    /* Darker shade of original color */
 }
 
 .hover-bg-main-two-700:hover {
-    background-color: #a11414 !important; /* Darker red */
+    background-color: #a11414 !important;
+    /* Darker red */
 }
 
 .hover-bg-main-two-800:hover {
-    background-color: #801111 !important; /* Deep red */
+    background-color: #801111 !important;
+    /* Deep red */
 }
 
 .hover-bg-main-two-900:hover {
-    background-color: #4d0a0a !important; /* Darkest red/maroon */
+    background-color: #4d0a0a !important;
+    /* Darkest red/maroon */
 }
 
 .hover-bg-neutral-50:hover {
@@ -7918,6 +7967,7 @@ input:focus-visible {
         width: calc(100% - 0px);
     }
 }
+
 /* Hide Scroll bar Css For Custom Modal End */
 /* Overlay Start */
 .overlay {
@@ -7959,6 +8009,7 @@ input:focus-visible {
         opacity: 1;
     }
 }
+
 /* Overlay End */
 .text-line-1 {
     display: -webkit-box;
@@ -8187,11 +8238,12 @@ input:focus-visible {
 }
 
 @media (min-width: 992px) {
-    .on-hover-item:hover > a::before {
+    .on-hover-item:hover>a::before {
         color: hsl(var(--main));
         transform: translateY(-50%) rotate(180deg);
     }
 }
+
 /* Hover Classes End */
 .g-8,
 .gy-8 {
@@ -8248,41 +8300,41 @@ input:focus-visible {
     }
 }
 
-.header-top__right.style-two > li {
+.header-top__right.style-two>li {
     padding-inline-end: 16px !important;
     margin-inline-end: 0 !important;
 }
 
-.header-top__right.style-two > li:last-child {
+.header-top__right.style-two>li:last-child {
     padding-inline-end: 0 !important;
 }
 
-.header-top__right.style-two > li::before {
+.header-top__right.style-two>li::before {
     display: none !important;
 }
 
-.header-top__right.style-two > li a {
+.header-top__right.style-two>li a {
     padding-inline-end: 20px;
 }
 
 @media screen and (max-width: 991px) {
-    .header-top__right.style-two > li a {
+    .header-top__right.style-two>li a {
         color: #fff !important;
     }
 }
 
-.header-top__right.style-two > li a::before {
+.header-top__right.style-two>li a::before {
     color: var(--heading-color) !important;
     font-size: 14px !important;
 }
 
-.header-top__right.style-two > li > ul {
+.header-top__right.style-two>li>ul {
     inset-inline-end: auto !important;
     inset-inline-start: calc(-100% - 24px) !important;
 }
 
 @media screen and (max-width: 991px) {
-    .header-top__right.style-two > li > ul li a {
+    .header-top__right.style-two>li>ul li a {
         color: var(--neutral-600) !important;
     }
 }
@@ -8333,11 +8385,11 @@ input:focus-visible {
 }
 
 /* Has Dropdown Css */
-.arrow-white > a {
+.arrow-white>a {
     padding-inline-end: 12px;
 }
 
-.arrow-white > a::before {
+.arrow-white>a::before {
     color: hsl(var(--white)) !important;
     font-size: 8px;
 }
@@ -8385,6 +8437,7 @@ input:focus-visible {
         max-width: 148px;
     }
 }
+
 /* Header Menu and Submenu Css Start */
 .nav-menu {
     gap: 32px;
@@ -8402,21 +8455,25 @@ input:focus-visible {
     }
 }
 
-.nav-menu__item.activePage > a {
-    color: #ce1616; /* Updated active page color */
+.nav-menu__item.activePage>a {
+    color: #ce1616;
+    /* Updated active page color */
 }
 
-.nav-menu__item.activePage > a::before {
-    color: #ce1616; /* Updated active page before pseudo-element color */
+.nav-menu__item.activePage>a::before {
+    color: #ce1616;
+    /* Updated active page before pseudo-element color */
 }
 
-.nav-menu__item:hover > a {
-    color: var(--gray-400); /* Keeping hover color as is */
+.nav-menu__item:hover>a {
+    color: var(--gray-400);
+    /* Keeping hover color as is */
 }
 
 @media (min-width: 992px) {
-    .nav-menu__item:hover > a {
-        color: #ce1616; /* Updated hover color for larger screens */
+    .nav-menu__item:hover>a {
+        color: #ce1616;
+        /* Updated hover color for larger screens */
     }
 }
 
@@ -8460,20 +8517,20 @@ input:focus-visible {
     padding-inline-end: 16px;
 }
 
-.has-submenu.active > a,
-.has-submenu.active > a::before {
+.has-submenu.active>a,
+.has-submenu.active>a::before {
     color: hsl(var(--main));
 }
 
-.has-submenu.active > a::before {
+.has-submenu.active>a::before {
     transform: translateY(-50%) rotate(180deg) !important;
 }
 
-.has-submenu > a {
+.has-submenu>a {
     position: relative;
 }
 
-.has-submenu > a::before {
+.has-submenu>a::before {
     position: absolute;
     content: "\e136";
     inset-inline-end: 0;
@@ -8577,8 +8634,9 @@ input:focus-visible {
 .has-submenus-submenu:hover .submenus-submenu {
     visibility: visible;
     opacity: 1;
-   
+
 }
+
 .has-sub-submenu {
     position: relative;
 }
@@ -8632,7 +8690,7 @@ input:focus-visible {
 
 }
 
-.has-sub-submenu:hover > .sub-submenu-column {
+.has-sub-submenu:hover>.sub-submenu-column {
     visibility: visible !important;
     opacity: 1 !important;
     display: block !important;
@@ -8664,13 +8722,16 @@ input:focus-visible {
 /* Dropdown styling */
 .dropdown-menu {
     position: absolute;
-    top: 100%; /* Adjusts the dropdown to appear right below the button */
+    top: 100%;
+    /* Adjusts the dropdown to appear right below the button */
     left: 0;
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
     background-color: #fff;
     min-width: 200px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    z-index: 1000; /* Ensures dropdown overlays correctly */
+    z-index: 1000;
+    /* Ensures dropdown overlays correctly */
 }
 
 .category-dropdown:hover .dropdown-menu {
@@ -8678,7 +8739,7 @@ input:focus-visible {
 }
 
 /* Category list */
-.category-list > li {
+.category-list>li {
     position: relative;
 }
 
@@ -8708,7 +8769,7 @@ input:focus-visible {
     display: block;
 }
 
-.subcategory-list > li {
+.subcategory-list>li {
     position: relative;
 }
 
@@ -8732,8 +8793,10 @@ input:focus-visible {
     min-width: 200px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     z-index: 1000;
-    max-height: none; /* Temporarily remove restrictions */
-    overflow-y: visible; /* Allow complete content visibility */
+    max-height: none;
+    /* Temporarily remove restrictions */
+    overflow-y: visible;
+    /* Allow complete content visibility */
 }
 
 .has-sub-submenu:hover .sub-submenu {
@@ -8757,7 +8820,8 @@ input:focus-visible {
 }
 
 .profile-initial {
-    background-color: #6c757d; /* Grey background */
+    background-color: #6c757d;
+    /* Grey background */
     color: white;
     width: 40px;
     height: 40px;
@@ -8844,6 +8908,7 @@ input:focus-visible {
         z-index: 1;
     }
 }
+
 /* Category Submenus Submenu Css End */
 .header-border-0 .header {
     border-bottom: 0 !important;
@@ -8931,6 +8996,7 @@ input:focus-visible {
         width: 200px;
     }
 }
+
 /* Header Activities Css Start */
 @media screen and (max-width: 1399px) {
     .header-two-activities {
@@ -8951,11 +9017,12 @@ input:focus-visible {
 }
 
 @media screen and (max-width: 991px) {
-    .header-two-activities .item-hover-two > span {
+    .header-two-activities .item-hover-two>span {
         font-size: 18px !important;
         color: var(--neutral-600) !important;
     }
 }
+
 /* Header Activities Css End */
 /* Header Activities Css start */
 .search-category.style-two {
@@ -8964,9 +9031,7 @@ input:focus-visible {
     overflow: hidden;
 }
 
-.search-category.style-two
-    .select2-container--default
-    .select2-selection--single {
+.search-category.style-two .select2-container--default .select2-selection--single {
     border-radius: 0;
     border-left: 0 !important;
     border-top: 0 !important;
@@ -8999,13 +9064,13 @@ input:focus-visible {
         max-height: 100% !important;
     }
 
-    .responsive-dropdown ul li.active > a {
+    .responsive-dropdown ul li.active>a {
         background: var(--gray-50);
         color: var(--gray-800) !important;
         font-weight: 600;
     }
 
-    .responsive-dropdown ul li.active > a .icon {
+    .responsive-dropdown ul li.active>a .icon {
         transform: rotate(90deg);
     }
 
@@ -9043,6 +9108,7 @@ input:focus-visible {
         inset-inline-start: 0;
     }
 }
+
 /* Category Dropdown Responsive Css End */
 /* =========================== header Middle Css End =============================== */
 /* Mobile Menu Sidebar Start */
@@ -9087,7 +9153,7 @@ input:focus-visible {
     margin-block-start: 16px;
 }
 
-.nav-menu--mobile .nav-menu__item > a::before {
+.nav-menu--mobile .nav-menu__item>a::before {
     transform: translateY(-50%) rotate(0deg);
 }
 
@@ -9139,12 +9205,14 @@ input:focus-visible {
 }
 
 .footer-item {
-    flex: 1 1 180px; /* Base size for all items, but can grow */
+    flex: 1 1 180px;
+    /* Base size for all items, but can grow */
     max-width: 100%;
 }
 
 .footer-item:first-child {
-    flex: 2 1 300px; /* First item takes up more space */
+    flex: 2 1 300px;
+    /* First item takes up more space */
 }
 
 .footer-item__logo a img {
@@ -9277,11 +9345,11 @@ input:focus-visible {
     margin: 0 10px;
 }
 
-.slick-initialized.slick-slider .slick-slide > div {
+.slick-initialized.slick-slider .slick-slide>div {
     height: 100%;
 }
 
-.slick-initialized.slick-slider .slick-slide > div > div {
+.slick-initialized.slick-slider .slick-slide>div>div {
     height: 100%;
 }
 
@@ -9308,6 +9376,7 @@ input:focus-visible {
         height: 32px;
     }
 }
+
 /* Arrow Style Two */
 .arrow-center {
     position: relative;
@@ -9397,6 +9466,7 @@ input:focus-visible {
         margin-bottom: 60px !important;
     }
 }
+
 /* ================== Section Heading Css End ========================= */
 /* ============================== Banner Css Start ========================== */
 .banner {
@@ -9548,6 +9618,7 @@ input:focus-visible {
         transform: translateY(10px);
     }
 }
+
 /* ============================== Banner Css End ========================== */
 /* ============================ Feature Section Css start =============================== */
 .feature {
@@ -9678,6 +9749,7 @@ input:focus-visible {
         font-size: 1.5rem !important;
     }
 }
+
 /* ======================== promotional banner Css End ============================== */
 /* ========================= flash sales Start ================================ */
 .flash-sales-item {
@@ -9691,22 +9763,29 @@ input:focus-visible {
     flex-direction: column;
     justify-content: space-between;
     align-items: start;
-    overflow: hidden; /* Ensure that the contents don't overflow */
-    position: relative; /* This is important for positioning the scaling effect */
+    overflow: hidden;
+    /* Ensure that the contents don't overflow */
+    position: relative;
+    /* This is important for positioning the scaling effect */
 }
 
 .product-card__thumb {
-    overflow: hidden; /* Hide overflow from the image scaling */
+    overflow: hidden;
+    /* Hide overflow from the image scaling */
 }
 
 .product-card__thumb img {
-    transition: transform 0.3s ease; /* Add a smooth transition */
-    width: 100%; /* Make sure the image takes the full width of the container */
-    height: auto; /* Maintain aspect ratio */
+    transition: transform 0.3s ease;
+    /* Add a smooth transition */
+    width: 100%;
+    /* Make sure the image takes the full width of the container */
+    height: auto;
+    /* Maintain aspect ratio */
 }
 
 .product-card:hover .product-card__thumb img {
-    transform: scale(1.2); /* Scale effect on hover */
+    transform: scale(1.2);
+    /* Scale effect on hover */
 }
 
 @media screen and (max-width: 1499px) {
@@ -9778,6 +9857,7 @@ input:focus-visible {
         font-size: 0.625rem !important;
     }
 }
+
 /* ============================= Product Card Css End ========================== */
 /* ======================= Offer Css Start =========================== */
 @media screen and (max-width: 1499px) {
@@ -9792,6 +9872,7 @@ input:focus-visible {
         max-width: 163px;
     }
 }
+
 /* ======================= Offer Css End =========================== */
 /* ===================================== Vendor Css Start ================================== */
 .vendor-card {
@@ -9918,11 +9999,11 @@ input:focus-visible {
         max-width: 86px !important;
     }
 }
+
 /* ========================= Brand Css End ======================== */
 /* Shipping Css Start */
 .shipping-item {
-    padding: clamp(1.5rem, 0.891rem + 1.268vw, 2rem)
-        clamp(1.5rem, -3.746rem + 6vw, 3.375rem);
+    padding: clamp(1.5rem, 0.891rem + 1.268vw, 2rem) clamp(1.5rem, -3.746rem + 6vw, 3.375rem);
 }
 
 /* Shipping Css End */
@@ -9937,6 +10018,7 @@ input:focus-visible {
         width: 100% !important;
     }
 }
+
 /* ======================= Newsletter Css End =========================== */
 /* Home Two Css Start */
 .color-two:root {
@@ -10065,6 +10147,7 @@ input:focus-visible {
         inset-inline-end: 0;
     }
 }
+
 /* ================================= Banner Two Css End ================================= */
 /* Week Deals Start  */
 .deal-week-box__content {
@@ -10106,8 +10189,7 @@ input:focus-visible {
 }
 
 .discount-three-item {
-    padding: clamp(2rem, -5.911rem + 16.482vw, 8.5rem)
-        clamp(1.5rem, -0.934rem + 5.071vw, 3.5rem);
+    padding: clamp(2rem, -5.911rem + 16.482vw, 8.5rem) clamp(1.5rem, -0.934rem + 5.071vw, 3.5rem);
 }
 
 /* =============================== Discount css End ============================ */
@@ -10117,6 +10199,7 @@ input:focus-visible {
         flex-direction: column;
     }
 }
+
 /* ====================== Popular Products End ==================== */
 /*  */
 .day-sale-box__content {
@@ -10139,6 +10222,7 @@ input:focus-visible {
         flex-direction: column;
     }
 }
+
 /* ================================ Featured Products Css End ============================ */
 /* ============================= Banner Three Css Start ================================= */
 .banner-three {
@@ -10192,11 +10276,11 @@ input:focus-visible {
         transform: rotate(360deg);
     }
 }
+
 /* ============================= Banner Three Css End ================================= */
 /* ============================== Promotional Banner Three Start ==========================  */
 .promo-three-item {
-    padding: clamp(2rem, -4.542rem + 13.629vw, 7.375rem)
-        clamp(1.5rem, -1.543rem + 6.339vw, 4rem);
+    padding: clamp(2rem, -4.542rem + 13.629vw, 7.375rem) clamp(1.5rem, -1.543rem + 6.339vw, 4rem);
 }
 
 /* ============================== Promotional Banner Three End ==========================  */
@@ -10316,9 +10400,7 @@ input:focus-visible {
     overflow: unset !important;
 }
 
-.testimonials
-    .slick-slide.slick-active.slick-current
-    .testimonials-thumbs__img {
+.testimonials .slick-slide.slick-active.slick-current .testimonials-thumbs__img {
     object-fit: cover;
     max-height: 100%;
 }
@@ -10332,6 +10414,7 @@ input:focus-visible {
         height: 630px !important;
     }
 }
+
 /* ================================= Testimonials Section Css End ==================================== */
 /* ============================ Product Details Css Start ============================= */
 
@@ -10348,7 +10431,7 @@ input:focus-visible {
     overflow: hidden;
 }
 
-.product-details .slick-initialized.slick-slider .slick-slide > div > div {
+.product-details .slick-initialized.slick-slider .slick-slide>div>div {
     height: 100%;
 }
 
@@ -10430,6 +10513,7 @@ input:focus-visible {
         border: 0 !important;
     }
 }
+
 /* ================================ Shop Page css End =============================== */
 /* ========================== Cart Page Css Start ============================ */
 .table-product__thumb {
@@ -10472,15 +10556,15 @@ input:focus-visible {
 }
 
 /* ========================= Blog Css End ============================= */
-.line-wrapper > div {
+.line-wrapper>div {
     position: relative;
 }
 
-.line-wrapper > div:last-child::before {
+.line-wrapper>div:last-child::before {
     display: none;
 }
 
-.line-wrapper > div::before {
+.line-wrapper>div::before {
     position: absolute;
     content: "";
     width: 1px;
@@ -10491,10 +10575,11 @@ input:focus-visible {
 }
 
 @media (max-width: 991px) {
-    .line-wrapper > div::before {
+    .line-wrapper>div::before {
         display: none;
     }
 }
+
 /* ======================== Vendors Two Page css Start ============================= */
 .grid-cols-3 {
     display: grid;
@@ -10584,6 +10669,7 @@ input:focus-visible {
     width: 35px;
     height: 30px;
 }
+
 .size_button.active,
 .color-list__button.active {
     border-color: #007bff;
@@ -10608,7 +10694,8 @@ a.disabled {
 }
 
 .wishlist .container {
-    max-width: 1200px; /* Or your desired width */
+    max-width: 1200px;
+    /* Or your desired width */
 }
 
 .heart-icon {

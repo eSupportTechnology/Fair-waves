@@ -12,7 +12,34 @@
     margin-left: 4px; 
     vertical-align: middle;
     border: 1px solid #ccc;
+
+    
 }
+
+
+
+.quantity__input {
+  color: black;
+}
+
+.quantity__input::placeholder {
+  color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </style>
 
@@ -108,7 +135,7 @@
                                                     <button type="button" class="quantity__minus border border-end border-gray-100 flex-shrink-0 h-48 w-48 text-neutral-600 flex-center hover-bg-main-600 hover-text-white" data-id="{{ $item->id }}">
                                                         <i class="ph ph-minus"></i>
                                                     </button>
-                                                    <input type="number" name="quantity" class="quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-4" value="{{ $item->quantity }}" min="1">
+                                                    <input type="number" name="quantity" class="quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 " value="{{ $item->quantity }}" min="1" style="height: 47px;">
                                                     <button type="button" class="quantity__plus border border-end border-gray-100 flex-shrink-0 h-48 w-48 text-neutral-600 flex-center hover-bg-main-600 hover-text-white" data-id="{{ $item->id }}">
                                                         <i class="ph ph-plus"></i>
                                                     </button>
@@ -138,7 +165,7 @@
                 <div class="col-xl-3 col-lg-4">
                     <div class="cart-sidebar border border-gray-100 rounded-8 px-24 py-40">
 
-                    <h6 class="text-xl mb-32">Cart Totals</h6>
+                    <h6 class="text-xl mb-32">Cart Totals </h6>
                     <div class="bg-color-three rounded-8 p-24">
                         <div class="mb-32 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two">Subtotal</span>

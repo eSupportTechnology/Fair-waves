@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Helpers\CartHelper;
+use App\Models\Logo;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,5 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        View::composer('frontend.partials.mini-cart', function ($view) {
+            $view->with('miniCart', CartHelper::getMiniCartData());
+        });
     }
 }

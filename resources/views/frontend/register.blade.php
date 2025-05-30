@@ -1,40 +1,21 @@
-<!DOCTYPE html>
-<html lang="en" class="color-two font-exo">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Title -->
-    <title> DK-Mart</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="frontend/assets/images/logo/favicon.png">
+@extends ('frontend.master')
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="frontend/assets/css/bootstrap.min.css">
-    <!-- select 2 -->
-    <link rel="stylesheet" href="frontend/assets/css/select2.min.css">
-    <!-- Slick -->
-    <link rel="stylesheet" href="frontend/assets/css/slick.css">
-    <!-- Jquery Ui -->
-    <link rel="stylesheet" href="frontend/assets/css/jquery-ui.css">
-    <!-- animate -->
-    <link rel="stylesheet" href="frontend/assets/css/animate.css">
-    <!-- AOS Animation -->
-    <link rel="stylesheet" href="frontend/assets/css/aos.css">
-    <!-- Main css -->
-    <link rel="stylesheet" href="frontend/assets/css/main.css">
-</head> 
-<body>
-    
-    @include('includes.navbar-2')
+@section('content')
 
- 
-    
-                
-                  
 
-                    
-              
+
+
+
+<style>
+.account {
+    display: flex
+;
+    margin-right:0px !important;
+}
+
+</style>
+
+
     <!-- ========================= Breadcrumb Start =============================== -->
 <div class="mb-0 breadcrumb py-26 bg-main-two-50">
     <div class="container container-lg">
@@ -122,18 +103,19 @@
 
                     <!-- Privacy Policy -->
                     <div class="my-48 text-center">
-                        <p class="text-gray-500">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our 
-                            <a href="{{ route('privacy-policy') }}"  class="text-main-600 text-decoration-underline">privacy policy</a>.
+                        <p class="text-gray-500">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our
+                            <a href="{{ route('PrivacyPolicy') }}"  class="text-main-600 text-decoration-underline">privacy policy</a>.
                         </p>
                     </div>
                     <!-- Submit Button -->
                     <div class="mt-48 text-center">
-                        <x-primary-button type="submit" class="px-40 btn py-18">
+                        <x-primary-button type="submit" class="btn btn-primary px-4 py-2">
                             {{ __('Register') }}
                         </x-primary-button>
                     </div>
+                    
                     <div class="mt-3 text-center">
-                        <p>Already have an account? 
+                        <p>Already have an account?
                             <a href="{{ route('login') }}" class="text-primary">Login</a>
                         </p>
                 </div>
@@ -147,38 +129,7 @@
 <!-- =============================== Account Section End =========================== -->
 
 
- 
-    
-@include('includes.footer')
-  
-
-    
-    <!-- Jquery js -->
-    <script src="frontend/assets/js/jquery-3.7.1.min.js"></script>
-    <!-- Bootstrap Bundle Js -->
-    <script src="frontend/assets/js/boostrap.bundle.min.js"></script>
-    <!-- Bootstrap Bundle Js -->
-    <script src="frontend/assets/js/phosphor-icon.js"></script>
-    <!-- Select 2 -->
-    <script src="frontend/assets/js/select2.min.js"></script>
-    <!-- Slick js -->
-    <script src="frontend/assets/js/slick.min.js"></script>
-    <!-- Slick js -->
-    <script src="frontend/assets/js/count-down.js"></script>
-    <!-- jquery UI js -->
-    <script src="frontend/assets/js/jquery-ui.js"></script>
-    <!-- wow js -->
-    <script src="frontend/assets/js/wow.min.js"></script>
-    <!-- AOS Animation -->
-    <script src="frontend/assets/js/aos.js"></script>
-    <!-- marque -->
-    <script src="frontend/assets/js/marque.min.js"></script>
-    <!-- marque -->
-    <script src="frontend/assets/js/vanilla-tilt.min.js"></script>
-    <!-- Counter -->
-    <script src="frontend/assets/js/counter.min.js"></script>
-    <!-- main js -->
-    <script src="frontend/assets/js/main.js"></script>
+@endsection
 
 <!-- JavaScript for Password Toggle -->
 <script>

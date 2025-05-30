@@ -15,8 +15,9 @@ class Product extends Model
         'product_name',
         'product_description',
         'category_id',
-        'subcategory_id', 
-        'sub_subcategory_id', 
+        'brand_id',
+        'subcategory_id',
+        'sub_subcategory_id',
         'quantity',
         'tags',
         'normal_price',
@@ -38,12 +39,12 @@ class Product extends Model
 
     public function subcategory()
     {
-        return $this->belongsTo(Subcategory::class, 'subcategory_id'); 
+        return $this->belongsTo(Subcategory::class, 'subcategory_id');
     }
 
     public function subSubcategory()
     {
-        return $this->belongsTo(SubSubcategory::class, 'sub_subcategory_id'); 
+        return $this->belongsTo(SubSubcategory::class, 'sub_subcategory_id');
     }
 
     public function variations()
@@ -60,13 +61,13 @@ class Product extends Model
     {
         return $this->belongsTo(Shop::class, 'shop_id', 'id');
     }
-    
+
     public function reviews()
     {
         return $this->hasMany(Review::class, 'product_id');
     }
 
-    
+
 }
 
 

@@ -9,7 +9,7 @@ use App\Http\Controllers\AdminTemplateController;
 use App\Http\Controllers\HomeTemplateController;
 use App\Http\Controllers\AffiliateTemplateController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController; 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CompanySettingsController;
@@ -85,6 +85,10 @@ Route::get('/privacy-policy', function () {
     return view('frontend.privacy-policy');
 })->name('privacy-policy');
 
+Route::get('/privacy-policy', function () {
+    return view('frontend.PrivacyPolicy');
+})->name('PrivacyPolicy');
+
 Route::post('/contact', [InquiryController::class, 'store'])->name('store.inquiries');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
@@ -127,6 +131,7 @@ Route::get('/shop/category/{category}', [ShopPageController::class, 'filterByCat
 Route::get('/product-details/{product_id}', [ShopPageController::class, 'showProductDetails'])->name('showProductDetails');
 
 Route::get('/cart/count', [CartController::class, 'getCartCount'])->name('cart.count');
+Route::get('/cart/subtotal', [CartController::class, 'getCartSubtotal'])->name('cart.subtotal');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
 Route::put('/cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
@@ -165,8 +170,8 @@ Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('adm
 
 Route::middleware([App\Http\Middleware\AdminAuth::class])->group(function () {
     Route::get('/admin',[AdminTemplateController::class,'index'])->name('admin.index');
-    
-    
+
+
     //notification
 
 

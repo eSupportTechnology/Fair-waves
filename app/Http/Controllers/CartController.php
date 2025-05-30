@@ -23,32 +23,85 @@ class CartController extends Controller
         return response()->json(['cart_count' => $cartCount]);
     }
 
-    
+    public function getCartSubtotal()
+    {
+        $subtotal = 0;
+
+        if (Auth::check()) {
+            $cartItems = CartItem::with(['product.sale', 'product.specialOffer'])
+                ->where('user_id', Auth::id())
+                ->get();
+
+            foreach ($cartItems as $item) {
+                $product = $item->product;
+
+                if (!$product) {
+                    continue;
+                }
+
+                if ($product->sale) {
+                    $price = $product->sale->sale_price;
+                } elseif ($product->specialOffer) {
+                    $price = $product->specialOffer->offer_price;
+                } else {
+                    $price = $product->normal_price;
+                }
+
+                $subtotal += $price * $item->quantity;
+            }
+        } else {
+            $cart = session()->get('cart', []);
+
+            foreach ($cart as $item) {
+                $product = Product::with(['sale', 'specialOffer'])
+                    ->where('product_id', $item['product_id'])
+                    ->first();
+
+                if (!$product) {
+                    continue;
+                }
+
+                if ($product->sale) {
+                    $price = $product->sale->sale_price;
+                } elseif ($product->specialOffer) {
+                    $price = $product->specialOffer->offer_price;
+                } else {
+                    $price = $product->normal_price;
+                }
+
+                $subtotal += $price * $item['quantity'];
+            }
+        }
+
+        return response()->json(['subtotal' => round($subtotal, 2)]);
+    }
+
+
     public function showCart()
     {
         if (!auth()->check()) {
-            return view('frontend.cart')->with('message', 'Please sign in to view your cart and start shopping.')->with('cartItems', collect([])); 
+            return view('frontend.cart')->with('message', 'Please sign in to view your cart and start shopping.')->with('cartItems', collect([]));
         }
         $userId = auth()->user()->id;
-    
+
         $cartItems = CartItem::where('user_id', $userId)->get();
-    
+
         if ($cartItems->isEmpty()) {
-            return view('frontend.cart')->with('message', 'Your cart is empty. Start shopping!')->with('cartItems', collect([])); 
+            return view('frontend.cart')->with('message', 'Your cart is empty. Start shopping!')->with('cartItems', collect([]));
         }
-    
+
         foreach ($cartItems as $item) {
             $product = Product::find($item->product_id);
             $productImage = $product->images()->first();
-    
+
             $item->product_name = $product->product_name;
             $item->product_image = $productImage ? $productImage->image_path : '';
             $item->subtotal = $item->price * $item->quantity;
         }
-    
+
         return view('frontend.cart', compact('cartItems'));
     }
-    
+
 
 
     public function update(Request $request, CartItem $cartItem)
@@ -56,16 +109,16 @@ class CartController extends Controller
         $request->validate([
             'quantity' => 'required|integer|min:1',
         ]);
-    
+
         $cartItem->quantity = $request->quantity;
         $cartItem->subtotal = $cartItem->product->normal_price * $request->quantity;
         $cartItem->save();
-    
+
         return redirect()->route('cart');
     }
-    
-    
-    
+
+
+
 
     public function remove(CartItem $cartItem)
     {
@@ -73,7 +126,7 @@ class CartController extends Controller
         return redirect()->route('cart');
     }
 
-    
+
 
     public function addToCart(Request $request)
     {
@@ -82,7 +135,7 @@ class CartController extends Controller
             $productId = $request->input('product_id');
             $size = $request->input('size');
             $color = $request->input('color');
-    
+
             // Validate input
             $request->validate([
                 'product_id' => 'required|exists:products,id',
@@ -90,21 +143,21 @@ class CartController extends Controller
                 'size' => 'nullable|string',
                 'color' => 'nullable|string',
             ]);
-    
+
             // Check if user is logged in
             if (!auth()->check()) {
                 return redirect()->route('login')->with('error', 'Please log in to add items to the cart.');
             }
-    
+
             $product = Product::findOrFail($productId);
-            $price = $product->normal_price; 
-    
+            $price = $product->normal_price;
+
             if (is_null($price)) {
                 return redirect()->back()->with('error', 'Product price is not available.');
             }
-    
+
             $subtotal = $quantity * $price;
-    
+
             $existingCartItem = CartItem::where('user_id', auth()->id())
                 ->where('product_id', $productId)
                 ->where(function($query) use ($size, $color) {
@@ -116,11 +169,11 @@ class CartController extends Controller
                     }
                 })
                 ->first();
-    
+
             if ($existingCartItem) {
                 // If the same combination of size/color exists, update the quantity and subtotal
                 $existingCartItem->quantity += $quantity;
-                $existingCartItem->subtotal = $existingCartItem->quantity * $price; 
+                $existingCartItem->subtotal = $existingCartItem->quantity * $price;
                 $existingCartItem->save();
                 return redirect()->back()->with('success', 'Product added to cart');
             } else {
@@ -131,21 +184,21 @@ class CartController extends Controller
                     'quantity' => $quantity,
                     'size' => $size,
                     'color' => $color,
-                    'price' => $price, 
-                    'subtotal' => $subtotal, 
+                    'price' => $price,
+                    'subtotal' => $subtotal,
                 ]);
-    
+
                 return redirect()->back()->with('success', 'Product added to cart!');
             }
-    
+
         } catch (\Exception $e) {
-           
+
             return redirect()->back()->with('error', 'Something went wrong while adding the item to your cart.');
         }
     }
-    
-    
-    
+
+
+
     public function checkout()
     {
         $userId = Auth::id();
@@ -158,33 +211,33 @@ class CartController extends Controller
         }
 
         $subtotal = $cartItems->sum('subtotal');
-        $total = $subtotal + 300; 
+        $total = $subtotal + 300;
 
         return view('frontend.checkout', compact('cartItems', 'subtotal', 'total'));
     }
-    
+
 
     public function buyNowCheckout($productId, Request $request)
     {
         $userId = Auth::id();
         $product = Product::findOrFail($productId);
 
-        $products = [$product]; 
-    
+        $products = [$product];
+
         if ($product->quantity <= 0) {
             return redirect()->back()->with('error', 'This product is out of stock.');
         }
-    
+
         $selectedSize = $request->get('selectedSize');
         $selectedColor = $request->get('selectedColor');
-        $quantity = (int)$request->get('quantity', 1); 
-    
-        $subtotal = $product->normal_price * $quantity; 
-        $total = $subtotal + 300; 
-    
+        $quantity = (int)$request->get('quantity', 1);
+
+        $subtotal = $product->normal_price * $quantity;
+        $total = $subtotal + 300;
+
         return view('frontend.buy_now_checkout', compact('products', 'quantity', 'subtotal', 'total', 'selectedSize', 'selectedColor'));
     }
-    
+
 
 
 

@@ -1,437 +1,1125 @@
 <style>
-    /* Dropdown styles */
-    .profile-dropdown {
-        position: relative;
+    /* Hide elements with the class .mobhide on screens smaller than or equal to 768px */
+    @media (max-width: 1000px) {
+        .mobhide {
+            display: none !important;
+            /* Add !important if you want to override other styles */
+        }
     }
 
-    .profile-toggle {
-        cursor: pointer;
+    @media (min-width: 1000px) {
+        .mobshow {
+            display: none !important;
+            /* Hides .mobshow on screens 768px or wider */
+        }
     }
-
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        z-index: 10;
-        min-width: 60px;
-    }
-
-    .dropdown-item {
-        color: hsl(0, 2%, 66%);
-        padding: 8px 12px;
-        text-decoration: none;
-        display: block;
-    }
-
-    .dropdown-item:hover {
-        background-color: #f2f2f2;
-        color: #ce1616;
-    }
-
-    .profile-dropdown:hover .dropdown-menu {
-        display: block;
-    }
-
-    .header-middle {
-        background-color: #001f3f!important; /* Force Apply Dark Blue */
-     }
-  
-
-
 </style>
 
-<!--==================== Overlay Start ====================-->
-<div class="overlay"></div>
-<!--==================== Overlay End ====================-->
-
-<!--==================== Sidebar Overlay End ====================-->
-<div class="side-overlay"></div>
-<!--==================== Sidebar Overlay End ====================-->
-
-<!-- ==================== Scroll to Top End Here ==================== -->
-<div class="progress-wrap">
-  <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
-      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-  </svg>
-</div>
-<!-- ==================== Scroll to Top End Here ==================== -->
+<body>
 
 
-<!-- ==================== Mobile Menu Start Here ==================== -->
-<div class="mobile-menu scroll-sm d-lg-none d-block">
-    <button type="button" class="close-button"> <i class="ph ph-x"></i> </button>
-    <div class="mobile-menu__inner">
-        <a href="/" class="mobile-menu__logo">
-            <img src="frontend/assets/images/logo/logo-mobile-menu-new1.png" alt="Logo">
-        </a>
-        
-        <div class="mobile-menu__menu">
-            <!-- Nav Menu Start -->
-            <ul class="nav-menu flex-align nav-menu--mobile">
-                <li class="nav-menu__item">
-                    <a href="javascript:void(0)" class="nav-menu__link">Home</a>
-                
-                </li>
-                <li class="nav-menu__item">
-                    <a href="javascript:void(0)" class="nav-menu__link">Shop</a>
-                    
-                </li>
-                <li class="nav-menu__item">
-                
-                    <a href="{{ route('about') }}" class="nav-menu__link">About Us</a>
-                
-                </li>
-                <li class="nav-menu__item">
-                
-                    <a href="{{ route('contact') }}" class="nav-menu__link">Contact Us</a>
-                
-                </li>
-            
-                <li class="nav-menu__item">
-                    <a href="{{ route('frontend.vendor') }}" class="nav-menu__link">Vendors</a>
-                </li>
-            </ul>
-            <!-- Nav Menu End -->
-        </div>
-    </div>
-</div>
-<!-- ==================== Mobile Menu End Here ==================== -->
 
-<!-- ======================= Middle Header Two Start ========================= -->
-<header class="header-middle style-two bg-color-neutral">
-    <div class="container container-lg">
-        <nav class="header-inner flex-between">
-            <!-- Logo Start -->
-            <div class="logo"style="margin-left: 80px;  margin-top: 0; margin-bottom: 0;">
-                <a href="/" class="link">
 
-                
-                    <img src="{{ asset('frontend/assets/images/logo/navbar-logo-new.png') }}" alt="Logo" >
 
-                </a>
-            </div>
-            <!-- Logo End  -->
 
-            <!-- form Category Start -->
-            <div class="gap-16 flex-align">
-                <div class="select-dropdown-for-home-two d-lg-none d-block">
-                    <!-- Dropdown Select Start -->
 
-                    <!-- Dropdown Select End -->
-                </div>
 
-                <form action="{{ route('search.products') }}" method="GET" class="flex-wrap flex-align form-location-wrapper">
-                    <div class="h-48 search-category style-two d-flex search-form d-sm-flex d-none">
-                        <select class="border border-0 border-gray-200 js-example-basic-single border-end-0 rounded-0" name="category">
-                            <option value="" selected disabled>All Categories</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
+    <div id="app">
 
-                        <div class="search-form__wrapper position-relative">
-                            <input type="text" class="border-0 search-form__input common-input py-13 ps-16 pe-18 rounded-0" name="search" placeholder="Search for a product or brand.." value="{{ request('search') }}">
-                            <div id="search-results" class="dropdown-menu"></div>
+        <div class="main-container-wrapper">
+
+
+
+            <div id="notification_banner"></div>
+
+
+
+
+
+
+
+            <!-- mobile hearder begin -->
+            <!-- top banner mobile-->
+            <div class="mobi-main-header fixed-header">
+                <div id="topupbar_banner_mobile"></div>
+                <header class="header mobile-header ">
+                    <div class="container mobile-header-container">
+                        <div class="mobi-full-row">
+                            <div class="col-5-5">
+                                <div class="d-flex">
+                                    <div class="header-left me-2">
+                                        <a href="#" class="mobile-menu-toggle new-mobile-toggle"
+                                            onclick="if (!window.__cfRLUnblockHandlers) return false;  openMenuMobi()"
+                                            data-cf-modified-a071cb3ff60724c4b8f55cf9-="">
+                                            <img class="mobi-menu-icon"
+                                                src="{{ asset('frontend/newstyle/assets/images/menuLOGO-mbo.png') }}">
+
+
+
+                                        </a>
+                                    </div>
+
+                                    <div class="mobi-logo"><a href="/"><img
+                                                src="{{ asset('frontend/newstyle/assets/images/logo.png') }}"
+                                                alt="logo" />
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-2-5">
+                        <div class="mobi-header-btn mobi-search-btn">
+                            <img class="cart-icon"
+                                src="frontend/newstyle/assets/images/icon/mobi-search.png">
                         </div>
-                        <button type="submit" class="flex-shrink-0 w-48 text-xl text-white bg-main-two-600 flex-center hover-bg-main-two-600 d-lg-flex d-none">
-                            <i class="ph ph-magnifying-glass"></i>
-                        </button>
-                    </div>
-                </form>
-
-            </div>
-            <!-- form Category start -->
-             
-            <!-- Header Middle Right start -->
-            <div class="header-right flex-align d-lg-block d-none">
-                <div class="flex-wrap gap-32 header-two-activities flex-align">
-    <button type="button" class="gap-4 flex-align search-icon d-lg-none d-flex item-hover-two">
-        <span class="text-2xl text-white d-flex position-relative item-hover__text">
-            <i class="ph ph-magnifying-glass"></i>
-        </span>
-    </button>
+                    </div> -->
 
 
-    <!-- Profile Dropdown -->
-    <div class="profile-dropdown">
-        @auth
-            <a href="#" class="gap-8 flex-align flex-column item-hover-two profile-toggle">
-                <span class="profile-initial d-flex justify-content-center align-items-center">
-                    {{ auth()->user()->name[0] }}
-                </span>
-            </a>
-
-            <!-- Dropdown Menu for Logged-In User -->
-            <div class="dropdown-menu" style="width: 170px">
-                <a href="{{ route('dashboard') }}" class="dropdown-item">Profile</a>
-                <form method="POST" action="{{ route('logout') }}" class="p-0 dropdown-item">
-                    @csrf
-                    <button type="submit" class="dropdown-item w-100">Logout</button>
-                </form>
-            </div>
-        @else
-            <!-- Default Profile Icon and Links for Guests -->
-            <a href="#" class="gap-8 flex-align flex-column item-hover-two profile-toggle">
-                <span class="text-2xl text-white d-flex position-relative item-hover__text">
-                    <i class="ph ph-user"></i>
-                </span>
-                <span class="text-white text-md item-hover__text d-none d-lg-flex">Profile</span>
-            </a>
-
-            <!-- Dropdown Menu for Guests -->
-            <div class="dropdown-menu" style="width: 170px">
-                <a href="{{ route('login') }}" class="dropdown-item">Login</a>
-                <a href="{{ route('register') }}" class="dropdown-item">Sign Up</a>
-            </div>
-        @endauth
-    </div>
+                            <!-- Header Middle Right start -->
+                            <div class="header-right flex-align d-lg-block d-none">
+                                <div class="flex-wrap gap-32 header-two-activities flex-align">
+                                    <button type="button"
+                                        class="gap-4 flex-align search-icon d-lg-none d-flex item-hover-two">
+                                        <span class="text-2xl text-white d-flex position-relative item-hover__text">
+                                            <i class="ph ph-magnifying-glass"></i>
+                                        </span>
+                                    </button>
 
 
-    <a href="{{ route('wishlist') }}" class="gap-8 flex-align flex-column item-hover-two">
-        <span class="mt-6 text-2xl text-white d-flex position-relative me-6 item-hover__text">
-            <i class="ph ph-heart"></i>
-            <span id="wishlist-count" class="w-16 h-16 text-xs text-white flex-center rounded-circle bg-main-two-600 position-absolute top-n6 end-n4">0</span>
-        </span>
-        <span class="text-white text-md item-hover__text d-none d-lg-flex">Wishlist</span>
-    </a>
 
 
-    
-    <a href="{{ route ('cart') }}" class="gap-8 ml-10 flex-align flex-column item-hover-two" style="margin-right:30px;">
-        <span class="mt-6 text-2xl text-white d-flex position-relative me-6 item-hover__text">
-            <i class="ph ph-shopping-cart-simple"></i>
-            <!-- Display the cart count dynamically -->
-            <span id="cart-count" class="w-16 h-16 text-xs text-white flex-center rounded-circle bg-main-two-600 position-absolute top-n6 end-n4">
-            0
 
-            </span>
-        </span>
-        <span class="text-white text-md item-hover__text d-none d-lg-flex">Cart</span>
-    </a>
+                                    <a href="javascript:void(0)"
+                                        class="gap-8 ml-10 flex-align flex-column item-hover-two"
+                                        style="margin-right:30px;">
+                                        <span
+                                            class="mt-6 text-2xl text-white d-flex position-relative me-6 item-hover__text">
+                                            <i class="ph ph-shopping-cart-simple"></i>
+                                            <!-- Display the cart count dynamically -->
+                                            <span id="cart-count-1"
+                                                class="w-16 h-16 text-xs text-white flex-center rounded-circle bg-main-two-600 position-absolute top-n6 end-n4">
+                                                {{ $cartCount ?? 0 }}
+
+                                            </span>
+                                        </span>
+                                        <span class="text-white text-md item-hover__text d-none d-lg-flex">Cart</span>
+                                    </a>
 
 
-                </div>
-            </div>
-            <!-- Header Middle Right End  -->
-        </nav>
-    </div>
-</header>
-<!-- ======================= Middle Header Two End ========================= -->
 
-    <!-- ==================== Header Two Start Here ==================== -->
-<header class="border-gray-100 header border-bottom">
-    <div class="container container-lg">
-        <nav class="gap-8 header-inner d-flex justify-content-between">
-        <div class="flex-align menu-category-wrapper">
 
-<!-- Category Dropdown Start -->
-<div class="text-white category d-block on-hover-item bg-main-600">
-    <button type="button" class="gap-8 p-16 text-white border-gray-100 category__button flex-align fw-medium border-end border-start">
-        <span class="text-2xl icon d-xs-flex d-none"><i class="ph ph-dots-nine"></i></span>
-        <span class="d-sm-flex d-none">All</span> Categories
-        <span class="text-xl arrow-icon d-flex"><i class="ph ph-caret-down"></i></span>
-    </button>
+                                </div>
+                            </div>
 
-    <div class="p-0 responsive-dropdown on-hover-dropdown common-dropdown nav-submenu submenus-submenu-wrapper">
-        <button type="button" class="mt-4 text-xl close-responsive-dropdown rounded-circle position-absolute inset-inline-end-0 inset-block-start-0 me-8 d-lg-none d-flex"> 
-            <i class="ph ph-x"></i> 
-        </button>
 
-        <ul class="p-0 py-8 overflow-y-auto responsive-dropdown__list scroll-sm max-h-400">
-            @foreach ($categories as $category)
-                <li class="has-submenus-submenu" style="width: 240px;">
-                    <a href="{{ url('/shop?category_id=' . $category->id) }}" class="gap-8 px-16 py-12 text-gray-500 text-15 flex-align rounded-0">
-                        <span>{{ $category->name }}</span>
-                        <span class="icon text-md d-flex ms-auto"><i class="ph ph-caret-right"></i></span>
-                    </a>
 
-                    <!-- Subcategories Column -->
-                    @if ($category->subcategories->isNotEmpty())
-                        <div class="py-16 submenus-submenu">
-                            <h6 class="px-16 text-lg submenus-submenu__title">{{ $category->name }}</h6>
-                            <ul class="overflow-y-auto submenus-submenu__list max-h-300 scroll-sm">
-                                @foreach ($category->subcategories as $subcategory)
-                                    <li class="has-sub-submenu">
-                                        <a href="{{ url('/shop?subcategory_id=' . $subcategory->id) }}">{{ $subcategory->name }}</a>
 
-                                        <!-- Sub-Subcategories Column -->
-                                        @if ($subcategory->subSubcategories->isNotEmpty())
-                                            <div class="sub-submenu-column">
-                                                <ul class="overflow-y-auto sub-submenu max-h-300 scroll-sm">
-                                                    @foreach ($subcategory->subSubcategories as $subSubcategory)
-                                                        <li class="has-sub-submenu">
-                                                            <a href="{{ url('/shop?subsubcategory_id=' . $subSubcategory->id) }}">{{ $subSubcategory->name }}</a>
+
+
+
+
+
+
+
+
+
+
+                            <div class="col-2-5">
+                                <div class="header-right-con">
+                                    <div class="top-right-nav">
+
+
+                                        <!-- Profile Dropdown -->
+
+                                        <div class="profile-dropdown">
+                                            @auth
+
+
+
+
+
+                                                <div class="log-user-img dropdown col-2-5">
+                                                    <a href="#"><img
+                                                            src="https://buyabans.com/themes/buyabans/assets/images/icon/dummy-user.png"></a>
+                                                    <div class="dropdown-box">
+                                                        <div class="user-name">
+                                                            Hi!
+                                                            {{ auth()->user()->name }}
+                                                        </div>
+                                                        <ul class="log-popup-links">
+                                                            <li>
+                                                                <a href="/profile">
+                                                                    <img
+                                                                        src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/user.png">My
+                                                                    Account
+                                                                </a>
+                                                            </li>
+
+
+
+                                                            <li>
+                                                                <a>
+                                                                    <img
+                                                                        src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/turn-off.png">
+                                                                    <form method="POST" action="{{ route('logout') }}">
+
+
+                                                                        @csrf
+                                                                        <button type="submit"
+                                                                            class="dropdown-item w-100">Logout</button>
+                                                                    </form>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+
+                                                <div class="dropdown-box">
+
+                                                    <ul class="log-popup-links">
+                                                        <li>
+                                                            <a href="{{ route('dashboard') }}">
+                                                                <img
+                                                                    src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/user.png">My
+                                                                Account
+                                                            </a>
                                                         </li>
-                                                    @endforeach
+
+                                                        <li>
+                                                            <a>
+                                                                <img
+                                                                    src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/turn-off.png">
+                                                                <form method="POST" action="{{ route('logout') }}">
+
+
+                                                                    @csrf
+                                                                    <button type="submit"
+                                                                        class="dropdown-item w-100">Logout</button>
+                                                                </form>
+                                                            </a>
+                                                        </li>
+
+
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <!-- Default Profile Icon and Links for Guests -->
+                                    <div class="sign-up d-inline-flex">
+                                        <div class= "mobhide">
+                                            <a href="{{ route('login') }}" class="d-flex">
+                                                <div class="dt-icon-div"><img
+                                                        src=" {{ asset('frontend/newstyle/assets/images/account-icon.png') }} ">
+                                                </div>
+                                                <div>Login</div>
+                                            </a>
+                                        </div>
+
+                                        <div class="boder-right"></div>
+
+                                        <div class= "mobhide">
+                                            <a class="sign-up-link" href="{{ route('register') }}"><span>Sign
+                                                    Up</span></a>
+                                        </div>
+                                    </div>
+
+                                    <div class= "mobshow">
+                                        <a href="{{ route('login') }}" class="d-flex">
+                                            <div class="dt-icon-div">
+                                                <img src=" {{ asset('frontend/newstyle/assets/images/account-icon.png') }} "
+                                                    style="padding-bottom: 17px;">
+                                            </div>
+
+
+
+                                        </a>
+                                    </div>
+
+
+
+                                </div>
+
+
+                            @endauth
+
+
+
+
+
+                            <div class="des-cart pos-relative cart-popup ">
+                                <a href="javascript:void(0)" class="gap-8 ml-10 flex-align flex-column item-hover-two"
+                                    style="margin-right:30px;">
+                                    <span
+                                        class="mt-6 text-2xl text-white2 d-flex position-relative me-6 item-hover__text">
+                                        <i class="ph ph-shopping-cart-simple"></i>
+                                        <!-- Display the cart count dynamically -->
+                                        <span id="cart-count-2"
+                                            class="w-16 h-16 text-xs text-white flex-center rounded-circle bg-main-two-600 position-absolute top-n6 end-n4">
+                                            {{ $cartCount ?? 0 }}
+
+                                        </span>
+                                    </span>
+
+                                    <span class="text-white2 text-md item-hover__text d-none d-lg-flex">Cart</span>
+                                </a>
+
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+
+            </div>
+        </div>
+
+
+        </header>
+
+    </div>
+
+
+    <!-- destop header begin -->
+
+    <div class="desmain-header">
+        <div class="page-loader" hidden>
+            <img src="{{ asset('frontend/newstyle/assets/images/loader.gif') }}" style="display:block">
+
+        </div>
+        <div class="fixed-header">
+            <div class="destop-affix ">
+                <div class="destop-header">
+                    <div id="topupbar_banner_desktop"></div>
+
+                    <!-- top banner mobile-->
+                    <div class="site-common-con header-search">
+                        <div class="destop-main-header">
+                            <div class="des-logo">
+                                <a href="/"><img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}">
+                                </a>
+                            </div>
+
+                            <div class="search-con">
+                                <div class="top-search search-container">
+                                    <input type="text" class="form-control main-search top-search-suggestion"
+                                        placeholder="Search for products, categories and more">
+                                    <button type="button" class="btn btn-primary submit-search"><i
+                                            class="fa-solid fa-magnifying-glass"></i></button>
+                                    <div id="suggestions-box-display"
+                                        class="suggestions-box suggestions-box-display" style="display: none;">
+                                        <div class="left-suggestion-no-products" hidden>
+                                            <p>No results found.</p>
+                                        </div>
+
+                                        <div class="left-suggestion-main-con">
+                                            <!-- JS will inject products here -->
+                                        </div>
+
+                                        <div class="right-suggestion-main-con">
+                                            <div>
+                                                <h4 class="headding search-category-title">Categories</h4>
+                                                <ul class="category-list">
+                                                    <!-- JS will inject categories here -->
                                                 </ul>
                                             </div>
-                                        @endif
-                                    </li>
-                                @endforeach
-                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+                            <div class="header-right-con">
+                                <div class="top-right-nav">
+                                    <div class="des-cart pos-relative cart-popup ">
+
+                                        <a href="javascript:void(0)" class="d-flex">
+
+                                            <cart-item-count></cart-item-count>
+                                            <div class="dt-icon-div"><span id="cart-count-3"
+                                                    class="w-16 h-16 text-xs text-white flex-center rounded-circle bg-main-two-600 position-absolute top-n6 ">
+                                                    {{ $cartCount ?? 0 }}
+
+                                                </span> <img
+                                                    src=" {{ asset('frontend/newstyle/assets/images/cart-new.png') }}"
+                                                    class="cart-img"></div><span>Cart</span>
+                                        </a>
+                                    </div>
+
+
+
+                                    <script>
+                                        $(".cart-popup").click(function() {
+                                            $('.mini-cart').removeClass('d-none');
+                                            $('.mini-cart').addClass('d-block');
+                                        });
+                                        $(".close-minicart, .mini-cart-overlay").click(function() {
+                                            $('.mini-cart').addClass('d-none');
+                                            $('.mini-cart').removeClass('d-block');
+                                        });
+                                    </script>
+
+
+                                    <div class="auth-container">
+
+
+
+                                        <!-- Profile Dropdown -->
+                                        <div class="profile-dropdown">
+                                            @auth
+
+                                                <div class="auth-container">
+                                                    <div class="loged-user d-inline-flex">
+                                                        <div class="log-user-img"><img
+                                                                src="https://buyabans.com/themes/buyabans/assets/images/icon/dummy-user.png">
+                                                        </div>
+                                                        <div class="log-user-data dropdown">
+                                                            <div class="user-name">Hi!
+                                                                {{ auth()->user()->name }}
+                                                            </div>
+                                                            <div class="dropdown-box">
+
+                                                                <ul class="log-popup-links">
+                                                                    <li>
+                                                                        <a href="{{ route('dashboard') }}">
+                                                                            <img
+                                                                                src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/user.png">My
+                                                                            Account
+                                                                        </a>
+                                                                    </li>
+
+                                                                    <li>
+                                                                        <a>
+                                                                            <img
+                                                                                src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/turn-off.png">
+                                                                            <form method="POST"
+                                                                                action="{{ route('logout') }}">
+
+
+                                                                                @csrf
+                                                                                <button type="submit"
+                                                                                    class="dropdown-item w-100">Logout</button>
+                                                                            </form>
+                                                                        </a>
+                                                                    </li>
+
+
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <!-- Default Profile Icon and Links for Guests -->
+                                                <div class="sign-up d-inline-flex">
+                                                    <div>
+                                                        <a href="{{ route('login') }}" class="d-flex">
+                                                            <div class="dt-icon-div"><img
+                                                                    src=" {{ asset('frontend/newstyle/assets/images/account-icon.png') }} ">
+                                                            </div>
+                                                            <div>Login</div>
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="boder-right"></div>
+
+                                                    <div>
+                                                        <a class="sign-up-link" href="{{ route('register') }}"><span>Sign
+                                                                Up</span></a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        @endauth
+                                    </div>
+
+                                </div>
+
+
+                            </div>
                         </div>
-                    @endif
-                </li>
-            @endforeach
-        </ul>
-    </div>
-</div>
-<!-- Category Dropdown End -->
-
-<!-- Other Menu Items -->
-<div class="header-menu d-lg-block d-none">
-    <ul class="nav-menu flex-align ">
-        <li class="nav-menu__item">
-            <a href="/" class="nav-menu__link">Home</a>
-        </li>
-        <li class="nav-menu__item">
-            <a href="/shop" class="nav-menu__link">Shop</a>
-        </li>
-        <li class="nav-menu__item">
-            <a href="/about" class="nav-menu__link">About Us</a>
-        </li>
-        <li class="nav-menu__item">
-            <a href="/contact" class="nav-menu__link">Contact Us</a>
-        </li>
-        <li class="nav-menu__item">
-            <a href="{{ route('frontend.vendor') }}" class="nav-menu__link">Vendors</a>
-        </li>
-    </ul>
-</div>
-
-</div>
- <!-- Header Right start -->
-            <div class="header-right flex-align">
-
-                <div class="select-dropdown-for-home-two d-lg-block d-none">
-                    <!-- Dropdown Select Start -->
-<ul class="flex-wrap header-top__right style-two flex-align">
-    
-    
-</ul>
-<!-- Dropdown Select End -->
-                 </div>
-                
-                <div class="me-8 d-lg-none d-block">
-                    <div class="flex-wrap gap-32 header-two-activities flex-align">
-    <button type="button" class="gap-4 flex-align search-icon d-lg-none d-flex item-hover-two">
-        <span class="text-2xl text-white d-flex position-relative item-hover__text">
-            <i class="ph ph-magnifying-glass"></i>
-        </span>
-    </button>
-
-
-   <!-- Profile Dropdown -->
-   <div class="profile-dropdown">
-    @auth
-        <a href="#" class="gap-8 flex-align flex-column item-hover-two profile-toggle">
-            <span class="profile-initial d-flex justify-content-center align-items-center">
-                {{ auth()->user()->name[0] }}
-            </span>
-        </a>
-
-        <!-- Dropdown Menu for Logged-In User -->
-        <div class="dropdown-menu" style="width: 170px">
-            <a href="" class="dropdown-item">Profile</a>
-            <form method="POST" action="{{ route('logout') }}" class="p-0 dropdown-item">
-                @csrf
-                <button type="submit" class="dropdown-item w-100">Logout</button>
-            </form>
-        </div>
-    @else
-        <!-- Default Profile Icon and Links for Guests -->
-        <a href="#" class="gap-8 flex-align flex-column item-hover-two profile-toggle">
-            <span class="text-2xl text-white d-flex position-relative item-hover__text">
-                <i class="ph ph-user"></i>
-            </span>
-            <span class="text-white text-md item-hover__text d-none d-lg-flex">Profile</span>
-        </a>
-
-        <!-- Dropdown Menu for Guests -->
-        <div class="dropdown-menu" style="width: 170px">
-            <a href="{{ route('login') }}" class="dropdown-item">Login</a>
-            <a href="{{ route('register') }}" class="dropdown-item">Sign Up</a>
-        </div>
-    @endauth
-</div>
-
-
-
-    <a href="{{ route('wishlist') }}" class="gap-8 flex-align flex-column item-hover-two">
-        <span class="mt-6 text-2xl text-white d-flex position-relative me-6 item-hover__text">
-            <i class="ph ph-heart"></i>
-            <span class="w-16 h-16 text-xs text-white flex-center rounded-circle bg-main-two-600 position-absolute top-n6 end-n4">2</span>
-        </span>
-        <span class="text-white text-md item-hover__text d-none d-lg-flex">Wishlist</span>
-    </a>
-
-    <a href="{{ route ('cart') }}" class="gap-8 ml-10 flex-align flex-column item-hover-two" style="margin-right:30px;">
-    <span class="mt-6 text-2xl text-white d-flex position-relative me-6 item-hover__text">
-        <i class="ph ph-shopping-cart-simple"></i>
-        <!-- Display the cart count dynamically -->
-        <span id="cart-count" class="w-16 h-16 text-xs text-white flex-center rounded-circle bg-main-two-600 position-absolute top-n6 end-n4">
-           0
-        </span>
-    </span>
-    <span class="text-white text-md item-hover__text d-none d-lg-flex">Cart</span>
-</a>
-
-    
-</div>
+                    </div>
                 </div>
-                <button type="button" class="text-4xl text-gray-800 toggle-mobileMenu d-lg-none ms-3n d-flex"> <i class="ph ph-list"></i> </button>
             </div>
-            <!-- Header Right End  -->
-        </nav>
-    </div>
-</header>
 
-<!-- ==================== Header End Here ==================== -->
+
+
+
+            <!--    category begin -->
+            <div class="header-bottom destop-categories">
+                <div class="site-common-con">
+                    <div class="d-flex">
+                        <div class="cat-main-set ">
+                            <div id="mega-menu">
+                                <div class="btn-mega">
+                                    <div class="all-cat-txt">
+                                        <div class="cat-icon">
+
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                        <span class="nav-vcenter">
+                                            All Categories
+                                            <span class="fa-solid fa-chevron-down cat-arrow"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <style>
+
+
+
+
+                                </style>
+                                <div class="wrap-menu">
+                                    <div class="wrap-inner">
+                                        @foreach ($categories as $category)
+                                            <div class="fly main-link">
+                                                <a href="{{ url('/shop?category_id=' . $category->id) }}">
+
+                                                    {{ $category->name }}
+                                                </a>
+
+
+                                                <div class="inner">
+                                                    <div class="scroll-height"></div>
+                                                    <div class="scroll-cat-set">
+                                                        <!-- Check if the category has subcategories -->
+                                                        @if ($category->subcategories->isNotEmpty())
+                                                            <ul>
+                                                                @foreach ($category->subcategories as $subcategory)
+                                                                    <li class="fly main-link">
+                                                                        <a
+                                                                            href="{{ url('/shop?subcategory_id=' . $subcategory->id) }}">
+                                                                            {{ $subcategory->name }}
+                                                                        </a>
+
+
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+                        </div><!-- /.col-md-3 col-2 -->
+
+
+                        <!-- right sub menu end -->
+
+
+                        <div class="cat-sub-set">
+                            <div class="nav-wrap">
+                                <div id="mainnav" class="mainnav">
+                                    <ul class="menu">
+
+
+
+                                        <li class="column-1"> <a href="/" title="">Home</a> </li>
+                                        <!-- /.column-1 -->
+
+
+                                        <!-- /.column-1 -->
+                                        <li class="column-1"><a href="/shop" title="">Shop</a></li>
+                                        <!-- /.column-1 -->
+
+
+                                        </li><!-- /.column-1 -->
+
+
+
+
+                                        <li class="has-mega-menu">
+                                            <a href="#" title="Brands">
+
+                                                Brands </a>
+
+                                            <ul class="submenu" id="brand-submenu">
+                                                <div class="row align-items-start">
+                                                    <div class="col-sm-6">
+                                                        <p class="brand-topic">Top Brands</p>
+                                                        <div id="top-brands" class="brand-logos-set row"></div>
+                                                    </div>
+                                                    <div class="px-40 col-sm-6">
+                                                        <p class="brand-topic">All Brands</p>
+                                                        <div id="all-brands" class="row align-items-start"></div>
+                                                    </div>
+                                                </div>
+                                            </ul>
+
+
+                                        </li>
+
+
+
+
+                                        <li class="column-1">
+                                            <a href="/about" title="">
+
+                                                About Us </a>
+
+                                        </li>
+
+
+                                        <li class="column-1">
+                                            <a href="/contact" title="">
+
+                                                Contact Us </a>
+
+                                        </li>
+
+                                        <!-- <li class="column-1">
+                                            <a href="{{ route('frontend.vendor') }}" title="">
+
+                                                Vendors </a>
+
+                                        </li> -->
+
+
+
+
+                                        <!-- /.column-1 -->
+                                    </ul><!-- /.menu -->
+
+
+
+                                    <div class="destop-hotline d-flex">
+
+                                        <div class="top-track">
+
+                                            <a href="{{ route('my-orders') }}"><i class="fa-solid fa-location-dot me-2"></i>Track your
+                                                order</a>
+
+                                        </div>
+                                        <div><a href="#" title="">
+                                                <i class="fa-solid fa-phone me-2"></i>
+                                                +94 112 251 202
+
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.mainnav -->
+                            </div><!-- /.nav-wrap -->
+
+                            <div class="btn-menu">
+                                <span></span>
+                            </div><!-- //mobile menu button -->
+                        </div><!-- /.col-md-9 -->
+                    </div><!-- /.row -->
+
+
+
+
+                </div><!-- /.container -->
+            </div>
+            <!-- destop category end -->
+        </div>
+    </div>
+    <!-- destop header end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+    <!-- mobile header end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- onestop showroom login -->
+
+
+
+    </div>
+
+
+    <!-- Start of Mobile Menu -->
+    <div class="mobile-menu-wrapper" style="z-index: 10000;">
+        <div class="mobile-menu-overlay ss" onclick="if (!window.__cfRLUnblockHandlers) return false; closeMenuMobi()"
+            data-cf-modified-a071cb3ff60724c4b8f55cf9-=""></div>
+        <!-- End of .mobile-menu-overlay -->
+        <!-- End of .mobile-menu-close -->
+        <div class="mobile-menu-container scrollable">
+
+            <a href="#" class="mobile-menu-close"
+                onclick="if (!window.__cfRLUnblockHandlers) return false; closeMenuMobi()"
+                data-cf-modified-a071cb3ff60724c4b8f55cf9-=""><i class="close-icon"></i></a>
+            <!-- End of Search Form -->
+
+            <div class="hot-line-mob">
+                <div class="d-flex mobi-hot-main">
+                    <div class="mobi-hot-icon">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div>
+                        <div>HOT LINE</div>
+                        <strong>+94 112 251 202
+                        </strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a href="#main-menu" class="nav-link mobimain-menu active"
+                            onclick="if (!window.__cfRLUnblockHandlers) return false; opensideMainMobi()"
+                            data-cf-modified-a071cb3ff60724c4b8f55cf9-="">Main Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#categories" class="nav-link menu-cat "
+                            onclick="if (!window.__cfRLUnblockHandlers) return false; opencategoryMobi()"
+                            data-cf-modified-a071cb3ff60724c4b8f55cf9-="">Categories</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content">
+
+                <!-- Main Menu Tab Pane -->
+                <div class="tab-pane menu-pane active" id="main-menu">
+                    <ul class="mobi-icon-menu">
+
+
+                        <li> <a href="/" title="">Home</a> </li>
+
+
+                        <li class="column-1"><a href="/shop" title="">Shop</a></li>
+                        <li class="column-1"><a href="#" title="">Brands</a></li>
+
+                        <li><a href="/about" title=""> About Us </a></li>
+
+                        <li><a href="/contact" title="">Contact Us </a></li>
+
+                        <!-- <li ><a href="{{ route('frontend.vendor') }}" title="">Vendors </a></li> -->
+
+
+                    </ul>
+
+
+
+
+
+
+
+                    </ul>
+
+
+                </div>
+
+                <div class="tab-pane cat-pane" id="categories">
+                    <ul class=" list-unstyled">
+
+                        @foreach ($categories as $category)
+                            <li class="position-relative">
+
+                                <!-- Main Category and Toggle -->
+                                <div class="d-flex justify-content-between align-items-center ">
+                                    <a href="{{ url('/shop?category_id=' . $category->id) }}"
+                                        class="text-dark text-decoration-none fw-semibold" style="line-height: 1.6;">
+                                        {{ $category->name }}
+                                    </a>
+
+                                    @if ($category->subcategories->isNotEmpty())
+                                        <span class="toggle-btn" onclick="toggleDropdown(this)"
+                                            style="cursor: pointer;">
+                                            <i class="fa fa-chevron-down text-muted"></i>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <!-- Subcategory List -->
+                                @if ($category->subcategories->isNotEmpty())
+                                    <ul
+                                        class="mt-1 border rounded shadow-sm dropdown subcategory-dropdown bg-light d-none">
+                                        @foreach ($category->subcategories as $subcategory)
+                                            <li>
+                                                <a href="{{ url('/shop?subcategory_id=' . $subcategory->id) }}"
+                                                    class="px-4 py-2 d-block text-dark text-decoration-none"
+                                                    style="line-height: 1.6;">
+                                                    {{ $subcategory->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+
+                            </li>
+                        @endforeach
+
+                    </ul>
+                </div>
+
+
+                <script>
+                    function toggleDropdown(toggleBtn) {
+                        const dropdown = toggleBtn.closest('li').querySelector('.subcategory-dropdown');
+                        if (dropdown) {
+                            dropdown.classList.toggle('d-none');
+                            toggleBtn.querySelector('i').classList.toggle('fa-chevron-down');
+                            toggleBtn.querySelector('i').classList.toggle('fa-chevron-up');
+                        }
+                    }
+                </script>
+
+
+
+                <style>
+                    .subcategory-dropdown {
+                        list-style: none;
+                        padding-left: 0;
+                    }
+
+                    .category-link:hover {
+                        background-color: #f8f9fa;
+                    }
+                </style>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+    <!-- End of Mobile Menu -->
+    </div>
+
+
+    <script>
+        document.querySelectorAll('.nav-link').forEach((tab) => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+
+                document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('show', 'active'));
+                const target = this.getAttribute('href');
+                document.querySelector(target).classList.add('show', 'active');
+            });
+        });
+    </script>
+
+
+
+    <script>
+        $(document).ready(function() {
+            $('#product-search').on('keyup', function() {
+                let query = $(this).val();
+                $('#search-results').empty();
+
+                if (query.length > 0) {
+                    $.ajax({
+                        url: "{{ route('search.products') }}",
+                        method: 'GET',
+                        data: {
+                            query: query
+                        },
+                        success: function(response) {
+                            if (response.products && response.products.length > 0) {
+                                $('#search-results').show();
+                                response.products.forEach(function(product) {
+                                    $('#search-results').append(
+                                        `<div class="p-2 border-bottom">${product.product_name}</div>`
+                                    );
+                                });
+                            } else {
+                                $('#search-results').show().html(
+                                    '<div class="p-2">No products found</div>');
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                } else {
+                    $('#search-results').hide();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const brandsMenuItem = document.querySelector('li > a[title="Brands"]')?.parentElement;
+            const submenu = document.getElementById('brand-submenu');
+
+            let brandsLoaded = false;
+            let brandsFetching = false;
+            let hoverTimeout = null;
+
+            if (!brandsMenuItem || !submenu) return;
+
+            // Show submenu on hover
+            brandsMenuItem.addEventListener('mouseenter', () => {
+                // Clear any existing timeout to avoid flickering
+                if (hoverTimeout) clearTimeout(hoverTimeout);
+
+                submenu.style.display = 'block';
+
+                // Only fetch data if it hasn't been loaded or isn't currently fetching
+                if (!brandsLoaded && !brandsFetching) {
+                    brandsFetching = true; // Lock to prevent multiple requests
+
+                    console.log('Fetching brands data');
+
+                    fetch('/brands-data')
+                        .then(res => {
+                            if (!res.ok) throw new Error('Network response was not ok');
+                            return res.json();
+                        })
+                        .then(data => {
+                            const topContainer = document.getElementById('top-brands');
+                            const allContainer = document.getElementById('all-brands');
+
+                            // Clear containers first to prevent duplicate content
+                            topContainer.innerHTML = '';
+                            allContainer.innerHTML = '';
+
+                            const allList = [
+                                [],
+                                [],
+                                [],
+                                []
+                            ];
+                            let col = 0;
+
+                            data.forEach(brand => {
+                                const imageUrl = brand.image ? brand.image :
+                                'default-image.png';
+
+                                const brandLink = `<a title="${brand.name}" href="/brand/${brand.slug}">
+                            <img src="/storage/${imageUrl}" alt="${brand.name}" style="height: 50px;">
+                        </a>`;
+
+                                if (brand.is_top_brand) {
+                                    topContainer.insertAdjacentHTML('beforeend',
+                                        `<div class="brand-img col-sm-3">${brandLink}</div>`
+                                        );
+                                }
+
+                                allList[col].push(
+                                    `<li><a href="/brand/${brand.slug}">${brand.name}</a></li>`
+                                    );
+                                col = (col + 1) % 4;
+                            });
+
+                            allList.forEach(column => {
+                                allContainer.insertAdjacentHTML('beforeend',
+                                    `<ul class="col-sm-3">${column.join('')}</ul>`);
+                            });
+
+                            brandsLoaded = true;
+                            console.log('Brands loaded successfully');
+                        })
+                        .catch(err => {
+                            console.error('Brand fetch failed:', err);
+                        })
+                        .finally(() => {
+                            brandsFetching = false;
+                        });
+                }
+            });
+
+            // Add event listeners to both menu item and submenu to prevent flickering
+            submenu.addEventListener('mouseenter', () => {
+                if (hoverTimeout) clearTimeout(hoverTimeout);
+                submenu.style.display = 'block';
+            });
+
+            // Hide submenu on mouse leave with slight delay to prevent flickering
+            const handleMouseLeave = () => {
+                hoverTimeout = setTimeout(() => {
+                    submenu.style.display = 'none';
+                }, 200); // Small delay to prevent flickering when moving between menu and submenu
+            };
+
+            brandsMenuItem.addEventListener('mouseleave', handleMouseLeave);
+            submenu.addEventListener('mouseleave', handleMouseLeave);
+        });
+    </script>
+
 
 
 <script>
-    $(document).ready(function () {
-        $('#product-search').on('keyup', function () {
-            let query = $(this).val();
-            $('#search-results').empty();
+    document.querySelector('.main-search').addEventListener('keyup', function() {
+        let query = this.value.trim();
 
-            if (query.length > 0) {
-                $.ajax({
-                    url: "{{ route('search.products') }}",
-                    method: 'GET',
-                    data: { query: query },
-                    success: function (response) {
-                        if (response.products && response.products.length > 0) {
-                            $('#search-results').show();
-                            response.products.forEach(function (product) {
-                                $('#search-results').append(
-                                    `<div class="p-2 border-bottom">${product.product_name}</div>`
-                                );
-                            });
-                        } else {
-                            $('#search-results').show().html('<div class="p-2">No products found</div>');
-                        }
-                    },
-                    error: function (xhr) {
-                        console.error(xhr.responseText);
-                    }
+        if (query.length < 2) {
+            document.getElementById('suggestions-box-display').style.display = 'none';
+            return;
+        }
+
+        fetch(`/search-suggestions?q=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                const box = document.getElementById('suggestions-box-display');
+                const productCon = box.querySelector('.left-suggestion-main-con');
+                const categoryCon = box.querySelector('.category-list');
+                const noResults = box.querySelector('.left-suggestion-no-products');
+
+                productCon.innerHTML = '';
+                categoryCon.innerHTML = '';
+
+                if (data.products.length === 0 && data.categories.length === 0) {
+                    noResults.hidden = false;
+                    box.style.display = 'block';
+                    return;
+                }
+
+                noResults.hidden = true;
+
+                // Add products
+                data.products.forEach(product => {
+                    const productHTML = `
+                <a class="search-product-element" href="${product.url}">
+                    <div class="suggestion-box">
+                        <div class="suggestion-product-img"><img class="img-fluid" alt="" src="${product.image ?? ''}"></div>
+                        <div class="suggestion-box-details">
+                            <div class="product-line product-name">${product.name}</div>
+                        </div>
+                    </div>
+                </a>
+            `;
+                    productCon.innerHTML += productHTML;
                 });
-            } else {
-                $('#search-results').hide();
-            }
-        });
+
+                // Add categories
+                data.categories.forEach(category => {
+                    const categoryHTML =
+                        `<li><a class="search-category-name" href="${category.url}">${category.name}</a></li>`;
+                    categoryCon.innerHTML += categoryHTML;
+                });
+
+                box.style.display = 'block';
+            })
+            .catch(err => {
+                console.error('Search error:', err);
+            });
     });
 </script>
 
 <script>
-    
+    function updateCartCount() {
+        fetch("{{ route('cart.count') }}")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('cart-count-1').textContent = data.cart_count;
+                document.getElementById('cart-count-2').textContent = data.cart_count;
+                document.getElementById('cart-count-3').textContent = data.cart_count;
+                document.getElementById('cart-count-4').textContent = data.cart_count;
+            })
+            .catch(error => {
+                console.error('Error fetching cart count:', error);
+            });
+    }
 
+    // Call on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCartCount();
+    });
 </script>
 
+
+
+    </header>

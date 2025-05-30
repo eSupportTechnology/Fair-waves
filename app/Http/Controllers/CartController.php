@@ -23,59 +23,6 @@ class CartController extends Controller
         return response()->json(['cart_count' => $cartCount]);
     }
 
-    public function getCartSubtotal()
-    {
-        $subtotal = 0;
-
-        if (Auth::check()) {
-            $cartItems = CartItem::with(['product.sale', 'product.specialOffer'])
-                ->where('user_id', Auth::id())
-                ->get();
-
-            foreach ($cartItems as $item) {
-                $product = $item->product;
-
-                if (!$product) {
-                    continue;
-                }
-
-                if ($product->sale) {
-                    $price = $product->sale->sale_price;
-                } elseif ($product->specialOffer) {
-                    $price = $product->specialOffer->offer_price;
-                } else {
-                    $price = $product->normal_price;
-                }
-
-                $subtotal += $price * $item->quantity;
-            }
-        } else {
-            $cart = session()->get('cart', []);
-
-            foreach ($cart as $item) {
-                $product = Product::with(['sale', 'specialOffer'])
-                    ->where('product_id', $item['product_id'])
-                    ->first();
-
-                if (!$product) {
-                    continue;
-                }
-
-                if ($product->sale) {
-                    $price = $product->sale->sale_price;
-                } elseif ($product->specialOffer) {
-                    $price = $product->specialOffer->offer_price;
-                } else {
-                    $price = $product->normal_price;
-                }
-
-                $subtotal += $price * $item['quantity'];
-            }
-        }
-
-        return response()->json(['subtotal' => round($subtotal, 2)]);
-    }
-
 
     public function showCart()
     {

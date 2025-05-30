@@ -133,7 +133,6 @@ Route::get('/shop/category/{category}', [ShopPageController::class, 'filterByCat
 Route::get('/product-details/{product_id}', [ShopPageController::class, 'showProductDetails'])->name('showProductDetails');
 
 Route::get('/cart/count', [CartController::class, 'getCartCount'])->name('cart.count');
-Route::get('/cart/subtotal', [CartController::class, 'getCartSubtotal'])->name('cart.subtotal');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
 Route::put('/cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');

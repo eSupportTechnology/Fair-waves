@@ -211,7 +211,7 @@
                             <span id= "cart-count-4">0</span> Items Added
                         </div>
                     </div>
-                    <div id="cart-subtotal-1" class="sub-total">Rs. 0</div>
+                    <div class="sub-total">Rs. <?php echo e($cartTotal); ?></div>
                 </div>
 
                 <div class="cart-added">
@@ -400,39 +400,6 @@
 
 
     </div>
-
-    <script>
-        function updateSubTotal() {
-            fetch("<?php echo e(route('cart.subtotal')); ?>")
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('cart-subtotal-1').textContent = "Rs. " + data.subtotal;
-                })
-                .catch(error => {
-                    console.error('Error fetching cart subtotal:', error);
-                });
-        }
-
-        // Call on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateSubTotal();
-        });
-    </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </body>

@@ -312,14 +312,14 @@
                                 </a>
                             </div>
 
-                            <div class="search-con">
+                            <div class="search-con search-container">
                                 <div class="top-search search-container">
                                     <input type="text" class="form-control main-search top-search-suggestion"
                                         placeholder="Search for products, categories and more">
                                     <button type="button" class="btn btn-primary submit-search"><i
                                             class="fa-solid fa-magnifying-glass"></i></button>
                                     <div id="suggestions-box-display"
-                                        class="suggestions-box suggestions-box-display" style="display: none;">
+                                    class="suggestions-box suggestions-box-display" style="display: none;">
                                         <div class="left-suggestion-no-products" hidden>
                                             <p>No results found.</p>
                                         </div>
@@ -506,6 +506,7 @@
                                     <div class="wrap-inner">
                                         @foreach ($categories as $category)
                                             <div class="fly main-link">
+
                                                 <a href="{{ url('/shop?category_id=' . $category->id) }}">
 
                                                     {{ $category->name }}
@@ -515,21 +516,38 @@
                                                 <div class="inner">
                                                     <div class="scroll-height"></div>
                                                     <div class="scroll-cat-set">
+
+
                                                         <!-- Check if the category has subcategories -->
                                                         @if ($category->subcategories->isNotEmpty())
-                                                            <ul>
-                                                                @foreach ($category->subcategories as $subcategory)
-                                                                    <li class="fly main-link">
+                                                            @foreach ($category->subcategories as $subcategory)
+                                                                <div class="one-third">
+                                                                    <div class="cat-title">
                                                                         <a
                                                                             href="{{ url('/shop?subcategory_id=' . $subcategory->id) }}">
                                                                             {{ $subcategory->name }}
                                                                         </a>
+                                                                    </div>
+                                                                    <ul>
+                                                                        @if ($category->subcategories->isNotEmpty())
+                                                                            @foreach ($subcategory->subSubcategories as $subSubcategory)
+                                                                                <li class="fly main-link">
+                                                                                    <a
+                                                                            href="{{ url('/shop?subsubcategory_id=' . $subSubcategory->id) }}">
+                                                                            {{ $subSubcategory->name }}
+                                                                        </a>
 
 
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
+                                                                                </li>
+                                                                            @endforeach
+                                                                        @endif
+
+                                                                    </ul>
+
+                                                                </div>
+                                                            @endforeach
                                                         @endif
+
                                                     </div>
                                                 </div>
                                             </div>

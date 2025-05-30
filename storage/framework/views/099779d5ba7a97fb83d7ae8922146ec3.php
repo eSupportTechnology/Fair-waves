@@ -3,17 +3,11 @@
 <style>
 .product-description {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 3; 
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis;  
 }
-@media (max-width: 990px) {
-  .hide-on-tiny {
-    display: none !important;
-  }
-}
-
 </style>
 
 <!-- ========================= Breadcrumb Start =============================== -->
@@ -44,7 +38,7 @@
         <div class="row">
 
             <!-- Sidebar Start -->
-            <div class="col-lg-3 hide-on-tiny" >
+            <div class="col-lg-3">
                 <div class="shop-sidebar">
                     <div class="p-32 mb-32 border border-gray-100 shop-sidebar__box rounded-8">
                         <h6 class="pb-24 mb-24 text-xl border-gray-100 border-bottom">Product Category</h6>
@@ -56,7 +50,7 @@
                             </li>
                             <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <li class="mb-24">
-                                    <a href="<?php echo e(route('shop.index', ['category_id' => $category->id])); ?>"
+                                    <a href="<?php echo e(route('shop.index', ['category_id' => $category->id])); ?>" 
                                        class="text-gray-900 hover-text-main-600 <?php echo e(isset($categoryId) && $categoryId == $category->id ? 'font-bold' : ''); ?>">
                                         <?php echo e($category->name); ?> (<?php echo e($category->products_count); ?>)
                                     </a>
@@ -80,8 +74,8 @@
                     <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="p-16 border border-gray-100 product-card h-100 hover-border-main-600 rounded-16 position-relative transition-2">
                             <a href="<?php echo e(url('/product-details/' . $product->product_id)); ?>" class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                                <img src="<?php echo e(asset('storage/' . $product->images->first()->image_path)); ?>"
-                                     alt="<?php echo e($product->product_name); ?>"
+                                <img src="<?php echo e(asset('storage/' . $product->images->first()->image_path)); ?>" 
+                                     alt="<?php echo e($product->product_name); ?>" 
                                      class="product-image">
                             </a>
 
@@ -89,9 +83,9 @@
                                 <h6 class="mt-12 mb-8 text-lg title fw-semibold">
                                     <a href="<?php echo e(url('/product-details/' . $product->product_id)); ?>" class="link text-line-2" tabindex="0"><?php echo e($product->product_name); ?></a>
                                 </h6>
-                                <div class="gap-6 mt-16 mb-20 flex-align">
+                                <div class="flex-align mb-20 mt-16 gap-6">
                                     <?php if($product->total_reviews!=0): ?>
-                                    <div class="gap-2 rating-info d-flex">
+                                    <div class="rating-info d-flex gap-2">
                                         <?php
                                             $fullStars = floor($product->average_rating);
                                             $hasHalfStar = ($product->average_rating - $fullStars) >= 0.5;
@@ -102,8 +96,8 @@
                                         <?php if($hasHalfStar): ?>
                                             <span class="text-15 fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star-half"></i></span>
                                         <?php endif; ?>
-                                        <span class="text-xs text-gray-500 fw-medium"><?php echo e(number_format($product->average_rating, 1)); ?></span>
-                                        &nbsp;<span class="text-xs text-gray-500 fw-medium">(<?php echo e($product->total_reviews); ?>)</span>
+                                        <span class="text-xs fw-medium text-gray-500"><?php echo e(number_format($product->average_rating, 1)); ?></span>
+                                        &nbsp;<span class="text-xs fw-medium text-gray-500">(<?php echo e($product->total_reviews); ?>)</span>
                                     </div>
                                     <?php endif; ?>
                                     <!-- <button type="button" class="heart-icon ms-auto" id="wishlist-icon-<?php echo e($product->product_id); ?>" onclick="toggleWishlist(this, '<?php echo e($product->product_id); ?>')">
@@ -114,13 +108,13 @@
                                 <div class="mt-8 mb-20 product-card__price">
                                     <span class="text-heading text-md fw-semibold ">Rs <?php echo e(number_format($product->normal_price, 2)); ?> <span class="text-gray-500 fw-normal">/Qty</span></span>
                                 </div>
-
-                                <a href="#"
-                                   class="gap-8 px-24 product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 rounded-8 flex-center fw-medium add-to-cart-btn"
-                                   data-bs-toggle="modal"
-                                   data-bs-target="#cartModal_<?php echo e($product->product_id); ?>"
+                                
+                                <a href="#" 
+                                   class="gap-8 px-24 product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 rounded-8 flex-center fw-medium add-to-cart-btn" 
+                                   data-bs-toggle="modal" 
+                                   data-bs-target="#cartModal_<?php echo e($product->product_id); ?>" 
                                    data-product-id="<?php echo e($product->product_id); ?>">
-                                    Add To Cart <i class="ph ph-shopping-cart"></i>
+                                    Add To Cart <i class="ph ph-shopping-cart"></i> 
                                 </a>
                             </div>
                         </div>
@@ -143,7 +137,7 @@
                                             <main class="col-lg-7">
                                                 <h6><?php echo e($product->product_name); ?></h6>
                                                 <p class="product-description"><?php echo e($product->product_description); ?></p>
-
+                                                
                                                 <hr />
 
                                                 <div class="mt-8 mb-3 product-price d-flex align-items-center">
@@ -238,4 +232,4 @@ function toggleWishlist(button, productId) {
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/shop.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/brand-items.blade.php ENDPATH**/ ?>

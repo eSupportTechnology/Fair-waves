@@ -315,14 +315,14 @@
                                 </a>
                             </div>
 
-                            <div class="search-con">
+                            <div class="search-con search-container">
                                 <div class="top-search search-container">
                                     <input type="text" class="form-control main-search top-search-suggestion"
                                         placeholder="Search for products, categories and more">
                                     <button type="button" class="btn btn-primary submit-search"><i
                                             class="fa-solid fa-magnifying-glass"></i></button>
                                     <div id="suggestions-box-display"
-                                        class="suggestions-box suggestions-box-display" style="display: none;">
+                                    class="suggestions-box suggestions-box-display" style="display: none;">
                                         <div class="left-suggestion-no-products" hidden>
                                             <p>No results found.</p>
                                         </div>
@@ -511,6 +511,7 @@
                                     <div class="wrap-inner">
                                         <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <div class="fly main-link">
+
                                                 <a href="<?php echo e(url('/shop?category_id=' . $category->id)); ?>">
 
                                                     <?php echo e($category->name); ?>
@@ -521,22 +522,40 @@
                                                 <div class="inner">
                                                     <div class="scroll-height"></div>
                                                     <div class="scroll-cat-set">
+
+
                                                         <!-- Check if the category has subcategories -->
                                                         <?php if($category->subcategories->isNotEmpty()): ?>
-                                                            <ul>
-                                                                <?php $__currentLoopData = $category->subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subcategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                    <li class="fly main-link">
+                                                            <?php $__currentLoopData = $category->subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subcategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <div class="one-third">
+                                                                    <div class="cat-title">
                                                                         <a
                                                                             href="<?php echo e(url('/shop?subcategory_id=' . $subcategory->id)); ?>">
                                                                             <?php echo e($subcategory->name); ?>
 
                                                                         </a>
+                                                                    </div>
+                                                                    <ul>
+                                                                        <?php if($category->subcategories->isNotEmpty()): ?>
+                                                                            <?php $__currentLoopData = $subcategory->subSubcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subSubcategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                <li class="fly main-link">
+                                                                                    <a
+                                                                            href="<?php echo e(url('/shop?subsubcategory_id=' . $subSubcategory->id)); ?>">
+                                                                            <?php echo e($subSubcategory->name); ?>
+
+                                                                        </a>
 
 
-                                                                    </li>
-                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                            </ul>
+                                                                                </li>
+                                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                        <?php endif; ?>
+
+                                                                    </ul>
+
+                                                                </div>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         <?php endif; ?>
+
                                                     </div>
                                                 </div>
                                             </div>

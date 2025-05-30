@@ -6,7 +6,7 @@
         <div class="card mb-4 shadow-sm">
             <div class="card-body">
                 <h3 class="text-center text-primary mb-4">Product Details</h3>
-                
+
                 <!-- Product Info & Affiliate Details in Compact Grid -->
                 <div class="row mb-3">
                     <div class="col-6 mb-2">
@@ -14,6 +14,7 @@
                         <p><strong>Name:</strong> {{ $product->product_name }}</p>
                         <p><strong>Category:</strong> <span class="badge bg-info text-white">{{ $product->category->name ?? 'N/A' }}</span></p>
                         <p><strong>Quantity:</strong> {{ $product->quantity }}</p>
+                        <p><strong>Brand:</strong> {{ $product->brand->name ?? 'N/A' }}</p>
                     </div>
                     <div class="col-6 mb-2">
                         <p><strong>Price:</strong> Rs. {{ $product->normal_price }}</p>
@@ -41,10 +42,10 @@
                                 <div class="d-flex align-items-center mb-4">
                                     <span class="text-gray-900 me-3">Color:</span>
                                     @foreach ($product->variations->pluck('hex_value')->filter()->unique() as $color)
-                                        <span 
+                                        <span
                                             class="color-list__button border border-2 border-gray-50 rounded-circle me-2"
-                                            style="background-color: {{ $color }}; width: 20px; height: 20px;" 
-                                            data-color="{{ $color }}"> 
+                                            style="background-color: {{ $color }}; width: 20px; height: 20px;"
+                                            data-color="{{ $color }}">
                                         </span>
                                     @endforeach
                                 </div>

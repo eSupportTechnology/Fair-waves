@@ -3,7 +3,7 @@
             <div class="aside-top" style="padding:0">
                 <a href="<?php echo e(route('admin.index')); ?>" class="brand-wrap">
                     <?php
-                        $companySettings = \App\Models\CompanySettings::first(); 
+                        $companySettings = \App\Models\CompanySettings::first();
                     ?>
 
                     <?php if($companySettings && $companySettings->logo): ?>
@@ -35,6 +35,9 @@
                             </a>
                             <a href="<?php echo e(route('categories')); ?>" class="<?php echo e(request()->is('admin/categories') ? 'active' : ''); ?>">
                                 Categories
+                            </a>
+                            <a href="<?php echo e(route('brand_list')); ?>" class="<?php echo e(request()->is('admin/brands') ? 'active' : ''); ?>">
+                                Brands
                             </a>
                         </div>
                     </li>
@@ -68,7 +71,7 @@
                             <span class="text">Orders</span>
                         </a>
                     </li>
-                 
+
 
                     <!--<li class="menu-item has-submenu <?php echo e(request()->is('admin/vendors*') || request()->is('admin/payments*') ? 'active' : ''); ?>">
                         <a class="menu-link" href="#">
@@ -103,19 +106,19 @@
                                 Customers
                             </a>
                             <a href="<?php echo e(route('productReport')); ?>" >
-                                Products 
+                                Products
                             </a>
                             <a href="<?php echo e(route('affiliateCustomerReport')); ?>" >
-                                Affiliate Customer 
+                                Affiliate Customer
                             </a>
                             <a href="<?php echo e(route('affiliateCusBankData')); ?>" >
-                                Affiliate Bank Details 
+                                Affiliate Bank Details
                             </a>
                             <a href="<?php echo e(route('vendorReport')); ?>" >
-                                Vendors 
+                                Vendors
                             </a>
                             <a href="<?php echo e(route('orderReport')); ?>" >
-                                Orders 
+                                Orders
                             </a>
                         </div>
                     </li>
@@ -135,13 +138,23 @@
                             <a href="<?php echo e(route('users')); ?>" >
                                 Users
                             </a>
+
+                            <a href="<?php echo e(route('slider')); ?>">
+                                Slider images
+                            </a>
+
+                            <a href="<?php echo e(route('banners')); ?>">
+                                Banner images
+                            </a>
+
+
                            <!-- <a href="<?php echo e(route('role_list')); ?>" >
                                 Role List
                             </a>-->
-                            
+
                         </div>
                     </li>
-                    
+
 
                 </ul>
                 <hr />
@@ -149,4 +162,5 @@
                 <br />
                 <br />
             </nav>
-        </aside><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/AdminDashboard/Sidebar.blade.php ENDPATH**/ ?>
+        </aside>
+<?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/AdminDashboard/Sidebar.blade.php ENDPATH**/ ?>

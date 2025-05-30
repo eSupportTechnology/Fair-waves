@@ -3,7 +3,7 @@
             <div class="aside-top" style="padding:0">
                 <a href="{{ route('admin.index') }}" class="brand-wrap">
                     @php
-                        $companySettings = \App\Models\CompanySettings::first(); 
+                        $companySettings = \App\Models\CompanySettings::first();
                     @endphp
 
                     @if ($companySettings && $companySettings->logo)
@@ -35,6 +35,9 @@
                             </a>
                             <a href="{{ route('categories') }}" class="{{ request()->is('admin/categories') ? 'active' : '' }}">
                                 Categories
+                            </a>
+                            <a href="{{ route('brand_list') }}" class="{{ request()->is('admin/brands') ? 'active' : '' }}">
+                                Brands
                             </a>
                         </div>
                     </li>
@@ -68,7 +71,7 @@
                             <span class="text">Orders</span>
                         </a>
                     </li>
-                 
+
 
                     <!--<li class="menu-item has-submenu {{ request()->is('admin/vendors*') || request()->is('admin/payments*') ? 'active' : '' }}">
                         <a class="menu-link" href="#">
@@ -103,19 +106,19 @@
                                 Customers
                             </a>
                             <a href="{{ route('productReport') }}" >
-                                Products 
+                                Products
                             </a>
                             <a href="{{ route('affiliateCustomerReport') }}" >
-                                Affiliate Customer 
+                                Affiliate Customer
                             </a>
                             <a href="{{ route('affiliateCusBankData') }}" >
-                                Affiliate Bank Details 
+                                Affiliate Bank Details
                             </a>
                             <a href="{{ route('vendorReport') }}" >
-                                Vendors 
+                                Vendors
                             </a>
                             <a href="{{ route('orderReport') }}" >
-                                Orders 
+                                Orders
                             </a>
                         </div>
                     </li>
@@ -135,13 +138,23 @@
                             <a href="{{ route('users') }}" >
                                 Users
                             </a>
+
+                            <a href="{{ route('slider') }}">
+                                Slider images
+                            </a>
+
+                            <a href="{{ route('banners') }}">
+                                Banner images
+                            </a>
+
+
                            <!-- <a href="{{ route('role_list') }}" >
                                 Role List
                             </a>-->
-                            
+
                         </div>
                     </li>
-                    
+
 
                 </ul>
                 <hr />

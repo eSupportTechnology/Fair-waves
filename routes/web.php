@@ -64,6 +64,8 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('l
 
 
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
@@ -154,13 +156,19 @@ Route::post('/test-order', function() {
     return 'Test order placed';
 });
 
+Route::get('/search-suggestions', [SearchController::class, 'suggestions']);
 
+Route::get('/brands-data', [BrandController::class, 'getBrands']);
+
+Route::get('/brand/{slug}', [BrandController::class, 'showBrandProducts'])->name('brand.products');
 
 
 
 //admin dashboard
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\SliderController;
 use App\Http\Middleware\AdminAuth;
 
 
@@ -188,8 +196,24 @@ Route::get('/admin/profile', [AdminProfileController::class, 'showProfile'])->na
 Route::post('/admin/profile/update', [AdminProfileController::class, 'updateProfile'])->name('admin.profile.update');
 Route::post('/admin/profile/password', [AdminProfileController::class, 'updatePassword'])->name('admin.profile.password.update');
 
+    Route::get('/admin/brands_list', [BrandController::class, 'showbrands'])->name('brand_list');
+    Route::post('/admin/brands_list', [BrandController::class, 'store'])->name('brands.store');
+    Route::get('/admin/brands_list/{brand}/edit', [BrandController::class, 'edit'])->name('brands.edit');
+    Route::delete('/admin/brands_list/{brand}', [BrandController::class, 'destroy'])->name('brands.destroy');
+    Route::put('/admin/brands_list/{brand}', [BrandController::class, 'update'])->name('brands.update');
 
-Route::get('/admin/products_list', [ProductController::class, 'showproducts'])->name('products_list');
+    Route::get('/admins/slider', [SliderController::class, 'index'])->name('slider');
+    Route::post('/admins/slider', [SliderController::class, 'store'])->name('slider.store');
+    Route::delete('/admins/slider/{id}', [SliderController::class, 'destroy'])->name('slider.destroy');
+
+    Route::get('/admins/banners', [BannerController::class, 'index'])->name('banners');
+    Route::post('/admins/banners', [BannerController::class, 'store'])->name('banners.store');
+    Route::delete('/admins/banners/{id}', [BannerController::class, 'destroy'])->name('banners.destroy');
+    Route::get('/admins/banners/{id}/download', [BannerController::class, 'download'])->name('banners.download');
+
+
+
+    Route::get('/admin/products_list', [ProductController::class, 'showproducts'])->name('products_list');
 
 Route::get('products/{product}/view', [ProductController::class, 'view_details'])->name('products.view');
 Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');

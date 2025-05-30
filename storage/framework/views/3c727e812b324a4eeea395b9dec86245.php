@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
- 
+
         <div class="card mb-4">
             <div class="card-header">
                 <h4>Variations</h4>
@@ -143,6 +143,15 @@
                             <option value="">Select a sub-subcategory</option>
                         </select>
                     </div>
+                    <div class="col-sm-6 mb-3">
+                        <label class="form-label">Brand </label>
+                        <select name="brand_id" class="form-select" id="brandSelect">
+                            <option value="">Select a brand</option>
+                            <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($brand->id); ?>"><?php echo e($brand->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                    </div>
                     <div class="mb-4">
                         <label for="product_tags" class="form-label">Tags</label>
                         <input name="tags" type="text" class="form-control" />
@@ -151,12 +160,12 @@
             </div>
         </div>
 
-        
-        
+
+
     </div>
 </div>
 </form>
- 
+
 
 <script>
  document.addEventListener('DOMContentLoaded', function () {
@@ -213,18 +222,18 @@
     }
 });
 
- 
+
 
     //image upload
     document.addEventListener('DOMContentLoaded', function () {
         const mediaUploadInput = document.getElementById('media_upload');
         const imagePreviewContainer = document.getElementById('image_preview_container');
-        let currentFiles = []; 
+        let currentFiles = [];
 
         mediaUploadInput.addEventListener('change', function () {
             const files = Array.from(mediaUploadInput.files);
             files.forEach((file, index) => {
-                currentFiles.push(file); 
+                currentFiles.push(file);
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     const imageUrl = e.target.result;
@@ -258,11 +267,11 @@
                 reader.readAsDataURL(file);
             });
 
-            updateFileInput(); 
+            updateFileInput();
         });
 
         function removeImageFromFileList(index) {
-            currentFiles.splice(index, 1); 
+            currentFiles.splice(index, 1);
             updateFileInput();
         }
 
@@ -271,7 +280,7 @@
             currentFiles.forEach(file => {
                 dt.items.add(file);
             });
-            mediaUploadInput.files = dt.files; 
+            mediaUploadInput.files = dt.files;
         }
     });
 
@@ -332,11 +341,11 @@
 </script>
 
 <script>
-    let variationIndex = 1; 
+    let variationIndex = 1;
 
     function addVariation() {
         const variationsContainer = document.getElementById('variationsContainer');
-        
+
         const newVariationRow = document.createElement('div');
         newVariationRow.className = 'row mb-3 variation-row';
         newVariationRow.innerHTML = `
@@ -362,7 +371,7 @@
                 <button type="button" class="btn btn-danger delete-variation" onclick="removeVariation(this)">✖</button>
             </div>
         `;
-        
+
         variationsContainer.appendChild(newVariationRow);
         variationIndex++;
     }
@@ -370,7 +379,7 @@
     function toggleColorInput(select) {
         const colorInput = select.closest('.variation-row').querySelector('.color-input');
         const valueInput = select.closest('.variation-row').querySelector('input[name*="[value]"]');
-        
+
         if (select.value === 'color') {
             colorInput.style.display = 'block';
             valueInput.style.display = 'none';

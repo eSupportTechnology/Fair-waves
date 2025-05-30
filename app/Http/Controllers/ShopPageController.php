@@ -13,7 +13,7 @@ class ShopPageController extends Controller
     public function index(Request $request)
 {
     $minPrice = $request->input('min_price', 0);
-    $maxPrice = $request->input('max_price', 20000);
+    $maxPrice = $request->input('max_price', 2000000);
     $categoryId = $request->input('category_id');
     $subcategoryId = $request->input('subcategory_id');
     $subsubcategoryId = $request->input('subsubcategory_id');
@@ -36,7 +36,7 @@ class ShopPageController extends Controller
 
     // Filter by sub-subcategory
     if ($subsubcategoryId) {
-        $query->where('subsubcategory_id', $subsubcategoryId);
+        $query->where('sub_subcategory_id', $subsubcategoryId);
     }
 
     // Filter by color
@@ -113,7 +113,7 @@ class ShopPageController extends Controller
 
         return view('frontend.product-details', compact(
             'product',
-            'similarProducts',                   
+            'similarProducts',
             'reviews',
             'averageRating',
             'ratingCounts',

@@ -1,11 +1,228 @@
 <?php $__env->startSection('content'); ?>
+
+
 <style>
     a.disabled {
         pointer-events: none;
         opacity: 0.6;
         cursor: not-allowed;
     }
+
+    
+   
+     @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+body{
+    line-height: 1.5;
+}
+.card-wrapper{
+    max-width: 1100px;
+    margin: 0 auto;
+}
+img{
+    /* width: 100%; */
+    display: block;
+}
+.img-display{
+    overflow: hidden;
+}
+.img-showcase{
+    display: flex;
+    width: 100%;
+    transition: all 0.5s ease;
+}
+.img-showcase img{
+    min-width: 100%;
+}
+.img-select{
+    display: flex;
+}
+.img-item {
+    margin: 0.3rem;
+    width: 100px;
+    height: 100px;
+}
+
+
+.img-item:nth-child(1),
+.img-item:nth-child(2),
+.img-item:nth-child(3){
+    margin-right: 0;
+}
+.img-item:hover{
+    opacity: 0.8;
+}
+.product-content{
+    padding: 2rem 1rem;
+}
+.product-title{
+    font-size: 3rem;
+    text-transform: capitalize;
+    font-weight: 700;
+    position: relative;
+    color: #12263a;
+    margin: 1rem 0;
+}
+.product-title::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 80px;
+    background: #12263a;
+}
+.product-link{
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    background: #256eff;
+    color: #fff;
+    padding: 0 0.3rem;
+    transition: all 0.5s ease;
+}
+.product-link:hover{
+    opacity: 0.9;
+}
+.product-rating{
+    color: #ffc107;
+}
+.product-rating span{
+    font-weight: 600;
+    color: #252525;
+}
+.product-price{
+    margin: 1rem 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+.product-price span{
+    font-weight: 400;
+}
+.last-price span{
+    color: #f64749;
+    text-decoration: line-through;
+}
+.new-price span{
+    color: #256eff;
+}
+.product-detail h2{
+    text-transform: capitalize;
+    color: #12263a;
+    padding-bottom: 0.6rem;
+}
+.product-detail p{
+    font-size: 0.9rem;
+    padding: 0.3rem;
+    opacity: 0.8;
+}
+.product-detail ul{
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+.product-detail ul li{
+    margin: 0;
+    list-style: none;
+    background: url(https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/checked.png) left center no-repeat;
+    background-size: 18px;
+    padding-left: 1.7rem;
+    margin: 0.4rem 0;
+    font-weight: 600;
+    opacity: 0.9;
+}
+.product-detail ul li span{
+    font-weight: 400;
+}
+.purchase-info{
+    margin: 1.5rem 0;
+}
+.purchase-info input,
+.purchase-info .btn{
+    border: 1.5px solid #ddd;
+    border-radius: 25px;
+    text-align: center;
+    padding: 0.45rem 0.8rem;
+    outline: 0;
+    margin-right: 0.2rem;
+    margin-bottom: 1rem;
+}
+.purchase-info input{
+    width: 60px;
+}
+.purchase-info .btn{
+    cursor: pointer;
+    color: #fff;
+}
+.purchase-info .btn:first-of-type{
+    background: #256eff;
+}
+.purchase-info .btn:last-of-type{
+    background: #f64749;
+}
+.purchase-info .btn:hover{
+    opacity: 0.9;
+}
+.social-links{
+    display: flex;
+    align-items: center;
+}
+.social-links a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: #000;
+    border: 1px solid #000;
+    margin: 0 0.2rem;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all 0.5s ease;
+}
+.social-links a:hover{
+    background: #000;
+    border-color: transparent;
+    color: #fff;
+}
+
+@media screen and (min-width: 992px){
+    .card{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1.5rem;
+    }
+    .card-wrapper{
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .product-imgs{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .product-content{
+        padding-top: 0;
+    }
+}
 </style>
+
+
+
+
+
+
 <!-- ========================= Breadcrumb Start =============================== -->
 <div class="breadcrumb mb-0 py-26 bg-main-two-50">
     <div class="container container-lg">
@@ -29,6 +246,7 @@
 <!-- ========================= Breadcrumb End =============================== -->
 
 
+
 <!-- ========================== Product Details Two Start =========================== -->
 <section class="product-details py-80">
     <div class="container container-lg" style="width:90%">
@@ -37,34 +255,36 @@
                 <div class="row gy-4">
                     <div class="col-xl-5">
                         <div class="product-details__left">
-                            <div class="product-details__thumb-slider border border-gray-100 rounded-16">
-                                <?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <div class="">
-                                    <div class="product-details__thumb flex-center">
-                                        <img src="<?php echo e(asset('storage/' . $image->image_path)); ?>" alt="<?php echo e($product->product_name); ?>" class="img-responsive rounded-15">
-                                    </div>
-                                </div>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </div>
+                           <!-- card left -->
+<div class="product-imgs">
+  <div class="img-display">
+    <div class="img-showcase">
+      <?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <img src="<?php echo e(asset('storage/' . $image->image_path)); ?>" alt="<?php echo e($product->product_name); ?>">
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </div>
+  </div>
 
-                            <div class="mt-24">
-                                <div class="product-details__images-slider">
-                                    <?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <div>
-                                        <div class="max-w-120 max-h-120 h-100 flex-center border border-gray-100 rounded-15 p-0">
-                                            <img src="<?php echo e(asset('storage/' . $image->image_path)); ?>" alt="<?php echo e($product->product_name); ?>" class="img-responsive rounded-15">
-                                        </div>
-                                    </div>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </div>
-                            </div>
+  <div class="img-select">
+    <?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+      <div class="img-item">
+        <a href="#" data-id="<?php echo e($index + 1); ?>">
+          <img src="<?php echo e(asset('storage/' . $image->image_path)); ?>" alt="<?php echo e($product->product_name); ?>">
+        </a>
+      </div>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+  </div>
+</div>
+
+
+                           
                         </div>
 
                     </div>
                     <div class="col-xl-6">
                         <div class="product-details__content">
 
-                            <div class="flex-center mb-24 flex-wrap gap-16 bg-color-one rounded-8 py-16 px-24 position-relative z-1">
+                            <!-- <div class="flex-center mb-24 flex-wrap gap-16 bg-color-one rounded-8 py-16 px-24 position-relative z-1">
                                 <img src="<?php echo e(asset('/frontend/assets/images/bg/details-offer-bg.png')); ?>" alt="" class="position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 z-n1">
                                 <div class="flex-align gap-16">
                                     <span class="text-white text-sm">Special Offer:</span>
@@ -78,7 +298,7 @@
                                     </ul>
                                 </div>
                                 <span class="text-white text-xs">Remains untill the end of the offer</span>
-                            </div>
+                            </div> -->
 
                             <h5 class="mb-12"><?php echo e($product->product_name); ?></h5>
                             <div class="flex-align flex-wrap gap-12">
@@ -184,7 +404,7 @@
                             <button type="button" class="quantity__minus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white">
                                 <i class="ph ph-minus"></i>
                             </button>
-                            <input type="number" class="quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-16" id="quantityInput" name="quantity" value="1" min="1">
+                            <input type="number" style="height: 48px;" class="quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-16 " id="quantityInput" name="quantity" value="1" min="1">
                             <button type="button" class="quantity__plus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white">
                                 <i class="ph ph-plus"></i>
                             </button>
@@ -446,72 +666,99 @@
 </section>
 <!-- ========================== Product Details Two End =========================== -->
 
-<!-- ========================== Similar Product Start ============================= -->
-<section class="new-arrival pb-80">
-    <div class="container container-lg" style="width: 90%">
-        <div class="section-heading">
-            <div class="flex-between flex-wrap gap-8">
-                <h5 class="mb-0">You Might Also Like</h5>
-                <div class="flex-align gap-16">
-                    <a href="shop.html" class="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline">All Products</a>
-                    <div class="flex-align gap-8">
-                        <button type="button" id="new-arrival-prev" class="slick-prev slick-arrow flex-center rounded-circle border border-gray-100 hover-border-main-600 text-xl hover-bg-main-600 hover-text-white transition-1">
-                            <i class="ph ph-caret-left"></i>
-                        </button>
-                        <button type="button" id="new-arrival-next" class="slick-next slick-arrow flex-center rounded-circle border border-gray-100 hover-border-main-600 text-xl hover-bg-main-600 hover-text-white transition-1">
-                            <i class="ph ph-caret-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="new-arrival__slider arrow-style-two">
-            <?php $__currentLoopData = $similarProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $similarProduct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div>
-                <div class="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                    <a href="<?php echo e(route('showProductDetails', $similarProduct->product_id)); ?>" class="product-card__thumb flex-center">
-                        <img src="<?php echo e(asset('storage/' . $similarProduct->images->first()->image_path)); ?>" alt="<?php echo e($similarProduct->name); ?>" style="width: 200px; height: 200px; object-fit: cover;">
-                    </a>
-
-                    <div class="product-card__content p-sm-2 w-100">
-                        <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                            <a href="<?php echo e(route('showProductDetails', $similarProduct->product_id)); ?>" class="link text-line-2"><?php echo e($similarProduct->product_name); ?></a>
-                        </h6>
-                        <div class="flex-align gap-4">
-                            <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                            <span class="text-gray-500 text-xs">By <?php echo e($similarProduct->shop->shop_name ?? ''); ?></span>
-                        </div>
-
-                        <div class="flex-align mb-20 mt-16 gap-6">
-                            <div class="rating-info d-flex gap-2">
-                                <span class="text-xs fw-medium text-gray-500">4.8</span>
-                                <span class="text-15 fw-medium text-warning-600 d-flex">
-                                    <i class="ph-fill ph-star"></i>
-                                </span>
-                                <span class="text-xs fw-medium text-gray-500">(17k)</span>
-                            </div>
-                            <!-- Heart Icon -->
-                            <button type="button" class="heart-icon ms-auto"
-                                id="wishlist-icon-<?php echo e($similarProduct->product_id); ?>"
-                                data-product-id="<?php echo e($similarProduct->product_id); ?>"
-                                onclick="toggleWishlist(this, '<?php echo e($similarProduct->product_id); ?>')">
-                                <i class="fa-regular fa-heart" style="font-size: 15px;"></i>
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </div>
-
-    </div>
-</section>
 
 
 
-<!-- ========================== Similar Product End ============================= -->
+
+
+   
+
+
+
+<script>
+
+const imgs = document.querySelectorAll('.img-select a');
+const imgBtns = [...imgs];
+let imgId = 1;
+
+imgBtns.forEach((imgItem) => {
+    imgItem.addEventListener('click', (event) => {
+        event.preventDefault();
+        imgId = imgItem.dataset.id;
+        slideImage();
+    });
+});
+
+function slideImage(){
+    const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
+
+    document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
+}
+
+window.addEventListener('resize', slideImage);
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =================================================================================================================== -->
 
 
 
@@ -744,6 +991,5 @@
             .catch(error => console.error('Error:', error));
     }
 </script>
-
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/product-details.blade.php ENDPATH**/ ?>

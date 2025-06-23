@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Title -->
-    <title>CROWN ELECTRONICS </title>
+    <title>FAIR WAVES </title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="<?php echo e(asset('frontend/assets/images/logo.png')); ?>">
+    <link rel="shortcut icon" href="<?php echo e(asset('frontend\newstyle\assets\images\Fire Waves LOGO.png')); ?>">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/bootstrap.min.css')); ?>">
@@ -52,7 +52,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="icon" sizes="16x16" href="<?php echo e(asset('frontend/assets/images/logo.png')); ?>" />
+    <link rel="icon" sizes="16x16" href="<?php echo e(asset('frontend\newstyle\assets\images\Fire Waves LOGO.png')); ?>" />
 
     <!-- <link rel="stylesheet" href="assets/libs/owl-carousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/libs/owl-carousel/assets/owl.theme.default.min.css">
@@ -91,12 +91,12 @@
 <style>
 
 .item-hover-two:hover .item-hover__text {
-    color: #0035ff !important;
+    color: #ff5800 !important;
 }
 
 
 .bg-main-two-50 {
-    background-color: rgba(10, 67, 255, 0.36) !important;
+    background-color: rgba(255, 88, 0, 1) !important;
 }
 
 .text-main-600 {
@@ -105,63 +105,63 @@
 
 
 .bg-main-600 {
-    background-color: #001ed4 !important;
+    background-color: #ff5800 !important;
 }
 
 
 .pagination .page-item.active .page-link {
-    background-color: #001ed4 !important;
-    border-color: #001ed4 !important;
+    background-color: #ff5800 !important;
+    border-color: #ff5800 !important;
     color: #ffffff !important;
 }
 
 .hover-bg-main-600:hover {
-    background-color:  #001ed4 !important;
+    background-color:  #ff5800 !important;
 }
 
 .hover-border-main-600:hover {
-    border-color: #001ed4 !important;
+    border-color: #ff5800 !important;
 }
 
 
 .text-gray-900:hover {
-    color:  #001ed4 !important;
+    color:  #ff5800 !important;
 }
 
 .border:hover {
-    border: color:  #001ed4 !important;
+    border: color:  #ff5800 !important;
 }
 
 .text-neutral-600:hover {
-    color: color:  #001ed4 !important;
+    color: color:  #ff5800 !important;
 }
 
 .btn-main {
-    background-color:color:  #001ed4 !important;
-    border-color: color:  #001ed4 !important;
+    background-color:color:  #ff5800 !important;
+    border-color: color:  #ff5800 !important;
 }
 
 .btn-main:hover {
-    background-color:   #001ed4 !important;
-    border-color:   #001ed4 !important;
+    background-color:   #ff5800 !important;
+    border-color:   #ff5800 !important;
 }
 
 .products-btn-set:hover{
-    background-color:   #001ed4 !important;
+    background-color:   #ff5800 !important;
 }
 
 .home-buynow:hover{
-    background-color:   #001ed4 !important;
+    background-color:   #ff5800 !important;
 }
 
 .bg-main-50 {
-    background-color: rgba(10, 67, 255, 0.36) !important;
+    background-color: rgba(255, 88, 0, 1) !important;
 }
 
 
 
 .btn-site-default:hover {
-    background: #001ed4;
+    background: #ff5800;
     color: #fff;
     height: 36px;
     border-radius: 0px;

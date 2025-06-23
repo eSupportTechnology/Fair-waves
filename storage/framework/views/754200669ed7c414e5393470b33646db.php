@@ -55,11 +55,11 @@
         <div class="row footer-mobi-details text-center m-0">
             <div class="col-12 mobi-footer-link">
             <ul>
-    <li><a href="#" target="_blank"><i class="fab fa-facebook" fab fa-facebook  style="color:#001ed4 ; font-size: 22px;"></i></a></li>
-    <li><a href="#" target="_blank"><i class="fab fa-twitter" fab fa-facebook style="color:#001ed4 ; font-size: 22px;"></i></a></li>
-    <li><a href="#" target="_blank"><i class="fab fa-instagram" fab fa-facebook style="color:#001ed4 ; font-size: 22px;"></i></a></li>
-    <li><a href="#" target="_blank"><i class="fab fa-linkedin-in" fab fa-facebook style="color:#001ed4 ; font-size: 22px;"></i></a></li>
-    <li><a href="#" target="_blank"><i class="fab fa-youtube" fab fa-facebook style="color:#001ed4 ; font-size: 22px;"></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-facebook" fab fa-facebook  style="color:#ff5800 ; font-size: 22px;"></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-twitter" fab fa-facebook style="color:#ff5800 ; font-size: 22px;"></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-instagram" fab fa-facebook style="color:#ff5800 ; font-size: 22px;"></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-linkedin-in" fab fa-facebook style="color:#ff5800 ; font-size: 22px;"></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-youtube" fab fa-facebook style="color:#ff5800 ; font-size: 22px;"></i></a></li>
 </ul>
 
             </div>
@@ -279,11 +279,11 @@
                     </div>
                     <div class="social-media">
                     <ul>
-    <li><a href="#" target="_blank"><i class="fab fa-facebook" style="color:#001ed4 ; font-size: 22px;"></i></a></li>
-    <li><a href="#" target="_blank"><i class="fab fa-twitter" style="color:#001ed4 ; font-size: 22px;" ></i></a></li>
-    <li><a href="#" target="_blank"><i class="fab fa-instagram" style="color:#001ed4 ; font-size: 22px;"></i></a></li>
-    <li><a href="#" target="_blank"><i class="fab fa-linkedin-in" style="color:#001ed4 ; font-size: 22px;"></i></a></li>
-    <li><a href="#" target="_blank"><i class="fab fa-youtube" style="color:#001ed4 ; font-size: 22px;"></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-facebook" style="color:#ff5800 ; font-size: 22px;"></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-twitter" style="color:#ff5800 ; font-size: 22px;" ></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-instagram" style="color:#ff5800 ; font-size: 22px;"></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-linkedin-in" style="color:#ff5800 ; font-size: 22px;"></i></a></li>
+    <li><a href="#" target="_blank"><i class="fab fa-youtube" style="color:#ff5800 ; font-size: 22px;"></i></a></li>
 </ul>
 
                     </div>
@@ -385,7 +385,7 @@
 <div class="bank-image"><img src="<?php echo e(asset('frontend/newstyle/assets/images/new-bank-logo/UB1.webp')); ?>"></div>
 
                 </div>
-                <div class="copyright"><small>Copyright © 2025 CROWN ELECTRONICS. All Rights Reserved.</small></div>
+                <div class="copyright"><small>Copyright © 2025 FAIR WAVES. All Rights Reserved.</small></div>
             </div>
         </div>
     </div>

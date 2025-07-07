@@ -25,6 +25,7 @@ class Product extends Model
         'affiliate_price',
         'commission_percentage',
         'commission_price',
+        'bv'
     ];
 
     public function images()

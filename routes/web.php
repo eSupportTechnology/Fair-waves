@@ -83,6 +83,8 @@ Route::get('/contact', function () {
     return view('frontend.contact');
 })->name('contact');
 
+
+
 Route::get('/privacy-policy', function () {
     return view('frontend.privacy-policy');
 })->name('privacy-policy');
@@ -167,6 +169,7 @@ Route::get('/brand/{slug}', [BrandController::class, 'showBrandProducts'])->name
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\DealerController;
 use App\Http\Controllers\SliderController;
 use App\Http\Middleware\AdminAuth;
 
@@ -458,3 +461,13 @@ Route::post('/vendor/profile/update', [VendorAccountController::class, 'updatePr
 Route::post('/vendor/password/update', [VendorAccountController::class, 'updatePassword'])->name('vendor.updatePassword');
 Route::post('/vendor/bank/update', [VendorAccountController::class, 'updateBankDetails'])->name('vendor.updateBankDetails');
 
+
+Route::get('/become-a-dealer', [DealerController::class, 'index'])->name('dealer.index');
+Route::post('/become-a-dealer', [DealerController::class, 'store'])->name('dealer.apply');
+
+
+Route::prefix('dealer')->group(function () {
+    Route::get('/dashboard', [DealerController::class, 'dashboard'])->name('dealer.dashboard');
+    Route::get('/register', [DealerController::class, 'showRegisterForm'])->name('dealer.register');
+    Route::post('/register', [DealerController::class, 'register'])->name('dealer.register.submit');
+});

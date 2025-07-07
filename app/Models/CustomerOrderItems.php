@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerOrderItems extends Model
 {
     use HasFactory;
-   
+
 
     protected $table = 'customer_order_items';
 
     protected $fillable = [
-        'order_code', 'product_id', 'quantity', 'size', 'color', 'cost', 'date'
+        'order_code', 'product_id', 'quantity', 'size', 'color', 'cost', 'date','bv',
     ];
 
     public function order()
@@ -23,7 +23,7 @@ class CustomerOrderItems extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id'); 
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
     public function review()

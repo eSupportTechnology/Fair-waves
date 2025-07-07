@@ -634,12 +634,14 @@
 
                                         </li>
 
-                                        <!-- <li class="column-1">
-                                            <a href="<?php echo e(route('frontend.vendor')); ?>" title="">
+                                        <li class="column-1">
+                                            <a href="/become-a-dealer" title="">
 
-                                                Vendors </a>
+                                                Become a Dealer </a>
 
-                                        </li> -->
+                                        </li>
+
+                                         
 
 
 

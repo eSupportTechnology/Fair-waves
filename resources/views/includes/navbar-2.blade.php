@@ -626,12 +626,19 @@
 
                                         </li>
 
-                                        <!-- <li class="column-1">
+                                        <li class="column-1">
+                                            <a href="/become-a-dealer" title="">
+
+                                                Become a Dealer </a>
+
+                                        </li>
+
+                                         {{-- <li class="column-1">
                                             <a href="{{ route('frontend.vendor') }}" title="">
 
                                                 Vendors </a>
 
-                                        </li> -->
+                                        </li> --}}
 
 
 

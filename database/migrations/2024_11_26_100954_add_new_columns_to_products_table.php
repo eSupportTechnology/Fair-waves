@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('gender', ['male', 'female', 'other'])->nullable()->after('phone');
+        Schema::table('products', function (Blueprint $table) {
+            $table->integer('bv')->nullable()->after('commission_price');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('gender');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('bv');
         });
     }
 };

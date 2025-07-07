@@ -25,6 +25,12 @@ class User extends Authenticatable
         'address',
         'dob',
         'phone',
+        'gender',
+        'profile_image',
+        'role',
+        'referred_by',
+        'fname',
+        'lname',
     ];
 
     /**
@@ -54,5 +60,35 @@ class User extends Authenticatable
     public function customerOrders()
     {
         return $this->hasMany(CustomerOrder::class, 'user_id', 'id');
+    }
+
+    public function dealerProfile()
+    {
+        return $this->hasOne(DealerProfile::class);
+    }
+
+    public function referrer()
+    {
+        return $this->belongsTo(User::class, 'referred_by');
+    }
+
+    public function referrals()
+    {
+        return $this->hasMany(User::class, 'referred_by');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(CustomerOrder::class);
+    }
+
+    public function dealerReferrals()
+    {
+        return $this->hasMany(DealerReferral::class, 'dealer_id');
+    }
+
+    public function referredByDealer()
+    {
+        return $this->hasOne(DealerReferral::class, 'referred_id');
     }
 }

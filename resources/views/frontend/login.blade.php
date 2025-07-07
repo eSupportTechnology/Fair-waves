@@ -72,14 +72,43 @@
 
                         <!-- Password -->
                         <div class="mb-3">
-                            <x-input-label class="fw-bold" for="password" :value="__('Password')" />
-                            <span class="text-danger">*</span>
+                            <label for="password" class="fw-bold">Password <span class="text-danger">*</span></label>
                             <div class="position-relative">
-                                <x-text-input id="password" class="common-input w-100" type="password" name="password" placeholder="Enter Password" required autocomplete="current-password" />
-                                <span class="cursor-pointer toggle-password position-absolute top-50 end-0 me-3 translate-middle-y ph ph-eye-slash" id="toggle-password"></span>
+                                <input id="password" type="password" name="password" class="common-input w-100"
+                                    placeholder="Enter Password" required autocomplete="new-password">
+
+                                <span id="toggle-password"
+                                    style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer; color: #007bff; font-size: 14px;">
+                                    Show
+                                </span>
                             </div>
-                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                            @error('password')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
+
+                        <script>
+                            function initPasswordToggle() {
+                                const passwordInput = document.getElementById('password');
+                                const toggleText = document.getElementById('toggle-password');
+
+                                // Remove previous listeners if any
+                                toggleText?.replaceWith(toggleText.cloneNode(true));
+                                const newToggle = document.getElementById('toggle-password');
+
+                                newToggle.addEventListener('click', function() {
+                                    const isHidden = passwordInput.type === 'password';
+                                    passwordInput.type = isHidden ? 'text' : 'password';
+                                    newToggle.textContent = isHidden ? 'Hide' : 'Show';
+                                });
+                            }
+
+                            document.addEventListener('DOMContentLoaded', initPasswordToggle);
+
+                            // Optional: if you're using Livewire, re-init after updates
+                            document.addEventListener('livewire:load', initPasswordToggle);
+                            document.addEventListener('livewire:update', initPasswordToggle);
+                        </script>
 
                         <!-- Remember Me and Login -->
                         <div class="mt-4 mb-3 d-flex flex-column flex-md-row justify-content-between align-items-center">

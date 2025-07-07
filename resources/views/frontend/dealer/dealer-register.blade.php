@@ -34,14 +34,14 @@
     <!-- =============================== Account Section Start =========================== -->
     <section class="account d-flex justify-content-center align-items-center py-80" style="min-height: 100vh;">
         <div class="container container-lg">
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('dealer.register') }}">
                 @csrf
 
                 <div class="row gy-4 justify-content-center">
                     <!-- Register Card Start -->
                     <div class="col-xl-6 col-lg-8 col-md-10">
                         <div class="px-24 py-40 border border-gray-100 hover-border-main-600 transition-1 rounded-16">
-                            <h6 class="mb-32 text-xl text-center">Register</h6>
+                            <h6 class="mb-32 text-xl text-center">Dealer Register</h6>
 
                             <!-- Name -->
                             {{-- <div class="mb-24">
@@ -147,6 +147,15 @@
                                 document.addEventListener('livewire:load', initPasswordToggle);
                                 document.addEventListener('livewire:update', initPasswordToggle);
                             </script>
+
+                            <!-- dealer code -->
+                            <div class="mb-24">
+                                <x-input-label class="fw-bold" for="dealer_code" :value="__('Dealer Code')" />
+                                <span class="text-danger">*</span>
+                                <x-text-input id="dealer_code" class="common-input w-100" type="text" name="dealer_code"
+                                    :value="old('dealer_code', $refCode ?? '')" placeholder="Enter the Dealer Code" required autofocus />
+                                <x-input-error :messages="$errors->get('dealer_code')" class="mt-2" style="color: red" />
+                            </div>
 
 
                             <!-- Privacy Policy -->

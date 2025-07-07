@@ -50,4 +50,14 @@ class CustomerOrder extends Model
         ];
         $this->update(['activity_logs' => $logs]);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function customeritems()
+    {
+        return $this->hasMany(CustomerOrderItems::class);
+    }
 }

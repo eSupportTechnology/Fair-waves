@@ -36,30 +36,49 @@
 
     .orders-row {
         display: flex;
-        justify-content: space-around; /* Adjusts space evenly between items */
-        padding: 10px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
     }
 
     .orders-box {
         display: flex;
-        flex-direction: column; /* Stack image and text vertically */
-        align-items: center; /* Center align items */
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
         text-align: center;
         width: 100px;
         padding: 10px;
+        border-radius: 8px;
+        transition: all 0.2s ease;
     }
 
     .orders-box img {
         width: 40px;
         height: 40px;
-        margin-bottom: 5px; /* Space between image and text */
+        margin-bottom: 8px;
     }
 
     .orders-box p {
-        margin: 0; /* Reset margin for better alignment */
-        font-size: 12px;
-        white-space: nowrap;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    /* ✅ Responsive Fixes */
+    @media (max-width: 576px) {
+        .orders-box {
+            width: 40%;
+        }
+
+        .orders-row {
+            gap: 15px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .orders-box {
+            width: 100%;
+        }
     }
 </style>
 

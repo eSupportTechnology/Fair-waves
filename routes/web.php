@@ -470,4 +470,7 @@ Route::prefix('dealer')->group(function () {
     Route::get('/dashboard', [DealerController::class, 'dashboard'])->name('dealer.dashboard');
     Route::get('/register', [DealerController::class, 'showRegisterForm'])->name('dealer.register');
     Route::post('/register', [DealerController::class, 'register'])->name('dealer.register.submit');
+    Route::get('/team', [DealerController::class, 'teamOverview'])->name('dealer.team');
+    Route::get('/team/full', [DealerController::class, 'fullHierarchy'])->name('dealer.team.full');
+    Route::post('/withdraw', [DealerController::class, 'requestWithdrawal'])->name('dealer.withdraw.request');
 });

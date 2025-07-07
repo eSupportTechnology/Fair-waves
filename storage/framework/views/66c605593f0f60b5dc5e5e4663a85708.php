@@ -1,6 +1,4 @@
-@extends ('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <style>
     /* Dealer Application Styles */
@@ -436,15 +434,15 @@
                             </ul>
                         </div>
 
-                        <form action="{{ route('dealer.apply') }}" method="POST" id="dealerApplicationForm">
-                            @csrf
+                        <form action="<?php echo e(route('dealer.apply')); ?>" method="POST" id="dealerApplicationForm">
+                            <?php echo csrf_field(); ?>
 
                             <div class="form-group">
                                 <label class="form-label">
                                     <i class="fas fa-user"></i>
                                     Your Name
                                 </label>
-                                <input type="text" class="form-control" value="{{ auth()->user()->name }}" readonly>
+                                <input type="text" class="form-control" value="<?php echo e(auth()->user()->name); ?>" readonly>
                             </div>
 
                             <div class="form-group">
@@ -452,7 +450,7 @@
                                     <i class="fas fa-envelope"></i>
                                     Email Address
                                 </label>
-                                <input type="email" class="form-control" value="{{ auth()->user()->email }}" readonly>
+                                <input type="email" class="form-control" value="<?php echo e(auth()->user()->email); ?>" readonly>
                             </div>
 
                             <div class="form-group">
@@ -488,10 +486,17 @@
                                     <i class="fas fa-code"></i>
                                     Sponsered Dealer Code
                                 </label>
-                                <input type="text" class="form-control" name="dealer_code" placeholder="Enter dealer code" value="{{ old('dealer_code', $refCode ?? '')}}" required>
-                                @error('dealer_code')
-                                <div class="text-danger mt-2">{{ $message }}</div>
-                            @enderror
+                                <input type="text" class="form-control" name="dealer_code" placeholder="Enter dealer code" value="<?php echo e(old('dealer_code', $refCode ?? '')); ?>" required>
+                                <?php $__errorArgs = ['dealer_code'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="text-danger mt-2"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="agreement-section">
@@ -756,4 +761,6 @@ $(document).ready(function() {
 });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/dealer/become-a-dealer.blade.php ENDPATH**/ ?>

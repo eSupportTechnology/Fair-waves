@@ -50,21 +50,118 @@
                 <div class="shop-sidebar">
                     <div class="p-32 mb-32 border border-gray-100 shop-sidebar__box rounded-8">
                         <h6 class="pb-24 mb-24 text-xl border-gray-100 border-bottom">Product Category</h6>
-                        <ul class="overflow-y-auto max-h-540 scroll-sm">
-                            <li class="mb-24">
-                                <a href="{{ route('shop.index') }}" class="text-gray-900 hover-text-main-600 {{ !isset($categoryId) ? 'font-bold' : '' }}">
-                                    All Categories
-                                </a>
-                            </li>
-                            @foreach($categories as $category)
-                                <li class="mb-24">
-                                    <a href="{{ route('shop.index', ['category_id' => $category->id]) }}"
-                                       class="text-gray-900 hover-text-main-600 {{ isset($categoryId) && $categoryId == $category->id ? 'font-bold' : '' }}">
-                                        {{ $category->name }} ({{ $category->products_count }})
+                        <form id="categoryFilterForm" action="{{ route('shop.index') }}" method="GET">
+                            <!-- Preserve other filters -->
+                            @if(request('min_price'))
+                                <input type="hidden" name="min_price" value="{{ request('min_price') }}">
+                            @endif
+                            @if(request('max_price'))
+                                <input type="hidden" name="max_price" value="{{ request('max_price') }}">
+                            @endif
+                            @if(request('subcategory_id'))
+                                <input type="hidden" name="subcategory_id" value="{{ request('subcategory_id') }}">
+                            @endif
+                            @if(request('subsubcategory_id'))
+                                <input type="hidden" name="subsubcategory_id" value="{{ request('subsubcategory_id') }}">
+                            @endif
+                            @if(request('color'))
+                                <input type="hidden" name="color" value="{{ request('color') }}">
+                            @endif
+                            @if(request('rating'))
+                                <input type="hidden" name="rating" value="{{ request('rating') }}">
+                            @endif
+                            
+                            <ul class="overflow-y-auto max-h-540 scroll-sm">
+                                <li class="mb-24 d-flex align-items-center">
+                                    <input type="checkbox" id="all_categories" class="category-checkbox me-2" 
+                                           onchange="handleAllCategoriesChange(this)" 
+                                           {{ (!isset($categoryIds) || empty($categoryIds)) || (isset($allCategoriesSelected) && $allCategoriesSelected) ? 'checked' : '' }}>
+                                    <label for="all_categories" class="text-gray-900 hover-text-main-600 {{ (!isset($categoryIds) || empty($categoryIds)) || (isset($allCategoriesSelected) && $allCategoriesSelected) ? 'font-bold' : '' }} mb-0 cursor-pointer">
+                                        All Categories
+                                    </label>
+                                    <a href="{{ route('shop.index') }}" class="ms-2 text-gray-500 hover-text-main-600 text-decoration-none">
+                                        <i class="ph ph-arrow-square-out"></i>
                                     </a>
                                 </li>
-                            @endforeach
-                        </ul>
+                                @foreach($categories as $category)
+                                    <li class="mb-24 d-flex align-items-center">
+                                        <input type="checkbox" id="category_{{ $category->id }}" 
+                                               name="category_ids[]" value="{{ $category->id }}" 
+                                               class="category-checkbox me-2" 
+                                               onchange="handleCategoryChange()"
+                                               {{ isset($categoryIds) && in_array($category->id, $categoryIds) ? 'checked' : '' }}>
+                                        <label for="category_{{ $category->id }}" class="text-gray-900 hover-text-main-600 {{ isset($categoryIds) && in_array($category->id, $categoryIds) ? 'font-bold' : '' }} mb-0 cursor-pointer flex-grow-1">
+                                            {{ $category->name }} ({{ $category->products_count }})
+                                        </label>
+                                        <a href="{{ route('shop.index', ['category_id' => $category->id]) }}" 
+                                           class="ms-2 text-gray-500 hover-text-main-600 text-decoration-none">
+                                            <i class="ph ph-arrow-square-out"></i>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </form>
+                    </div>
+
+                    <!-- Brands Filter Section -->
+                    <div class="p-32 mb-32 border border-gray-100 shop-sidebar__box rounded-8">
+                        <h6 class="pb-24 mb-24 text-xl border-gray-100 border-bottom">Brands</h6>
+                        <form id="brandFilterForm" action="{{ route('shop.index') }}" method="GET">
+                            <!-- Preserve other filters -->
+                            @if(request('min_price'))
+                                <input type="hidden" name="min_price" value="{{ request('min_price') }}">
+                            @endif
+                            @if(request('max_price'))
+                                <input type="hidden" name="max_price" value="{{ request('max_price') }}">
+                            @endif
+                            @if(request('subcategory_id'))
+                                <input type="hidden" name="subcategory_id" value="{{ request('subcategory_id') }}">
+                            @endif
+                            @if(request('subsubcategory_id'))
+                                <input type="hidden" name="subsubcategory_id" value="{{ request('subsubcategory_id') }}">
+                            @endif
+                            @if(request('color'))
+                                <input type="hidden" name="color" value="{{ request('color') }}">
+                            @endif
+                            @if(request('rating'))
+                                <input type="hidden" name="rating" value="{{ request('rating') }}">
+                            @endif
+                            @if(request('category_ids'))
+                                @foreach(request('category_ids') as $catId)
+                                    <input type="hidden" name="category_ids[]" value="{{ $catId }}">
+                                @endforeach
+                            @endif
+                            
+                            <ul class="overflow-y-auto max-h-540 scroll-sm">
+                                <li class="mb-24 d-flex align-items-center">
+                                    <input type="checkbox" id="all_brands" class="brand-checkbox me-2" 
+                                           onchange="handleAllBrandsChange(this)" 
+                                           {{ (!isset($brandSlugs) || empty($brandSlugs)) || (isset($allBrandsSelected) && $allBrandsSelected) ? 'checked' : '' }}>
+                                    <label for="all_brands" class="text-gray-900 hover-text-main-600 {{ (!isset($brandSlugs) || empty($brandSlugs)) || (isset($allBrandsSelected) && $allBrandsSelected) ? 'font-bold' : '' }} mb-0 cursor-pointer">
+                                        All Brands
+                                    </label>
+                                    <a href="{{ route('shop.index') }}" class="ms-2 text-gray-500 hover-text-main-600 text-decoration-none">
+                                        <i class="ph ph-arrow-square-out"></i>
+                                    </a>
+                                </li>
+                                @foreach($brands as $brand)
+                                    <li class="mb-24 d-flex align-items-center">
+                                        <input type="checkbox" id="brand_{{ $brand->id }}" 
+                                               name="brand_slugs[]" value="{{ $brand->slug }}" 
+                                               class="brand-checkbox me-2" 
+                                               onchange="handleBrandChange()"
+                                               {{ isset($brandSlugs) && in_array($brand->slug, $brandSlugs) ? 'checked' : '' }}>
+                                        <label for="brand_{{ $brand->id }}" class="text-gray-900 hover-text-main-600 {{ isset($brandSlugs) && in_array($brand->slug, $brandSlugs) ? 'font-bold' : '' }} mb-0 cursor-pointer flex-grow-1">
+                                            {{ $brand->name }} ({{ $brand->products_count }})
+                                        </label>
+                                        <a href="{{ route('shop.index', ['brand_slug' => $brand->slug]) }}" 
+                                           class="ms-2 text-gray-500 hover-text-main-600 text-decoration-none">
+                                            <i class="ph ph-arrow-square-out"></i>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -72,6 +169,26 @@
 
             <!-- Content Start -->
             <div class="col-lg-9">
+                <!-- Search Results Header -->
+                @if(isset($searchQuery) && !empty($searchQuery))
+                    <div class="mb-32 p-24 bg-gray-50 rounded-8 border border-gray-200">
+                        <div class="flex-wrap gap-16 flex-between">
+                            <div>
+                                <h5 class="mb-8 text-lg fw-semibold text-main-600">
+                                    <i class="ph ph-magnifying-glass me-2"></i>Search Results for: "{{ $searchQuery }}"
+                                </h5>
+                                <span class="text-gray-600">
+                                    Found {{ $products->total() }} product{{ $products->total() != 1 ? 's' : '' }} matching your search
+                                </span>
+                            </div>
+                            <a href="{{ route('shop.index') }}" class="gap-8 btn btn-outline-main-600 rounded-pill flex-align">
+                                <i class="ph ph-x"></i>
+                                Clear Search
+                            </a>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="flex-wrap gap-16 mb-40 flex-between">
                     <span class="text-gray-900">
                         Showing {{ $products->firstItem() }}-{{ $products->lastItem() }} of {{ $products->total() }} results
@@ -79,7 +196,8 @@
                 </div>
 
                 <div class="list-grid-wrapper">
-                    @foreach($products as $product)
+                    @if($products->count() > 0)
+                        @foreach($products as $product)
                         <div class="p-16 border border-gray-100 product-card h-100 hover-border-main-600 rounded-16 position-relative transition-2">
                             <a href="{{ url('/product-details/' . $product->product_id) }}" class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
                                 <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
@@ -173,6 +291,37 @@
                         </div>
 
                     @endforeach
+                    @else
+                        <div class="col-12">
+                            <div class="text-center py-80">
+                                <div class="mb-24">
+                                    <i class="ph ph-package text-6xl text-gray-400"></i>
+                                </div>
+                                <h4 class="mb-16 text-2xl fw-semibold text-gray-600">No Products Found</h4>
+                                <p class="text-gray-500 mb-32">
+                                    @if(isset($searchQuery) && !empty($searchQuery))
+                                        Sorry, no products match your search for "<strong>{{ $searchQuery }}</strong>".
+                                        <br>Try searching with different keywords or
+                                        <a href="{{ route('shop.index') }}" class="text-main-600 hover-text-main-700 fw-medium">
+                                            browse all products
+                                        </a>.
+                                    @elseif(!empty($categoryIds) || !empty($brandSlugs))
+                                        Sorry, no products match your current filter selection.
+                                        Try adjusting your filters or
+                                        <a href="{{ route('shop.index') }}" class="text-main-600 hover-text-main-700 fw-medium">
+                                            browse all products
+                                        </a>.
+                                    @else
+                                        Please check back later for new products.
+                                    @endif
+                                </p>
+                                <a href="{{ route('shop.index') }}" class="btn btn-main rounded-8 py-12 px-24">
+                                    <i class="ph ph-arrow-left me-2"></i>
+                                    View All Products
+                                </a>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Pagination Start -->
@@ -236,6 +385,288 @@ function toggleWishlist(button, productId) {
     })
     .catch(error => console.error('Error:', error));
 }
+
+// Category filter handling
+function handleAllCategoriesChange(checkbox) {
+    const categoryCheckboxes = document.querySelectorAll('input[name="category_ids[]"]');
+    
+    if (checkbox.checked) {
+        // Check all category checkboxes
+        categoryCheckboxes.forEach(cb => {
+            cb.checked = true;
+        });
+        
+        // Get all category IDs and submit
+        const allCategoryIds = Array.from(categoryCheckboxes).map(cb => cb.value);
+        const url = '{{ route("shop.index") }}' + buildQueryStringWithCategories(allCategoryIds);
+        window.location.href = url;
+    } else {
+        // Uncheck all category checkboxes
+        categoryCheckboxes.forEach(cb => {
+            cb.checked = false;
+        });
+        
+        // Submit form to show all products (no category filter)
+        window.location.href = '{{ route("shop.index") }}' + buildQueryString(true);
+    }
+}
+
+function handleCategoryChange() {
+    const allCategoriesCheckbox = document.getElementById('all_categories');
+    const categoryCheckboxes = document.querySelectorAll('input[name="category_ids[]"]');
+    const checkedCategories = document.querySelectorAll('input[name="category_ids[]"]:checked');
+    
+    // Check if all categories are selected
+    const allSelected = checkedCategories.length === categoryCheckboxes.length;
+    
+    if (checkedCategories.length > 0) {
+        if (allSelected) {
+            // All categories are selected, check "All Categories"
+            allCategoriesCheckbox.checked = true;
+        } else {
+            // Some but not all categories selected, uncheck "All Categories"
+            allCategoriesCheckbox.checked = false;
+        }
+        
+        // Build URL with multiple category IDs
+        const categoryIds = Array.from(checkedCategories).map(cb => cb.value);
+        const url = '{{ route("shop.index") }}' + buildQueryStringWithCategories(categoryIds);
+        window.location.href = url;
+    } else {
+        // If no categories selected, check "All Categories" and show all products
+        allCategoriesCheckbox.checked = true;
+        window.location.href = '{{ route("shop.index") }}' + buildQueryString(true);
+    }
+}
+
+function buildQueryStringWithCategories(categoryIds) {
+    const params = new URLSearchParams();
+    
+    // Add category IDs
+    categoryIds.forEach(id => {
+        params.append('category_ids[]', id);
+    });
+    
+    // Preserve existing filters
+    @if(request('search'))
+        params.append('search', '{{ request("search") }}');
+    @endif
+    @if(request('min_price'))
+        params.append('min_price', '{{ request("min_price") }}');
+    @endif
+    @if(request('max_price'))
+        params.append('max_price', '{{ request("max_price") }}');
+    @endif
+    @if(request('subcategory_id'))
+        params.append('subcategory_id', '{{ request("subcategory_id") }}');
+    @endif
+    @if(request('subsubcategory_id'))
+        params.append('subsubcategory_id', '{{ request("subsubcategory_id") }}');
+    @endif
+    @if(request('color'))
+        params.append('color', '{{ request("color") }}');
+    @endif
+    @if(request('rating'))
+        params.append('rating', '{{ request("rating") }}');
+    @endif
+    
+    const queryString = params.toString();
+    return queryString ? '?' + queryString : '';
+}
+
+// Brand filter handling
+function handleAllBrandsChange(checkbox) {
+    const brandCheckboxes = document.querySelectorAll('input[name="brand_slugs[]"]');
+    
+    if (checkbox.checked) {
+        // Check all brand checkboxes
+        brandCheckboxes.forEach(cb => {
+            cb.checked = true;
+        });
+        
+        // Get all brand slugs and submit
+        const allBrandSlugs = Array.from(brandCheckboxes).map(cb => cb.value);
+        const url = '{{ route("shop.index") }}' + buildQueryStringWithBrands(allBrandSlugs);
+        window.location.href = url;
+    } else {
+        // Uncheck all brand checkboxes
+        brandCheckboxes.forEach(cb => {
+            cb.checked = false;
+        });
+        
+        // Submit form to show all products (no brand filter)
+        window.location.href = '{{ route("shop.index") }}' + buildQueryString(false, true);
+    }
+}
+
+function handleBrandChange() {
+    const allBrandsCheckbox = document.getElementById('all_brands');
+    const brandCheckboxes = document.querySelectorAll('input[name="brand_slugs[]"]');
+    const checkedBrands = document.querySelectorAll('input[name="brand_slugs[]"]:checked');
+    
+    // Check if all brands are selected
+    const allSelected = checkedBrands.length === brandCheckboxes.length;
+    
+    if (checkedBrands.length > 0) {
+        if (allSelected) {
+            // All brands are selected, check "All Brands"
+            allBrandsCheckbox.checked = true;
+        } else {
+            // Some but not all brands selected, uncheck "All Brands"
+            allBrandsCheckbox.checked = false;
+        }
+        
+        // Build URL with multiple brand slugs
+        const brandSlugs = Array.from(checkedBrands).map(cb => cb.value);
+        const url = '{{ route("shop.index") }}' + buildQueryStringWithBrands(brandSlugs);
+        window.location.href = url;
+    } else {
+        // If no brands selected, check "All Brands" and show all products
+        allBrandsCheckbox.checked = true;
+        window.location.href = '{{ route("shop.index") }}' + buildQueryString(false, true);
+    }
+}
+
+function buildQueryStringWithBrands(brandSlugs) {
+    const params = new URLSearchParams();
+    
+    // Add brand slugs
+    brandSlugs.forEach(slug => {
+        params.append('brand_slugs[]', slug);
+    });
+    
+    // Preserve existing filters including category IDs
+    @if(request('search'))
+        params.append('search', '{{ request("search") }}');
+    @endif
+    @if(isset($categoryIds) && !empty($categoryIds))
+        @foreach($categoryIds as $catId)
+            params.append('category_ids[]', '{{ $catId }}');
+        @endforeach
+    @endif
+    @if(request('min_price'))
+        params.append('min_price', '{{ request("min_price") }}');
+    @endif
+    @if(request('max_price'))
+        params.append('max_price', '{{ request("max_price") }}');
+    @endif
+    @if(request('subcategory_id'))
+        params.append('subcategory_id', '{{ request("subcategory_id") }}');
+    @endif
+    @if(request('subsubcategory_id'))
+        params.append('subsubcategory_id', '{{ request("subsubcategory_id") }}');
+    @endif
+    @if(request('color'))
+        params.append('color', '{{ request("color") }}');
+    @endif
+    @if(request('rating'))
+        params.append('rating', '{{ request("rating") }}');
+    @endif
+    
+    const queryString = params.toString();
+    return queryString ? '?' + queryString : '';
+}
+
+function buildQueryString(excludeCategoryId = false, excludeBrandSlug = false) {
+    const params = new URLSearchParams();
+    
+    // Preserve existing filters
+    @if(request('search'))
+        params.append('search', '{{ request("search") }}');
+    @endif
+    @if(request('min_price'))
+        params.append('min_price', '{{ request("min_price") }}');
+    @endif
+    @if(request('max_price'))
+        params.append('max_price', '{{ request("max_price") }}');
+    @endif
+    @if(request('subcategory_id'))
+        params.append('subcategory_id', '{{ request("subcategory_id") }}');
+    @endif
+    @if(request('subsubcategory_id'))
+        params.append('subsubcategory_id', '{{ request("subsubcategory_id") }}');
+    @endif
+    @if(request('color'))
+        params.append('color', '{{ request("color") }}');
+    @endif
+    @if(request('rating'))
+        params.append('rating', '{{ request("rating") }}');
+    @endif
+    
+    // Preserve multiple category IDs if not excluding them
+    @if(isset($categoryIds) && !empty($categoryIds))
+        if (!excludeCategoryId) {
+            @foreach($categoryIds as $catId)
+                params.append('category_ids[]', '{{ $catId }}');
+            @endforeach
+        }
+    @endif
+    
+    // Preserve multiple brand slugs if not excluding them
+    @if(isset($brandSlugs) && !empty($brandSlugs))
+        if (!excludeBrandSlug) {
+            @foreach($brandSlugs as $brandSlug)
+                params.append('brand_slugs[]', '{{ $brandSlug }}');
+            @endforeach
+        }
+    @endif
+    
+    const queryString = params.toString();
+    return queryString ? (excludeCategoryId || excludeBrandSlug ? '&' + queryString : '?' + queryString) : '';
+}
+
+// Style checkboxes
+document.addEventListener('DOMContentLoaded', function() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .category-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: #3B82F6;
+            cursor: pointer;
+        }
+        
+        .brand-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: #3B82F6;
+            cursor: pointer;
+        }
+        
+        .cursor-pointer {
+            cursor: pointer;
+        }
+        
+        .d-flex {
+            display: flex;
+        }
+        
+        .align-items-center {
+            align-items: center;
+        }
+        
+        .me-2 {
+            margin-right: 0.5rem;
+        }
+        
+        .ms-2 {
+            margin-left: 0.5rem;
+        }
+        
+        .mb-0 {
+            margin-bottom: 0;
+        }
+        
+        .flex-grow-1 {
+            flex-grow: 1;
+        }
+        
+        .text-decoration-none {
+            text-decoration: none;
+        }
+    `;
+    document.head.appendChild(style);
+});
 </script>
 
 @endsection

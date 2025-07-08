@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Auth\Events\Registered;
+use Mockery\Matcher\Not;
 
 class DealerController extends Controller
 {
@@ -331,6 +332,13 @@ class DealerController extends Controller
         $ref->approved = true;
         $ref->save();
 
+        Notification::create([
+            'user_id' => $ref->referred_id,
+            'type' => 'referral_approved',
+            'message' => 'Your referral application has been approved. Welcome to the dealer network!',
+            'is_read' => false,
+        ]);
+
         return back()->with('success', 'Referral approved.');
     }
 
@@ -338,6 +346,25 @@ class DealerController extends Controller
     {
         $ref = DealerReferral::where('dealer_id', Auth::id())->findOrFail($id);
         $ref->delete();
+
+        DealerProfile::where('user_id', $ref->referred_id)->delete(); // Optionally delete the profile
+
+        $customer = User::find($ref->referred_id);
+        $customer->role = 'customer'; // Revert role if needed
+        $customer->save();
+
+        // Optionally notify the customer
+        // Notification::send($customer, new ReferralRejectedNotification());
+
+        // Optionally log this action
+        Notification::create([
+            'user_id' => $customer->id,
+            'type' => 'referral_rejected',
+            'message' => 'Your referral application has been rejected.',
+            'is_read' => false,
+        ]);
+
+
 
         return back()->with('success', 'Referral rejected.');
     }

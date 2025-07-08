@@ -6,6 +6,7 @@ use App\CommissionType;
 use App\Models\Commission;
 use App\Models\DealerProfile;
 use App\Models\DealerReferral;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\WithdrawalRequest;
 use Carbon\Carbon;
@@ -90,8 +91,8 @@ class DealerController extends Controller
         }
 
         $userId = Auth::id();
-        $customer = User::where('id', $userId)->where('role', 'dealer')->first();
-        if (!$customer) {
+        $dealer = User::where('id', $userId)->where('role', 'dealer')->first();
+        if (!$dealer) {
             return redirect()->back()->with('error', 'You are not a dealer.');
         }
 
@@ -101,22 +102,22 @@ class DealerController extends Controller
         }
 
         // Get total team members (recursive)
-        $teamCount = $this->countDownline($customer);
+        $teamCount = $this->countDownline($dealer);
 
         // Get this week's earnings (optional filters: only rank/team commissions)
         $weekStart = Carbon::now()->startOfWeek();
         $weekEnd = Carbon::now()->endOfWeek();
-        $weeklyEarnings = Commission::where('dealer_id', $customer->id)
+        $weeklyEarnings = Commission::where('dealer_id', $dealer->id)
             ->whereBetween('created_at', [$weekStart, $weekEnd])
             ->sum('amount');
 
         // Load direct referrals
-        $directReferrals = $customer->directReferrals()
+        $directReferrals = $dealer->directReferrals()
             ->with('dealerProfile')
             ->get();
 
         // Get downline users
-        $downlines = $customer->directReferrals()->with('dealerProfile')->get();
+        $downlines = $dealer->directReferrals()->with('dealerProfile')->get();
 
         // Count MAs in downlines
         $marketingAssistants = $downlines->filter(function ($user) {
@@ -195,7 +196,7 @@ class DealerController extends Controller
         $commissionBreakdown = [];
 
         foreach ($commissionTypes as $type) {
-            $commissionBreakdown[$type] = Commission::where('dealer_id', $customer->id)
+            $commissionBreakdown[$type] = Commission::where('dealer_id', $dealer->id)
                 ->where('level', $type)
                 ->whereBetween('created_at', [$weekStart, $weekEnd])
                 ->sum('amount');
@@ -206,13 +207,13 @@ class DealerController extends Controller
 
         // Recent Team Activity
         $recentCommissions = Commission::with(['source'])
-        ->where('dealer_id', $customer->id)
+        ->where('dealer_id', $dealer->id)
         ->latest()
         ->limit(5)
         ->get();
 
         $recentJoins = DealerReferral::with(['referred'])
-            ->where('dealer_id', $customer->id)
+            ->where('dealer_id', $dealer->id)
             ->latest()
             ->limit(5)
             ->get();
@@ -244,6 +245,16 @@ class DealerController extends Controller
         $recentActivities = $activities->sortByDesc('date')->take(5);
 
 
+        // Pending referrals awaiting approval
+        $pendingReferralsCount = DealerReferral::where('dealer_id', $dealer->id)
+            ->where('approved', false)
+            ->count();
+
+        // Unread notifications
+        $notificationCount = Notification::where('user_id', $dealer->id)
+            ->where('is_read', false)
+            ->count();
+
 
         return view('frontend.dealer.dashboard', compact(
             'dealerProfile',
@@ -262,11 +273,76 @@ class DealerController extends Controller
             'commissionBreakdown',
             'totalWeeklyEarnings',
             'recentActivities',
+            'pendingReferralsCount',
+            'notificationCount',
+
 
 
 
         ));
     }
+
+    public function pendingReferrals()
+    {
+        $referrals = DealerReferral::with('referred')
+            ->where('dealer_id', Auth::id())
+            ->where('approved', false)
+            ->get();
+
+        return view('frontend.dealer.pending-referrals', compact('referrals'));
+    }
+
+    public function analytics()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to view your orders.');
+        }
+
+        $userId = Auth::id();
+        $dealer = User::where('id', $userId)->where('role', 'dealer')->first();
+        if (!$dealer) {
+            return redirect()->back()->with('error', 'You are not a dealer.');
+        }
+
+        $dealerProfile = DealerProfile::where('user_id', $userId)->first();
+        if (!$dealerProfile) {
+            return redirect()->back()->with('error', 'Dealer profile not found.');
+        }
+
+        // Get total team members (recursive)
+        $teamCount = $this->countDownline($dealer);
+
+        // Placeholder for advanced analytics
+        return view('frontend.dealer.analytics', compact( 'dealerProfile', 'teamCount'));
+    }
+
+    public function notifications()
+    {
+        $notifications = Notification::where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('frontend.dealer.notifications', compact('notifications'));
+    }
+
+    public function approveReferral($id)
+    {
+        $ref = DealerReferral::where('dealer_id', Auth::id())->findOrFail($id);
+        $ref->approved = true;
+        $ref->save();
+
+        return back()->with('success', 'Referral approved.');
+    }
+
+    public function rejectReferral($id)
+    {
+        $ref = DealerReferral::where('dealer_id', Auth::id())->findOrFail($id);
+        $ref->delete();
+
+        return back()->with('success', 'Referral rejected.');
+    }
+
+
 
     public function requestWithdrawal()
     {

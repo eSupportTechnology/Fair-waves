@@ -473,4 +473,9 @@ Route::prefix('dealer')->group(function () {
     Route::get('/team', [DealerController::class, 'teamOverview'])->name('dealer.team');
     Route::get('/team/full', [DealerController::class, 'fullHierarchy'])->name('dealer.team.full');
     Route::post('/withdraw', [DealerController::class, 'requestWithdrawal'])->name('dealer.withdraw.request');
+    Route::get('/referrals/pending', [DealerController::class, 'pendingReferrals'])->name('dealer.referrals.pending');
+    Route::post('/referrals/{id}/approve', [DealerController::class, 'approveReferral'])->name('dealer.referrals.approve');
+    Route::post('/referrals/{id}/reject', [DealerController::class, 'rejectReferral'])->name('dealer.referrals.reject');
+    Route::get('/analytics', [DealerController::class, 'analytics'])->name('dealer.analytics');
+    Route::get('/notifications', [DealerController::class, 'notifications'])->name('dealer.notifications');
 });

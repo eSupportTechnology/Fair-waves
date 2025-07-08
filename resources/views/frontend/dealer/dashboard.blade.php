@@ -924,17 +924,21 @@
                 <div class="stats-card">
                     <h6 class="mb-3"><i class="fas fa-bolt text-warning me-2"></i>Quick Actions</h6>
                     <div class="d-grid gap-3">
-                        <button class="btn btn-outline-primary btn-sm w-100">
-                            <i class="fas fa-user-plus me-2"></i>Approve New Members
-                        </button>
-                        <button class="btn btn-outline-info btn-sm w-100">
-                            <i class="fas fa-chart-bar me-2"></i>View Analytics
-                        </button>
-                        <button class="btn btn-outline-warning btn-sm w-100">
-                            <i class="fas fa-bell me-2"></i>Notifications ({{ $notificationCount ?? 0 }})
-                        </button>
+                        <a href="{{ route('dealer.referrals.pending') }}" class="btn btn-outline-primary btn-sm w-100">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Approve New Members ({{ $pendingReferralsCount }})
+                        </a>
+                        <a href="{{ route('dealer.analytics') }}" class="btn btn-outline-info btn-sm w-100">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            View Analytics
+                        </a>
+                        <a href="{{ route('dealer.notifications') }}" class="btn btn-outline-warning btn-sm w-100">
+                            <i class="fas fa-bell me-2"></i>
+                            Notifications ({{ $notificationCount }})
+                        </a>
                     </div>
                 </div>
+
 
             </div>
         </div>

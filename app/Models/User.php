@@ -91,4 +91,17 @@ class User extends Authenticatable
     {
         return $this->hasOne(DealerReferral::class, 'referred_id');
     }
+
+    // For direct referred users
+    public function directReferrals()
+    {
+        return $this->hasManyThrough(
+            User::class,
+            DealerReferral::class,
+            'dealer_id',     // Foreign key on dealer_referrals
+            'id',            // Local key on users
+            'id',            // Local key on this model
+            'referred_id'    // Foreign key on users
+        );
+    }
 }

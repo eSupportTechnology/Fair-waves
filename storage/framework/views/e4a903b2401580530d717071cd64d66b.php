@@ -605,7 +605,7 @@
                     <div class="stats-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--info-color);">
                         <i class="fas fa-users"></i>
                     </div>
-                    <h3 class="h4 mb-1">1,247</h3>
+                    <h3 class="h4 mb-1"><?php echo e($teamCount); ?></h3>
                     <p class="text-muted mb-0">Total Team Members</p>
                 </div>
             </div>
@@ -614,7 +614,7 @@
                     <div class="stats-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success-color);">
                         <i class="fas fa-coins"></i>
                     </div>
-                    <h3 class="h4 mb-1">45,890</h3>
+                    <h3 class="h4 mb-1"><?php echo e($dealerProfile->bv); ?></h3>
                     <p class="text-muted mb-0">Current BV</p>
                 </div>
             </div>
@@ -623,7 +623,7 @@
                     <div class="stats-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning-color);">
                         <i class="fas fa-chart-line"></i>
                     </div>
-                    <h3 class="h4 mb-1">127,650</h3>
+                    <h3 class="h4 mb-1"><?php echo e($dealerProfile->cbv); ?></h3>
                     <p class="text-muted mb-0">Total CBV</p>
                 </div>
             </div>
@@ -632,82 +632,84 @@
                     <div class="stats-icon" style="background: rgba(255, 88, 0, 0.1); color: var(--primary-color);">
                         <i class="fas fa-wallet"></i>
                     </div>
-                    <h3 class="h4 mb-1">₹12,450</h3>
+                    <h3 class="h4 mb-1">₹<?php echo e(number_format($weeklyEarnings, 2)); ?></h3>
                     <p class="text-muted mb-0">Weekly Earnings</p>
                 </div>
             </div>
         </div>
 
-        <!-- Rank Progress Section -->
         <div class="rank-progress-container">
             <h4 class="mb-3"><i class="fas fa-trophy text-warning me-2"></i>Rank Progress</h4>
             <div class="row">
                 <div class="col-md-8 col-12">
                     <div class="mb-3">
                         <div class="d-flex justify-content-between mb-2 flex-wrap">
-                            <span class="mb-1 mb-sm-0">Progress to Senior Marketing Executive</span>
-                            <span class="fw-bold">127,650 / 150,000 CBV</span>
+                            <span class="mb-1 mb-sm-0">
+                                Progress to <?php echo e($nextRankData['name'] ?? 'N/A'); ?>
+
+                            </span>
+                            <span class="fw-bold"><?php echo e($currentCBV); ?> / <?php echo e($nextRankData['target_cbv'] ?? '-'); ?> CBV</span>
                         </div>
                         <div class="progress-custom">
-                            <div class="progress-bar-custom" style="width: 85%;"></div>
+                            <div class="progress-bar-custom" style="width: <?php echo e(number_format($progressPercent, 2)); ?>%;"></div>
                         </div>
                     </div>
 
-                    <!-- Rank Requirements -->
-                    <div class="mt-4">
-                        <h6>Next Rank Requirements (Senior Marketing Executive):</h6>
-                        <div class="row">
-                            <div class="col-md-4 col-12 d-flex">
-                                <div class="rank-tier completed flex-fill">
-                                    <div>
-                                        <div class="rank-number" style="background: var(--success-color);">✓</div>
-                                        <div>
-                                            <div class="fw-bold">Method 1</div>
-                                            <small class="text-muted">15,000 CBV Direct</small>
+                    <?php if($nextRankData && count($nextRankData['methods']) > 0): ?>
+                        <div class="mt-4">
+                            <h6>Next Rank Requirements (<?php echo e($nextRankData['name']); ?>):</h6>
+                            <div class="row">
+                                <?php $__currentLoopData = $nextRankData['methods']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $method): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
+                                        $metCBV = $currentCBV >= $method['cbv'];
+                                        $metLinks = $linkCount >= ($method['links'] ?? 0);
+                                        $metAssistants = $marketingAssistants >= ($method['assistants'] ?? 0);
+
+                                        $isComplete = $metCBV && $metLinks && $metAssistants;
+                                        $isActive = !$isComplete && ($metCBV || $metLinks || $metAssistants);
+                                    ?>
+                                    <div class="col-md-4 col-12 d-flex">
+                                        <div class="rank-tier <?php echo e($isComplete ? 'completed' : ($isActive ? 'active' : '')); ?> flex-fill">
+                                            <div>
+                                                <div class="rank-number" style="background: <?php echo e($isComplete ? 'var(--success-color)' : ($isActive ? 'var(--primary-color)' : '#6b7280')); ?>;">
+                                                    <?php echo e($isComplete ? '✓' : $index + 1); ?>
+
+                                                </div>
+                                                <div>
+                                                    <div class="fw-bold">Method <?php echo e($index + 1); ?></div>
+                                                    <small class="text-muted">
+                                                        <?php echo e($method['cbv']); ?> CBV
+                                                        <?php echo e($method['links'] ? '+ ' . $method['links'] . ' Links' : ''); ?>
+
+                                                        <?php echo e($method['assistants'] ? '+ ' . $method['assistants'] . ' MA' : ''); ?>
+
+                                                    </small>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-12 d-flex">
-                                <div class="rank-tier active flex-fill">
-                                    <div>
-                                        <div class="rank-number" style="background: var(--primary-color);">2</div>
-                                        <div>
-                                            <div class="fw-bold">Method 2</div>
-                                            <small class="text-muted">40,000 CBV + 2 Links + 2 MA</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-12 d-flex">
-                                <div class="rank-tier flex-fill">
-                                    <div>
-                                        <div class="rank-number" style="background: #6b7280;">3</div>
-                                        <div>
-                                            <div class="fw-bold">Method 3</div>
-                                            <small class="text-muted">26,000 CBV + 3 Links + 3 MA</small>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
                 <div class="col-md-4 col-12">
                     <div class="text-center mt-3 mt-md-0">
                         <div class="rank-badge mb-3" style="font-size: 1.1rem; padding: 1rem 2rem;">
                             <i class="fas fa-medal me-2"></i>
-                            Marketing Executive
+                            <?php echo e($dealerProfile->rank); ?>
+
                         </div>
                         <p class="text-muted">Current Dealership Tier</p>
                         <div class="d-flex justify-content-center gap-2 flex-wrap">
-                            <span class="badge bg-warning">Gold Dealer</span>
-                            <span class="badge bg-info">250+ BV</span>
+                            <span class="badge bg-warning text-dark"><?php echo e(ucfirst($dealerProfile->tier)); ?> Dealer</span>
+                            <span class="badge bg-info"><?php echo e($dealerProfile->bv); ?> BV</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <div class="row">
             <!-- Left Column -->
@@ -723,8 +725,11 @@
                             </button>
                         </div>
                         <div class="bg-white p-3 rounded border">
+                            <?php
+                            $referralLink = url('/become-a-dealer') . '?ref=' . ($dealerProfile->dealer_code ?? '');
+                        ?>
                             <code id="referralLink"
-                                style="word-break: break-all;">https://fairwaves.com/register?ref=JD001</code>
+                                style="word-break: break-all;"><?php echo e($referralLink); ?></code>
                         </div>
                         <small class="text-muted mt-2 d-block">
                             Share this link to earn 20% commission on direct referrals
@@ -735,51 +740,57 @@
                 <!-- Commission Breakdown -->
                 <div class="commission-breakdown">
                     <h5 class="mb-3"><i class="fas fa-calculator text-success me-2"></i>Commission Breakdown</h5>
+
                     <div class="commission-item">
                         <div>
                             <strong>Direct Commission (20%)</strong>
                             <br><small class="text-muted">From direct referral purchases</small>
                         </div>
                         <div class="text-end">
-                            <strong class="text-success">₹8,450</strong>
+                            <strong class="text-success">₹<?php echo e(number_format($commissionBreakdown['direct'], 2)); ?></strong>
                         </div>
                     </div>
+
                     <div class="commission-item">
                         <div>
                             <strong>Layer 1 Commission (5%)</strong>
                             <br><small class="text-muted">From level 1 sub-dealers</small>
                         </div>
                         <div class="text-end">
-                            <strong class="text-success">₹2,100</strong>
+                            <strong class="text-success">₹<?php echo e(number_format($commissionBreakdown['layer1'], 2)); ?></strong>
                         </div>
                     </div>
+
                     <div class="commission-item">
                         <div>
                             <strong>Layer 2 Commission (3%)</strong>
                             <br><small class="text-muted">From level 2 sub-dealers</small>
                         </div>
                         <div class="text-end">
-                            <strong class="text-success">₹1,200</strong>
+                            <strong class="text-success">₹<?php echo e(number_format($commissionBreakdown['layer2'], 2)); ?></strong>
                         </div>
                     </div>
+
                     <div class="commission-item">
                         <div>
                             <strong>Weekly Team Commission (4%)</strong>
                             <br><small class="text-muted">Based on team BV</small>
                         </div>
                         <div class="text-end">
-                            <strong class="text-success">₹3,200</strong>
+                            <strong class="text-success">₹<?php echo e(number_format($commissionBreakdown['team'], 2)); ?></strong>
                         </div>
                     </div>
+
                     <div class="commission-item bg-light">
                         <div>
                             <strong>Total Weekly Earnings</strong>
                         </div>
                         <div class="text-end">
-                            <strong class="text-primary fs-5">₹14,950</strong>
+                            <strong class="text-primary fs-5">₹<?php echo e(number_format($totalWeeklyEarnings, 2)); ?></strong>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Recent Team Activity -->
                 <div class="table-custom">
@@ -798,55 +809,48 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="node-avatar me-2"
-                                                style="width: 25px; height: 25px; font-size: 0.7rem;">
-                                                SM
+                                <?php $__empty_1 = true; $__currentLoopData = $recentActivities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="node-avatar me-2" style="width: 25px; height: 25px; font-size: 0.7rem;">
+                                                    <?php echo e($activity['initials']); ?>
+
+                                                </div>
+                                                <span class="d-none d-sm-inline"><?php echo e($activity['name']); ?></span>
+                                                <span class="d-sm-none"><?php echo e(substr($activity['name'], 0, 1)); ?>. <?php echo e(Str::after($activity['name'], ' ')); ?></span>
                                             </div>
-                                            <span class="d-none d-sm-inline">Sarah Miller</span>
-                                            <span class="d-sm-none">S. Miller</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-success">Purchase</span></td>
-                                    <td>₹2,500</td>
-                                    <td class="text-success">+₹500</td>
-                                    <td>2h ago</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="node-avatar me-2"
-                                                style="width: 25px; height: 25px; font-size: 0.7rem;">
-                                                RJ
-                                            </div>
-                                            <span class="d-none d-sm-inline">Robert Johnson</span>
-                                            <span class="d-sm-none">R. Johnson</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-primary">Joined</span></td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>5h ago</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="node-avatar me-2"
-                                                style="width: 25px; height: 25px; font-size: 0.7rem;">
-                                                LD
-                                            </div>
-                                            <span class="d-none d-sm-inline">Lisa Davis</span>
-                                            <span class="d-sm-none">L. Davis</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-success">Purchase</span></td>
-                                    <td>₹1,800</td>
-                                    <td class="text-success">+₹90</td>
-                                    <td>1d ago</td>
-                                </tr>
+                                        </td>
+                                        <td>
+                                            <?php if($activity['type'] === 'purchase'): ?>
+                                                <span class="badge bg-success">Purchase</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-primary">Joined</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if($activity['amount']): ?>
+                                                ₹<?php echo e(number_format($activity['amount'], 2)); ?>
+
+                                            <?php else: ?>
+                                                -
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="text-success">
+                                            <?php if($activity['commission']): ?>
+                                                +₹<?php echo e(number_format($activity['commission'], 2)); ?>
+
+                                            <?php else: ?>
+                                                -
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?php echo e($activity['date']->diffForHumans()); ?></td>
+                                    </tr>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                    <tr><td colspan="5" class="text-center text-muted">No recent activity.</td></tr>
+                                <?php endif; ?>
                             </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -857,81 +861,91 @@
                 <!-- Withdrawal Section -->
                 <div class="withdrawal-section">
                     <h5 class="mb-3"><i class="fas fa-money-bill-wave text-success me-2"></i>Withdrawals</h5>
+
                     <div class="text-center mb-3">
-                        <h4 class="text-success">₹45,890</h4>
+                        <h4 class="text-success">₹<?php echo e(number_format($availableWithdrawalLKR, 2)); ?></h4>
                         <small class="text-muted">Available for withdrawal</small>
                     </div>
 
                     <div class="withdrawal-days">
-                        <div class="day-badge available">Thu</div>
-                        <div class="day-badge available">Fri</div>
-                        <div class="day-badge available">Sat</div>
+                        <?php $__currentLoopData = ['Thu', 'Fri', 'Sat']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $day): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="day-badge <?php echo e(Carbon\Carbon::now()->format('D') === $day ? 'today' : 'available'); ?>"><?php echo e($day); ?></div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <div class="day-badge unavailable">Other Days</div>
                     </div>
 
-                    <button class="btn btn-success w-100 mb-2">
-                        <i class="fas fa-download me-2"></i>Request Withdrawal
-                    </button>
+                    <form method="POST" action="<?php echo e(route('dealer.withdraw.request')); ?>">
+                        <?php echo csrf_field(); ?>
+                        <button type="submit" class="btn btn-success w-100 mb-2" <?php echo e(!$isWithdrawalDay ? 'disabled' : ''); ?>>
+                            <i class="fas fa-download me-2"></i>Request Withdrawal
+                        </button>
+                    </form>
+
                     <small class="text-muted d-block text-center">
-                        Next withdrawal window: This Thursday
+                        <?php if($isWithdrawalDay): ?>
+                            Withdrawals allowed today
+                        <?php elseif($nextWithdrawalDayFormatted): ?>
+                            Next withdrawal window: <?php echo e($nextWithdrawalDayFormatted); ?>
+
+                        <?php else: ?>
+                            Withdrawals not available this week
+                        <?php endif; ?>
                     </small>
                 </div>
 
+
                 <!-- Team Hierarchy -->
-                <div class="team-hierarchy flex-grow-1">
-                    <h5 class="mb-3"><i class="fas fa-sitemap text-primary me-2"></i>Team Overview</h5>
-                    <div class="hierarchy-node">
-                        <div class="node-avatar">JD</div>
-                        <div>
-                            <div class="fw-bold">You</div>
-                            <small class="text-muted">Marketing Executive</small>
-                        </div>
-                    </div>
-                    <div style="margin-left: 1.5rem;">
-                        <div class="hierarchy-node">
-                            <div class="node-avatar">SM</div>
-                            <div>
-                                <div class="fw-bold">Sarah Miller</div>
-                                <small class="text-muted">Marketing Assistant</small>
-                            </div>
-                        </div>
-                        <div class="hierarchy-node">
-                            <div class="node-avatar">RJ</div>
-                            <div>
-                                <div class="fw-bold">Robert Johnson</div>
-                                <small class="text-muted">Beginner</small>
-                            </div>
-                        </div>
-                        <div class="hierarchy-node">
-                            <div class="node-avatar">LD</div>
-                            <div>
-                                <div class="fw-bold">Lisa Davis</div>
-                                <small class="text-muted">Marketing Assistant</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center mt-3">
-                        <button class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-eye me-1"></i>View Full Hierarchy
-                        </button>
-                    </div>
+<div class="team-hierarchy flex-grow-1">
+    <h5 class="mb-3"><i class="fas fa-sitemap text-primary me-2"></i>Team Overview</h5>
+    <div class="hierarchy-node">
+        <div class="node-avatar"><?php echo e(strtoupper(substr(auth()->user()->name, 0, 2))); ?></div>
+        <div>
+            <div class="fw-bold">You</div>
+            <small class="text-muted"><?php echo e(auth()->user()->dealerProfile->rank ?? '-'); ?></small>
+        </div>
+    </div>
+
+    <div style="margin-left: 1.5rem;">
+        <?php $__empty_1 = true; $__currentLoopData = $directReferrals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $referral): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <div class="hierarchy-node">
+                <div class="node-avatar"><?php echo e(strtoupper(substr($referral->name, 0, 2))); ?></div>
+                <div>
+                    <div class="fw-bold"><?php echo e($referral->name); ?></div>
+                    <small class="text-muted"><?php echo e($referral->dealerProfile->rank ?? 'N/A'); ?></small>
                 </div>
+            </div>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+            <p class="text-muted ms-3">No team members yet.</p>
+        <?php endif; ?>
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="<?php echo e(route('dealer.team.full')); ?>" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-eye me-1"></i>View Full Hierarchy
+        </a>
+    </div>
+</div>
+
 
                 <!-- Quick Actions -->
                 <div class="stats-card">
                     <h6 class="mb-3"><i class="fas fa-bolt text-warning me-2"></i>Quick Actions</h6>
                     <div class="d-grid gap-3">
-                        <button class="btn btn-outline-primary btn-sm w-100">
-                            <i class="fas fa-user-plus me-2"></i>Approve New Members
-                        </button>
-                        <button class="btn btn-outline-info btn-sm w-100">
-                            <i class="fas fa-chart-bar me-2"></i>View Analytics
-                        </button>
-                        <button class="btn btn-outline-warning btn-sm w-100">
-                            <i class="fas fa-bell me-2"></i>Notifications (<?php echo e($notificationCount ?? 0); ?>)
-                        </button>
+                        <a href="<?php echo e(route('dealer.referrals.pending')); ?>" class="btn btn-outline-primary btn-sm w-100">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Approve New Members (<?php echo e($pendingReferralsCount); ?>)
+                        </a>
+                        <a href="<?php echo e(route('dealer.analytics')); ?>" class="btn btn-outline-info btn-sm w-100">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            View Analytics
+                        </a>
+                        <a href="<?php echo e(route('dealer.notifications')); ?>" class="btn btn-outline-warning btn-sm w-100">
+                            <i class="fas fa-bell me-2"></i>
+                            Notifications (<?php echo e($notificationCount); ?>)
+                        </a>
                     </div>
                 </div>
+
 
             </div>
         </div>

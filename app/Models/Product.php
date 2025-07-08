@@ -48,6 +48,11 @@ class Product extends Model
         return $this->belongsTo(SubSubcategory::class, 'sub_subcategory_id');
     }
 
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
     public function variations()
     {
         return $this->hasMany(Variations::class, 'product_id', 'product_id');

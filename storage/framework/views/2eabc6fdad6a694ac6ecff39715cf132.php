@@ -1,9 +1,7 @@
-@extends ('AdminDashboard.master')
-
-@section('content')
-<form method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
+<?php $__env->startSection('content'); ?>
+<form method="POST" action="<?php echo e(route('products.update', $product->id)); ?>" enctype="multipart/form-data">
+    <?php echo csrf_field(); ?>
+    <?php echo method_field('PUT'); ?>
 <div class="row">
     <div class="col-12">
         <div class="content-header">
@@ -23,49 +21,28 @@
                 <!-- Bind the form inputs to the existing product data -->
                 <div class="mb-4">
                     <label for="product_name" class="form-label">Product title <i class="text-danger">*</i></label>
-                    <input type="text" name="product_name" value="{{ old('product_name', $product->product_name) }}" placeholder="Type here" class="form-control" id="product_name" />
+                    <input type="text" name="product_name" value="<?php echo e(old('product_name', $product->product_name)); ?>" placeholder="Type here" class="form-control" id="product_name" />
                 </div>
                 <div class="mb-4">
                     <label class="form-label">Product description<i class="text-danger">*</i></label>
-                    <textarea name="product_description" placeholder="Type here" class="form-control" rows="4">{{ old('product_description', $product->product_description) }}</textarea>
+                    <textarea name="product_description" placeholder="Type here" class="form-control" rows="4"><?php echo e(old('product_description', $product->product_description)); ?></textarea>
                 </div>
                 <div class="mb-4">
                     <label class="form-label">Total Quantity <i class="text-danger">*</i></label>
-                    <input name="quantity" id="quantity" type="number" value="{{ old('quantity', $product->quantity) }}" class="form-control"/>
+                    <input name="quantity" id="quantity" type="number" value="<?php echo e(old('quantity', $product->quantity)); ?>" class="form-control"/>
                 </div>
-                {{-- <label class="form-check mb-4">
-                    <input name="is_affiliate" id="affiliate_checkbox" class="form-check-input" type="checkbox" {{ $product->is_affiliate ? 'checked' : '' }} />
-                    <span class="form-check-label">Affiliate the Product</span>
-                </label> --}}
+                
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="mb-4">
                             <label class="form-label">Normal price <i class="text-danger">*</i></label>
-                            <input name="normal_price" id="normal_price" value="{{ old('normal_price', $product->normal_price) }}" placeholder="Rs" type="number" class="form-control" />
+                            <input name="normal_price" id="normal_price" value="<?php echo e(old('normal_price', $product->normal_price)); ?>" placeholder="Rs" type="number" class="form-control" />
                         </div>
                     </div>
-                    {{-- <div class="col-lg-6">
-                        <div class="mb-4">
-                            <label class="form-label">Affiliate price</label>
-                            <input name="affiliate_price" id="affiliate_price" value="{{ old('affiliate_price', $product->affiliate_price) }}" placeholder="Rs" type="number" class="form-control" readonly />
-                        </div>
-                    </div> --}}
+                    
                 </div>
 
-                {{-- <div class="row">
-                    <div class="col-lg-6">
-                        <div class="mb-4">
-                            <label class="form-label">Commission percentage %</label>
-                            <input name="commission_percentage" id="commission" value="{{ old('commission_percentage', $product->commission_percentage) }}" type="number" placeholder="%" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="mb-4">
-                            <label class="form-label">Commission price</label>
-                            <input name="com_price" id="com_price" value="{{ old('commission_price', $product->commission_price) }}" placeholder="Rs" type="number" class="form-control" readonly />
-                        </div>
-                    </div>
-                </div> --}}
+                
             </div>
         </div>
 
@@ -77,30 +54,30 @@
     </div>
     <div class="card-body">
         <div id="variationsContainer">
-            @foreach ($product->variations as $index => $variation)
+            <?php $__currentLoopData = $product->variations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $variation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="row mb-3 variation-row">
                 <div class="col-lg-4">
                     <label class="form-label">Select Type</label>
-                    <select name="variations[{{ $index }}][type]" class="form-select" onchange="toggleColorInput(this)">
-                        <option value="size" {{ $variation->type == 'size' ? 'selected' : '' }}>Size</option>
-                        <option value="color" {{ $variation->type == 'color' ? 'selected' : '' }}>Color</option>
+                    <select name="variations[<?php echo e($index); ?>][type]" class="form-select" onchange="toggleColorInput(this)">
+                        <option value="size" <?php echo e($variation->type == 'size' ? 'selected' : ''); ?>>Size</option>
+                        <option value="color" <?php echo e($variation->type == 'color' ? 'selected' : ''); ?>>Color</option>
                     </select>
                 </div>
                 <div class="col-lg-4">
                     <label class="form-label">Value</label>
-                    <input type="text" name="variations[{{ $index }}][value]" class="form-control" value="{{ $variation->type == 'color' ? '' : $variation->value }}" />
-                    <input type="color" name="variations[{{ $index }}][hex_value]" class="form-control color-input" style="display: {{ $variation->type == 'color' ? 'block' : 'none' }};" value="{{ $variation->hex_value }}" />
+                    <input type="text" name="variations[<?php echo e($index); ?>][value]" class="form-control" value="<?php echo e($variation->type == 'color' ? '' : $variation->value); ?>" />
+                    <input type="color" name="variations[<?php echo e($index); ?>][hex_value]" class="form-control color-input" style="display: <?php echo e($variation->type == 'color' ? 'block' : 'none'); ?>;" value="<?php echo e($variation->hex_value); ?>" />
                 </div>
                 <div class="col-lg-3">
                     <label class="form-label">Quantity</label>
-                    <input type="number" name="variations[{{ $index }}][quantity]" class="form-control" value="{{ $variation->quantity }}" />
+                    <input type="number" name="variations[<?php echo e($index); ?>][quantity]" class="form-control" value="<?php echo e($variation->quantity); ?>" />
                 </div>
                 <div class="col-lg-1 text-center">
                     <label class="form-label">Delete</label>
                     <button type="button" class="btn btn-danger delete-variation" onclick="removeVariation(this)">✖</button>
                 </div>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
         <button type="button" class="btn btn-success" onclick="addVariation()">Add Variation</button>
     </div>
@@ -116,17 +93,17 @@
             </div>
             <div class="card-body">
                 <div class="input-upload">
-                    <img src="{{ asset('backend/assets/imgs/theme/upload.svg') }}" alt="" />
+                    <img src="<?php echo e(asset('backend/assets/imgs/theme/upload.svg')); ?>" alt="" />
                     <input name="images[]" id="media_upload" class="form-control" type="file" multiple />
                 </div>
                 <div class="image-preview mt-4" id="image_preview_container" style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <!-- Image previews will appear here -->
-                    @foreach ($product->images as $image)
+                    <?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="position-relative">
-                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="Product Image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
-                            <span class="position-absolute top-0 end-0 bg-danger text-white rounded-circle p-1 cursor-pointer delete-existing-image" data-image-id="{{ $image->id }}" style="cursor: pointer;">&times;</span>
+                            <img src="<?php echo e(asset('storage/' . $image->image_path)); ?>" alt="Product Image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                            <span class="position-absolute top-0 end-0 bg-danger text-white rounded-circle p-1 cursor-pointer delete-existing-image" data-image-id="<?php echo e($image->id); ?>" style="cursor: pointer;">&times;</span>
                         </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
         </div>
@@ -140,11 +117,12 @@
                         <label class="form-label">Category <i class="text-danger">*</i></label>
                         <select name="category_id" class="form-select" id="categorySelect">
                             <option value="">Select a category</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ $category->id == $product->category_id ? 'selected' : '' }}>
-                                    {{ $category->name }}
+                            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($category->id); ?>" <?php echo e($category->id == $product->category_id ? 'selected' : ''); ?>>
+                                    <?php echo e($category->name); ?>
+
                                 </option>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
 
@@ -152,18 +130,18 @@
                         <label class="form-label">Subcategory</label>
                         <select name="subcategory_id" class="form-select" id="subcategorySelect">
                             <option value="">Select a subcategory</option>
-                            @foreach ($product->category->subcategories as $subcategory)
-                                <option value="{{ $subcategory->id }}" {{ $subcategory->id == $product->subcategory_id ? 'selected' : '' }}>{{ $subcategory->name }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = $product->category->subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subcategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($subcategory->id); ?>" <?php echo e($subcategory->id == $product->subcategory_id ? 'selected' : ''); ?>><?php echo e($subcategory->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
                     <div class="col-sm-6 mb-3">
                         <label class="form-label">Sub-Subcategory</label>
                         <select name="sub_subcategory_id" class="form-select" id="subsubcategorySelect">
                             <option value="">Select a sub-subcategory</option>
-                            @foreach ($product->subcategory ? $product->subcategory->subSubcategories : [] as $subSubcategory)
-                                <option value="{{ $subSubcategory->id }}" {{ $subSubcategory->id == $product->sub_subcategory_id ? 'selected' : '' }}>{{ $subSubcategory->name }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = $product->subcategory ? $product->subcategory->subSubcategories : []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subSubcategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($subSubcategory->id); ?>" <?php echo e($subSubcategory->id == $product->sub_subcategory_id ? 'selected' : ''); ?>><?php echo e($subSubcategory->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
 
@@ -171,17 +149,18 @@
                         <label class="form-label">Brand </label>
                         <select name="brand_id" class="form-select" id="brandSelect">
                             <option value="">Select a brand</option>
-                            @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}"
-                                    {{ $brand->id == $product->brand_id ? 'selected' : '' }}>{{ $brand->name }}
+                            <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($brand->id); ?>"
+                                    <?php echo e($brand->id == $product->brand_id ? 'selected' : ''); ?>><?php echo e($brand->name); ?>
+
                                 </option>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
 
                     <div class="mb-4">
                         <label for="product_tags" class="form-label">Tags</label>
-                        <input name="tags" type="text" class="form-control" value="{{ old('tags', $product->tags) }}" />
+                        <input name="tags" type="text" class="form-control" value="<?php echo e(old('tags', $product->tags)); ?>" />
                     </div>
                 </div>
             </div>
@@ -193,62 +172,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    {{-- const affiliateCheckbox = document.getElementById('affiliate_checkbox');
-    const normalPriceInput = document.getElementById('normal_price');
-    const affiliatePriceInput = document.getElementById('affiliate_price');
-    const commissionInput = document.getElementById('commission');
-    const comPriceInput = document.getElementById('com_price');
-
-    affiliatePriceInput.value = normalPriceInput.value || 0;
-    affiliatePriceInput.readOnly = true;
-    comPriceInput.readOnly = true;
-    commissionInput.readOnly = true;
-
-    if (affiliateCheckbox.checked) {
-        commissionInput.readOnly = false;
-        calculateCommissionPrice();
-    }
-
-    affiliateCheckbox.addEventListener('change', function () {
-        if (affiliateCheckbox.checked) {
-            // When affiliate checkbox is checked
-            affiliatePriceInput.value = normalPriceInput.value || 0;
-            affiliatePriceInput.readOnly = true;
-
-            commissionInput.readOnly = false;
-            calculateCommissionPrice();
-        } else {
-            // When affiliate checkbox is unchecked
-            affiliatePriceInput.value = '';
-            commissionInput.value = '';
-            comPriceInput.value = '';
-
-            commissionInput.readOnly = true;
-        }
-    });
-
-
-    normalPriceInput.addEventListener('input', function () {
-        if (affiliateCheckbox.checked) {
-            affiliatePriceInput.value = normalPriceInput.value || 0;
-        }
-        calculateCommissionPrice();
-    });
-
-
-    commissionInput.addEventListener('input', function () {
-        if (affiliateCheckbox.checked) {
-            calculateCommissionPrice();
-        }
-    });
-
-    // Function to calculate commission price
-    function calculateCommissionPrice() {
-        const normalPrice = parseFloat(normalPriceInput.value) || 0;
-        const commissionRate = parseFloat(commissionInput.value) || 0;
-        const commissionPrice = normalPrice * (commissionRate / 100);
-        comPriceInput.value = commissionPrice.toFixed(2);
-    } --}}
+    
 });
 
 
@@ -382,34 +306,9 @@
 
 
 </script>
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const affiliateCheckbox = document.getElementById('affiliate_checkbox');
-        const affiliatePriceInput = document.getElementById('affiliate_price');
-        const commissionInput = document.getElementById('commission');
-        const normalPriceInput = document.getElementById('normal_price');
-        const totalPriceInput = document.getElementById('total_price');
 
-
-        affiliateCheckbox.addEventListener('change', function () {
-            if (!affiliateCheckbox.checked) {
-
-                affiliatePriceInput.value = '';
-                commissionInput.value = '';
-                totalPriceInput.value = normalPriceInput.value;
-            }
-        });
-
-
-        normalPriceInput.addEventListener('input', function () {
-            if (!affiliateCheckbox.checked) {
-                totalPriceInput.value = normalPriceInput.value;
-            }
-        });
-    });
-</script> --}}
 <script>
-    let variationIndex = {{ count($product->variations) }};
+    let variationIndex = <?php echo e(count($product->variations)); ?>;
 
     function addVariation() {
         const variationsContainer = document.getElementById('variationsContainer');
@@ -464,4 +363,6 @@
         variationRow.remove();
     }
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('AdminDashboard.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/AdminDashboard/edit_products.blade.php ENDPATH**/ ?>

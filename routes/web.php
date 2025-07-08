@@ -113,7 +113,7 @@ Route::get('/vendor-details/{vendorId}', [VendorController::class, 'showVendorDe
 
 //search box
 
-Route::get('/search-products', [ProductController::class, 'searchProducts'])->name('search.products');
+Route::get('/search-products', [ShopPageController::class, 'index'])->name('search.products');
 
 
 Route::get('/admin/reviews', [ReviewsController::class, 'adminView'])->name('adminReviews');

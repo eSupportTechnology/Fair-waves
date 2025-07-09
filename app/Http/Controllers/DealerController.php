@@ -6,15 +6,18 @@ use App\CommissionType;
 use App\Models\Commission;
 use App\Models\DealerProfile;
 use App\Models\DealerReferral;
+use App\Exports\DealersExport;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\WithdrawalRequest;
+use App\Models\CustomerOrder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Auth\Events\Registered;
+use Maatwebsite\Excel\Facades\Excel;
 use Mockery\Matcher\Not;
 
 class DealerController extends Controller
@@ -510,5 +513,99 @@ class DealerController extends Controller
         // Notification::send($referrerUser, new NewReferralNotification($user));
 
         return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
+    }
+
+    // Admin Dashboard Methods
+    public function listDealers(Request $request)
+    {
+        $search = $request->get('search');
+        
+        $dealers = User::where('role', 'dealer')
+            ->where('dealer_status', 1) // Only show active dealers
+            ->when($search, function($query) use ($search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('name', 'LIKE', '%' . $search . '%')
+                      ->orWhere('email', 'LIKE', '%' . $search . '%')
+                      ->orWhere('phone', 'LIKE', '%' . $search . '%');
+                });
+            })
+            // TODO: Uncomment for future development - Total Orders functionality
+            // ->withCount('customerOrders')
+            ->paginate(10)
+            ->appends(request()->query()); 
+
+        return view('AdminDashboard.dealers', compact('dealers', 'search'));
+    }
+    
+    public function showDealerDetails($user_id)
+    {
+        $dealer = User::with('dealerProfile')->findOrFail($user_id);
+        
+        $orders = CustomerOrder::where('user_id', $user_id)
+            ->with('items.product')
+            ->get();
+        
+        $totalCost = $orders->sum('total_cost');
+        $totalOrders = $orders->count();
+        $totalProducts = $orders->sum(function ($order) {
+            return $order->items->sum('quantity');
+        });
+        
+        // Get referrals if any
+        $referrals = DealerReferral::where('dealer_id', $user_id)
+            ->with('referredUser')
+            ->get();
+
+        return view('AdminDashboard.dealer-details', compact('dealer', 'orders', 'totalCost', 'totalOrders', 'totalProducts', 'referrals'));
+    }
+    
+    public function edit($user_id)
+    {
+        $dealer = User::where('role', 'dealer')->findOrFail($user_id);
+        return view('AdminDashboard.edit-dealer', compact('dealer'));
+    }
+    
+    public function update(Request $request, $user_id)
+    {
+        $dealer = User::where('role', 'dealer')->findOrFail($user_id);
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,'.$user_id,
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'fname' => 'nullable|string|max:255',
+            'lname' => 'nullable|string|max:255',
+            'dob' => 'nullable|date',
+            'gender' => 'nullable|string|in:Male,Female,Other',
+        ]);
+        
+        if ($request->filled('password')) {
+            $request->validate([
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ]);
+            $validated['password'] = Hash::make($request->password);
+        }
+        
+        $dealer->update($validated);
+        
+        return redirect()->route('dealers')->with('success', 'Dealer updated successfully.');
+    }
+    
+    public function delete($user_id)
+    {
+        $dealer = User::where('role', 'dealer')->findOrFail($user_id);
+        
+        // Soft delete - update dealer_status to 0
+        $dealer->update([
+            'dealer_status' => 0
+        ]);
+        
+        return redirect()->route('dealers')->with('success', 'Dealer has been deactivated successfully.');
+    }
+    
+    public function exportDealers(Request $request)
+    {
+        return Excel::download(new DealersExport($request->search), 'dealers.xlsx');
     }
 }

@@ -21,6 +21,8 @@ class Product extends Model
         'quantity',
         'tags',
         'normal_price',
+        'purchased_price',
+        'profit',
         'is_affiliate',
         'affiliate_price',
         'commission_percentage',

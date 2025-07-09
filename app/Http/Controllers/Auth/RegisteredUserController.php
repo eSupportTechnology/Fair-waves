@@ -51,6 +51,8 @@ class RegisteredUserController extends Controller
             'address' => $request->address,
             'dob' => $request->dob,
             'phone' => $request->phone,
+            'role' => 'customer', 
+            'customer_status' => 1, // Default to active
         ]);
 
         event(new Registered($user));

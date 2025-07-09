@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class AdminReportController extends Controller
 {
     public function customerReport(){
-        $customers = User::all();
+        $customers = User::where('role', 'customer')->get();
         return view('AdminDashboard.Reports.customer_report',compact('customers'));
     }
 

@@ -31,6 +31,8 @@ class User extends Authenticatable
         'referred_by',
         'fname',
         'lname',
+        'customer_status',
+        'dealer_status',
     ];
 
     /**

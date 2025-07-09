@@ -40,16 +40,30 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="mb-4">
-                            <label class="form-label">Normal price <i class="text-danger">*</i></label>
-                            <input name="normal_price" id="normal_price" value="{{ old('normal_price', $product->normal_price) }}" placeholder="Rs" type="number" class="form-control" />
+                            <label class="form-label">Selling Price <i class="text-danger">*</i></label>
+                            <input name="normal_price" id="selling_price" value="{{ old('normal_price', $product->normal_price) }}" placeholder="Rs" type="number" step="0.01" class="form-control" />
                         </div>
                     </div>
-                    {{-- <div class="col-lg-6">
+                    <div class="col-lg-6">
                         <div class="mb-4">
-                            <label class="form-label">Affiliate price</label>
-                            <input name="affiliate_price" id="affiliate_price" value="{{ old('affiliate_price', $product->affiliate_price) }}" placeholder="Rs" type="number" class="form-control" readonly />
+                            <label class="form-label">Purchased Price <i class="text-danger">*</i></label>
+                            <input name="purchased_price" id="purchased_price" value="{{ old('purchased_price', $product->purchased_price) }}" placeholder="Rs" type="number" step="0.01" class="form-control" />
                         </div>
-                    </div> --}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="mb-4">
+                            <label class="form-label">Profit</label>
+                            <input name="profit" id="profit" value="{{ old('profit', $product->profit) }}" placeholder="Rs" type="number" step="0.01" class="form-control" readonly />
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="mb-4">
+                            <label class="form-label">BV </label>
+                            <input name="bv" id="bv" value="{{ old('bv', $product->bv) }}" placeholder="BV" type="number" step="0.01" class="form-control" readonly />
+                        </div>
+                    </div>
                 </div>
 
                 {{-- <div class="row">
@@ -192,63 +206,32 @@
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    {{-- const affiliateCheckbox = document.getElementById('affiliate_checkbox');
-    const normalPriceInput = document.getElementById('normal_price');
-    const affiliatePriceInput = document.getElementById('affiliate_price');
-    const commissionInput = document.getElementById('commission');
-    const comPriceInput = document.getElementById('com_price');
+document.addEventListener('DOMContentLoaded', function () {
+    const sellingPriceInput = document.getElementById('selling_price');
+    const purchasedPriceInput = document.getElementById('purchased_price');
+    const profitInput = document.getElementById('profit');
+    const bvInput = document.getElementById('bv');
 
-    affiliatePriceInput.value = normalPriceInput.value || 0;
-    affiliatePriceInput.readOnly = true;
-    comPriceInput.readOnly = true;
-    commissionInput.readOnly = true;
-
-    if (affiliateCheckbox.checked) {
-        commissionInput.readOnly = false;
-        calculateCommissionPrice();
+    // Function to calculate profit and BV
+    function calculateProfitAndBV() {
+        const sellingPrice = parseFloat(sellingPriceInput.value) || 0;
+        const purchasedPrice = parseFloat(purchasedPriceInput.value) || 0;
+        
+        // Calculate profit: Selling Price - Purchased Price
+        const profit = sellingPrice - purchasedPrice;
+        profitInput.value = profit.toFixed(2);
+        
+        // Calculate BV: Profit / 100 (1 BV = 100 LKR)
+        const bv = profit / 100;
+        bvInput.value = bv.toFixed(2);
     }
 
-    affiliateCheckbox.addEventListener('change', function () {
-        if (affiliateCheckbox.checked) {
-            // When affiliate checkbox is checked
-            affiliatePriceInput.value = normalPriceInput.value || 0;
-            affiliatePriceInput.readOnly = true;
-
-            commissionInput.readOnly = false;
-            calculateCommissionPrice();
-        } else {
-            // When affiliate checkbox is unchecked
-            affiliatePriceInput.value = '';
-            commissionInput.value = '';
-            comPriceInput.value = '';
-
-            commissionInput.readOnly = true;
-        }
-    });
-
-
-    normalPriceInput.addEventListener('input', function () {
-        if (affiliateCheckbox.checked) {
-            affiliatePriceInput.value = normalPriceInput.value || 0;
-        }
-        calculateCommissionPrice();
-    });
-
-
-    commissionInput.addEventListener('input', function () {
-        if (affiliateCheckbox.checked) {
-            calculateCommissionPrice();
-        }
-    });
-
-    // Function to calculate commission price
-    function calculateCommissionPrice() {
-        const normalPrice = parseFloat(normalPriceInput.value) || 0;
-        const commissionRate = parseFloat(commissionInput.value) || 0;
-        const commissionPrice = normalPrice * (commissionRate / 100);
-        comPriceInput.value = commissionPrice.toFixed(2);
-    } --}}
+    // Add event listeners for real-time calculation
+    sellingPriceInput.addEventListener('input', calculateProfitAndBV);
+    purchasedPriceInput.addEventListener('input', calculateProfitAndBV);
+    
+    // Calculate on page load if values exist
+    calculateProfitAndBV();
 });
 
 

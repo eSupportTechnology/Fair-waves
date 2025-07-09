@@ -236,7 +236,19 @@ Route::delete('/admin/categories/{category}', [CategoryController::class, 'destr
 
 
 Route::get('/admin/customers', [CustomerController::class, 'show'])->name('customers');
+Route::get('/admin/customers/export', [CustomerController::class, 'export'])->name('customers.export');
 Route::get('/admin/customer-details/{user_id}', [CustomerController::class, 'showCustomerDetails'])->name('customer-details');
+Route::get('/admin/customers/{user_id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
+Route::put('/admin/customers/{user_id}', [CustomerController::class, 'update'])->name('customer.update');
+Route::delete('/admin/customers/{user_id}', [CustomerController::class, 'delete'])->name('customer.delete');
+
+// Dealer routes
+Route::get('/admin/dealers', [DealerController::class, 'listDealers'])->name('dealers');
+Route::get('/admin/dealers/export', [DealerController::class, 'exportDealers'])->name('dealers.export');
+Route::get('/admin/dealer-details/{user_id}', [DealerController::class, 'showDealerDetails'])->name('dealer-details');
+Route::get('/admin/dealers/{user_id}/edit', [DealerController::class, 'edit'])->name('dealer.edit');
+Route::put('/admin/dealers/{user_id}', [DealerController::class, 'update'])->name('dealer.update');
+Route::delete('/admin/dealers/{user_id}', [DealerController::class, 'delete'])->name('dealer.delete');
 
 Route::get('/admin/orders', [OrderController::class, 'index'])->name('orders');
 Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('order.delete');

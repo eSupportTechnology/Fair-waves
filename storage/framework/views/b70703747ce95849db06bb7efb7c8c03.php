@@ -1,6 +1,4 @@
-@extends('AdminDashboard.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <style>
     .btn-view {
@@ -48,26 +46,28 @@
     }
 </style>
 
-@if (session('success'))
+<?php if(session('success')): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
+        <?php echo e(session('success')); ?>
 
-@if (session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ session('error') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-@endif
+<?php endif; ?>
+
+<?php if(session('error')): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?php echo e(session('error')); ?>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
 
 <div class="content-header">
     <div>
         <h2 class="content-title card-title">Customers</h2>
     </div>
     <div class="d-flex align-items-center">
-        <a href="{{ route('customers.export', request()->query()) }}" class="btn btn-primary rounded font-md">
+        <a href="<?php echo e(route('customers.export', request()->query())); ?>" class="btn btn-primary rounded font-md">
             <i class="fas fa-file-excel me-2"></i>Export to Excel
         </a>
     </div>
@@ -75,27 +75,27 @@
 
 <div class="row mb-4">
     <div class="col-md-12">
-        <form method="GET" action="{{ route('customers') }}">
+        <form method="GET" action="<?php echo e(route('customers')); ?>">
             <div class="search-container" style="max-width: 800px; margin: 0 auto;">
                 <div class="input-group">
                     <input type="text" 
                            name="search" 
                            class="form-control form-control-lg" 
                            placeholder="Search customers by name, email, or phone..." 
-                           value="{{ $search ?? '' }}"
+                           value="<?php echo e($search ?? ''); ?>"
                            style="border-radius: 30px 0 0 30px; padding-left: 20px;">
                     <button class="btn btn-primary btn-lg" type="submit" style="border-radius: 0 30px 30px 0; padding: 0 25px;">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-                @if($search)
+                <?php if($search): ?>
                     <div class="mt-2">
-                        <a href="{{ route('customers') }}" class="btn btn-sm btn-outline-secondary">
+                        <a href="<?php echo e(route('customers')); ?>" class="btn btn-sm btn-outline-secondary">
                             <i class="fas fa-times"></i> Clear search
                         </a>
-                        <span class="ms-2 text-muted">Search results for: <strong>"{{ $search }}"</strong></span>
+                        <span class="ms-2 text-muted">Search results for: <strong>"<?php echo e($search); ?>"</strong></span>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
         </form>
     </div>
@@ -124,33 +124,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($customers as $index => $customer)
+                        <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
-                                <td>{{ $customers->firstItem() + $index }}</td> <!-- Display correct customer number -->
-                                <td>{{ $customer->name }}</td> 
-                                <td>{{ $customer->email }}</td> 
-                                <td>{{ $customer->phone }}</td> 
-                                <td>{{ $customer->created_at->format('Y-m-d') }}</td> 
-                                {{-- TODO: Uncomment for future development - Total Orders functionality --}}
-                                {{-- <td>{{ $customer->customer_orders_count }}</td> --}}
+                                <td><?php echo e($customers->firstItem() + $index); ?></td> <!-- Display correct customer number -->
+                                <td><?php echo e($customer->name); ?></td> 
+                                <td><?php echo e($customer->email); ?></td> 
+                                <td><?php echo e($customer->phone); ?></td> 
+                                <td><?php echo e($customer->created_at->format('Y-m-d')); ?></td> 
+                                
+                                
                                 <td>-</td> <!-- Placeholder for future Total Orders column -->
                                 <td class="text-end">
-                                    <a href="{{ route('customer-details', $customer->id) }}" class="btn btn-view btn-sm me-2" title="View Details">
+                                    <a href="<?php echo e(route('customer-details', $customer->id)); ?>" class="btn btn-view btn-sm me-2" title="View Details">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('customer.edit', $customer->id) }}" class="btn btn-warning btn-sm me-2" title="Edit Customer">
+                                    <a href="<?php echo e(route('customer.edit', $customer->id)); ?>" class="btn btn-warning btn-sm me-2" title="Edit Customer">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button type="button" class="btn btn-danger btn-sm delete-btn" title="Delete Customer"
-                                            data-id="{{ $customer->id }}"
-                                            data-name="{{ $customer->name }}"
+                                            data-id="<?php echo e($customer->id); ?>"
+                                            data-name="<?php echo e($customer->name); ?>"
                                             data-bs-toggle="modal" 
                                             data-bs-target="#deleteCustomerModal">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>                                  
                             </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                     </table>
                 </div>
@@ -167,7 +167,7 @@
 <div class="pagination-area mt-30 mb-50">
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-start">
-            {{ $customers->appends(request()->input())->links() }}  
+            <?php echo e($customers->appends(request()->input())->links()); ?>  
         </ul>
     </nav>
 </div>
@@ -192,7 +192,7 @@
             const customerName = $(this).data('name');
             
             $('#deleteCustomerName').text(customerName);
-            $('#deleteCustomerForm').attr('action', '{{ route("customer.delete", "") }}/' + customerId);
+            $('#deleteCustomerForm').attr('action', '<?php echo e(route("customer.delete", "")); ?>/' + customerId);
         });
     });
 </script>
@@ -219,8 +219,8 @@
                     <i class="fas fa-times me-1"></i> Cancel
                 </button>
                 <form id="deleteCustomerForm" action="" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
                     <button type="submit" class="btn btn-danger">
                         <i class="fas fa-trash-alt me-1"></i> Delete Customer
                     </button>
@@ -229,4 +229,6 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('AdminDashboard.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/AdminDashboard/customer.blade.php ENDPATH**/ ?>

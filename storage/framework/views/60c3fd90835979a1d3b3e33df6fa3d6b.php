@@ -1,6 +1,4 @@
-@extends ('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
 <style>
@@ -240,7 +238,7 @@ img{
                 <li class="flex-align">
                     <i class="ph ph-caret-right"></i>
                 </li>
-                <li class="text-sm text-main-600"> {{ $product->product_name }} </li>
+                <li class="text-sm text-main-600"> <?php echo e($product->product_name); ?> </li>
             </ul>
         </div>
     </div>
@@ -261,20 +259,20 @@ img{
 <div class="product-imgs">
   <div class="img-display">
     <div class="img-showcase">
-      @foreach ($product->images as $image)
-        <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $product->product_name }}">
-      @endforeach
+      <?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <img src="<?php echo e(asset('storage/' . $image->image_path)); ?>" alt="<?php echo e($product->product_name); ?>">
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
   </div>
 
   <div class="img-select">
-    @foreach ($product->images as $index => $image)
+    <?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
       <div class="img-item">
-        <a href="#" data-id="{{ $index + 1 }}">
-          <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $product->product_name }}">
+        <a href="#" data-id="<?php echo e($index + 1); ?>">
+          <img src="<?php echo e(asset('storage/' . $image->image_path)); ?>" alt="<?php echo e($product->product_name); ?>">
         </a>
       </div>
-    @endforeach
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
   </div>
 </div>
 
@@ -287,7 +285,7 @@ img{
                         <div class="product-details__content">
 
                             <!-- <div class="flex-center mb-24 flex-wrap gap-16 bg-color-one rounded-8 py-16 px-24 position-relative z-1">
-                                <img src="{{ asset('/frontend/assets/images/bg/details-offer-bg.png') }}" alt="" class="position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 z-n1">
+                                <img src="<?php echo e(asset('/frontend/assets/images/bg/details-offer-bg.png')); ?>" alt="" class="position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 z-n1">
                                 <div class="flex-align gap-16">
                                     <span class="text-white text-sm">Special Offer:</span>
                                 </div>
@@ -302,26 +300,26 @@ img{
                                 <span class="text-white text-xs">Remains untill the end of the offer</span>
                             </div> -->
 
-                            <h5 class="mb-12">{{ $product->product_name }}</h5>
+                            <h5 class="mb-12"><?php echo e($product->product_name); ?></h5>
                             <div class="flex-align flex-wrap gap-12">
-                                @if ($totalReviews!=0)
+                                <?php if($totalReviews!=0): ?>
                                 <div class="flex-align gap-12 flex-wrap">
                                     <div class="flex-align gap-8">
-                                        @php
+                                        <?php
                                         $fullStars = floor($averageRating); // Number of full stars
                                         $hasHalfStar = ($averageRating - $fullStars) >= 0.5; // Half-star condition
-                                        @endphp
-                                        @for ($i = 0; $i < $fullStars; $i++)
+                                        ?>
+                                        <?php for($i = 0; $i < $fullStars; $i++): ?>
                                             <span class="text-15 fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                            @endfor
-                                            @if ($hasHalfStar)
+                                            <?php endfor; ?>
+                                            <?php if($hasHalfStar): ?>
                                             <span class="text-15 fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star-half"></i></span>
-                                            @endif
+                                            <?php endif; ?>
                                     </div>
-                                    <span class="text-sm fw-medium text-neutral-600">{{ number_format($averageRating, 1) }} Star Rating</span>
-                                    <span class="text-sm fw-medium text-gray-500">({{$totalReviews}})</span>
+                                    <span class="text-sm fw-medium text-neutral-600"><?php echo e(number_format($averageRating, 1)); ?> Star Rating</span>
+                                    <span class="text-sm fw-medium text-gray-500">(<?php echo e($totalReviews); ?>)</span>
                                 </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
                             <span class="mt-32 pt-32 text-gray-700 border-top border-gray-100 d-block"></span>
 
@@ -331,14 +329,15 @@ img{
                                         <i class="ph-fill ph-seal-percent  ext-xl"></i>
                                         -10%
                                     </div>
-                                    <h6 class="mb-0">Rs {{ $product->normal_price }}</h6>
+                                    <h6 class="mb-0">Rs <?php echo e($product->normal_price); ?></h6>
                                 </div-->
                                 <div class="flex-align gap-8">
                                     <span class="text-gray-700"> Price</span>
-                                    <h6 class="text-xl text-gray-400 mb-0 fw-medium">Rs {{ $product->normal_price }}
-                                    @if(Auth::check() && Auth::user()->role === 'dealer')
-              ({{ $product->bv ? $product->bv : '0' }} BV)
-                @endif
+                                    <h6 class="text-xl text-gray-400 mb-0 fw-medium">Rs <?php echo e($product->normal_price); ?>
+
+                                    <?php if(Auth::check() && Auth::user()->role === 'dealer'): ?>
+              (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)
+                <?php endif; ?>
                                     </h6>
                                 </div>
                             </div>
@@ -348,44 +347,45 @@ img{
                             <div class="">
                                 <p class="mb-10 text-black">
                                     Availability:
-                                    @if ($product->quantity > 0)
+                                    <?php if($product->quantity > 0): ?>
                                     <span class="text-success-600">In Stock</span>
-                                    @else
+                                    <?php else: ?>
                                     <span class="text-danger-600">Out of Stock</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </p>
                                 <!-- Sizes Section -->
-                                @if ($product->variations->pluck('value')->filter()->unique()->isNotEmpty())
+                                <?php if($product->variations->pluck('value')->filter()->unique()->isNotEmpty()): ?>
                                 <div class="flex-between align-items-start flex-wrap gap-16">
                                     <div class="d-flex align-items-center mb-5">
                                         <span class="text-gray-900 me-3">Size:</span>
-                                        @foreach ($product->variations->pluck('value')->filter()->unique() as $size)
+                                        <?php $__currentLoopData = $product->variations->pluck('value')->filter()->unique(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <button type="button"
                                             class="size_button ms-5 border border-2 border-gray-300 d-flex align-items-center justify-content-center"
-                                            data-size="{{ $size }}">
-                                            {{ $size }}
+                                            data-size="<?php echo e($size); ?>">
+                                            <?php echo e($size); ?>
+
                                         </button>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </div>
                                 </div>
-                                @endif
+                                <?php endif; ?>
 
 
                                 <!-- Colors Section -->
-                                @if ($product->variations->pluck('hex_value')->filter()->unique()->isNotEmpty())
+                                <?php if($product->variations->pluck('hex_value')->filter()->unique()->isNotEmpty()): ?>
                                 <div class="flex-between align-items-center flex-wrap gap-16 mt-4">
                                     <div class="d-flex align-items-center mb-4">
                                         <span class="text-gray-900 me-3">Color:</span>
-                                        @foreach ($product->variations->pluck('hex_value')->filter()->unique() as $color)
+                                        <?php $__currentLoopData = $product->variations->pluck('hex_value')->filter()->unique(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <button type="button"
                                             class="color-list__button w-24 h-24 border border-2 border-gray-50 rounded-circle me-2"
-                                            style="background-color: {{ $color }};"
-                                            data-color="{{ $color }}">
+                                            style="background-color: <?php echo e($color); ?>;"
+                                            data-color="<?php echo e($color); ?>">
                                         </button>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </div>
                                 </div>
-                                @endif
+                                <?php endif; ?>
 
                             </div>
 
@@ -401,7 +401,7 @@ img{
             <div class="col-xl-3">
                 <div class="product-details__sidebar py-40 px-32 border border-gray-100 rounded-16">
                     <div class="mb-32">
-                        <label for="stock" class="text-lg mb-8 text-heading fw-semibold d-block">Total Stock: {{ $product->quantity }}</label>
+                        <label for="stock" class="text-lg mb-8 text-heading fw-semibold d-block">Total Stock: <?php echo e($product->quantity); ?></label>
                         <span class="text-xl d-flex">
                             <i class="ph ph-location"></i>
                         </span>
@@ -419,7 +419,7 @@ img{
                     <div class="mb-32">
                         <div class="flex-between flex-wrap gap-8 border-bottom border-gray-100 pb-16 mb-16">
                             <span class="text-gray-500">Price</span>
-                            <h6 class="text-lg mb-0 price-display">{{ $product->normal_price }}</h6>
+                            <h6 class="text-lg mb-0 price-display"><?php echo e($product->normal_price); ?></h6>
                         </div>
                         <div class="flex-between flex-wrap gap-8">
                             <span class="text-gray-500">Shipping</span>
@@ -427,35 +427,35 @@ img{
                         </div>
                     </div>
 
-                    @auth
+                    <?php if(auth()->guard()->check()): ?>
                     <!-- Add To Cart Form -->
-                    <form action="{{ route('cart.add') }}" method="POST" id="addToCartForm">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <form action="<?php echo e(route('cart.add')); ?>" method="POST" id="addToCartForm">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="product_id" value="<?php echo e($product->id); ?>">
                         <input type="hidden" name="size" id="selectedSize">
                         <input type="hidden" name="color" id="selectedColor">
                         <input type="hidden" name="quantity" id="hiddenQuantity" value="1">
-                        <input type="hidden" name="price" id="hiddenPrice" value="{{ $product->normal_price }}">
+                        <input type="hidden" name="price" id="hiddenPrice" value="<?php echo e($product->normal_price); ?>">
 
                         <!-- Add To Cart Button -->
                         <button type="submit" class="btn btn-main w-100"
-                            @if ($product->quantity == 0) disabled @endif>
+                            <?php if($product->quantity == 0): ?> disabled <?php endif; ?>>
                             Add To Cart
                         </button>
                     </form>
 
 
                     <!-- Buy Now Button -->
-                    <a href="{{ route('buyNow.checkout', ['product_id' => $product->id]) }}"
+                    <a href="<?php echo e(route('buyNow.checkout', ['product_id' => $product->id])); ?>"
                         id="buyNowBtn"
-                        class="btn btn-outline-main rounded-8 fw-normal mt-16 w-100 @if ($product->quantity == 0) disabled @endif">
+                        class="btn btn-outline-main rounded-8 fw-normal mt-16 w-100 <?php if($product->quantity == 0): ?> disabled <?php endif; ?>">
                         Buy Now
                     </a>
 
 
-                    @else
-                    <p class="text-danger">Please <a href="{{ route('login') }}">log in</a> to add items to the cart.</p>
-                    @endauth
+                    <?php else: ?>
+                    <p class="text-danger">Please <a href="<?php echo e(route('login')); ?>">log in</a> to add items to the cart.</p>
+                    <?php endif; ?>
 
                     <div class="mt-32">
                         <div class="px-16 py-8 bg-main-50 rounded-8 flex-between gap-24 mb-14">
@@ -464,12 +464,7 @@ img{
                             </span>
                             <span class="text-sm text-neutral-600">Ship from <span class="fw-semibold">Fair Waves</span> </span>
                         </div>
-                        {{-- <div class="px-16 py-8 bg-main-50 rounded-8 flex-between gap-24 mb-0">
-                            <span class="w-32 h-32 bg-white text-main-600 rounded-circle flex-center text-xl flex-shrink-0">
-                                <i class="ph-fill ph-storefront"></i>
-                            </span>
-                            <span class="text-sm text-neutral-600">Sold by: <span class="fw-semibold">{{ $product->shop->shop_name ?? '' }}</span> </span>
-                        </div> --}}
+                        
                     </div>
                 </div>
             </div>
@@ -488,7 +483,7 @@ img{
                         </li>
                     </ul>
                     <a href="#" class="btn bg-color-one rounded-16 flex-align gap-8 text-main-600 hover-bg-main-600 hover-text-white">
-                        <img src="{{ asset('/frontend/assets/images/icon/satisfaction-icon.png') }}" alt="">
+                        <img src="<?php echo e(asset('/frontend/assets/images/icon/satisfaction-icon.png')); ?>" alt="">
                         100% Satisfaction Guaranteed
                     </a>
                 </div>
@@ -497,7 +492,7 @@ img{
                         <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab" tabindex="0">
                             <div class="mb-40">
                                 <h6 class="mb-24">Product Description</h6>
-                                <p>{{ $product->product_description }}</p>
+                                <p><?php echo e($product->product_description); ?></p>
                             </div>
                             <div class="mb-40">
                                 <h6 class="mb-24">Product Specifications</h6>
@@ -509,7 +504,8 @@ img{
                                         <span class="text-heading fw-medium">
                                             Available sizes:
                                             <span class="text-gray-500">
-                                                {{ implode(', ', $product->variations->pluck('value')->filter()->unique()->toArray()) }}
+                                                <?php echo e(implode(', ', $product->variations->pluck('value')->filter()->unique()->toArray())); ?>
+
                                             </span>
                                         </span>
                                     </li>
@@ -520,9 +516,9 @@ img{
                                         <span class="text-heading fw-medium">
                                             Available colors:
                                             <span class="text-gray-500  gap-4">
-                                                @foreach($product->variations->pluck('hex_value')->filter()->unique() as $color)
-                                                <span class="w-14 h-14 rounded-circle" style="background-color: {{ $color }};"></span>
-                                                @endforeach
+                                                <?php $__currentLoopData = $product->variations->pluck('hex_value')->filter()->unique(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <span class="w-14 h-14 rounded-circle" style="background-color: <?php echo e($color); ?>;"></span>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </span>
                                         </span>
                                     </li>
@@ -535,50 +531,50 @@ img{
                                 <div class="col-lg-6">
                                     <h6 class="mb-24">Product Reviews</h6>
                                     <div class="reviews">
-                                        @forelse($reviews as $review)
+                                        <?php $__empty_1 = true; $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                         <div class="d-flex align-items-start gap-24 pb-44 border-bottom border-gray-100 mb-44">
                                             <!-- Reviewer Info -->
-                                            <img src="{{ asset('/frontend/assets/images/icon/default-user.png') }}" alt="" class="w-52 h-52 object-fit-cover rounded-circle flex-shrink-0">
+                                            <img src="<?php echo e(asset('/frontend/assets/images/icon/default-user.png')); ?>" alt="" class="w-52 h-52 object-fit-cover rounded-circle flex-shrink-0">
                                             <div class="flex-grow-1">
                                                 <div class="flex-between align-items-start gap-8">
                                                     <div>
-                                                        <h6 class="mb-12 text-md">{{ $review->is_anonymous ? 'Anonymous' : $review->reviewer->name }}</h6>
+                                                        <h6 class="mb-12 text-md"><?php echo e($review->is_anonymous ? 'Anonymous' : $review->reviewer->name); ?></h6>
                                                         <!-- Rating -->
                                                         <div class="flex-align gap-8">
-                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                <i class="{{ $review->rating >= $i ? 'fa-star fas filled' : 'far fa-star' }}" style="color: #ffbf00;"></i>
-                                                                @endfor
+                                                            <?php for($i = 1; $i <= 5; $i++): ?>
+                                                                <i class="<?php echo e($review->rating >= $i ? 'fa-star fas filled' : 'far fa-star'); ?>" style="color: #ffbf00;"></i>
+                                                                <?php endfor; ?>
                                                         </div>
                                                     </div>
                                                     <!-- Review Date -->
-                                                    <span class="text-gray-800 text-xs">{{ $review->created_at->format('d.m.Y') }}</span>
+                                                    <span class="text-gray-800 text-xs"><?php echo e($review->created_at->format('d.m.Y')); ?></span>
                                                 </div>
                                                 <!-- Review Text -->
-                                                <p class="text-gray-700">{{ $review->review }}</p>
+                                                <p class="text-gray-700"><?php echo e($review->review); ?></p>
                                                 <!-- Review Media -->
-                                                @if($review->media)
+                                                <?php if($review->media): ?>
                                                 <div class="flex-wrap gap-8 mt-12">
-                                                    @php
+                                                    <?php
                                                     $mediaFiles = is_string($review->media) ? json_decode($review->media, true) : $review->media;
-                                                    @endphp
+                                                    ?>
 
-                                                    @foreach ($mediaFiles as $media)
-                                                    @if (in_array(pathinfo($media, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
-                                                    <img src="{{ asset('storage/' . $media) }}" alt="Review Media" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
-                                                    @elseif (in_array(pathinfo($media, PATHINFO_EXTENSION), ['mp4', 'avi', 'mov', 'webm']))
+                                                    <?php $__currentLoopData = $mediaFiles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $media): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php if(in_array(pathinfo($media, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif'])): ?>
+                                                    <img src="<?php echo e(asset('storage/' . $media)); ?>" alt="Review Media" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                                                    <?php elseif(in_array(pathinfo($media, PATHINFO_EXTENSION), ['mp4', 'avi', 'mov', 'webm'])): ?>
                                                     <video controls style="width: 100px; height: 100px;">
-                                                        <source src="{{ asset('storage/' . $media) }}" type="video/{{ pathinfo($media, PATHINFO_EXTENSION) }}">
+                                                        <source src="<?php echo e(asset('storage/' . $media)); ?>" type="video/<?php echo e(pathinfo($media, PATHINFO_EXTENSION)); ?>">
                                                         Your browser does not support the video tag.
                                                     </video>
-                                                    @endif
-                                                    @endforeach
+                                                    <?php endif; ?>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </div>
-                                                @endif
+                                                <?php endif; ?>
                                             </div>
                                         </div>
-                                        @empty
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <p>No reviews available for this product.</p>
-                                        @endforelse
+                                        <?php endif; ?>
                                     </div>
 
 
@@ -615,43 +611,43 @@ img{
                                         <div class="d-flex flex-wrap gap-44">
                                             <!-- Average Rating -->
                                             <div class="border border-gray-100 rounded-8 px-40 py-52 flex-center flex-column flex-shrink-0 text-center">
-                                                <h2 class="mb-6 text-main-600">{{ number_format($averageRating, 1) }}</h2>
+                                                <h2 class="mb-6 text-main-600"><?php echo e(number_format($averageRating, 1)); ?></h2>
                                                 <div class="flex-center gap-8">
-                                                    @php
+                                                    <?php
                                                     $fullStars = floor($averageRating); // Number of full stars
                                                     $hasHalfStar = ($averageRating - $fullStars) >= 0.5; // Half-star condition
-                                                    @endphp
-                                                    @for ($i = 0; $i < $fullStars; $i++)
+                                                    ?>
+                                                    <?php for($i = 0; $i < $fullStars; $i++): ?>
                                                         <span class="text-15 fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                        @endfor
-                                                        @if ($hasHalfStar)
+                                                        <?php endfor; ?>
+                                                        <?php if($hasHalfStar): ?>
                                                         <span class="text-15 fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star-half"></i></span>
-                                                        @endif
+                                                        <?php endif; ?>
                                                 </div>
                                                 <span class="mt-16 text-gray-500">Average Product Rating</span>
                                             </div>
 
                                             <!-- Rating Breakdown -->
                                             <div class="border border-gray-100 rounded-8 px-24 py-40 flex-grow-1">
-                                                @foreach ($ratingCounts as $rating => $count)
-                                                @php
+                                                <?php $__currentLoopData = $ratingCounts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rating => $count): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php
                                                 $percentage = $totalReviews > 0 ? ($count / $totalReviews) * 100 : 0;
-                                                @endphp
+                                                ?>
                                                 <div class="flex-align gap-8 mb-20">
-                                                    <span class="text-gray-900 flex-shrink-0">{{ $rating }}</span>
-                                                    <div class="progress w-100 bg-gray-100 rounded-pill h-8" role="progressbar" aria-label="Basic example" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
-                                                        <div class="progress-bar bg-main-600 rounded-pill" style="width: {{ $percentage }}%"></div>
+                                                    <span class="text-gray-900 flex-shrink-0"><?php echo e($rating); ?></span>
+                                                    <div class="progress w-100 bg-gray-100 rounded-pill h-8" role="progressbar" aria-label="Basic example" aria-valuenow="<?php echo e($percentage); ?>" aria-valuemin="0" aria-valuemax="100">
+                                                        <div class="progress-bar bg-main-600 rounded-pill" style="width: <?php echo e($percentage); ?>%"></div>
                                                     </div>
                                                     <div class="flex-align gap-4">
-                                                        @for ($i = 1; $i <= 5; $i++)
-                                                            <span class="text-xs fw-medium {{ $rating >= $i ? 'text-warning-600' : 'text-gray-600' }} d-flex">
+                                                        <?php for($i = 1; $i <= 5; $i++): ?>
+                                                            <span class="text-xs fw-medium <?php echo e($rating >= $i ? 'text-warning-600' : 'text-gray-600'); ?> d-flex">
                                                             <i class="ph-fill ph-star"></i>
                                                             </span>
-                                                            @endfor
+                                                            <?php endfor; ?>
                                                     </div>
-                                                    <span class="text-gray-900 flex-shrink-0">{{ $count }}</span>
+                                                    <span class="text-gray-900 flex-shrink-0"><?php echo e($count); ?></span>
                                                 </div>
-                                                @endforeach
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -792,7 +788,7 @@ window.addEventListener('resize', slideImage);
 <script>
     var minus = $('.quantity__minus');
     var plus = $('.quantity__plus');
-    var normalPrice = parseFloat('{{ $product->normal_price }}');
+    var normalPrice = parseFloat('<?php echo e($product->normal_price); ?>');
 
     $(plus).on('click', function() {
         var input = $(this).siblings('.quantity__input');
@@ -922,7 +918,7 @@ window.addEventListener('resize', slideImage);
                     timerProgressBar: true
                 });
             } else {
-                const url = new URL("{{ url('/buy-now-checkout/' . $product->id) }}");
+                const url = new URL("<?php echo e(url('/buy-now-checkout/' . $product->id)); ?>");
                 url.searchParams.append('selectedSize', selectedSize || '');
                 url.searchParams.append('selectedColor', selectedColor || '');
                 url.searchParams.append('quantity', quantity);
@@ -941,7 +937,7 @@ window.addEventListener('resize', slideImage);
             fetch(`/wishlist/check/${productId}`, {
                     method: 'GET',
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                     }
                 })
                 .then(response => response.json())
@@ -978,7 +974,7 @@ window.addEventListener('resize', slideImage);
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                 },
                 body: JSON.stringify({
                     product_id: productId
@@ -995,4 +991,6 @@ window.addEventListener('resize', slideImage);
             .catch(error => console.error('Error:', error));
     }
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/product-details.blade.php ENDPATH**/ ?>

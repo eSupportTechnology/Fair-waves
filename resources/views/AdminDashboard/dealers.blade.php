@@ -64,10 +64,10 @@
 
 <div class="content-header">
     <div>
-        <h2 class="content-title card-title">Customers</h2>
+        <h2 class="content-title card-title">Dealers</h2>
     </div>
     <div class="d-flex align-items-center">
-        <a href="{{ route('customers.export', request()->query()) }}" class="btn btn-primary rounded font-md">
+        <a href="{{ route('dealers.export', request()->query()) }}" class="btn btn-primary rounded font-md">
             <i class="fas fa-file-excel me-2"></i>Export to Excel
         </a>
     </div>
@@ -75,13 +75,13 @@
 
 <div class="row mb-4">
     <div class="col-md-12">
-        <form method="GET" action="{{ route('customers') }}">
+        <form method="GET" action="{{ route('dealers') }}">
             <div class="search-container" style="max-width: 800px; margin: 0 auto;">
                 <div class="input-group">
                     <input type="text" 
                            name="search" 
                            class="form-control form-control-lg" 
-                           placeholder="Search customers by name, email, or phone..." 
+                           placeholder="Search dealers by name, email, or phone..." 
                            value="{{ $search ?? '' }}"
                            style="border-radius: 30px 0 0 30px; padding-left: 20px;">
                     <button class="btn btn-primary btn-lg" type="submit" style="border-radius: 0 30px 30px 0; padding: 0 25px;">
@@ -90,7 +90,7 @@
                 </div>
                 @if($search)
                     <div class="mt-2">
-                        <a href="{{ route('customers') }}" class="btn btn-sm btn-outline-secondary">
+                        <a href="{{ route('dealers') }}" class="btn btn-sm btn-outline-secondary">
                             <i class="fas fa-times"></i> Clear search
                         </a>
                         <span class="ms-2 text-muted">Search results for: <strong>"{{ $search }}"</strong></span>
@@ -111,43 +111,46 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-hover" id="customerTable">
+                    <table class="table table-hover" id="dealerTable">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>Dealer Code</th>
                             <th>Registered Date</th>
                             <th>Total Orders</th>
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($customers as $index => $customer)
+                        @foreach ($dealers as $index => $dealer)
                             <tr>
-                                <td>{{ $customers->firstItem() + $index }}</td> <!-- Display correct customer number -->
-                                <td>{{ $customer->name }}</td> 
-                                <td>{{ $customer->email }}</td> 
-                                <td>{{ $customer->phone }}</td> 
-                                <td>{{ $customer->created_at->format('Y-m-d') }}</td> 
-                                {{-- TODO: Uncomment for future development - Total Orders functionality --}}
-                                {{-- <td>{{ $customer->customer_orders_count }}</td> --}}
-                                <td>-</td> <!-- Placeholder for future Total Orders column -->
+                                <td>{{ $dealers->firstItem() + $index }}</td>
+                                <td>{{ $dealer->name }}</td> 
+                                <td>{{ $dealer->email }}</td> 
+                                <td>{{ $dealer->phone }}</td>
+                                <td>{{ $dealer->dealerProfile->dealer_code ?? 'N/A' }}</td>
+                                <td>{{ $dealer->created_at->format('Y-m-d') }}</td> 
+                                <td>
+                                    {{-- TODO: Uncomment for future development - Total Orders functionality --}}
+                                    {{-- {{ $dealer->customer_orders_count }} --}}
+                                </td> 
                                 <td class="text-end">
-                                    <a href="{{ route('customer-details', $customer->id) }}" class="btn btn-view btn-sm me-2" title="View Details">
+                                    <a href="{{ route('dealer-details', $dealer->id) }}" class="btn btn-view btn-sm me-2" data-bs-toggle="tooltip" title="View Details">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('customer.edit', $customer->id) }}" class="btn btn-warning btn-sm me-2" title="Edit Customer">
+                                    <a href="{{ route('dealer.edit', $dealer->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Edit Dealer">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <button type="button" class="btn btn-danger btn-sm delete-btn" title="Delete Customer"
-                                            data-id="{{ $customer->id }}"
-                                            data-name="{{ $customer->name }}"
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#deleteCustomerModal">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                    <form action="{{ route('dealer.delete', $dealer->id) }}" method="POST" class="d-inline" id="delete-form-{{ $dealer->id }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" onclick="confirmDelete('delete-form-{{ $dealer->id }}', 'Are you sure you want to deactivate this dealer?')" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Deactivate Dealer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>                                  
                             </tr>
                         @endforeach
@@ -167,66 +170,27 @@
 <div class="pagination-area mt-30 mb-50">
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-start">
-            {{ $customers->appends(request()->input())->links() }}  
+            {{ $dealers->appends(request()->input())->links() }}  
         </ul>
     </nav>
 </div>
 
 <script>
     $(document).ready(function() {
+        // Initialize tooltips
+        $('[data-bs-toggle="tooltip"]').tooltip();
+        
         // Initialize DataTables but disable the built-in pagination since we're using Laravel's pagination
-        $('#customerTable').DataTable({
+        $('#dealerTable').DataTable({
             "paging": false,
             "info": false,
             "searching": false,  // Disable built-in search since we have custom search
             "responsive": true,
             "order": [[0, 'asc']],
             "columnDefs": [
-                { "orderable": false, "targets": 6 } // Disable ordering on action column
+                { "orderable": false, "targets": 7 } // Disable ordering on action column
             ]
-        });
-
-        // Delete customer confirmation modal setup
-        $('.delete-btn').on('click', function() {
-            const customerId = $(this).data('id');
-            const customerName = $(this).data('name');
-            
-            $('#deleteCustomerName').text(customerName);
-            $('#deleteCustomerForm').attr('action', '{{ route("customer.delete", "") }}/' + customerId);
         });
     });
 </script>
-
-<!-- Delete Customer Confirmation Modal -->
-<div class="modal fade" id="deleteCustomerModal" tabindex="-1" aria-labelledby="deleteCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteCustomerModalLabel">
-                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm Deletion
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="text-center mb-3">
-                    <i class="fas fa-user-slash fa-4x text-danger mb-3"></i>
-                    <p class="fs-5">Are you sure you want to delete customer <strong id="deleteCustomerName"></strong>?</p>
-                    <p class="text-muted">This will set the customer's status to inactive. They will no longer appear in the customers list.</p>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i> Cancel
-                </button>
-                <form id="deleteCustomerForm" action="" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-trash-alt me-1"></i> Delete Customer
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection

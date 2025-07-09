@@ -324,16 +324,20 @@ img{
                             <span class="mt-32 pt-32 text-gray-700 border-top border-gray-100 d-block"></span>
 
                             <div class="my-0 flex-align gap-16 flex-wrap">
-                                <div class="flex-align gap-8">
+                                <!-- class="flex-align gap-8">
                                     <div class="flex-align gap-8 text-main-two-600">
-                                        <i class="ph-fill ph-seal-percent text-xl"></i>
+                                        <i class="ph-fill ph-seal-percent  ext-xl"></i>
                                         -10%
                                     </div>
                                     <h6 class="mb-0">Rs <?php echo e($product->normal_price); ?></h6>
-                                </div>
+                                </div-->
                                 <div class="flex-align gap-8">
-                                    <span class="text-gray-700">Regular Price</span>
-                                    <h6 class="text-xl text-gray-400 mb-0 fw-medium">Rs 5500.00</h6>
+                                    <span class="text-gray-700"> Price</span>
+                                    <h6 class="text-xl text-gray-400 mb-0 fw-medium">Rs <?php echo e($product->normal_price); ?> 
+                                    <?php if(Auth::check() && Auth::user()->role === 'dealer'): ?>
+              (<?php echo e($product->bv); ?>)
+                <?php endif; ?>
+                                    </h6>
                                 </div>
                             </div>
 

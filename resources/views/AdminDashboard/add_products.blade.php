@@ -38,31 +38,31 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="mb-4">
-                            <label class="form-label">Normal price <i class="text-danger">*</i></label>
-                            <input name="normal_price" id="normal_price" placeholder="Rs" type="number" class="form-control" />
+                            <label class="form-label">Selling Price <i class="text-danger">*</i></label>
+                            <input name="normal_price" id="selling_price" placeholder="Rs" type="number" step="0.01" class="form-control" />
                         </div>
                     </div>
-                    {{-- <div class="col-lg-6">
+                    <div class="col-lg-6">
                         <div class="mb-4">
-                            <label class="form-label">Affiliate Price</label>
-                            <input name="affiliate_price" id="affiliate_price" type="number" class="form-control" readonly />
+                            <label class="form-label">Purchased Price <i class="text-danger">*</i></label>
+                            <input name="purchased_price" id="purchased_price" placeholder="Rs" type="number" step="0.01" class="form-control" />
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
-                {{-- <div class="row">
+                <div class="row">
                     <div class="col-lg-6">
                         <div class="mb-4">
-                            <label class="form-label">Commission Rate %</label>
-                            <input name="commission_percentage" id="commission" type="number" placeholder="%" class="form-control" />
+                            <label class="form-label">Profit</label>
+                            <input name="profit" id="profit" placeholder="Rs" type="number" step="0.01" class="form-control" readonly />
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="mb-4">
-                            <label class="form-label">Commission price</label>
-                            <input name="com_price" id="com_price" placeholder="Rs" type="number" class="form-control" readonly />
+                            <label class="form-label">BV (Business Value)</label>
+                            <input name="bv" id="bv" placeholder="BV" type="number" step="0.01" class="form-control" readonly />
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
         </div>
 
@@ -170,58 +170,29 @@
 
 
 <script>
- document.addEventListener('DOMContentLoaded', function () {
-    {{-- const affiliateCheckbox = document.getElementById('affiliate_checkbox');
-    const normalPriceInput = document.getElementById('normal_price');
-    const affiliatePriceInput = document.getElementById('affiliate_price');
-    const commissionInput = document.getElementById('commission');
-    const comPriceInput = document.getElementById('com_price');
+document.addEventListener('DOMContentLoaded', function () {
+    const sellingPriceInput = document.getElementById('selling_price');
+    const purchasedPriceInput = document.getElementById('purchased_price');
+    const profitInput = document.getElementById('profit');
+    const bvInput = document.getElementById('bv');
 
-    // Set initial state for inputs
-    affiliatePriceInput.value = normalPriceInput.value || 0;
-    affiliatePriceInput.readOnly = true; // Affiliate price should be equal to normal price and readonly
-    comPriceInput.readOnly = true;
-    commissionInput.readOnly = true; // Commission input should be readonly initially
+    // Function to calculate profit and BV
+    function calculateProfitAndBV() {
+        const sellingPrice = parseFloat(sellingPriceInput.value) || 0;
+        const purchasedPrice = parseFloat(purchasedPriceInput.value) || 0;
+        
+        // Calculate profit: Selling Price - Purchased Price
+        const profit = sellingPrice - purchasedPrice;
+        profitInput.value = profit.toFixed(2);
+        
+        // Calculate BV: Profit / 100 (1 BV = 100 LKR)
+        const bv = profit / 100;
+        bvInput.value = bv.toFixed(2);
+    }
 
-    affiliateCheckbox.addEventListener('change', function () {
-        if (affiliateCheckbox.checked) {
-            // When affiliate checkbox is checked
-            affiliatePriceInput.value = normalPriceInput.value || 0; // Set affiliate price equal to normal price
-            affiliatePriceInput.readOnly = true;
-
-            commissionInput.readOnly = false; // Allow the commission to be edited when affiliate is checked
-            commissionInput.value = ''; // Reset commission if unchecked
-            calculateCommissionPrice();
-        } else {
-            // When affiliate checkbox is unchecked
-            affiliatePriceInput.value = '';
-            commissionInput.value = '';
-            comPriceInput.value = '';
-            commissionInput.readOnly = true; // Disable commission input when checkbox is unchecked
-        }
-    });
-
-    normalPriceInput.addEventListener('input', function () {
-        if (affiliateCheckbox.checked) {
-            // Update affiliate price when normal price changes
-            affiliatePriceInput.value = normalPriceInput.value || 0;
-        }
-        calculateCommissionPrice();
-    });
-
-    commissionInput.addEventListener('input', function () {
-        if (affiliateCheckbox.checked) {
-            calculateCommissionPrice(); // Recalculate commission price only if affiliate is checked
-        }
-    });
-
-    function calculateCommissionPrice() {
-        const normalPrice = parseFloat(normalPriceInput.value) || 0;
-        const commissionRate = parseFloat(commissionInput.value) || 0; // Get commission rate from input
-        const commissionPrice = normalPrice * (commissionRate / 100); // Calculate commission price
-
-        comPriceInput.value = commissionPrice.toFixed(2); // Display commission price
-    } --}}
+    // Add event listeners for real-time calculation
+    sellingPriceInput.addEventListener('input', calculateProfitAndBV);
+    purchasedPriceInput.addEventListener('input', calculateProfitAndBV);
 });
 
 
@@ -344,6 +315,34 @@
 
 <script>
     let variationIndex = 1;
+
+    // Auto-calculate profit and BV when selling price or purchased price changes
+    function calculateProfitAndBV() {
+        const sellingPrice = parseFloat(document.getElementById('selling_price').value) || 0;
+        const purchasedPrice = parseFloat(document.getElementById('purchased_price').value) || 0;
+        
+        const profit = sellingPrice - purchasedPrice;
+        const bv = profit / 100; // 1 BV = 100 LKR
+        
+        document.getElementById('profit').value = profit.toFixed(2);
+        document.getElementById('bv').value = bv.toFixed(2);
+    }
+
+    // Add event listeners for selling price and purchased price fields
+    document.addEventListener('DOMContentLoaded', function() {
+        const sellingPriceField = document.getElementById('selling_price');
+        const purchasedPriceField = document.getElementById('purchased_price');
+        
+        if (sellingPriceField) {
+            sellingPriceField.addEventListener('input', calculateProfitAndBV);
+            sellingPriceField.addEventListener('change', calculateProfitAndBV);
+        }
+        
+        if (purchasedPriceField) {
+            purchasedPriceField.addEventListener('input', calculateProfitAndBV);
+            purchasedPriceField.addEventListener('change', calculateProfitAndBV);
+        }
+    });
 
     function addVariation() {
         const variationsContainer = document.getElementById('variationsContainer');

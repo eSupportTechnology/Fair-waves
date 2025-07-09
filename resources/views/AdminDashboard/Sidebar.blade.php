@@ -48,6 +48,13 @@
                         </a>
                     </li>
 
+                    <li class="menu-item {{ request()->routeIs('dealers') ? 'active' : '' }}">
+                        <a class="menu-link" href="{{ route('dealers') }}">
+                        <i class="icon material-icons md-person_pin_circle"></i>
+                            <span class="text">Dealers</span>
+                        </a>
+                    </li>
+
                     <!--li class="menu-item has-submenu { request()->is('admin/affiliate*') || request()->is('admin/affiliate_rules*') || request()->is('admin/affiliate_withdrawals*') ? 'active' : '' }}">
                         <a class="menu-link" href="#">
                             <i class="icon material-icons md-share"></i>

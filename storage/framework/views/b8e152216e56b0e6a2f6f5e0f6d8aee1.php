@@ -1127,6 +1127,33 @@
                 console.error('Search error:', err);
             });
     });
+
+    // Handle search button click and Enter key press
+    function performSearch() {
+        const searchInput = document.querySelector('.main-search');
+        const query = searchInput.value.trim();
+        
+        if (query !== '') {
+            // Redirect to shop page with search parameter
+            window.location.href = `<?php echo e(route('shop.index')); ?>?search=${encodeURIComponent(query)}`;
+        }
+    }
+
+    // Search button click handler
+    document.querySelector('.submit-search').addEventListener('click', function(e) {
+        e.preventDefault();
+        performSearch();
+    });
+
+    // Enter key press handler
+    document.querySelector('.main-search').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            // Hide suggestions dropdown when searching
+            document.getElementById('suggestions-box-display').style.display = 'none';
+            performSearch();
+        }
+    });
 </script>
 
 <script>

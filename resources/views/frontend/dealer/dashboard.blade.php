@@ -936,6 +936,10 @@
                             <i class="fas fa-bell me-2"></i>
                             Notifications ({{ $notificationCount }})
                         </a>
+                        <a href="{{ route('dealer.products.dashboard') }}" class="btn btn-outline-success btn-sm w-100">
+                            <i class="fas fa-bell me-2"></i>
+                            Dealer's Products
+                        </a>
                     </div>
                 </div>
 

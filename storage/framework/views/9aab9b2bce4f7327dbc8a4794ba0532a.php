@@ -82,6 +82,15 @@
     }
 </style>
 
+<?php if(!Auth::check()): ?>
+    <script>
+        window.location.href = "<?php echo e(route('login')); ?>";
+    </script>
+    <?php exit; ?>
+<?php endif; ?>
+
+
+
 <!-- Dashboard Header -->
 <h4 class="px-2 py-2">Dashboard</h4>
 <div class="dashboard-header">

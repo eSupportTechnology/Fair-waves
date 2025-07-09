@@ -1,6 +1,12 @@
 @extends('layouts.user_sidebar')
 
 @section('dashboard-content')
+@if (!Auth::check())
+    <script>
+        window.location.href = "{{ route('login') }}";
+    </script>
+    @php exit; @endphp
+@endif
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <style>
@@ -165,7 +171,7 @@
                 <span class="ms-2">Qty: <span style="font-weight: 600;">{{ $orderItem->quantity }}</span></span>
             </div>
             <h6 class="mt-2" style="font-weight: bold;font-size: 15px">Rs {{ number_format($orderItem->cost, 2) }}</h6>
-        </div> 
+        </div>
     </div>
 
     <form method="POST" action="{{ route('reviews.store',$orderItem->id) }}" enctype="multipart/form-data">
@@ -177,7 +183,7 @@
         <div class="review-rating-container">
             <h6>Overall Rating</h6>
             <div class="review-rating">
-                @for ($i = 1; $i <= 5; $i++)  
+                @for ($i = 1; $i <= 5; $i++)
                     <i class="far fa-star" data-value="{{ $i }}"></i>
                     @endfor
             </div>

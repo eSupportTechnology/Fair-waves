@@ -206,7 +206,12 @@
     }
 </style>
 
-
+<?php if(!Auth::check()): ?>
+    <script>
+        window.location.href = "<?php echo e(route('login')); ?>";
+    </script>
+    <?php exit; ?>
+<?php endif; ?>
 <!-- ========================= Breadcrumb Start =============================== -->
 <div class="mb-0 breadcrumb py-26 bg-main-two-50">
     <div class="container container-lg">

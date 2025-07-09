@@ -1,6 +1,12 @@
 @extends('layouts.user_sidebar')
 
 @section('dashboard-content')
+@if (!Auth::check())
+    <script>
+        window.location.href = "{{ route('login') }}";
+    </script>
+    @php exit; @endphp
+@endif
 <style>
     .details-container {
         background-color: #f4f6f8;
@@ -74,7 +80,7 @@
         margin: 0 auto;
         padding: 0 15px; /* Add padding for responsiveness */
         gap: 10px;
-        
+
     }
 
     .progressbar {
@@ -246,11 +252,11 @@
     <div class="col-md-3 d-flex flex-column justify-content-center" style="font-size: 13px;margin-top:20px;color:black;">
         <span style="font-weight: 600;">Apple iPhone 14 Pro Max</span>
         <div>
-            <span class="me-2">Color: <span style="font-weight: 600;">Yellow</span></span> | 
+            <span class="me-2">Color: <span style="font-weight: 600;">Yellow</span></span> |
             <span class="me-2 ms-2">Size: <span style="font-weight: 600;">M</span></span> |
             <span class="ms-2">Qty: <span style="font-weight: 600;">1</span></span>
         </div>
-        <h6 class="mt-2" style="font-size: 13px;font-weight: bold;">Rs 120000</h6>  
+        <h6 class="mt-2" style="font-size: 13px;font-weight: bold;">Rs 120000</h6>
     </div>
     <p style="font-size:13px;"><strong style="margin-left: 60px;">Reason:</strong> Item does not match description or picture</p>
 </div>

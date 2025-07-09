@@ -84,6 +84,15 @@
     }
 </style>
 
+@if (!Auth::check())
+    <script>
+        window.location.href = "{{ route('login') }}";
+    </script>
+    @php exit; @endphp
+@endif
+
+
+
 <!-- Dashboard Header -->
 <h4 class="px-2 py-2">Dashboard</h4>
 <div class="dashboard-header">

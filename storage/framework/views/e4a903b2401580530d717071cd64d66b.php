@@ -943,6 +943,10 @@
                             <i class="fas fa-bell me-2"></i>
                             Notifications (<?php echo e($notificationCount); ?>)
                         </a>
+                        <a href="<?php echo e(route('dealer.products.dashboard')); ?>" class="btn btn-outline-success btn-sm w-100">
+                            <i class="fas fa-bell me-2"></i>
+                            Dealer's Products
+                        </a>
                     </div>
                 </div>
 

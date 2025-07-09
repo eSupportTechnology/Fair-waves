@@ -1,23 +1,28 @@
 @extends('layouts.user_sidebar')
 
 @section('dashboard-content')
-
+@if (!Auth::check())
+    <script>
+        window.location.href = "{{ route('login') }}";
+    </script>
+    @php exit; @endphp
+@endif
 <style>
 .list-group-item {
     border: 1px solid #e0e0e0;
-    border-radius: 5px; 
+    border-radius: 5px;
 }
 
 .list-group-item h6 {
-    color: hsl(357, 100%, 50%); 
+    color: hsl(357, 100%, 50%);
 }
 
 .list-group-item p {
-    margin-bottom: 0.5rem; 
+    margin-bottom: 0.5rem;
 }
 
 .list-group-item small {
-    font-style: italic; 
+    font-style: italic;
 }
 </style>
 
@@ -45,7 +50,7 @@
 <script>
     document.querySelectorAll('.btn-close').forEach(button => {
         button.addEventListener('click', function() {
-            this.closest('.list-group-item').remove(); 
+            this.closest('.list-group-item').remove();
         });
     });
 </script>

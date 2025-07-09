@@ -490,4 +490,9 @@ Route::prefix('dealer')->group(function () {
     Route::post('/referrals/{id}/reject', [DealerController::class, 'rejectReferral'])->name('dealer.referrals.reject');
     Route::get('/analytics', [DealerController::class, 'analytics'])->name('dealer.analytics');
     Route::get('/notifications', [DealerController::class, 'notifications'])->name('dealer.notifications');
+    Route::get('/dealer-products/dashboard', [DealerController::class, 'dealerProductsDashBoard'])->name('dealer.products.dashboard');
+    Route::get('/dealer-products/dashboard', [DealerController::class, 'dealerProductsDashBoard'])->name('dealer.products.dashboard');
+    Route::get('/dealer-products/orders/{linkId}', [DealerController::class, 'dealerProductOrders'])->name('dealer.products.orders');
+    Route::delete('/dealer-products/delete/{linkId}', [DealerController::class, 'deleteDealerProductLink'])->name('dealer.products.delete');
+    Route::delete('/dealer-products/orders/delete/{orderId}', [DealerController::class, 'deleteDealerProductOrder'])->name('dealer.products.orders.delete');
 });

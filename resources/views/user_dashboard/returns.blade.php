@@ -2,6 +2,12 @@
 
 
 @section('dashboard-content')
+@if (!Auth::check())
+    <script>
+        window.location.href = "{{ route('login') }}";
+    </script>
+    @php exit; @endphp
+@endif
 
 <style>
    .returns-container {
@@ -127,7 +133,7 @@
 
 <div class="returns-container">
     <h4>My Returns</h4>
-    
+
     <div class="return-item">
         <div class="return-header">
             <div class="return-info">
@@ -149,13 +155,13 @@
             <div class="col-md-3 d-flex flex-column justify-content-center review-product-info"style="margin-top:15px;color:black;">
                 <span>Apple iPhone 14 Pro Max</span>
                 <div>
-                    <span class="me-2">Color: <span>Yellow</span></span> | 
+                    <span class="me-2">Color: <span>Yellow</span></span> |
                     <span class="me-2 ms-2">Size: <span>M</span></span> |
                     <span class="ms-2">Qty: <span>1</span></span>
                 </div>
-                <h6 class="mt-2" style="font-size: 13px;font-weight: bold;">Rs 120000</h6>  
+                <h6 class="mt-2" style="font-size: 13px;font-weight: bold;">Rs 120000</h6>
             </div>
-            
+
             <div class="refund-status">
                 <span class="refund-approved">Your refund has been approved</span>
             </div>

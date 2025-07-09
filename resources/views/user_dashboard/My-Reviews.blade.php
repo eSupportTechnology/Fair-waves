@@ -1,6 +1,12 @@
 @extends('layouts.user_sidebar')
 
 @section('dashboard-content')
+@if (!Auth::check())
+    <script>
+        window.location.href = "{{ route('login') }}";
+    </script>
+    @php exit; @endphp
+@endif
 <style>
     .review-images {
         display: flex;

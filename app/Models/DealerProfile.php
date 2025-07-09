@@ -9,7 +9,7 @@ class DealerProfile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'rank', 'cbv', 'bv', 'tier', 'dealer_code'];
+    protected $fillable = ['user_id', 'rank', 'cbv', 'bv', 'tier', 'dealer_code', 'dealer_shop_name'];
 
     public function user()
     {

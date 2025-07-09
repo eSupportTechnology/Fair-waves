@@ -1,11 +1,17 @@
 @extends('layouts.user_sidebar')
 
 @section('dashboard-content')
+@if (!Auth::check())
+    <script>
+        window.location.href = "{{ route('login') }}";
+    </script>
+    @php exit; @endphp
+@endif
 <div class="tracking-container mt-4">
     <h4>Tracking Details</h4>
     <br><br>
 
-    
+
     <div class="progress-container mt-4">
     <h5>Order Progress</h5>
     <div class="progress-wrapper">
@@ -36,7 +42,7 @@
         </ul>
     </div>
 
-    
+
     <br><br>
     <h5>Activity Logs</h5>
     <div class="activity-log-container">

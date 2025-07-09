@@ -1,6 +1,4 @@
-@extends('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
@@ -208,12 +206,12 @@
     }
 </style>
 
-@if (!Auth::check())
+<?php if(!Auth::check()): ?>
     <script>
-        window.location.href = "{{ route('login') }}";
+        window.location.href = "<?php echo e(route('login')); ?>";
     </script>
-    @php exit; @endphp
-@endif
+    <?php exit; ?>
+<?php endif; ?>
 <!-- ========================= Breadcrumb Start =============================== -->
 <div class="mb-0 breadcrumb py-26 bg-main-two-50">
     <div class="container container-lg">
@@ -251,25 +249,25 @@
                 <div class="offcanvas-body">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <a class="nav-link <?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dashboard')); ?>"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                         </li>
-                        @if(Auth::user()->role== 'dealer')
+                        <?php if(Auth::user()->role== 'dealer'): ?>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('dealer.dashboard') ? 'active' : '' }}" href="{{ route('dealer.dashboard') }}"><i class="fas fa-tachometer"></i>Dealer Dashboard</a>
+                            <a class="nav-link <?php echo e(request()->routeIs('dealer.dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.dashboard')); ?>"><i class="fas fa-tachometer"></i>Dealer Dashboard</a>
                         </li>
-                        @endif
+                        <?php endif; ?>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('edit-profile') ? 'active' : '' }}" href="{{ route('edit-profile') }}"><i class="fas fa-user-edit"></i> Edit Profile</a>
+                            <a class="nav-link <?php echo e(request()->routeIs('edit-profile') ? 'active' : ''); ?>" href="<?php echo e(route('edit-profile')); ?>"><i class="fas fa-user-edit"></i> Edit Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('my-orders') ? 'active' : '' }}" href="{{ route('my-orders') }}"><i class="fas fa-box"></i> My Orders</a>
+                            <a class="nav-link <?php echo e(request()->routeIs('my-orders') ? 'active' : ''); ?>" href="<?php echo e(route('my-orders')); ?>"><i class="fas fa-box"></i> My Orders</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('My-Reviews') ? 'active' : '' }}" href="{{ route('My-Reviews') }}"><i class="fas fa-star"></i> My Reviews</a>
+                            <a class="nav-link <?php echo e(request()->routeIs('My-Reviews') ? 'active' : ''); ?>" href="<?php echo e(route('My-Reviews')); ?>"><i class="fas fa-star"></i> My Reviews</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('edit-password') ? 'active' : '' }}" href="{{ route('edit-password') }}"><i class="fas fa-key"></i> Password</a>
+                            <a class="nav-link <?php echo e(request()->routeIs('edit-password') ? 'active' : ''); ?>" href="<?php echo e(route('edit-password')); ?>"><i class="fas fa-key"></i> Password</a>
                         </li>
 
                         <li class="nav-item">
@@ -277,8 +275,8 @@
                                 <i class="fas fa-sign-out-alt"></i> Log Out
                             </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
+                            <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" class="d-none">
+                                <?php echo csrf_field(); ?>
                             </form>
                         </li>
 
@@ -294,7 +292,7 @@
         <div class="col-md-8 col-lg-9">
             <div class="card1">
                 <div class="card-body card-container">
-                    @yield('dashboard-content')
+                    <?php echo $__env->yieldContent('dashboard-content'); ?>
                 </div>
             </div>
             </main>
@@ -312,32 +310,32 @@
         <div class="offcanvas-body">
             <ul class="nav flex-column">
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Dashboard</a>
+                    <a class="nav-link <?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
                 </li>
-                @if(Auth::check() && Auth::user()->role === 'dealer')
+                <?php if(Auth::check() && Auth::user()->role === 'dealer'): ?>
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('dealer.dashboard') ? 'active' : '' }}" href="{{ route('dealer.dashboard') }}">Dealer Dashboard</a>
+                    <a class="nav-link <?php echo e(request()->routeIs('dealer.dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.dashboard')); ?>">Dealer Dashboard</a>
                 </li>
-                @endif
+                <?php endif; ?>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('edit-profile') ? 'active' : '' }}" href="{{ route('edit-profile') }}">Edit Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('my-orders') ? 'active' : '' }}" href="{{ route('my-orders') }}">My Orders</a>
+                    <a class="nav-link <?php echo e(request()->routeIs('edit-profile') ? 'active' : ''); ?>" href="<?php echo e(route('edit-profile')); ?>">Edit Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('My-Reviews') ? 'active' : '' }}" href="{{ route('My-Reviews') }}">My Reviews</a>
+                    <a class="nav-link <?php echo e(request()->routeIs('my-orders') ? 'active' : ''); ?>" href="<?php echo e(route('my-orders')); ?>">My Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('edit-password') ? 'active' : '' }}" href="{{ route('edit-password') }}">Password</a>
+                    <a class="nav-link <?php echo e(request()->routeIs('My-Reviews') ? 'active' : ''); ?>" href="<?php echo e(route('My-Reviews')); ?>">My Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo e(request()->routeIs('edit-password') ? 'active' : ''); ?>" href="<?php echo e(route('edit-password')); ?>">Password</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="fas fa-sign-out-alt"></i> Log Out
                     </a>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
+                    <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" class="d-none">
+                        <?php echo csrf_field(); ?>
                     </form>
                 </li>
 
@@ -357,4 +355,6 @@
 
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/layouts/user_sidebar.blade.php ENDPATH**/ ?>

@@ -26,7 +26,7 @@ class AdminLoginController extends Controller
         $hardcodedAdminPassword = 'password123'; 
     
         $admin = \App\Models\SystemUser::where('email', $request->email)
-            ->where('role', 'Admin') 
+            ->whereIn('role', ['Admin', 'Super Admin']) 
             ->first();
     
         if ($admin && password_verify($request->password, $admin->password)) {

@@ -1,0 +1,1 @@
+<?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/layouts/genealogy_full_page.blade.php ENDPATH**/ ?>

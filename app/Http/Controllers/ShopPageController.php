@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\CustomerOrderItems;
 use App\Models\Review;
+use Illuminate\Support\Facades\Auth;
 
 class ShopPageController extends Controller
 {
@@ -127,7 +128,10 @@ class ShopPageController extends Controller
         $product->total_reviews = $product->reviews->where('status', 'Published')->count();
     }
 
-    return view('frontend.shop', compact('products', 'categories', 'brands', 'minPrice', 'maxPrice', 'categoryIds', 'brandSlugs', 'subcategoryId', 'subsubcategoryId', 'color', 'rating', 'searchQuery', 'allCategoriesSelected', 'allBrandsSelected'));
+    // Check if logged in user is a dealer
+    $isDealer = Auth::check() && Auth::user()->role === 'dealer';
+
+    return view('frontend.shop', compact('products', 'categories', 'brands', 'minPrice', 'maxPrice', 'categoryIds', 'brandSlugs', 'subcategoryId', 'subsubcategoryId', 'color', 'rating', 'searchQuery', 'allCategoriesSelected', 'allBrandsSelected', 'isDealer'));
 }
 
 

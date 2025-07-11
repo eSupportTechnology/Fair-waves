@@ -6,9 +6,11 @@
 
 <style>
     .dashboard-container {
-        padding: 30px 55px;
-        margin: 0 auto;
-        max-width: 1400px;
+        margin-left: 280px;
+        padding: 20px 30px;
+        min-height: 100vh;
+        background-color: #f8f9fa;
+        transition: margin-left 0.3s ease;
     }
 
     .breadcrumb {
@@ -54,16 +56,19 @@
     .sidebar {
         background-color: #ffffff;
         color: #1a1a1a;
-        position: sticky;
-        top: 20px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        height: 85vh;
-        padding: 20px 10px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+        border-right: 1px solid #e5e7eb;
+        padding: 20px 0;
         transition: all 0.3s ease;
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
+        z-index: 1000;
     }
 
     .sidebar .nav {
@@ -72,20 +77,41 @@
         justify-content: flex-start;
         flex-grow: 1;
         margin: 0;
+        padding: 0 0 20px 0;
+    }
+
+    .sidebar-brand {
+        padding: 20px 20px 30px 20px;
+        border-bottom: 1px solid #e5e7eb;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .sidebar-brand h5 {
+        color: #ff3c00;
+        font-weight: 700;
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .sidebar-brand small {
+        color: #6b7280;
+        font-size: 12px;
     }
 
     .sidebar a {
         color: #2d3748;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 500;
-        padding: 14px 16px;
+        padding: 14px 20px;
         display: flex;
         align-items: center;
-        border-radius: 6px;
-        margin-bottom: 6px;
+        border-radius: 8px;
+        margin: 2px 10px;
         transition: all 0.2s ease-in-out;
         border-bottom: none;
         text-align: left;
+        text-decoration: none;
     }
 
     .sidebar a i {
@@ -98,15 +124,14 @@
     .sidebar a:hover {
         background-color: #f1f5f9;
         color: #ff3c00;
-        transform: translateX(4px);
+        transform: translateX(3px);
     }
 
     .sidebar .nav-link.active {
-        background-color: #fef2f2;
-        color: #ff3c00;
-        border-left: 4px solid #ff3c00;
+        background-color: #ff3c00;
+        color: white;
         font-weight: 600;
-        padding-left: 12px;
+        box-shadow: 0 2px 8px rgba(255, 60, 0, 0.3);
     }
 
     .sidebar .nav-item {
@@ -140,9 +165,10 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border: 1px solid #e5e7eb;
         background-color: #ffffff;
-        border-radius: 8px;
-        min-height: 85vh;
-        padding: 30px;
+        border-radius: 12px;
+        min-height: calc(100vh - 120px);
+        padding: 25px;
+        margin-bottom: 20px;
     }
 
     .btn.btn-sm.d-md-none {
@@ -152,23 +178,24 @@
 
     /* Responsive Enhancements */
     @media (max-width: 991.98px) {
-        .dashboard-container {
-            padding: 16px 8px;
-            max-width: 100%;
-        }
-
         .sidebar {
-            position: static;
-            height: auto;
-            box-shadow: none;
-            border-radius: 0;
-            padding: 10px 0;
-            border: none;
+            transform: translateX(-100%);
+            position: fixed;
+            z-index: 1050;
+        }
+        
+        .sidebar.show {
+            transform: translateX(0);
+        }
+        
+        .dashboard-container {
+            margin-left: 0;
+            padding: 16px 12px;
         }
 
         .card1 {
             min-height: unset;
-            padding: 16px 8px;
+            padding: 20px 16px;
         }
 
         .breadcrumb-wrapper {
@@ -180,31 +207,54 @@
 
     @media (max-width: 575.98px) {
         .dashboard-container {
-            padding: 8px 2px;
+            padding: 8px 6px;
         }
 
         .sidebar a {
-            font-size: 15px;
-            padding: 10px 8px;
-        }
-
-        .sidebar .nav-link.active {
-            padding-left: 8px;
+            font-size: 14px;
+            padding: 12px 16px;
         }
 
         .card1 {
-            padding: 8px 2px;
+            padding: 16px 12px;
         }
     }
 
-    .sidebar .nav {
-        gap: 2px;
+    /* Add mobile overlay */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+        display: none;
     }
 
-    .sidebar a {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+    /* Mobile menu toggle */
+    .mobile-menu-toggle {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1060;
+        background: #ff3c00;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        display: none;
+    }
+
+    @media (max-width: 991.98px) {
+        .mobile-menu-toggle {
+            display: block;
+        }
     }
 </style>
 
@@ -236,123 +286,112 @@
 </div>
 <!-- ========================= Breadcrumb End =============================== -->
 
-<div class="container-fluid dashboard-container" style="padding: 30px 55px;margin-top: 50px">
-    <div class="row">
-        <!-- Sidebar toggle button for mobile -->
-        <div class="col-12 d-md-none mb-2">
-            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarDrawer" aria-controls="sidebarDrawer" style="background-color:rgba(0, 0, 0, 0.47); border-color:rgb(0, 0, 0);">
-                <i class="fas fa-bars fa-lg"></i> Menu
-            </button>
-        </div>
+<!-- Mobile Menu Toggle -->
+<button class="mobile-menu-toggle" id="mobileMenuToggle">
+    <i class="fas fa-bars fa-lg"></i>
+</button>
 
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <div class="col-md-4 col-lg-3 mb-3 mb-md-0">
-            <div id="sidebarMenu" class="sidebar collapse d-md-block">
-                <div class="offcanvas-body">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                        </li>
-                        @if(Auth::user()->role== 'dealer')
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('dealer.dashboard') ? 'active' : '' }}" href="{{ route('dealer.dashboard') }}"><i class="fas fa-tachometer"></i>Dealer Dashboard</a>
-                        </li>
-                        @endif
-
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('edit-profile') ? 'active' : '' }}" href="{{ route('edit-profile') }}"><i class="fas fa-user-edit"></i> Edit Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('my-orders') ? 'active' : '' }}" href="{{ route('my-orders') }}"><i class="fas fa-box"></i> My Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('My-Reviews') ? 'active' : '' }}" href="{{ route('My-Reviews') }}"><i class="fas fa-star"></i> My Reviews</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('edit-password') ? 'active' : '' }}" href="{{ route('edit-password') }}"><i class="fas fa-key"></i> Password</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fas fa-sign-out-alt"></i> Log Out
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-
-
-        <!-- Main content -->
-        <div class="col-md-8 col-lg-9">
-            <div class="card1">
-                <div class="card-body card-container">
-                    @yield('dashboard-content')
-                </div>
-            </div>
-            </main>
-        </div>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <!-- Sidebar Brand -->
+    <div class="sidebar-brand">
+        <h5>Fair Waves</h5>
+        <small>Dashboard</small>
     </div>
-    <div class="offcanvas offcanvas-start d-md-none"
-        tabindex="-1"
-        id="sidebarDrawer"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-        aria-labelledby="sidebarDrawerLabel" style="padding-top: 5rem ;margin-top:5rem;">
-        <div class="offcanvas-header" style="padding-right: 1rem;">
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <ul class="nav flex-column">
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Dashboard</a>
-                </li>
-                @if(Auth::check() && Auth::user()->role === 'dealer')
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('dealer.dashboard') ? 'active' : '' }}" href="{{ route('dealer.dashboard') }}">Dealer Dashboard</a>
-                </li>
-                @endif
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('edit-profile') ? 'active' : '' }}" href="{{ route('edit-profile') }}">Edit Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('my-orders') ? 'active' : '' }}" href="{{ route('my-orders') }}">My Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('My-Reviews') ? 'active' : '' }}" href="{{ route('My-Reviews') }}">My Reviews</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('edit-password') ? 'active' : '' }}" href="{{ route('edit-password') }}">Password</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fas fa-sign-out-alt"></i> Log Out
-                    </a>
+    
+    <!-- Navigation -->
+    <div class="nav flex-column">
+        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        
+        @if(Auth::user()->role == 'dealer')
+        <a class="nav-link {{ request()->routeIs('dealer.dashboard') ? 'active' : '' }}" href="{{ route('dealer.dashboard') }}">
+            <i class="fas fa-crown"></i> Dealer Dashboard
+        </a>
+        <a class="nav-link {{ request()->routeIs('dealer.analytics') ? 'active' : '' }}" href="{{ route('dealer.analytics') }}">
+            <i class="fas fa-chart-bar"></i> Analytics
+        </a>
+        <a class="nav-link {{ request()->routeIs('dealer.team.full') ? 'active' : '' }}" href="{{ route('dealer.team.full') }}">
+            <i class="fas fa-sitemap"></i> Team Hierarchy
+        </a>
+        <a class="nav-link {{ request()->routeIs('dealer.referrals.pending') ? 'active' : '' }}" href="{{ route('dealer.referrals.pending') }}">
+            <i class="fas fa-user-plus"></i> Pending Referrals
+        </a>
+        <a class="nav-link {{ request()->routeIs('dealer.products.dashboard') ? 'active' : '' }}" href="{{ route('dealer.products.dashboard') }}">
+            <i class="fas fa-box"></i> Products
+        </a>
+        <a class="nav-link {{ request()->routeIs('dealer.notifications') ? 'active' : '' }}" href="{{ route('dealer.notifications') }}">
+            <i class="fas fa-bell"></i> Notifications
+        </a>
+        @endif
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </li>
+        <a class="nav-link {{ request()->routeIs('edit-profile') ? 'active' : '' }}" href="{{ route('edit-profile') }}">
+            <i class="fas fa-user-edit"></i> Edit Profile
+        </a>
+        <a class="nav-link {{ request()->routeIs('my-orders') ? 'active' : '' }}" href="{{ route('my-orders') }}">
+            <i class="fas fa-box"></i> My Orders
+        </a>
+        <a class="nav-link {{ request()->routeIs('My-Reviews') ? 'active' : '' }}" href="{{ route('My-Reviews') }}">
+            <i class="fas fa-star"></i> My Reviews
+        </a>
+        <a class="nav-link {{ request()->routeIs('edit-password') ? 'active' : '' }}" href="{{ route('edit-password') }}">
+            <i class="fas fa-key"></i> Password
+        </a>
 
+        <!-- Logout -->
+        <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="margin-top: auto;">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+        </a>
 
-            </ul>
-        </div>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
     </div>
 </div>
+
+<div class="dashboard-container">
+    @yield('dashboard-content')
+</div>
 <script>
-    document.addEventListener('hidden.bs.offcanvas', function() {
-        const backdrop = document.querySelector('.offcanvas-backdrop');
-        if (backdrop) backdrop.remove();
-        document.body.classList.remove('offcanvas-backdrop');
-        document.body.style.overflow = '';
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    // Toggle mobile menu
+    mobileMenuToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('show');
+        sidebarOverlay.classList.toggle('show');
     });
+    
+    // Close sidebar when clicking overlay
+    sidebarOverlay.addEventListener('click', function() {
+        sidebar.classList.remove('show');
+        sidebarOverlay.classList.remove('show');
+    });
+    
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(event) {
+        if (window.innerWidth <= 991.98 && 
+            !sidebar.contains(event.target) && 
+            !mobileMenuToggle.contains(event.target)) {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 991.98) {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        }
+    });
+});
 </script>
 
 

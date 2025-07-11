@@ -1,6 +1,4 @@
-@extends('layouts.user_sidebar')
-
-@section('dashboard-content')
+<?php $__env->startSection('dashboard-content'); ?>
 <style>
     .dealer-products-container {
         height: calc(100vh - 200px);
@@ -286,13 +284,15 @@
                     <i class="fas fa-box text-primary me-2"></i>
                     My Product Links
                 </h4>
-                <span class="badge bg-secondary">{{ count($productLinks) }} Links</span>
+                <span class="badge bg-secondary"><?php echo e(count($productLinks)); ?> Links</span>
             </div>
 
             <div class="dealer-products-container">
-                @include('frontend.dealer.partials.dealer-products', ['productLinks' => $productLinks])
+                <?php echo $__env->make('frontend.dealer.partials.dealer-products', ['productLinks' => $productLinks], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/dealer/dealer-products-dashboard.blade.php ENDPATH**/ ?>

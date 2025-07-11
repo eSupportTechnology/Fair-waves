@@ -232,7 +232,14 @@
                                 </div>
 
                                 <div class="mt-8 mb-20 product-card__price">
-                                    <span class="text-heading text-md fw-semibold ">Rs {{ number_format($product->normal_price, 2) }} <span class="text-gray-500 fw-normal">/Qty</span></span>
+                                    @if($isDealer)
+                                        <span class="text-heading text-md fw-semibold ">Rs {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} BV)</span>
+                                    @else
+                                        @if($product->affiliate_price && $product->affiliate_price != $product->normal_price)
+                                            <span class="text-gray-500 text-sm text-decoration-line-through">Rs {{ number_format($product->affiliate_price, 2) }}</span>
+                                        @endif
+                                        <span class="text-heading text-md fw-semibold ">Rs {{ number_format($product->normal_price, 2) }} </span>
+                                    @endif
                                 </div>
 
                                 <a href="#"
@@ -267,7 +274,14 @@
                                                 <hr />
 
                                                 <div class="mt-8 mb-3 product-price d-flex align-items-center">
-                                                    <h6 class="mb-0">Rs {{ $product->normal_price }}</h6>
+                                                    @if($isDealer)
+                                                        <h6 class="mb-0">Rs {{ $product->normal_price }} ({{ $product->bv ? $product->bv : '0' }} BV)</h6>
+                                                    @else
+                                                        @if($product->affiliate_price && $product->affiliate_price != $product->normal_price)
+                                                            <span class="text-gray-500 text-sm text-decoration-line-through me-2">Rs {{ number_format($product->affiliate_price, 2) }}</span>
+                                                        @endif
+                                                        <h6 class="mb-0">Rs {{ $product->normal_price }}</h6>
+                                                    @endif
                                                 </div>
 
                                                 @auth

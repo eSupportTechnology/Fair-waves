@@ -250,6 +250,8 @@ Route::get('/admin/dealers/{user_id}/edit', [DealerController::class, 'edit'])->
 Route::put('/admin/dealers/{user_id}', [DealerController::class, 'update'])->name('dealer.update');
 Route::delete('/admin/dealers/{user_id}', [DealerController::class, 'delete'])->name('dealer.delete');
 
+Route::get('/admin/genealogy', [DealerController::class, 'adminGenealogy'])->name('admin.genealogy');
+
 Route::get('/admin/orders', [OrderController::class, 'index'])->name('orders');
 Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('order.delete');
 Route::get('/admin/order-details/{orderCode}', [OrderController::class, 'showOrderDetails'])->name('order-details');

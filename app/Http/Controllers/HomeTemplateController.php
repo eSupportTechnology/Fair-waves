@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\CustomerOrderItems;
 use App\Models\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeTemplateController extends Controller
 {
@@ -15,6 +16,9 @@ class HomeTemplateController extends Controller
     public function index()
     {
         $categories = Category::with(['subcategories.subSubcategories'])->withCount('products')->get();
+
+        // Check if logged in user is a dealer
+        $isDealer = Auth::check() && Auth::user()->role === 'dealer';
 
         // Fetch products with images and reviews
         $products = Product::with(['images', 'reviews' => function ($query) {
@@ -50,6 +54,6 @@ class HomeTemplateController extends Controller
         $sliders = Slider::all(); // Assuming you have a Slider model
 
 
-        return view('frontend.home', compact('categories', 'products' ,'topSellingProducts', 'Onlineexclusive', 'belowrs', 'banners', 'sliders'));
+        return view('frontend.home', compact('categories', 'products' ,'topSellingProducts', 'Onlineexclusive', 'belowrs', 'banners', 'sliders', 'isDealer'));
     }
 }

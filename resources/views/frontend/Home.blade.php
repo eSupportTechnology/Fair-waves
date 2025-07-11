@@ -183,8 +183,12 @@
                                                 </div>
                                             </div>
                                             <div class="u">
-                                                <span class="market-price">Rs. {{ number_format($product->regular_price, 2) }}</span>
-                                                <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
+                                                @if($isDealer)
+                                                    <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} BV)</span>
+                                                @else
+                                                   
+                                                    <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -303,8 +307,12 @@
                                                 </div>
                                             </div>
                                             <div class="u">
-                                                <span class="market-price">Rs. {{ number_format($product->regular_price, 2) }}</span>
-                                                <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
+                                                @if($isDealer)
+                                                    <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} BV)</span>
+                                                @else
+                                                    
+                                                    <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -364,8 +372,12 @@
                                                 </div>
                                             </div>
                                             <div class="u">
-                                                <span class="market-price">Rs. {{ number_format($product->regular_price, 2) }}</span>
-                                                <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
+                                                @if($isDealer)
+                                                    <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} BV)</span>
+                                                @else
+                                                  
+                                                    <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

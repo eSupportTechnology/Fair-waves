@@ -170,6 +170,7 @@ use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DealerController;
+use App\Http\Controllers\ShowRoomController;
 use App\Http\Controllers\SliderController;
 use App\Http\Middleware\AdminAuth;
 
@@ -495,4 +496,11 @@ Route::prefix('dealer')->group(function () {
     Route::get('/dealer-products/orders/{linkId}', [DealerController::class, 'dealerProductOrders'])->name('dealer.products.orders');
     Route::delete('/dealer-products/delete/{linkId}', [DealerController::class, 'deleteDealerProductLink'])->name('dealer.products.delete');
     Route::delete('/dealer-products/orders/delete/{orderId}', [DealerController::class, 'deleteDealerProductOrder'])->name('dealer.products.orders.delete');
+});
+
+
+Route::prefix('showroom')->group(function () {
+    Route::get('/{dealer_shop_name}', [ShowRoomController::class, 'index'])->name('showroom.index');
+    Route::get('/{dealer_shop_name}/product/{unique_code}', [ShowRoomController::class, 'productView'])->name('showroom.productView');
+    // Route::post('/withdraw', [DealerController::class, 'requestWithdrawal'])->name('dealer.withdraw.request');
 });

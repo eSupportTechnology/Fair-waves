@@ -1,6 +1,6 @@
-@extends('layouts.user_sidebar')
 
-@section('dashboard-content')
+
+<?php $__env->startSection('dashboard-content'); ?>
 <style>
     :root {
         --primary-color: #ff5800;
@@ -278,7 +278,7 @@
 <!-- Breadcrumb Navigation -->
 <nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route('dealer.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo e(route('dealer.dashboard')); ?>">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page">Full Team Hierarchy</li>
     </ol>
 </nav>
@@ -299,24 +299,25 @@
     <div class="team-overview-stats">
         <div class="overview-stat-card">
             <div class="overview-stat-value">
-                @if($user->directReferrals)
-                    {{ $user->directReferrals->count() }}
-                @else
+                <?php if($user->directReferrals): ?>
+                    <?php echo e($user->directReferrals->count()); ?>
+
+                <?php else: ?>
                     0
-                @endif
+                <?php endif; ?>
             </div>
             <div class="overview-stat-label">Direct Referrals</div>
         </div>
         <div class="overview-stat-card">
-            <div class="overview-stat-value">{{ $user->dealerProfile->bv ?? 0 }}</div>
+            <div class="overview-stat-value"><?php echo e($user->dealerProfile->bv ?? 0); ?></div>
             <div class="overview-stat-label">Personal BV</div>
         </div>
         <div class="overview-stat-card">
-            <div class="overview-stat-value">{{ $user->dealerProfile->cbv ?? 0 }}</div>
+            <div class="overview-stat-value"><?php echo e($user->dealerProfile->cbv ?? 0); ?></div>
             <div class="overview-stat-label">Cumulative BV</div>
         </div>
         <div class="overview-stat-card">
-            <div class="overview-stat-value">{{ $user->dealerProfile->rank ?? 'Beginner' }}</div>
+            <div class="overview-stat-value"><?php echo e($user->dealerProfile->rank ?? 'Beginner'); ?></div>
             <div class="overview-stat-label">Current Rank</div>
         </div>
     </div>
@@ -327,7 +328,7 @@
             <i class="fas fa-expand-alt"></i>
             <span id="toggleText">Expand All</span>
         </button>
-        <a href="{{ route('dealer.dashboard') }}" class="tree-control-btn">
+        <a href="<?php echo e(route('dealer.dashboard')); ?>" class="tree-control-btn">
             <i class="fas fa-arrow-left"></i>
             Back to Dashboard
         </a>
@@ -367,7 +368,7 @@
     <div class="genealogy-tree-wrapper">
         <div class="tree-scroll-container">
             <div class="tree-content">
-                @include('frontend.dealer.partials.enhanced-tree-node', ['node' => $completeTree, 'isRoot' => true])
+                <?php echo $__env->make('frontend.dealer.partials.enhanced-tree-node', ['node' => $completeTree, 'isRoot' => true], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
         </div>
     </div>
@@ -507,4 +508,6 @@
         initializeDragMove();
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/dealer/full-hierarchy.blade.php ENDPATH**/ ?>

@@ -1,9 +1,10 @@
-@forelse($productLinks as $link)
+<?php $__empty_1 = true; $__currentLoopData = $productLinks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $link): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
     <div class="product-card">
         <div class="product-card-header">
             <h5 class="mb-0">
                 <i class="fas fa-cube text-primary me-2"></i>
-                {{ $link->product->product_name }}
+                <?php echo e($link->product->product_name); ?>
+
             </h5>
         </div>
         
@@ -19,12 +20,12 @@
                         <div class="affiliate-link-container">
                             <input type="text" 
                                    class="affiliate-link-input" 
-                                   value="{{ url('showroom/'.$link->dealer->dealerProfile->dealer_shop_name.'/product/'.$link->unique_code) }}" 
-                                   id="affiliate-link-{{ $link->id }}" 
+                                   value="<?php echo e(url('showroom/'.$link->dealer->dealerProfile->dealer_shop_name.'/product/'.$link->unique_code)); ?>" 
+                                   id="affiliate-link-<?php echo e($link->id); ?>" 
                                    readonly>
                             <button class="copy-btn" 
                                     type="button" 
-                                    onclick="copyAffiliateLink({{ $link->id }})">
+                                    onclick="copyAffiliateLink(<?php echo e($link->id); ?>)">
                                 <i class="fas fa-copy me-1"></i>
                                 Copy Link
                             </button>
@@ -34,17 +35,17 @@
                     <!-- Mobile action buttons -->
                     <div class="action-buttons-mobile d-lg-none">
                         <div class="action-buttons">
-                            <a href="{{ route('dealer.products.orders', $link->id) }}" 
+                            <a href="<?php echo e(route('dealer.products.orders', $link->id)); ?>" 
                                class="action-btn action-btn-view">
                                 <i class="fas fa-list"></i>
                                 View Orders
                             </a>
-                            <form action="{{ route('dealer.products.delete', $link->id) }}" 
+                            <form action="<?php echo e(route('dealer.products.delete', $link->id)); ?>" 
                                   method="POST" 
                                   class="d-inline-flex flex-fill"
                                   onsubmit="return confirmDelete()">
-                                @csrf
-                                @method('DELETE')
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
                                 <button type="submit" 
                                         class="action-btn action-btn-delete w-100">
                                     <i class="fas fa-trash"></i>
@@ -58,16 +59,16 @@
                 <!-- Right side - Desktop action buttons -->
                 <div class="col-lg-3 col-12 order-lg-2 order-2">
                     <div class="action-buttons-desktop d-none d-lg-block">
-                        <a href="{{ route('dealer.products.orders', $link->id) }}" 
+                        <a href="<?php echo e(route('dealer.products.orders', $link->id)); ?>" 
                            class="action-btn action-btn-view w-100 mb-2">
                             <i class="fas fa-list"></i>
                             View Orders
                         </a>
-                        <form action="{{ route('dealer.products.delete', $link->id) }}" 
+                        <form action="<?php echo e(route('dealer.products.delete', $link->id)); ?>" 
                               method="POST" 
                               onsubmit="return confirmDelete()">
-                            @csrf
-                            @method('DELETE')
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('DELETE'); ?>
                             <button type="submit" 
                                     class="action-btn action-btn-delete w-100">
                                 <i class="fas fa-trash"></i>
@@ -79,13 +80,13 @@
             </div>
         </div>
     </div>
-@empty
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
     <div class="empty-state">
         <i class="fas fa-box-open"></i>
         <h5>No Product Links Yet</h5>
         <p class="mb-0">You haven't generated any product links yet. Start creating links to earn commissions!</p>
     </div>
-@endforelse
+<?php endif; ?>
 
 <script>
 function copyAffiliateLink(linkId) {
@@ -124,3 +125,4 @@ function confirmDelete() {
     return confirm('Are you sure you want to delete this product link? This action cannot be undone.');
 }
 </script>
+<?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/dealer/partials/dealer-products.blade.php ENDPATH**/ ?>

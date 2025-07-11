@@ -55,6 +55,13 @@
                         </a>
                     </li>
 
+                    <li class="menu-item {{ request()->routeIs('admin.genealogy') ? 'active' : '' }}">
+                        <a class="menu-link" href="{{ route('admin.genealogy') }}">
+                        <i class="icon material-icons md-account_tree"></i>
+                            <span class="text">Genealogy</span>
+                        </a>
+                    </li>
+
                     <!--li class="menu-item has-submenu { request()->is('admin/affiliate*') || request()->is('admin/affiliate_rules*') || request()->is('admin/affiliate_withdrawals*') ? 'active' : '' }}">
                         <a class="menu-link" href="#">
                             <i class="icon material-icons md-share"></i>
@@ -114,12 +121,6 @@
                             </a>
                             <a href="{{ route('productReport') }}" >
                                 Products
-                            </a>
-                            <a href="{{ route('affiliateCustomerReport') }}" >
-                                Affiliate Customer
-                            </a>
-                            <a href="{{ route('affiliateCusBankData') }}" >
-                                Affiliate Bank Details
                             </a>
                             <a href="{{ route('vendorReport') }}" >
                                 Vendors

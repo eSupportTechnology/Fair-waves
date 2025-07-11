@@ -1,6 +1,4 @@
 <?php $__env->startSection('dashboard-content'); ?>
-    
-
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -23,7 +21,8 @@
             background: linear-gradient(135deg, var(--primary-color), #ff7733);
             color: white;
             padding: 1.5rem 0;
-            margin-bottom: 1.5rem;
+            margin: -25px -25px 1.5rem -25px;
+            border-radius: 0 0 12px 12px;
         }
 
         .rank-badge {
@@ -260,9 +259,9 @@
 
         /* Mobile Responsive Styles */
         @media (max-width: 992px) {
-            .container-fluid {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
+            .dashboard-header {
+                margin-left: 0;
+                margin-right: 0;
             }
         }
 
@@ -420,9 +419,14 @@
         }
 
         @media (max-width: 576px) {
-            .container-fluid {
-                padding-left: 0.75rem !important;
-                padding-right: 0.75rem !important;
+            .dashboard-header {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .dashboard-header .container-fluid {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
             }
 
             .dashboard-header {
@@ -577,11 +581,174 @@
                 display: none !important;
             }
         }
+
+        /* Quick Action Buttons Custom Styles */
+        .quick-action-btn {
+            font-weight: 500;
+            border: none;
+            transition: all 0.3s ease;
+            opacity: 1; /* Always show full opacity */
+        }
+
+        .quick-action-btn:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .quick-action-btn.btn-primary {
+            background: linear-gradient(135deg, #007bff, #0056b3) !important;
+            color: white !important;
+            border-color: #007bff !important;
+        }
+
+        .quick-action-btn.btn-primary:hover {
+            background: linear-gradient(135deg, #0056b3, #004085) !important;
+            border-color: #004085 !important;
+        }
+
+        .quick-action-btn.btn-info {
+            background: linear-gradient(135deg, #17a2b8, #138496) !important;
+            color: white !important;
+            border-color: #17a2b8 !important;
+        }
+
+        .quick-action-btn.btn-info:hover {
+            background: linear-gradient(135deg, #138496, #0f6674) !important;
+            border-color: #0f6674 !important;
+        }
+
+        .quick-action-btn.btn-warning {
+            background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+            color: #212529 !important;
+            border-color: #ffc107 !important;
+        }
+
+        .quick-action-btn.btn-warning:hover {
+            background: linear-gradient(135deg, #e0a800, #c69500) !important;
+            border-color: #c69500 !important;
+        }
+
+        .quick-action-btn.btn-success {
+            background: linear-gradient(135deg, #28a745, #1e7e34) !important;
+            color: white !important;
+            border-color: #28a745 !important;
+        }
+
+        .quick-action-btn.btn-success:hover {
+            background: linear-gradient(135deg, #1e7e34, #155724) !important;
+            border-color: #155724 !important;
+        }
+
+        .quick-action-btn i {
+            opacity: 1; /* Always show full opacity */
+        }
+
+        .quick-action-btn:hover i {
+            opacity: 1;
+        }
+
+        /* Quick Actions Mobile Responsive */
+        @media (max-width: 768px) {
+            .quick-action-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+                min-height: 48px;
+            }
+
+            .quick-action-btn i {
+                font-size: 1rem;
+            }
+
+            .d-grid {
+                gap: 0.75rem !important;
+            }
+
+            .stats-card h6 {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .quick-action-btn {
+                padding: 0.875rem 1rem;
+                font-size: 0.85rem;
+                min-height: 52px;
+            }
+
+            .quick-action-btn i {
+                font-size: 0.95rem;
+            }
+
+            .d-grid {
+                gap: 0.875rem !important;
+            }
+        }
+
+        /* Ensure proper touch targets */
+        @media (hover: none) and (pointer: coarse) {
+            .quick-action-btn {
+                min-height: 44px;
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        /* View Full Hierarchy Button Styles */
+        .view-hierarchy-btn {
+            background: var(--primary-color) !important;
+            color: white !important;
+            border: 2px solid var(--primary-color) !important;
+            font-weight: 500 !important;
+            padding: 0.6rem 1.25rem !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+            font-size: 0.9rem !important;
+            box-shadow: 0 2px 4px rgba(255, 88, 0, 0.2) !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .view-hierarchy-btn:hover {
+            background: #e54d00 !important;
+            border-color: #e54d00 !important;
+            color: white !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 12px rgba(255, 88, 0, 0.3) !important;
+        }
+
+        .view-hierarchy-btn:focus {
+            background: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: white !important;
+            box-shadow: 0 0 0 0.2rem rgba(255, 88, 0, 0.25) !important;
+        }
+
+        .view-hierarchy-btn:active {
+            background: #d44400 !important;
+            border-color: #d44400 !important;
+            transform: translateY(0) !important;
+        }
+
+        .view-hierarchy-btn i {
+            font-size: 0.85rem !important;
+        }
+
+        /* Mobile responsive for hierarchy button */
+        @media (max-width: 768px) {
+            .view-hierarchy-btn {
+                font-size: 0.85rem !important;
+                padding: 0.5rem 1rem !important;
+            }
+        }
     </style>
 
     <!-- Dashboard Header -->
     <div class="dashboard-header">
-        <div class="container">
+        <div class="container-fluid px-4">
             <div class="row align-items-center">
                 <div class="col-md-8 col-12">
                     <h2 class="mb-2">Welcome back, <?php echo e($dealerProfile->user->name); ?>!</h2>
@@ -597,46 +764,45 @@
         </div>
     </div>
 
-    <div class="container-fluid px-2 px-md-4">
-        <!-- Stats Cards Row -->
-        <div class="row mb-3 mb-md-4">
-            <div class="col-6 col-lg-3 mb-3">
-                <div class="stats-card">
-                    <div class="stats-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--info-color);">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 class="h4 mb-1"><?php echo e($teamCount); ?></h3>
-                    <p class="text-muted mb-0">Total Team Members</p>
+    <!-- Stats Cards Row -->
+    <div class="row mb-3 mb-md-4">
+        <div class="col-6 col-lg-3 mb-3">
+            <div class="stats-card">
+                <div class="stats-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--info-color);">
+                    <i class="fas fa-users"></i>
                 </div>
-            </div>
-            <div class="col-6 col-lg-3 mb-3">
-                <div class="stats-card">
-                    <div class="stats-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success-color);">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <h3 class="h4 mb-1"><?php echo e($dealerProfile->bv); ?></h3>
-                    <p class="text-muted mb-0">Current BV</p>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 mb-3">
-                <div class="stats-card">
-                    <div class="stats-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning-color);">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="h4 mb-1"><?php echo e($dealerProfile->cbv); ?></h3>
-                    <p class="text-muted mb-0">Total CBV</p>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 mb-3">
-                <div class="stats-card">
-                    <div class="stats-icon" style="background: rgba(255, 88, 0, 0.1); color: var(--primary-color);">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <h3 class="h4 mb-1">₹<?php echo e(number_format($weeklyEarnings, 2)); ?></h3>
-                    <p class="text-muted mb-0">Weekly Earnings</p>
-                </div>
+                <h3 class="h4 mb-1"><?php echo e($teamCount); ?></h3>
+                <p class="text-muted mb-0">Total Team Members</p>
             </div>
         </div>
+        <div class="col-6 col-lg-3 mb-3">
+            <div class="stats-card">
+                <div class="stats-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success-color);">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h3 class="h4 mb-1"><?php echo e($dealerProfile->bv); ?></h3>
+                <p class="text-muted mb-0">Current BV</p>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3 mb-3">
+            <div class="stats-card">
+                <div class="stats-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning-color);">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="h4 mb-1"><?php echo e($dealerProfile->cbv); ?></h3>
+                <p class="text-muted mb-0">Total CBV</p>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3 mb-3">
+            <div class="stats-card">
+                <div class="stats-icon" style="background: rgba(255, 88, 0, 0.1); color: var(--primary-color);">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h3 class="h4 mb-1">₹<?php echo e(number_format($weeklyEarnings, 2)); ?></h3>
+                <p class="text-muted mb-0">Weekly Earnings</p>
+            </div>
+        </div>
+    </div>
 
         <div class="rank-progress-container">
             <h4 class="mb-3"><i class="fas fa-trophy text-warning me-2"></i>Rank Progress</h4>
@@ -920,7 +1086,7 @@
     </div>
 
     <div class="text-center mt-3">
-        <a href="<?php echo e(route('dealer.team.full')); ?>" class="btn btn-outline-primary btn-sm">
+        <a href="<?php echo e(route('dealer.team.full')); ?>" class="view-hierarchy-btn" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important;">
             <i class="fas fa-eye me-1"></i>View Full Hierarchy
         </a>
     </div>
@@ -931,20 +1097,20 @@
                 <div class="stats-card">
                     <h6 class="mb-3"><i class="fas fa-bolt text-warning me-2"></i>Quick Actions</h6>
                     <div class="d-grid gap-3">
-                        <a href="<?php echo e(route('dealer.referrals.pending')); ?>" class="btn btn-outline-primary btn-sm w-100">
+                        <a href="<?php echo e(route('dealer.referrals.pending')); ?>" class="btn btn-primary btn-sm w-100 quick-action-btn">
                             <i class="fas fa-user-plus me-2"></i>
                             Approve New Members (<?php echo e($pendingReferralsCount); ?>)
                         </a>
-                        <a href="<?php echo e(route('dealer.analytics')); ?>" class="btn btn-outline-info btn-sm w-100">
+                        <a href="<?php echo e(route('dealer.analytics')); ?>" class="btn btn-info btn-sm w-100 quick-action-btn">
                             <i class="fas fa-chart-bar me-2"></i>
                             View Analytics
                         </a>
-                        <a href="<?php echo e(route('dealer.notifications')); ?>" class="btn btn-outline-warning btn-sm w-100">
+                        <a href="<?php echo e(route('dealer.notifications')); ?>" class="btn btn-warning btn-sm w-100 quick-action-btn">
                             <i class="fas fa-bell me-2"></i>
                             Notifications (<?php echo e($notificationCount); ?>)
                         </a>
-                        <a href="<?php echo e(route('dealer.products.dashboard')); ?>" class="btn btn-outline-success btn-sm w-100">
-                            <i class="fas fa-bell me-2"></i>
+                        <a href="<?php echo e(route('dealer.products.dashboard')); ?>" class="btn btn-success btn-sm w-100 quick-action-btn">
+                            <i class="fas fa-box me-2"></i>
                             Dealer's Products
                         </a>
                     </div>
@@ -953,7 +1119,6 @@
 
             </div>
         </div>
-    </div>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>

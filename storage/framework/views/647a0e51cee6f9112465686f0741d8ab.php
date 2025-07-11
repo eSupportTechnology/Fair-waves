@@ -1,4 +1,10 @@
 <?php $__env->startSection('dashboard-content'); ?>
+<?php if(!Auth::check()): ?>
+    <script>
+        window.location.href = "<?php echo e(route('login')); ?>";
+    </script>
+    <?php exit; ?>
+<?php endif; ?>
 <style>
     .btn-primary {
         background-color: #ff3c00 !important;
@@ -32,19 +38,19 @@
 
         <div class="mb-3 text-center">
             <!-- Profile image preview -->
-           
+
             <!-- Hidden file input for image upload -->
             <input type="file" id="profileImageInput" name="profile_image" accept="image/*">
         </div>
 
         <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>
-            <input 
-                type="text" 
-                class="form-control" 
-                id="fullName" 
-                name="full_name" 
-                value="<?php echo e(old('full_name', $user->name)); ?>" 
+            <input
+                type="text"
+                class="form-control"
+                id="fullName"
+                name="full_name"
+                value="<?php echo e(old('full_name', $user->name)); ?>"
                 placeholder="Enter your full name"
             >
         </div>
@@ -52,23 +58,23 @@
         <div class="row ">
             <div class="mb-3 col-md-6">
                 <label for="email" class="form-label">Email Address</label>
-                <input 
-                    type="email" 
-                    class="form-control" 
-                    id="email" 
-                    name="email" 
-                    value="<?php echo e(old('email', $user->email)); ?>" 
+                <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    value="<?php echo e(old('email', $user->email)); ?>"
                     placeholder="Enter your email"
                 >
             </div>
             <div class="mb-3 col-md-6">
                 <label for="mobile" class="form-label">Mobile</label>
-                <input 
-                    type="tel" 
-                    class="form-control" 
-                    id="mobile" 
-                    name="phone_num" 
-                    value="<?php echo e(old('phone_num', $user->phone)); ?>" 
+                <input
+                    type="tel"
+                    class="form-control"
+                    id="mobile"
+                    name="phone_num"
+                    value="<?php echo e(old('phone_num', $user->phone)); ?>"
                     placeholder="Enter your mobile number"
                 >
             </div>
@@ -77,22 +83,22 @@
         <div class="row mt-3">
             <div class="mb-3 col-md-6">
                 <label for="birthday" class="form-label">Birthday</label>
-                <input 
-                    type="date" 
-                    class="form-control" 
-                    id="birthday" 
-                    name="date_of_birth" 
+                <input
+                    type="date"
+                    class="form-control"
+                    id="birthday"
+                    name="date_of_birth"
                     value="<?php echo e(old('date_of_birth', $user->dob)); ?>"
                 >
             </div>
             <div class="mb-3 col-md-6">
             <label for="address" class="form-label">Address</label>
-            <input 
-                type="text" 
-                class="form-control" 
-                id="address" 
-                name="address" 
-                value="<?php echo e(old('address', $user->address)); ?>" 
+            <input
+                type="text"
+                class="form-control"
+                id="address"
+                name="address"
+                value="<?php echo e(old('address', $user->address)); ?>"
                 placeholder="Enter your address"
             >
         </div>

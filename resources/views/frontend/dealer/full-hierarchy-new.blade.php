@@ -156,83 +156,30 @@
         padding: 2rem;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         border: 1px solid #e9ecef;
-        overflow: hidden;
-        position: relative;
+        overflow-x: auto;
     }
-
+    
     .tree-scroll-container {
-        width: 100%;
-        height: 70vh;
-        overflow: auto;
-        position: relative;
+        min-width: 100%;
         padding: 1rem;
-        cursor: grab;
-        
-        /* Custom Scrollbar Styling */
-        scrollbar-width: thin;
-        scrollbar-color: var(--primary-color) rgba(255, 255, 255, 0.1);
     }
-
-    .tree-scroll-container.dragging {
-        cursor: grabbing;
-        user-select: none;
-    }
-
-    .tree-scroll-container::-webkit-scrollbar {
-        width: 12px;
-        height: 12px;
-    }
-
-    .tree-scroll-container::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-    }
-
-    .tree-scroll-container::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, var(--primary-color), #ff6b3d);
-        border-radius: 10px;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .tree-scroll-container::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(135deg, #ff6b3d, var(--primary-color));
-    }
-
-    .tree-scroll-container::-webkit-scrollbar-corner {
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .tree-content {
-        min-width: max-content;
-        min-height: max-content;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem;
-    }
-
+    
     /* Responsive Design */
-    @media (max-width: 1200px) {
-        .genealogy-title {
-            font-size: 2rem;
-        }
-        
+    @media (max-width: 768px) {
         .genealogy-container {
             padding: 1rem;
         }
         
-        .tree-scroll-container {
-            height: 60vh;
+        .genealogy-header {
+            padding: 1rem;
         }
-    }
-
-    @media (max-width: 768px) {
+        
         .genealogy-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
         }
         
         .team-overview-stats {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
         }
         
         .tree-controls {
@@ -242,35 +189,18 @@
         
         .tree-control-btn {
             width: 100%;
-            max-width: 300px;
+            max-width: 250px;
             justify-content: center;
         }
-        
-        .legend-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .tree-scroll-container {
-            height: 50vh;
-            padding: 0.5rem;
-        }
     }
-
+    
     @media (max-width: 480px) {
-        .genealogy-title {
-            font-size: 1.5rem;
-        }
-        
-        .genealogy-header {
-            padding: 1.5rem;
+        .team-overview-stats {
+            grid-template-columns: 1fr;
         }
         
         .overview-stat-value {
             font-size: 1.5rem;
-        }
-        
-        .tree-scroll-container {
-            height: 45vh;
         }
     }
 </style>
@@ -363,12 +293,10 @@
         </div>
     </div>
     
-    <!-- Genealogy Tree with Scrollable Container -->
+    <!-- Genealogy Tree -->
     <div class="genealogy-tree-wrapper">
         <div class="tree-scroll-container">
-            <div class="tree-content">
-                @include('frontend.dealer.partials.enhanced-tree-node', ['node' => $completeTree, 'isRoot' => true])
-            </div>
+            @include('frontend.dealer.partials.enhanced-tree-node', ['node' => $completeTree, 'isRoot' => true])
         </div>
     </div>
 </div>
@@ -399,112 +327,22 @@
         window.print();
     }
 
-    // Drag and move functionality
-    let isDragging = false;
-    let startX, startY, scrollLeft, scrollTop;
-
-    function initializeDragMove() {
-        const treeContainer = document.querySelector('.tree-scroll-container');
-        if (!treeContainer) return;
-
-        // Mouse down event
-        treeContainer.addEventListener('mousedown', (e) => {
-            // Only allow dragging if we're not clicking on a dealer card or interactive element
-            if (e.target.closest('.dealer-card') || e.target.closest('button') || e.target.closest('a')) {
-                return;
-            }
-            
-            isDragging = true;
-            treeContainer.classList.add('dragging');
-            startX = e.pageX - treeContainer.offsetLeft;
-            startY = e.pageY - treeContainer.offsetTop;
-            scrollLeft = treeContainer.scrollLeft;
-            scrollTop = treeContainer.scrollTop;
-            
-            // Prevent text selection while dragging
-            e.preventDefault();
-        });
-
-        // Mouse move event
-        treeContainer.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            
-            e.preventDefault();
-            const x = e.pageX - treeContainer.offsetLeft;
-            const y = e.pageY - treeContainer.offsetTop;
-            const walkX = (x - startX) * 2; // Scroll speed multiplier
-            const walkY = (y - startY) * 2;
-            
-            treeContainer.scrollLeft = scrollLeft - walkX;
-            treeContainer.scrollTop = scrollTop - walkY;
-        });
-
-        // Mouse up event
-        treeContainer.addEventListener('mouseup', () => {
-            isDragging = false;
-            treeContainer.classList.remove('dragging');
-        });
-
-        // Mouse leave event (in case mouse leaves the container while dragging)
-        treeContainer.addEventListener('mouseleave', () => {
-            isDragging = false;
-            treeContainer.classList.remove('dragging');
-        });
-
-        // Touch events for mobile support
-        treeContainer.addEventListener('touchstart', (e) => {
-            if (e.target.closest('.dealer-card') || e.target.closest('button') || e.target.closest('a')) {
-                return;
-            }
-            
-            isDragging = true;
-            treeContainer.classList.add('dragging');
-            const touch = e.touches[0];
-            startX = touch.pageX - treeContainer.offsetLeft;
-            startY = touch.pageY - treeContainer.offsetTop;
-            scrollLeft = treeContainer.scrollLeft;
-            scrollTop = treeContainer.scrollTop;
-        });
-
-        treeContainer.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            
-            e.preventDefault();
-            const touch = e.touches[0];
-            const x = touch.pageX - treeContainer.offsetLeft;
-            const y = touch.pageY - treeContainer.offsetTop;
-            const walkX = (x - startX) * 2;
-            const walkY = (y - startY) * 2;
-            
-            treeContainer.scrollLeft = scrollLeft - walkX;
-            treeContainer.scrollTop = scrollTop - walkY;
-        });
-
-        treeContainer.addEventListener('touchend', () => {
-            isDragging = false;
-            treeContainer.classList.remove('dragging');
-        });
-    }
-
     // Initialize with expanded view
     document.addEventListener('DOMContentLoaded', function() {
         const childrenContainers = document.querySelectorAll('.children-container');
         childrenContainers.forEach(container => {
-            container.style.display = 'flex';
+            container.style.display = 'block';
         });
-        
-        // Smooth scrolling for tree navigation
-        document.querySelectorAll('.dealer-card').forEach(card => {
-            card.addEventListener('click', function() {
-                this.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'center' 
-                });
+    });
+
+    // Add smooth scrolling for better UX
+    document.querySelectorAll('.dealer-card').forEach(card => {
+        card.addEventListener('click', function() {
+            this.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
             });
         });
-
-        // Initialize drag and move functionality
-        initializeDragMove();
     });
 </script>
 @endsection

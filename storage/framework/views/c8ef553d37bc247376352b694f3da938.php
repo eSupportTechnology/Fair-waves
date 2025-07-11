@@ -126,6 +126,7 @@
                                 <label for="role" class="form-label">Role</label>
                                 <select class="form-select" id="role" name="role" required>
                                     <option selected disabled>Select role</option>
+                                    <option value="Super Admin">Super Admin</option>
                                     <option value="Admin">Admin</option>
                                     <option value="User">User</option>
                                     <!-- Add other roles as necessary -->

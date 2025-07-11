@@ -426,22 +426,29 @@ class DealerController extends Controller
 
     public function fullHierarchy()
     {
-        $user = Auth::user();
+        $user = Auth::user()->load(['dealerProfile', 'directReferrals']);
 
         // Recursively load the full downline tree
         $tree = $this->buildHierarchy($user);
 
-        return view('frontend.dealer.full-hierarchy', compact('tree', 'user'));
+        // Create the complete tree structure with current user at the top
+        $completeTree = [
+            'user' => $user,
+            'depth' => 0,
+            'children' => $tree
+        ];
+
+        return view('frontend.dealer.full-hierarchy', compact('completeTree', 'user'));
     }
 
     protected function buildHierarchy($user, $depth = 0)
     {
-        $referrals = $user->directReferrals()->with('dealerProfile')->get();
+        $referrals = $user->directReferrals()->with(['dealerProfile', 'directReferrals'])->get();
 
         return $referrals->map(function ($referral) use ($depth) {
             return [
                 'user' => $referral,
-                'depth' => $depth,
+                'depth' => $depth + 1,
                 'children' => $this->buildHierarchy($referral, $depth + 1)
             ];
         });
@@ -707,5 +714,80 @@ class DealerController extends Controller
     public function exportDealers(Request $request)
     {
         return Excel::download(new DealersExport($request->search), 'dealers.xlsx');
+    }
+
+    public function adminGenealogy()
+    {
+        // Get the oldest dealer (first one created) as the root of the tree
+        $rootDealer = User::where('role', 'dealer')
+            ->with(['dealerProfile', 'directReferrals'])
+            ->orderBy('created_at', 'asc')
+            ->first();
+
+        if (!$rootDealer) {
+            return view('AdminDashboard.genealogy', [
+                'completeTree' => null,
+                'rootDealer' => null,
+                'totalDealers' => 0,
+                'totalLevels' => 0,
+                'activeDealers' => 0,
+                'inactiveDealers' => 0
+            ]);
+        }
+
+        // Build the complete genealogy tree starting from the root dealer
+        $tree = $this->buildAdminHierarchy($rootDealer);
+
+        // Create the complete tree structure with root dealer at the top
+        $completeTree = [
+            'user' => $rootDealer,
+            'depth' => 0,
+            'children' => $tree
+        ];
+
+        // Calculate statistics
+        $totalDealers = User::where('role', 'dealer')->count();
+        $activeDealers = User::where('role', 'dealer')->where('dealer_status', 1)->count();
+        $inactiveDealers = User::where('role', 'dealer')->where('dealer_status', 0)->count();
+        $totalLevels = $this->calculateMaxDepth($completeTree);
+
+        return view('AdminDashboard.genealogy', compact(
+            'completeTree',
+            'rootDealer',
+            'totalDealers',
+            'totalLevels',
+            'activeDealers',
+            'inactiveDealers'
+        ));
+    }
+
+    protected function buildAdminHierarchy($user, $depth = 0)
+    {
+        $referrals = $user->directReferrals()
+            ->with(['dealerProfile', 'directReferrals'])
+            ->get();
+
+        return $referrals->map(function ($referral) use ($depth) {
+            return [
+                'user' => $referral,
+                'depth' => $depth + 1,
+                'children' => $this->buildAdminHierarchy($referral, $depth + 1)
+            ];
+        });
+    }
+
+    protected function calculateMaxDepth($tree, $currentDepth = 0)
+    {
+        if (empty($tree['children']) || $tree['children']->isEmpty()) {
+            return $currentDepth;
+        }
+
+        $maxDepth = $currentDepth;
+        foreach ($tree['children'] as $child) {
+            $childDepth = $this->calculateMaxDepth($child, $currentDepth + 1);
+            $maxDepth = max($maxDepth, $childDepth);
+        }
+
+        return $maxDepth;
     }
 }

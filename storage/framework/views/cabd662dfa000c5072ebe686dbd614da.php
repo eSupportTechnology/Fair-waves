@@ -55,6 +55,13 @@
                         </a>
                     </li>
 
+                    <li class="menu-item <?php echo e(request()->routeIs('admin.genealogy') ? 'active' : ''); ?>">
+                        <a class="menu-link" href="<?php echo e(route('admin.genealogy')); ?>">
+                        <i class="icon material-icons md-account_tree"></i>
+                            <span class="text">Genealogy</span>
+                        </a>
+                    </li>
+
                     <!--li class="menu-item has-submenu { request()->is('admin/affiliate*') || request()->is('admin/affiliate_rules*') || request()->is('admin/affiliate_withdrawals*') ? 'active' : '' }}">
                         <a class="menu-link" href="#">
                             <i class="icon material-icons md-share"></i>
@@ -114,12 +121,6 @@
                             </a>
                             <a href="<?php echo e(route('productReport')); ?>" >
                                 Products
-                            </a>
-                            <a href="<?php echo e(route('affiliateCustomerReport')); ?>" >
-                                Affiliate Customer
-                            </a>
-                            <a href="<?php echo e(route('affiliateCusBankData')); ?>" >
-                                Affiliate Bank Details
                             </a>
                             <a href="<?php echo e(route('vendorReport')); ?>" >
                                 Vendors

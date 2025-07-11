@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::table('dealer_profiles', function (Blueprint $table) {
             $table->string('dealer_shop_name')->nullable()->unique()->after('dealer_code');
-            // Adding a unique constraint to ensure no two dealers can have the same shop name
-            // This is optional based on your requirements, but it helps maintain uniqueness
-            $table->unique('dealer_shop_name');
+      
         });
     }
 

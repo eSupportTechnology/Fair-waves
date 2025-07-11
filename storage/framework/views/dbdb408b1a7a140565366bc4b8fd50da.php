@@ -182,8 +182,12 @@
                                                 </div>
                                             </div>
                                             <div class="u">
-                                                <span class="market-price">Rs. <?php echo e(number_format($product->regular_price, 2)); ?></span>
-                                                <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?></span>
+                                                <?php if($isDealer): ?>
+                                                    <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)</span>
+                                                <?php else: ?>
+                                                   
+                                                    <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?></span>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -303,8 +307,12 @@
                                                 </div>
                                             </div>
                                             <div class="u">
-                                                <span class="market-price">Rs. <?php echo e(number_format($product->regular_price, 2)); ?></span>
-                                                <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?></span>
+                                                <?php if($isDealer): ?>
+                                                    <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)</span>
+                                                <?php else: ?>
+                                                    
+                                                    <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?></span>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -365,8 +373,12 @@
                                                 </div>
                                             </div>
                                             <div class="u">
-                                                <span class="market-price">Rs. <?php echo e(number_format($product->regular_price, 2)); ?></span>
-                                                <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?></span>
+                                                <?php if($isDealer): ?>
+                                                    <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)</span>
+                                                <?php else: ?>
+                                                  
+                                                    <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?></span>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>

@@ -5,26 +5,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Title -->
     <title>FAIR WAVES </title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('frontend\newstyle\assets\images\Fire Waves LOGO.png') }}">
+    <link rel="shortcut icon" href="<?php echo e(asset('frontend\newstyle\assets\images\Fire Waves LOGO.png')); ?>">
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/bootstrap.min.css')); ?>">
     <!-- select 2 -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/select2.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/select2.min.css')); ?>">
     <!-- Slick -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/slick.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/slick.css')); ?>">
     <!-- Jquery Ui -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/jquery-ui.css')); ?>">
     <!-- animate -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/animate.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/animate.css')); ?>">
     <!-- AOS Animation -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/aos.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/aos.css')); ?>">
     <!-- Main css -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/main.css')); ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -41,10 +40,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="{{ asset('frontend/newstyle/all.min.css') }}">
-<link rel="stylesheet" href="{{ asset('frontend/newstyle/mobile-nav.css') }}">
-<link rel="stylesheet" href="{{ asset('frontend/newstyle/mainmin.css') }}">
-<link rel="stylesheet" href="{{ asset('frontend/newstyle/responsivemin.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/newstyle/all.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('frontend/newstyle/mobile-nav.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('frontend/newstyle/mainmin.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('frontend/newstyle/responsivemin.css')); ?>">
 
 
 
@@ -53,12 +52,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="icon" sizes="16x16" href="{{ asset('frontend\newstyle\assets\images\Fire Waves LOGO.png') }}" />
-
-    <!-- <link rel="stylesheet" href="assets/libs/owl-carousel/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/libs/owl-carousel/assets/owl.theme.default.min.css">
-    <link rel="stylesheet" href="assets/libs/owl-carousel/owl.carousel.js">
-    <link rel="stylesheet" href="assets/libs/owl-carousel/owl.carousel.min.js"> -->
+    <link rel="icon" sizes="16x16" href="<?php echo e(asset('frontend\newstyle\assets\images\Fire Waves LOGO.png')); ?>" />
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -68,22 +62,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <!-- Your custom styles -->
-<link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<link rel="stylesheet" href="<?php echo e(asset('css/app.css')); ?>">
 
 
 </head>
@@ -187,24 +166,24 @@
     <body>
 
 
-        @include('includes.navbar-2')
+        <?php echo $__env->make('frontend.DealerShowroom.layouts.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
-        @yield('content')
+        <?php echo $__env->yieldContent('content'); ?>
 
 
         <div class="preloader">
-            <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}" alt="" style="width: 250px;">
+            <img src="<?php echo e(asset('frontend/newstyle/assets/images/logo.png')); ?>" alt="" style="width: 250px;">
             <!-- <h1>cart count</h1> -->
         </div>
 
 
         <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        @if (session('success'))
+                        <?php if(session('success')): ?>
                             Swal.fire({
                                 title: 'Success!',
-                                text: "{{ session('success') }}",
+                                text: "<?php echo e(session('success')); ?>",
                                 icon: 'success',
                                 toast: true,
                                 position: 'top-end',
@@ -216,12 +195,12 @@
                                     toast.addEventListener('mouseleave', Swal.resumeTimer);
                                 }
                             });
-                        @endif
+                        <?php endif; ?>
 
-                        @if (session('error'))
+                        <?php if(session('error')): ?>
                             Swal.fire({
                                 title: 'Error!',
-                                text: "{{ session('error') }}",
+                                text: "<?php echo e(session('error')); ?>",
                                 icon: 'error',
                                 toast: true,
                                 position: 'top-end',
@@ -233,43 +212,43 @@
                                     toast.addEventListener('mouseleave', Swal.resumeTimer);
                                 }
                             });
-                        @endif
+                        <?php endif; ?>
                     });
 
                 </script>
       </div>
 
-        @include('includes.footer')
+        <?php echo $__env->make('frontend.DealerShowroom.layouts.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
 
         <!-- Jquery js -->
-        <script src="{{ asset('frontend/assets/js/jquery-3.7.1.min.js') }}"></script>
+        <script src="<?php echo e(asset('frontend/assets/js/jquery-3.7.1.min.js')); ?>"></script>
         <!-- Bootstrap Bundle Js -->
-        {{-- <script src="{{ asset('frontend/assets/js/bootstrap.bundle.min.js') }}"></script> --}}
-        <script src="{{ asset('frontend/assets/js/boostrap.bundle.min.js') }}"></script>
+        
+        <script src="<?php echo e(asset('frontend/assets/js/boostrap.bundle.min.js')); ?>"></script>
          <!-- Phosphor Icon -->
-         <script src="{{ asset('frontend/assets/js/phosphor-icon.js') }}"></script>
+         <script src="<?php echo e(asset('frontend/assets/js/phosphor-icon.js')); ?>"></script>
         <!-- Select 2 -->
-        <script src="{{ asset('frontend/assets/js/select2.min.js') }}"></script>
+        <script src="<?php echo e(asset('frontend/assets/js/select2.min.js')); ?>"></script>
         <!-- Slick js -->
-        <script src="{{ asset('frontend/assets/js/slick.min.js') }}"></script>
+        <script src="<?php echo e(asset('frontend/assets/js/slick.min.js')); ?>"></script>
         <!-- Count Down js -->
-        <script src="{{ asset('frontend/assets/js/count-down.js') }}"></script>
+        <script src="<?php echo e(asset('frontend/assets/js/count-down.js')); ?>"></script>
         <!-- jQuery UI js -->
-        <script src="{{ asset('frontend/assets/js/jquery-ui.js') }}"></script>
+        <script src="<?php echo e(asset('frontend/assets/js/jquery-ui.js')); ?>"></script>
          <!-- Wow js -->
-         <script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>
+         <script src="<?php echo e(asset('frontend/assets/js/wow.min.js')); ?>"></script>
         <!-- AOS Animation -->
-        <script src="{{ asset('frontend/assets/js/aos.js') }}"></script>
+        <script src="<?php echo e(asset('frontend/assets/js/aos.js')); ?>"></script>
         <!-- Marquee -->
-        <script src="{{ asset('frontend/assets/js/marque.min.js') }}"></script>
+        <script src="<?php echo e(asset('frontend/assets/js/marque.min.js')); ?>"></script>
          <!-- Vanilla Tilt -->
-         <script src="{{ asset('frontend/assets/js/vanilla-tilt.min.js') }}"></script>
+         <script src="<?php echo e(asset('frontend/assets/js/vanilla-tilt.min.js')); ?>"></script>
         <!-- Counter -->
-        <script src="{{ asset('frontend/assets/js/counter.min.js') }}"></script>
+        <script src="<?php echo e(asset('frontend/assets/js/counter.min.js')); ?>"></script>
         <!-- Main js -->
-        <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+        <script src="<?php echo e(asset('frontend/assets/js/main.js')); ?>"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -289,7 +268,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            $.get("{{ route('cart.count') }}", function(data) {
+            $.get("<?php echo e(route('cart.count')); ?>", function(data) {
                 if (data.cart_count !== undefined) {
                     $('#cart-count').text(data.cart_count);
                 }
@@ -299,7 +278,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            $.get("{{ route('wishlist.count') }}", function(data) {
+            $.get("<?php echo e(route('wishlist.count')); ?>", function(data) {
                 if (data.wishlist_count !== undefined) {
                     $('#wishlist-count').text(data.wishlist_count);
                 }
@@ -386,3 +365,4 @@
 
 
     </html>
+<?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/master.blade.php ENDPATH**/ ?>

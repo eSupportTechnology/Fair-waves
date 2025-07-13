@@ -6,6 +6,42 @@
             display: flex;
             margin-right: 0px !important;
         }
+        
+        .shop-name-validation {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            border: 1px solid transparent;
+        }
+        
+        .shop-name-validation.success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .shop-name-validation.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        
+        .shop-name-validation.loading {
+            background-color: #e2e3e5;
+            border-color: #d6d8db;
+            color: #6c757d;
+        }
+        
+        .form-control.error {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+        
+        .form-control.success {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
     </style>
 
 
@@ -34,7 +70,7 @@
     <!-- =============================== Account Section Start =========================== -->
     <section class="account d-flex justify-content-center align-items-center py-80" style="min-height: 100vh;">
         <div class="container container-lg">
-            <form method="POST" action="{{ route('dealer.register') }}">
+            <form method="POST" action="{{ route('dealer.register.submit') }}">
                 @csrf
 
                 <div class="row gy-4 justify-content-center">
@@ -98,6 +134,29 @@
                                 <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                             </div>
 
+                            <!-- Gender -->
+                            <div class="mb-24">
+                                <x-input-label class="fw-bold" for="gender" :value="__('Gender')" />
+                                <span class="text-danger">*</span>
+                                <select id="gender" name="gender" class="common-input w-100" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                                    <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                                    <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('gender')" class="mt-2" />
+                            </div>
+
+                            <!-- Shop Name -->
+                            <div class="mb-24">
+                                <x-input-label class="fw-bold" for="shop_name" :value="__('Shop Name')" />
+                                <span class="text-danger">*</span>
+                                <x-text-input id="shop_name" class="common-input w-100" type="text" name="shop_name"
+                                    :value="old('shop_name')" placeholder="Enter Your Shop Name" required />
+                                <div id="shop-name-validation-message" class="mt-2"></div>
+                                <x-input-error :messages="$errors->get('shop_name')" class="mt-2" />
+                            </div>
+
                             <!-- Email Address -->
                             <div class="mb-24">
                                 <x-input-label class="fw-bold" for="email" :value="__('Email address')" />
@@ -146,6 +205,122 @@
                                 // Optional: if you're using Livewire, re-init after updates
                                 document.addEventListener('livewire:load', initPasswordToggle);
                                 document.addEventListener('livewire:update', initPasswordToggle);
+                            </script>
+
+                            <script>
+                                // Shop name validation
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const shopNameInput = document.getElementById('shop_name');
+                                    const validationMessage = document.getElementById('shop-name-validation-message');
+                                    const submitButton = document.querySelector('button[type="submit"]');
+                                    let validationTimeout;
+                                    let isShopNameValid = false;
+
+                                    // Get CSRF token
+                                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                                                     document.querySelector('input[name="_token"]')?.value;
+
+                                    function showValidationMessage(message, status) {
+                                        validationMessage.innerHTML = `<div class="shop-name-validation ${status}">${message}</div>`;
+                                        
+                                        // Update input styling
+                                        shopNameInput.classList.remove('error', 'success');
+                                        if (status === 'success') {
+                                            shopNameInput.classList.add('success');
+                                            isShopNameValid = true;
+                                        } else if (status === 'error') {
+                                            shopNameInput.classList.add('error');
+                                            isShopNameValid = false;
+                                        } else {
+                                            isShopNameValid = false;
+                                        }
+                                        
+                                        updateSubmitButton();
+                                    }
+
+                                    function updateSubmitButton() {
+                                        // Don't disable submit button - let server-side validation handle it
+                                        // This way the form can still be submitted for server-side validation
+                                        if (submitButton) {
+                                            if (shopNameInput.value.trim() === '') {
+                                                submitButton.disabled = true;
+                                                submitButton.style.opacity = '0.6';
+                                            } else {
+                                                submitButton.disabled = false;
+                                                submitButton.style.opacity = '1';
+                                            }
+                                        }
+                                    }
+
+                                    function validateShopName(shopName) {
+                                        if (!shopName.trim()) {
+                                            showValidationMessage('Shop name is required.', 'error');
+                                            return;
+                                        }
+
+                                        if (shopName.length < 3) {
+                                            showValidationMessage('Shop name must be at least 3 characters long.', 'error');
+                                            return;
+                                        }
+
+                                        // Show loading message
+                                        showValidationMessage('Checking availability...', 'loading');
+
+                                        fetch('{{ route("dealer.check.shop.name") }}', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': csrfToken,
+                                                'Accept': 'application/json'
+                                            },
+                                            body: JSON.stringify({
+                                                shop_name: shopName
+                                            })
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            showValidationMessage(data.message, data.available ? 'success' : 'error');
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            showValidationMessage('Error checking shop name availability. Please try again.', 'error');
+                                        });
+                                    }
+
+                                    // Real-time validation with debounce
+                                    shopNameInput.addEventListener('input', function() {
+                                        clearTimeout(validationTimeout);
+                                        const shopName = this.value.trim();
+                                        
+                                        if (shopName === '') {
+                                            showValidationMessage('Shop name is required.', 'error');
+                                            return;
+                                        }
+
+                                        validationTimeout = setTimeout(() => {
+                                            validateShopName(shopName);
+                                        }, 800); // 800ms delay for better UX
+                                    });
+
+                                    // Validate on blur
+                                    shopNameInput.addEventListener('blur', function() {
+                                        clearTimeout(validationTimeout);
+                                        const shopName = this.value.trim();
+                                        if (shopName) {
+                                            validateShopName(shopName);
+                                        }
+                                    });
+
+                                    // Initial validation if there's already a value (for old input)
+                                    if (shopNameInput.value.trim()) {
+                                        validateShopName(shopNameInput.value.trim());
+                                    } else {
+                                        updateSubmitButton();
+                                    }
+
+                                    // Remove the form submission prevention - let server handle validation
+                                    // This ensures the form can be submitted for server-side validation
+                                });
                             </script>
 
                             <!-- dealer code -->

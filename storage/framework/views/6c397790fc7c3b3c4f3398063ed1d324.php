@@ -1,6 +1,6 @@
-@extends ('frontend.DealerShowroom.master')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 <style>
     .showroom-welcome {
@@ -317,7 +317,7 @@
 <!-- Welcome Section -->
 <div class="showroom-welcome">
     <div class="container">
-        <h1>Welcome to {{ $dealer->dealerProfile->dealer_shop_name ?? 'Our Showroom' }}</h1>
+        <h1>Welcome to <?php echo e($dealer->dealerProfile->dealer_shop_name ?? 'Our Showroom'); ?></h1>
         <p>Discover amazing products from our authorized dealer</p>
     </div>
 </div>
@@ -329,17 +329,20 @@
             <div class="col-md-8">
                 <h3 class="text-primary mb-3">
                     <i class="fas fa-store me-2"></i>
-                    {{ $dealer->dealerProfile->dealer_shop_name ?? 'Authorized Dealer Showroom' }}
+                    <?php echo e($dealer->dealerProfile->dealer_shop_name ?? 'Authorized Dealer Showroom'); ?>
+
                 </h3>
                 <p class="text-muted mb-2">
-                    <strong>Dealer:</strong> {{ $dealer->name }}
+                    <strong>Dealer:</strong> <?php echo e($dealer->name); ?>
+
                 </p>
-                @if($dealer->dealerProfile->address)
+                <?php if($dealer->dealerProfile->address): ?>
                 <p class="text-muted mb-2">
                     <i class="fas fa-map-marker-alt me-2"></i>
-                    {{ $dealer->dealerProfile->address }}
+                    <?php echo e($dealer->dealerProfile->address); ?>
+
                 </p>
-                @endif
+                <?php endif; ?>
                 
             </div>
             <div class="col-md-4 text-md-end">
@@ -356,52 +359,54 @@
 <!-- Products Section -->
 <div class="products-section">
     <div class="container">
-        @if($dealerProducts->count() > 0)
+        <?php if($dealerProducts->count() > 0): ?>
             <h2 class="section-title">Product Collection</h2>
             <p class="section-subtitle">Explore our wide range of quality products available at competitive prices</p>
             
             <div class="row">
-                @foreach($dealerProducts as $productLink)
+                <?php $__currentLoopData = $dealerProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $productLink): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="col-lg-4 col-md-6 col-sm-12 mb-5">
                     <div class="product-card">
                         <div class="product-image">
-                            @if($productLink->product->images->count() > 0)
-                                <img src="{{ asset('storage/' . $productLink->product->images->first()->image_path) }}" 
-                                     alt="{{ $productLink->product->product_name }}">
-                            @else
+                            <?php if($productLink->product->images->count() > 0): ?>
+                                <img src="<?php echo e(asset('storage/' . $productLink->product->images->first()->image_path)); ?>" 
+                                     alt="<?php echo e($productLink->product->product_name); ?>">
+                            <?php else: ?>
                                 <img src="https://via.placeholder.com/300x250/f8f9fa/6c757d?text=No+Image" 
-                                     alt="{{ $productLink->product->product_name }}">
-                            @endif
+                                     alt="<?php echo e($productLink->product->product_name); ?>">
+                            <?php endif; ?>
                             
-                            @if($productLink->product->quantity > 0)
+                            <?php if($productLink->product->quantity > 0): ?>
                                 <div class="product-badge">Available</div>
-                            @else
+                            <?php else: ?>
                                 <div class="product-badge" style="background: #dc3545;">Out of Stock</div>
-                            @endif
+                            <?php endif; ?>
                         </div>
                         
                         <div class="product-content">
-                            <h4 class="product-title">{{ $productLink->product->product_name }}</h4>
+                            <h4 class="product-title"><?php echo e($productLink->product->product_name); ?></h4>
                             
                             <div class="product-price">
-                                Rs. {{ number_format($productLink->product->normal_price, 2) }}
+                                Rs. <?php echo e(number_format($productLink->product->normal_price, 2)); ?>
+
                             </div>
                             
                             <div class="product-meta">
                                 <span class="product-category">
-                                    {{ $productLink->product->category->name ?? 'General' }}
+                                    <?php echo e($productLink->product->category->name ?? 'General'); ?>
+
                                 </span>
-                                <span class="stock-status {{ $productLink->product->quantity > 0 ? 'stock-available' : 'stock-out' }}">
-                                    @if($productLink->product->quantity > 0)
-                                        {{ $productLink->product->quantity }} in stock
-                                    @else
+                                <span class="stock-status <?php echo e($productLink->product->quantity > 0 ? 'stock-available' : 'stock-out'); ?>">
+                                    <?php if($productLink->product->quantity > 0): ?>
+                                        <?php echo e($productLink->product->quantity); ?> in stock
+                                    <?php else: ?>
                                         Out of stock
-                                    @endif
+                                    <?php endif; ?>
                                 </span>
                             </div>
                             
                             <div class="product-actions">
-                                <a href="{{ route('showroom.productView', [$dealer->dealerProfile->dealer_shop_name, $productLink->unique_code]) }}" 
+                                <a href="<?php echo e(route('showroom.productView', [$dealer->dealerProfile->dealer_shop_name, $productLink->unique_code])); ?>" 
                                    class="btn-view-product">
                                     <i class="fas fa-eye"></i>
                                     View Product
@@ -410,17 +415,18 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             
             <!-- Pagination -->
-            @if($dealerProducts->hasPages())
+            <?php if($dealerProducts->hasPages()): ?>
             <div class="pagination-wrapper">
-                {{ $dealerProducts->links() }}
+                <?php echo e($dealerProducts->links()); ?>
+
             </div>
-            @endif
+            <?php endif; ?>
             
-        @else
+        <?php else: ?>
             <!-- No Products Section -->
             <div class="no-products">
                 <div class="row justify-content-center">
@@ -436,7 +442,7 @@
                     </div>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
     </div>
 </div>
 
@@ -448,4 +454,5 @@
 
 <div style="margin-bottom: 60px;"></div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.DealerShowroom.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/home/index.blade.php ENDPATH**/ ?>

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <!-- Title -->
     <title>FAIR WAVES </title>
     <!-- Favicon -->
@@ -365,4 +366,4 @@
 
 
     </html>
-<?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/DealerShowroom/master.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/master.blade.php ENDPATH**/ ?>

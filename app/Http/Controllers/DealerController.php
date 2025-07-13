@@ -470,7 +470,13 @@ class DealerController extends Controller
             'password' => ['required', Rules\Password::defaults()],
             'address' => ['required', 'string', 'max:255'],
             'dob' => ['required', 'date'],
+            'gender' => ['required', 'string', 'in:Male,Female,Other'],
             'phone' => ['required', 'string', 'max:15'],
+            'shop_name' => ['required', 'string', 'min:3', 'max:255', 'unique:dealer_profiles,dealer_shop_name'],
+        ], [
+            'shop_name.unique' => 'This shop name is already in use. Please enter a different shop name.',
+            'shop_name.min' => 'Shop name must be at least 3 characters long.',
+            'shop_name.required' => 'Shop name is required.',
         ]);
 
         // Step 1: Get Referrer
@@ -486,6 +492,7 @@ class DealerController extends Controller
             'password' => Hash::make($request->password),
             'address' => $request->address,
             'dob' => $request->dob,
+            'gender' => $request->gender,
             'phone' => $request->phone,
             'role' => 'dealer', // or 'customer' based on your logic
             'referred_by' => $referrerUser->id, // Set the referrer
@@ -503,6 +510,7 @@ class DealerController extends Controller
             'bv' => 0,
             'tier' => 'silver',
             'dealer_code' => $dealer_code_generated,
+            'dealer_shop_name' => $request->shop_name,
         ]);
 
         // Step 4: Add to Referral Table
@@ -516,6 +524,32 @@ class DealerController extends Controller
         // Notification::send($referrerUser, new NewReferralNotification($user));
 
         return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
+    }
+
+    public function checkShopName(Request $request)
+    {
+        $shopName = $request->input('shop_name');
+        
+        if (empty($shopName)) {
+            return response()->json([
+                'available' => false,
+                'message' => 'Shop name is required.'
+            ]);
+        }
+
+        if (strlen(trim($shopName)) < 3) {
+            return response()->json([
+                'available' => false,
+                'message' => 'Shop name must be at least 3 characters long.'
+            ]);
+        }
+
+        $exists = DealerProfile::where('dealer_shop_name', trim($shopName))->exists();
+        
+        return response()->json([
+            'available' => !$exists,
+            'message' => $exists ? 'This shop name is already in use. Please enter a different shop name.' : 'Shop name is available!'
+        ]);
     }
 
     public function dealerProductsDashBoard()

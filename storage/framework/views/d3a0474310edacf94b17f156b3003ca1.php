@@ -6,30 +6,30 @@
             <!-- Dealer Information -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="footer-widget">
-                    @if(isset($dealer))
+                    <?php if(isset($dealer)): ?>
                         <!-- Dealer Branding -->
                         <div class="d-flex align-items-center mb-3">
-                            @if($dealer->profile_image)
-                                <img src="{{ asset('storage/' . $dealer->profile_image) }}"
-                                     alt="{{ $dealer->name }}"
+                            <?php if($dealer->profile_image): ?>
+                                <img src="<?php echo e(asset('storage/' . $dealer->profile_image)); ?>"
+                                     alt="<?php echo e($dealer->name); ?>"
                                      class="dealer-footer-logo me-3">
-                            @else
+                            <?php else: ?>
                                 <div class="dealer-footer-placeholder me-3">
                                     <i class="fas fa-store"></i>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                             <div>
-                                <h5 class="mb-0 text-white fw-bold">{{ $dealer->dealerProfile->dealer_shop_name ?? $dealer->name }}</h5>
+                                <h5 class="mb-0 text-white fw-bold"><?php echo e($dealer->dealerProfile->dealer_shop_name ?? $dealer->name); ?></h5>
                                 <small class="text-muted">Authorized Dealer</small>
                             </div>
                         </div>
                         <p class="text-muted mb-3 lh-lg">
                             Your trusted electronics partner providing premium products with exceptional service and competitive prices.
                         </p>
-                    @else
+                    <?php else: ?>
                         <!-- Fallback to Fair Waves -->
                         <div class="d-flex align-items-center mb-3">
-                            <img src="{{ asset('frontend/newstyle/assets/images/Fire Waves LOGO.png') }}"
+                            <img src="<?php echo e(asset('frontend/newstyle/assets/images/Fire Waves LOGO.png')); ?>"
                                  alt="Fair Waves Logo"
                                  class="dealer-footer-logo me-3">
                             <div>
@@ -41,7 +41,7 @@
                             Your trusted partner for premium electronics and exceptional service.
                             We bring you the latest technology at competitive prices.
                         </p>
-                    @endif
+                    <?php endif; ?>
                     
                     <div class="social-links">
                         <a href="#" class="social-link" aria-label="Facebook">
@@ -92,33 +92,33 @@
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="footer-widget">
                     <h6 class="footer-title">Get In Touch</h6>
-                    @if(isset($dealer) && $dealer->dealerProfile)
+                    <?php if(isset($dealer) && $dealer->dealerProfile): ?>
                         <!-- Dealer Contact Info -->
                         <div class="contact-info">
-                            @if($dealer->dealerProfile->address)
+                            <?php if($dealer->dealerProfile->address): ?>
                                 <div class="contact-item">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <span>{{ $dealer->dealerProfile->address }}</span>
+                                    <span><?php echo e($dealer->dealerProfile->address); ?></span>
                                 </div>
-                            @endif
-                            @if($dealer->dealerProfile->phone)
+                            <?php endif; ?>
+                            <?php if($dealer->dealerProfile->phone): ?>
                                 <div class="contact-item">
                                     <i class="fas fa-phone"></i>
-                                    <a href="tel:{{ $dealer->dealerProfile->phone }}">{{ $dealer->dealerProfile->phone }}</a>
+                                    <a href="tel:<?php echo e($dealer->dealerProfile->phone); ?>"><?php echo e($dealer->dealerProfile->phone); ?></a>
                                 </div>
-                            @endif
-                            @if($dealer->email)
+                            <?php endif; ?>
+                            <?php if($dealer->email): ?>
                                 <div class="contact-item">
                                     <i class="fas fa-envelope"></i>
-                                    <a href="mailto:{{ $dealer->email }}">{{ $dealer->email }}</a>
+                                    <a href="mailto:<?php echo e($dealer->email); ?>"><?php echo e($dealer->email); ?></a>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                             <div class="contact-item">
                                 <i class="fas fa-clock"></i>
                                 <span>Mon - Sat: 9:00 AM - 8:00 PM</span>
                             </div>
                         </div>
-                    @else
+                    <?php else: ?>
                         <!-- Default Contact Info -->
                         <div class="contact-info">
                             <div class="contact-item">
@@ -138,7 +138,7 @@
                                 <span>Mon - Sat: 9:00 AM - 8:00 PM</span>
                             </div>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -153,28 +153,28 @@
                     <div class="payment-methods">
                         <div class="payment-grid">
                             <div class="payment-item">
-                                <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/VISA1.webp') }}" alt="Visa" class="payment-logo">
+                                <img src="<?php echo e(asset('frontend/newstyle/assets/images/new-bank-logo/VISA1.webp')); ?>" alt="Visa" class="payment-logo">
                             </div>
                             <div class="payment-item">
-                                <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/MASTER1.webp') }}" alt="Mastercard" class="payment-logo">
+                                <img src="<?php echo e(asset('frontend/newstyle/assets/images/new-bank-logo/MASTER1.webp')); ?>" alt="Mastercard" class="payment-logo">
                             </div>
                             <div class="payment-item">
-                                <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/AMEX1.webp') }}" alt="American Express" class="payment-logo">
+                                <img src="<?php echo e(asset('frontend/newstyle/assets/images/new-bank-logo/AMEX1.webp')); ?>" alt="American Express" class="payment-logo">
                             </div>
                             <div class="payment-item">
-                                <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/COMBANK1.webp') }}" alt="Commercial Bank" class="payment-logo">
+                                <img src="<?php echo e(asset('frontend/newstyle/assets/images/new-bank-logo/COMBANK1.webp')); ?>" alt="Commercial Bank" class="payment-logo">
                             </div>
                             <div class="payment-item">
-                                <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/SAMPATH1.webp') }}" alt="Sampath Bank" class="payment-logo">
+                                <img src="<?php echo e(asset('frontend/newstyle/assets/images/new-bank-logo/SAMPATH1.webp')); ?>" alt="Sampath Bank" class="payment-logo">
                             </div>
                             <div class="payment-item">
-                                <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/HNB1.webp') }}" alt="HNB" class="payment-logo">
+                                <img src="<?php echo e(asset('frontend/newstyle/assets/images/new-bank-logo/HNB1.webp')); ?>" alt="HNB" class="payment-logo">
                             </div>
                             <div class="payment-item">
-                                <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/BOC1.webp') }}" alt="Bank of Ceylon" class="payment-logo">
+                                <img src="<?php echo e(asset('frontend/newstyle/assets/images/new-bank-logo/BOC1.webp')); ?>" alt="Bank of Ceylon" class="payment-logo">
                             </div>
                             <div class="payment-item">
-                                <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/NSB1.webp') }}" alt="NSB" class="payment-logo">
+                                <img src="<?php echo e(asset('frontend/newstyle/assets/images/new-bank-logo/NSB1.webp')); ?>" alt="NSB" class="payment-logo">
                             </div>
                         </div>
                     </div>
@@ -187,12 +187,13 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <p class="copyright mb-0">
-                        © {{ date('Y') }} 
-                        @if(isset($dealer))
-                            {{ $dealer->dealerProfile->dealer_shop_name ?? $dealer->name }}
-                        @else
+                        © <?php echo e(date('Y')); ?> 
+                        <?php if(isset($dealer)): ?>
+                            <?php echo e($dealer->dealerProfile->dealer_shop_name ?? $dealer->name); ?>
+
+                        <?php else: ?>
                             Fair Waves
-                        @endif
+                        <?php endif; ?>
                         . All rights reserved.
                     </p>
                 </div>
@@ -590,3 +591,4 @@
     }
 }
 </style>
+<?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/layouts/footer.blade.php ENDPATH**/ ?>

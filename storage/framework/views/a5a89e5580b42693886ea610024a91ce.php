@@ -5,29 +5,31 @@
             <!-- Dealer Profile and Shop Name -->
             <div class="col-md-6 col-8">
                 <div class="d-flex align-items-center">
-                    @if(isset($dealer))
+                    <?php if(isset($dealer)): ?>
                         <!-- Dealer Profile Image -->
                         <div class="dealer-profile-wrapper me-3">
-                            @if($dealer->profile_image)
-                                <img src="{{ asset('storage/' . $dealer->profile_image) }}"
-                                     alt="{{ $dealer->name }}"
+                            <?php if($dealer->profile_image): ?>
+                                <img src="<?php echo e(asset('storage/' . $dealer->profile_image)); ?>"
+                                     alt="<?php echo e($dealer->name); ?>"
                                      class="dealer-profile-img">
-                            @else
+                            <?php else: ?>
                                 <div class="dealer-profile-placeholder">
                                     <i class="fas fa-user"></i>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                         </div>
                         
                         <!-- Dealer Information -->
                         <div class="dealer-info">
                             <h4 class="dealer-name mb-0 text-dark fw-bold">
-                                {{ $dealer->dealerProfile->dealer_shop_name ?? $dealer->name }}
+                                <?php echo e($dealer->dealerProfile->dealer_shop_name ?? $dealer->name); ?>
+
                             </h4>
                             <div class="dealer-details">
                                 <small class="text-muted me-2">
                                     <i class="fas fa-user me-1"></i>
-                                    {{ $dealer->name }}
+                                    <?php echo e($dealer->name); ?>
+
                                 </small>
                                 <span class="dealer-badge">
                                     <i class="fas fa-certificate me-1"></i>
@@ -35,9 +37,9 @@
                                 </span>
                             </div>
                         </div>
-                    @else
+                    <?php else: ?>
                         <!-- Fallback to Fair Waves if no dealer context -->
-                        <img src="{{ asset('frontend/newstyle/assets/images/Fire Waves LOGO.png') }}"
+                        <img src="<?php echo e(asset('frontend/newstyle/assets/images/Fire Waves LOGO.png')); ?>"
                              alt="Fair Waves Logo"
                              class="shop-logo me-3"
                              style="height: 50px; width: auto;">
@@ -45,7 +47,7 @@
                             <h4 class="shop-name mb-0 text-dark fw-bold">FAIR WAVES</h4>
                             <small class="text-muted">Premium Electronics Store</small>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -62,12 +64,13 @@
 
                     <!-- Cart Icon with Count -->
                     <div class="cart-section position-relative">
-                        {{-- <a href="{{ route('cart.index') }}" class="btn btn-outline-dark position-relative"> --}}
+                        
                         <a href="" class="btn btn-outline-dark position-relative">
                             <i class="fas fa-shopping-cart"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                                   id="cart-count">
-                                {{ session('cart_count', 0) }}
+                                <?php echo e(session('cart_count', 0)); ?>
+
                             </span>
                         </a>
                     </div>
@@ -86,10 +89,7 @@
         <!-- Mobile Menu -->
         <div class="collapse d-md-none" id="mobileMenu">
             <div class="mobile-nav-menu py-3 border-top">
-                {{-- <a href="{{ route('home') }}" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
-                <a href="{{ route('products') }}" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
-                <a href="{{ route('about') }}" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
-                <a href="{{ route('contact') }}" class="d-block py-2 text-dark text-decoration-none hover-orange">Contact</a> --}}
+                
                 <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
                 <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
                 <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
@@ -266,3 +266,4 @@
     }
 }
 </style>
+<?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/layouts/header.blade.php ENDPATH**/ ?>

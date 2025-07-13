@@ -1,6 +1,4 @@
-@extends('frontend.DealerShowroom.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     :root {
         --primary-color: #ff5800;
@@ -514,17 +512,19 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('home') }}">
+                    <a href="<?php echo e(route('home')); ?>">
                         <i class="fas fa-home me-1"></i> Home
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{ route('showroom.index', $productLink->dealer->dealerProfile->dealer_shop_name) }}">
-                        <i class="fas fa-store me-1"></i> {{ $productLink->dealer->dealerProfile->dealer_shop_name }}
+                    <a href="<?php echo e(route('showroom.index', $productLink->dealer->dealerProfile->dealer_shop_name)); ?>">
+                        <i class="fas fa-store me-1"></i> <?php echo e($productLink->dealer->dealerProfile->dealer_shop_name); ?>
+
                     </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <i class="fas fa-box me-1"></i> {{ $productLink->product->product_name }}
+                    <i class="fas fa-box me-1"></i> <?php echo e($productLink->product->product_name); ?>
+
                 </li>
             </ol>
         </nav>
@@ -538,7 +538,8 @@
             <div class="col-md-8">
                 <h5 class="mb-1">
                     <i class="fas fa-store me-2"></i>
-                    {{ $productLink->dealer->dealerProfile->dealer_shop_name }}
+                    <?php echo e($productLink->dealer->dealerProfile->dealer_shop_name); ?>
+
                 </h5>
                 <p class="mb-0 opacity-75">
                     <i class="fas fa-certificate me-1"></i>
@@ -548,7 +549,7 @@
             <div class="col-md-4 text-md-end">
                 <div class="d-flex flex-column align-items-md-end">
                     <small class="opacity-75">Product Code</small>
-                    <strong class="fs-6">{{ $productLink->unique_code }}</strong>
+                    <strong class="fs-6"><?php echo e($productLink->unique_code); ?></strong>
                 </div>
             </div>
         </div>
@@ -561,10 +562,10 @@
         <!-- Product Images -->
         <div class="col-lg-6">
             <div class="product-images-container fade-in">
-                @if($productLink->product->images->count() > 0)
+                <?php if($productLink->product->images->count() > 0): ?>
                     <div class="main-image-wrapper">
-                        <img src="{{ asset('storage/' . $productLink->product->images->first()->image_path) }}" 
-                             alt="{{ $productLink->product->product_name }}" 
+                        <img src="<?php echo e(asset('storage/' . $productLink->product->images->first()->image_path)); ?>" 
+                             alt="<?php echo e($productLink->product->product_name); ?>" 
                              class="main-image" 
                              id="mainImage">
                         <div class="image-zoom-indicator">
@@ -573,34 +574,35 @@
                         </div>
                     </div>
                     
-                    @if($productLink->product->images->count() > 1)
+                    <?php if($productLink->product->images->count() > 1): ?>
                     <div class="thumbnail-images">
-                        @foreach($productLink->product->images as $index => $image)
-                            <img src="{{ asset('storage/' . $image->image_path) }}" 
-                                 alt="{{ $productLink->product->product_name }}" 
-                                 class="thumbnail {{ $index === 0 ? 'active' : '' }}"
-                                 onclick="changeMainImage('{{ asset('storage/' . $image->image_path) }}', this)">
-                        @endforeach
+                        <?php $__currentLoopData = $productLink->product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <img src="<?php echo e(asset('storage/' . $image->image_path)); ?>" 
+                                 alt="<?php echo e($productLink->product->product_name); ?>" 
+                                 class="thumbnail <?php echo e($index === 0 ? 'active' : ''); ?>"
+                                 onclick="changeMainImage('<?php echo e(asset('storage/' . $image->image_path)); ?>', this)">
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                    @endif
-                @else
+                    <?php endif; ?>
+                <?php else: ?>
                     <div class="main-image-wrapper">
                         <img src="https://via.placeholder.com/500x450/f8f9fa/6c757d?text=No+Image+Available" 
-                             alt="{{ $productLink->product->product_name }}" 
+                             alt="<?php echo e($productLink->product->product_name); ?>" 
                              class="main-image">
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
 
         <!-- Product Information -->
         <div class="col-lg-6">
             <div class="product-info-card fade-in">
-                <h1 class="product-title">{{ $productLink->product->product_name }}</h1>
+                <h1 class="product-title"><?php echo e($productLink->product->product_name); ?></h1>
                 
                 <div class="product-price">
                     <i class="fas fa-tag me-2"></i>
-                    Rs. {{ number_format($productLink->product->normal_price, 2) }}
+                    Rs. <?php echo e(number_format($productLink->product->normal_price, 2)); ?>
+
                 </div>
 
                 <!-- Product Meta Information -->
@@ -611,7 +613,7 @@
                         </div>
                         <div class="meta-content">
                             <h6>Product ID</h6>
-                            <p>{{ $productLink->product->product_id }}</p>
+                            <p><?php echo e($productLink->product->product_id); ?></p>
                         </div>
                     </div>
                     <div class="meta-item">
@@ -620,7 +622,7 @@
                         </div>
                         <div class="meta-content">
                             <h6>Category</h6>
-                            <p>{{ $productLink->product->category->name ?? 'N/A' }}</p>
+                            <p><?php echo e($productLink->product->category->name ?? 'N/A'); ?></p>
                         </div>
                     </div>
                     <div class="meta-item">
@@ -629,7 +631,7 @@
                         </div>
                         <div class="meta-content">
                             <h6>Brand</h6>
-                            <p>{{ $productLink->product->brand->name ?? 'N/A' }}</p>
+                            <p><?php echo e($productLink->product->brand->name ?? 'N/A'); ?></p>
                         </div>
                     </div>
                     <div class="meta-item">
@@ -639,58 +641,58 @@
                         <div class="meta-content">
                             <h6>Stock Status</h6>
                             <p>
-                                @if($productLink->product->quantity > 0)
+                                <?php if($productLink->product->quantity > 0): ?>
                                     <span class="status-badge bg-success text-white">
-                                        {{ $productLink->product->quantity }} Available
+                                        <?php echo e($productLink->product->quantity); ?> Available
                                     </span>
-                                @else
+                                <?php else: ?>
                                     <span class="status-badge bg-danger text-white">
                                         Out of Stock
                                     </span>
-                                @endif
+                                <?php endif; ?>
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Sizes Section -->
-                @if ($productLink->product->variations->pluck('value')->filter()->unique()->isNotEmpty())
+                <?php if($productLink->product->variations->pluck('value')->filter()->unique()->isNotEmpty()): ?>
                 <div class="variations-section">
                     <h6 class="variation-title">
                         <i class="fas fa-ruler me-2"></i>
                         Available Sizes
                     </h6>
                     <div class="d-flex flex-wrap">
-                        @foreach ($productLink->product->variations->pluck('value')->filter()->unique() as $size)
-                            <span class="size-badge">{{ $size }}</span>
-                        @endforeach
+                        <?php $__currentLoopData = $productLink->product->variations->pluck('value')->filter()->unique(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <span class="size-badge"><?php echo e($size); ?></span>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
-                @endif
+                <?php endif; ?>
 
                 <!-- Colors Section -->
-                @if ($productLink->product->variations->pluck('hex_value')->filter()->unique()->isNotEmpty())
+                <?php if($productLink->product->variations->pluck('hex_value')->filter()->unique()->isNotEmpty()): ?>
                 <div class="variations-section">
                     <h6 class="variation-title">
                         <i class="fas fa-palette me-2"></i>
                         Available Colors
                     </h6>
                     <div class="d-flex flex-wrap align-items-center">
-                        @foreach ($productLink->product->variations->pluck('hex_value')->filter()->unique() as $color)
+                        <?php $__currentLoopData = $productLink->product->variations->pluck('hex_value')->filter()->unique(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <span class="color-circle" 
-                                  style="background-color: {{ $color }};"
-                                  title="Color: {{ $color }}"
+                                  style="background-color: <?php echo e($color); ?>;"
+                                  title="Color: <?php echo e($color); ?>"
                                   data-bs-toggle="tooltip">
                             </span>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
-                @endif
+                <?php endif; ?>
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
-                    @auth
-                        @if($productLink->product->quantity > 0)
+                    <?php if(auth()->guard()->check()): ?>
+                        <?php if($productLink->product->quantity > 0): ?>
                             <button type="button" class="btn btn-primary-custom">
                                 <i class="fas fa-shopping-cart me-2"></i>
                                 Add To Cart
@@ -699,31 +701,31 @@
                                 <i class="fas fa-bolt me-2"></i>
                                 Buy Now
                             </button>
-                        @else
+                        <?php else: ?>
                             <button type="button" class="btn btn-secondary" disabled>
                                 <i class="fas fa-times me-2"></i>
                                 Out of Stock
                             </button>
-                        @endif
+                        <?php endif; ?>
                         
-                    @else
+                    <?php else: ?>
                         <div class="alert-custom">
                             <i class="fas fa-info-circle me-2"></i>
-                            Please <a href="{{ route('login') }}" class="fw-bold text-decoration-none">log in</a> to purchase this item.
+                            Please <a href="<?php echo e(route('login')); ?>" class="fw-bold text-decoration-none">log in</a> to purchase this item.
                         </div>
-                    @endauth
+                    <?php endif; ?>
                 </div>
 
                 <!-- Product Description -->
-                @if($productLink->product->product_description)
+                <?php if($productLink->product->product_description): ?>
                 <div class="description-section">
                     <h5 class="section-title">
                         <i class="fas fa-align-left me-2"></i>
                         Product Description
                     </h5>
-                    <p class="text-muted lh-lg">{{ $productLink->product->product_description }}</p>
+                    <p class="text-muted lh-lg"><?php echo e($productLink->product->product_description); ?></p>
                 </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -746,7 +748,8 @@
                             <div class="spec-icon">
                                 <i class="fas fa-tag"></i>
                             </div>
-                            {{ $productLink->product->product_name }}
+                            <?php echo e($productLink->product->product_name); ?>
+
                         </div>
                     </div>
                     
@@ -756,7 +759,7 @@
                             <div class="spec-icon">
                                 <i class="fas fa-barcode"></i>
                             </div>
-                            <code class="bg-light px-2 py-1 rounded">{{ $productLink->product->product_id }}</code>
+                            <code class="bg-light px-2 py-1 rounded"><?php echo e($productLink->product->product_id); ?></code>
                         </div>
                     </div>
                     
@@ -766,7 +769,7 @@
                             <div class="spec-icon">
                                 <i class="fas fa-layer-group"></i>
                             </div>
-                            <span class="badge bg-primary">{{ $productLink->product->category->name ?? 'N/A' }}</span>
+                            <span class="badge bg-primary"><?php echo e($productLink->product->category->name ?? 'N/A'); ?></span>
                         </div>
                     </div>
                     
@@ -776,7 +779,8 @@
                             <div class="spec-icon">
                                 <i class="fas fa-trademark"></i>
                             </div>
-                            {{ $productLink->product->brand->name ?? 'N/A' }}
+                            <?php echo e($productLink->product->brand->name ?? 'N/A'); ?>
+
                         </div>
                     </div>
                     
@@ -786,7 +790,7 @@
                             <div class="spec-icon">
                                 <i class="fas fa-dollar-sign"></i>
                             </div>
-                            <span class="fw-bold text-success fs-5">Rs. {{ number_format($productLink->product->normal_price, 2) }}</span>
+                            <span class="fw-bold text-success fs-5">Rs. <?php echo e(number_format($productLink->product->normal_price, 2)); ?></span>
                         </div>
                     </div>
                     
@@ -796,21 +800,21 @@
                             <div class="spec-icon">
                                 <i class="fas fa-cube"></i>
                             </div>
-                            @if ($productLink->product->quantity > 0)
+                            <?php if($productLink->product->quantity > 0): ?>
                                 <span class="status-badge bg-success text-white">
                                     <i class="fas fa-check-circle me-1"></i>
-                                    {{ $productLink->product->quantity }} Units Available
+                                    <?php echo e($productLink->product->quantity); ?> Units Available
                                 </span>
-                            @else
+                            <?php else: ?>
                                 <span class="status-badge bg-danger text-white">
                                     <i class="fas fa-times-circle me-1"></i>
                                     Out of Stock
                                 </span>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
                     
-                    @if($productLink->product->variations->pluck('value')->filter()->unique()->isNotEmpty())
+                    <?php if($productLink->product->variations->pluck('value')->filter()->unique()->isNotEmpty()): ?>
                     <div class="spec-item">
                         <div class="spec-label">Available Sizes</div>
                         <div class="spec-value">
@@ -818,15 +822,15 @@
                                 <i class="fas fa-ruler"></i>
                             </div>
                             <div class="d-flex flex-wrap gap-1">
-                                @foreach ($productLink->product->variations->pluck('value')->filter()->unique() as $size)
-                                    <span class="badge bg-light text-dark">{{ $size }}</span>
-                                @endforeach
+                                <?php $__currentLoopData = $productLink->product->variations->pluck('value')->filter()->unique(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <span class="badge bg-light text-dark"><?php echo e($size); ?></span>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
                     
-                    @if($productLink->product->variations->pluck('hex_value')->filter()->unique()->isNotEmpty())
+                    <?php if($productLink->product->variations->pluck('hex_value')->filter()->unique()->isNotEmpty()): ?>
                     <div class="spec-item">
                         <div class="spec-label">Available Colors</div>
                         <div class="spec-value">
@@ -834,17 +838,17 @@
                                 <i class="fas fa-palette"></i>
                             </div>
                             <div class="d-flex flex-wrap gap-2 align-items-center">
-                                @foreach ($productLink->product->variations->pluck('hex_value')->filter()->unique() as $color)
+                                <?php $__currentLoopData = $productLink->product->variations->pluck('hex_value')->filter()->unique(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <span class="d-inline-block" 
-                                          style="width: 24px; height: 24px; background-color: {{ $color }}; border-radius: 50%; border: 2px solid #dee2e6; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
-                                          title="{{ $color }}"
+                                          style="width: 24px; height: 24px; background-color: <?php echo e($color); ?>; border-radius: 50%; border: 2px solid #dee2e6; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
+                                          title="<?php echo e($color); ?>"
                                           data-bs-toggle="tooltip">
                                     </span>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -863,7 +867,7 @@
                     </div>
                     <div>
                         <small class="text-muted d-block">Dealer Name</small>
-                        <strong>{{ $productLink->dealer->name }}</strong>
+                        <strong><?php echo e($productLink->dealer->name); ?></strong>
                     </div>
                 </div>
 
@@ -873,67 +877,69 @@
                     </div>
                     <div>
                         <small class="text-muted d-block">Shop Name</small>
-                        <strong>{{ $productLink->dealer->dealerProfile->dealer_shop_name }}</strong>
+                        <strong><?php echo e($productLink->dealer->dealerProfile->dealer_shop_name); ?></strong>
                     </div>
                 </div>
 
-                @if($productLink->dealer->dealerProfile->phone)
+                <?php if($productLink->dealer->dealerProfile->phone): ?>
                 <div class="dealer-info-item">
                     <div class="dealer-icon">
                         <i class="fas fa-phone"></i>
                     </div>
                     <div>
                         <small class="text-muted d-block">Phone</small>
-                        <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}" 
+                        <a href="tel:<?php echo e($productLink->dealer->dealerProfile->phone); ?>" 
                            class="text-decoration-none fw-bold">
-                            {{ $productLink->dealer->dealerProfile->phone }}
+                            <?php echo e($productLink->dealer->dealerProfile->phone); ?>
+
                         </a>
                     </div>
                 </div>
-                @endif
+                <?php endif; ?>
 
-                @if($productLink->dealer->email)
+                <?php if($productLink->dealer->email): ?>
                 <div class="dealer-info-item">
                     <div class="dealer-icon">
                         <i class="fas fa-envelope"></i>
                     </div>
                     <div>
                         <small class="text-muted d-block">Email</small>
-                        <a href="mailto:{{ $productLink->dealer->email }}" 
+                        <a href="mailto:<?php echo e($productLink->dealer->email); ?>" 
                            class="text-decoration-none fw-bold">
-                            {{ $productLink->dealer->email }}
+                            <?php echo e($productLink->dealer->email); ?>
+
                         </a>
                     </div>
                 </div>
-                @endif
+                <?php endif; ?>
 
-                @if($productLink->dealer->dealerProfile->address)
+                <?php if($productLink->dealer->dealerProfile->address): ?>
                 <div class="dealer-info-item">
                     <div class="dealer-icon">
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <div>
                         <small class="text-muted d-block">Address</small>
-                        <span class="fw-bold">{{ $productLink->dealer->dealerProfile->address }}</span>
+                        <span class="fw-bold"><?php echo e($productLink->dealer->dealerProfile->address); ?></span>
                     </div>
                 </div>
-                @endif
+                <?php endif; ?>
                 
                 <div class="mt-4 d-grid gap-2">
-                    @if($productLink->dealer->dealerProfile->phone)
-                    <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}" 
+                    <?php if($productLink->dealer->dealerProfile->phone): ?>
+                    <a href="tel:<?php echo e($productLink->dealer->dealerProfile->phone); ?>" 
                        class="btn btn-primary-custom">
                         <i class="fas fa-phone me-2"></i>
                         Call Dealer
                     </a>
-                    @endif
-                    @if($productLink->dealer->email)
-                    <a href="mailto:{{ $productLink->dealer->email }}" 
+                    <?php endif; ?>
+                    <?php if($productLink->dealer->email): ?>
+                    <a href="mailto:<?php echo e($productLink->dealer->email); ?>" 
                        class="btn btn-outline-custom">
                         <i class="fas fa-envelope me-2"></i>
                         Email Dealer
                     </a>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -1011,11 +1017,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">{{ $productLink->product->product_name }}</h5>
+                            <h5 class="modal-title"><?php echo e($productLink->product->product_name); ?></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body text-center">
-                            <img src="${this.src}" class="img-fluid" alt="{{ $productLink->product->product_name }}">
+                            <img src="${this.src}" class="img-fluid" alt="<?php echo e($productLink->product->product_name); ?>">
                         </div>
                     </div>
                 </div>
@@ -1102,4 +1108,6 @@ style.textContent = `
 document.head.appendChild(style);
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.DealerShowroom.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/product/productView.blade.php ENDPATH**/ ?>

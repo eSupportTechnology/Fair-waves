@@ -4,6 +4,42 @@
             display: flex;
             margin-right: 0px !important;
         }
+        
+        .shop-name-validation {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            border: 1px solid transparent;
+        }
+        
+        .shop-name-validation.success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .shop-name-validation.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        
+        .shop-name-validation.loading {
+            background-color: #e2e3e5;
+            border-color: #d6d8db;
+            color: #6c757d;
+        }
+        
+        .form-control.error {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+        
+        .form-control.success {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
     </style>
 
 
@@ -32,7 +68,7 @@
     <!-- =============================== Account Section Start =========================== -->
     <section class="account d-flex justify-content-center align-items-center py-80" style="min-height: 100vh;">
         <div class="container container-lg">
-            <form method="POST" action="<?php echo e(route('dealer.register')); ?>">
+            <form method="POST" action="<?php echo e(route('dealer.register.submit')); ?>">
                 <?php echo csrf_field(); ?>
 
                 <div class="row gy-4 justify-content-center">
@@ -369,6 +405,123 @@
 <?php endif; ?>
                             </div>
 
+                            <!-- Gender -->
+                            <div class="mb-24">
+                                <?php if (isset($component)) { $__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginale3da9d84bb64e4bc2eeebaafabfb2581 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input-label','data' => ['class' => 'fw-bold','for' => 'gender','value' => __('Gender')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('input-label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'fw-bold','for' => 'gender','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(__('Gender'))]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginale3da9d84bb64e4bc2eeebaafabfb2581)): ?>
+<?php $attributes = $__attributesOriginale3da9d84bb64e4bc2eeebaafabfb2581; ?>
+<?php unset($__attributesOriginale3da9d84bb64e4bc2eeebaafabfb2581); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581)): ?>
+<?php $component = $__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581; ?>
+<?php unset($__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581); ?>
+<?php endif; ?>
+                                <span class="text-danger">*</span>
+                                <select id="gender" name="gender" class="common-input w-100" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male" <?php echo e(old('gender') == 'Male' ? 'selected' : ''); ?>>Male</option>
+                                    <option value="Female" <?php echo e(old('gender') == 'Female' ? 'selected' : ''); ?>>Female</option>
+                                    <option value="Other" <?php echo e(old('gender') == 'Other' ? 'selected' : ''); ?>>Other</option>
+                                </select>
+                                <?php if (isset($component)) { $__componentOriginalf94ed9c5393ef72725d159fe01139746 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalf94ed9c5393ef72725d159fe01139746 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input-error','data' => ['messages' => $errors->get('gender'),'class' => 'mt-2']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('input-error'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['messages' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($errors->get('gender')),'class' => 'mt-2']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalf94ed9c5393ef72725d159fe01139746)): ?>
+<?php $attributes = $__attributesOriginalf94ed9c5393ef72725d159fe01139746; ?>
+<?php unset($__attributesOriginalf94ed9c5393ef72725d159fe01139746); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalf94ed9c5393ef72725d159fe01139746)): ?>
+<?php $component = $__componentOriginalf94ed9c5393ef72725d159fe01139746; ?>
+<?php unset($__componentOriginalf94ed9c5393ef72725d159fe01139746); ?>
+<?php endif; ?>
+                            </div>
+
+                            <!-- Shop Name -->
+                            <div class="mb-24">
+                                <?php if (isset($component)) { $__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginale3da9d84bb64e4bc2eeebaafabfb2581 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input-label','data' => ['class' => 'fw-bold','for' => 'shop_name','value' => __('Shop Name')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('input-label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'fw-bold','for' => 'shop_name','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(__('Shop Name'))]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginale3da9d84bb64e4bc2eeebaafabfb2581)): ?>
+<?php $attributes = $__attributesOriginale3da9d84bb64e4bc2eeebaafabfb2581; ?>
+<?php unset($__attributesOriginale3da9d84bb64e4bc2eeebaafabfb2581); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581)): ?>
+<?php $component = $__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581; ?>
+<?php unset($__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581); ?>
+<?php endif; ?>
+                                <span class="text-danger">*</span>
+                                <?php if (isset($component)) { $__componentOriginal18c21970322f9e5c938bc954620c12bb = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal18c21970322f9e5c938bc954620c12bb = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.text-input','data' => ['id' => 'shop_name','class' => 'common-input w-100','type' => 'text','name' => 'shop_name','value' => old('shop_name'),'placeholder' => 'Enter Your Shop Name','required' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('text-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['id' => 'shop_name','class' => 'common-input w-100','type' => 'text','name' => 'shop_name','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(old('shop_name')),'placeholder' => 'Enter Your Shop Name','required' => true]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal18c21970322f9e5c938bc954620c12bb)): ?>
+<?php $attributes = $__attributesOriginal18c21970322f9e5c938bc954620c12bb; ?>
+<?php unset($__attributesOriginal18c21970322f9e5c938bc954620c12bb); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal18c21970322f9e5c938bc954620c12bb)): ?>
+<?php $component = $__componentOriginal18c21970322f9e5c938bc954620c12bb; ?>
+<?php unset($__componentOriginal18c21970322f9e5c938bc954620c12bb); ?>
+<?php endif; ?>
+                                <div id="shop-name-validation-message" class="mt-2"></div>
+                                <?php if (isset($component)) { $__componentOriginalf94ed9c5393ef72725d159fe01139746 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalf94ed9c5393ef72725d159fe01139746 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input-error','data' => ['messages' => $errors->get('shop_name'),'class' => 'mt-2']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('input-error'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['messages' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($errors->get('shop_name')),'class' => 'mt-2']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalf94ed9c5393ef72725d159fe01139746)): ?>
+<?php $attributes = $__attributesOriginalf94ed9c5393ef72725d159fe01139746; ?>
+<?php unset($__attributesOriginalf94ed9c5393ef72725d159fe01139746); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalf94ed9c5393ef72725d159fe01139746)): ?>
+<?php $component = $__componentOriginalf94ed9c5393ef72725d159fe01139746; ?>
+<?php unset($__componentOriginalf94ed9c5393ef72725d159fe01139746); ?>
+<?php endif; ?>
+                            </div>
+
                             <!-- Email Address -->
                             <div class="mb-24">
                                 <?php if (isset($component)) { $__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581 = $component; } ?>
@@ -480,6 +633,122 @@ unset($__errorArgs, $__bag); ?>
                                 // Optional: if you're using Livewire, re-init after updates
                                 document.addEventListener('livewire:load', initPasswordToggle);
                                 document.addEventListener('livewire:update', initPasswordToggle);
+                            </script>
+
+                            <script>
+                                // Shop name validation
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const shopNameInput = document.getElementById('shop_name');
+                                    const validationMessage = document.getElementById('shop-name-validation-message');
+                                    const submitButton = document.querySelector('button[type="submit"]');
+                                    let validationTimeout;
+                                    let isShopNameValid = false;
+
+                                    // Get CSRF token
+                                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                                                     document.querySelector('input[name="_token"]')?.value;
+
+                                    function showValidationMessage(message, status) {
+                                        validationMessage.innerHTML = `<div class="shop-name-validation ${status}">${message}</div>`;
+                                        
+                                        // Update input styling
+                                        shopNameInput.classList.remove('error', 'success');
+                                        if (status === 'success') {
+                                            shopNameInput.classList.add('success');
+                                            isShopNameValid = true;
+                                        } else if (status === 'error') {
+                                            shopNameInput.classList.add('error');
+                                            isShopNameValid = false;
+                                        } else {
+                                            isShopNameValid = false;
+                                        }
+                                        
+                                        updateSubmitButton();
+                                    }
+
+                                    function updateSubmitButton() {
+                                        // Don't disable submit button - let server-side validation handle it
+                                        // This way the form can still be submitted for server-side validation
+                                        if (submitButton) {
+                                            if (shopNameInput.value.trim() === '') {
+                                                submitButton.disabled = true;
+                                                submitButton.style.opacity = '0.6';
+                                            } else {
+                                                submitButton.disabled = false;
+                                                submitButton.style.opacity = '1';
+                                            }
+                                        }
+                                    }
+
+                                    function validateShopName(shopName) {
+                                        if (!shopName.trim()) {
+                                            showValidationMessage('Shop name is required.', 'error');
+                                            return;
+                                        }
+
+                                        if (shopName.length < 3) {
+                                            showValidationMessage('Shop name must be at least 3 characters long.', 'error');
+                                            return;
+                                        }
+
+                                        // Show loading message
+                                        showValidationMessage('Checking availability...', 'loading');
+
+                                        fetch('<?php echo e(route("dealer.check.shop.name")); ?>', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': csrfToken,
+                                                'Accept': 'application/json'
+                                            },
+                                            body: JSON.stringify({
+                                                shop_name: shopName
+                                            })
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            showValidationMessage(data.message, data.available ? 'success' : 'error');
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            showValidationMessage('Error checking shop name availability. Please try again.', 'error');
+                                        });
+                                    }
+
+                                    // Real-time validation with debounce
+                                    shopNameInput.addEventListener('input', function() {
+                                        clearTimeout(validationTimeout);
+                                        const shopName = this.value.trim();
+                                        
+                                        if (shopName === '') {
+                                            showValidationMessage('Shop name is required.', 'error');
+                                            return;
+                                        }
+
+                                        validationTimeout = setTimeout(() => {
+                                            validateShopName(shopName);
+                                        }, 800); // 800ms delay for better UX
+                                    });
+
+                                    // Validate on blur
+                                    shopNameInput.addEventListener('blur', function() {
+                                        clearTimeout(validationTimeout);
+                                        const shopName = this.value.trim();
+                                        if (shopName) {
+                                            validateShopName(shopName);
+                                        }
+                                    });
+
+                                    // Initial validation if there's already a value (for old input)
+                                    if (shopNameInput.value.trim()) {
+                                        validateShopName(shopNameInput.value.trim());
+                                    } else {
+                                        updateSubmitButton();
+                                    }
+
+                                    // Remove the form submission prevention - let server handle validation
+                                    // This ensures the form can be submitted for server-side validation
+                                });
                             </script>
 
                             <!-- dealer code -->

@@ -6,9 +6,81 @@
     .dashboard-container {
         margin-left: 280px;
         padding: 20px 30px;
-        min-height: 100vh;
+        min-height: calc(100vh - 80px);
         background-color: #f8f9fa;
         transition: margin-left 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    /* Footer adjustments for sidebar layout */
+    .footer-with-sidebar {
+        margin-left: 280px;
+        transition: margin-left 0.3s ease;
+        position: relative;
+        z-index: 999;
+        width: calc(100% - 280px);
+        box-sizing: border-box;
+    }
+
+    /* Ensure footer content is properly spaced */
+    .footer-with-sidebar .container {
+        max-width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Additional footer styling for dashboard pages */
+    .footer-with-sidebar {
+        margin-top: auto;
+        clear: both;
+    }
+
+    /* Make sure footer content is readable */
+    .footer-with-sidebar .footer-title,
+    .footer-with-sidebar .contact-item,
+    .footer-with-sidebar .footer-link {
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* Specific styling for footer sections */
+    .footer-with-sidebar .footer-widget {
+        padding: 0 10px;
+    }
+
+    .footer-with-sidebar .footer-title {
+        color: #ffffff !important;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    .footer-with-sidebar .contact-item {
+        display: flex !important;
+        align-items: center;
+        margin-bottom: 12px;
+        color: #e2e8f0;
+    }
+
+    .footer-with-sidebar .contact-item i {
+        margin-right: 10px;
+        width: 20px;
+        color: #ff5800;
+    }
+
+    /* Ensure proper body layout */
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    /* Wrapper for main content and footer */
+    .main-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 
     .breadcrumb {
@@ -191,6 +263,17 @@
             padding: 16px 12px;
         }
 
+        /* Footer adjustments for mobile */
+        .footer-with-sidebar {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        .footer-with-sidebar .container {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
         .card1 {
             min-height: unset;
             padding: 20px 16px;
@@ -354,11 +437,41 @@
 <div class="dashboard-container">
     <?php echo $__env->yieldContent('dashboard-content'); ?>
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    // Apply footer styling to accommodate sidebar
+    const footerElements = document.querySelectorAll('footer');
+    footerElements.forEach(footer => {
+        footer.classList.add('footer-with-sidebar');
+    });
+    
+    // Also check for any footer that might be loaded later
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1) { // Element node
+                    if (node.tagName === 'FOOTER') {
+                        node.classList.add('footer-with-sidebar');
+                    }
+                    // Also check children
+                    const footers = node.querySelectorAll && node.querySelectorAll('footer');
+                    if (footers) {
+                        footers.forEach(footer => footer.classList.add('footer-with-sidebar'));
+                    }
+                }
+            });
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
     
     // Toggle mobile menu
     mobileMenuToggle.addEventListener('click', function() {

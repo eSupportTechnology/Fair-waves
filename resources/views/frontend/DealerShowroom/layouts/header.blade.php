@@ -1,18 +1,51 @@
 <!-- Header Section -->
-<header class="header-section bg-white shadow-sm">
+<header class="header-section bg-white shadow-sm border-bottom">
     <div class="container">
         <div class="row align-items-center py-3">
-            <!-- Logo and Shop Name -->
+            <!-- Dealer Profile and Shop Name -->
             <div class="col-md-6 col-8">
                 <div class="d-flex align-items-center">
-                    <img src="{{ asset('frontend/newstyle/assets/images/Fire Waves LOGO.png') }}"
-                         alt="Fair Waves Logo"
-                         class="shop-logo me-3"
-                         style="height: 50px; width: auto;">
-                    <div>
-                        <h4 class="shop-name mb-0 text-dark fw-bold">FAIR WAVES</h4>
-                        <small class="text-muted">Premium Electronics Store</small>
-                    </div>
+                    @if(isset($dealer))
+                        <!-- Dealer Profile Image -->
+                        <div class="dealer-profile-wrapper me-3">
+                            @if($dealer->profile_image)
+                                <img src="{{ asset('storage/' . $dealer->profile_image) }}"
+                                     alt="{{ $dealer->name }}"
+                                     class="dealer-profile-img">
+                            @else
+                                <div class="dealer-profile-placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            @endif
+                        </div>
+                        
+                        <!-- Dealer Information -->
+                        <div class="dealer-info">
+                            <h4 class="dealer-name mb-0 text-dark fw-bold">
+                                {{ $dealer->dealerProfile->dealer_shop_name ?? $dealer->name }}
+                            </h4>
+                            <div class="dealer-details">
+                                <small class="text-muted me-2">
+                                    <i class="fas fa-user me-1"></i>
+                                    {{ $dealer->name }}
+                                </small>
+                                <span class="dealer-badge">
+                                    <i class="fas fa-certificate me-1"></i>
+                                    Verified Dealer
+                                </span>
+                            </div>
+                        </div>
+                    @else
+                        <!-- Fallback to Fair Waves if no dealer context -->
+                        <img src="{{ asset('frontend/newstyle/assets/images/Fire Waves LOGO.png') }}"
+                             alt="Fair Waves Logo"
+                             class="shop-logo me-3"
+                             style="height: 50px; width: auto;">
+                        <div>
+                            <h4 class="shop-name mb-0 text-dark fw-bold">FAIR WAVES</h4>
+                            <small class="text-muted">Premium Electronics Store</small>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -20,7 +53,7 @@
             <div class="col-md-6 col-4">
                 <div class="d-flex align-items-center justify-content-end">
                     <!-- Navigation Menu (Desktop) -->
-                    <nav class="navbar-nav d-none d-md-flex me-4">
+                    <nav class="header-navigation d-none d-md-flex me-4">
                         <a href="" class="nav-link text-dark me-3 hover-orange">Home</a>
                         <a href="" class="nav-link text-dark me-3 hover-orange">Products</a>
                         <a href="" class="nav-link text-dark me-3 hover-orange">About</a>
@@ -87,15 +120,149 @@
     position: sticky;
     top: 0;
     z-index: 1000;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Dealer Profile Styling */
+.dealer-profile-wrapper {
+    position: relative;
+}
+
+.dealer-profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ff5800;
+    box-shadow: 0 4px 12px rgba(255, 88, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.dealer-profile-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 88, 0, 0.3);
+}
+
+.dealer-profile-placeholder {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff5800, #ff7a3d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 12px rgba(255, 88, 0, 0.2);
+}
+
+.dealer-info {
+    flex: 1;
+}
+
+.dealer-name {
+    font-size: 1.4rem;
+    color: #2d3748;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.dealer-details {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dealer-badge {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Navigation Styling */
+.header-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.header-navigation .nav-link {
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 8px 0;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.header-navigation .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ff5800;
+    transition: width 0.3s ease;
+}
+
+.header-navigation .nav-link:hover::after {
+    width: 100%;
+}
+
+/* Cart Button Styling */
+.cart-section .btn {
+    border-radius: 25px;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+    border: 2px solid #ff5800;
+    color: #ff5800;
+}
+
+.cart-section .btn:hover {
+    background: #ff5800;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 88, 0, 0.3);
+}
+
+.cart-section .badge {
+    background: #dc3545 !important;
+    font-weight: 600;
 }
 
 @media (max-width: 768px) {
-    .shop-name {
+    .dealer-name {
         font-size: 1.1rem;
     }
 
-    .shop-logo {
-        height: 40px;
+    .dealer-profile-img,
+    .dealer-profile-placeholder {
+        width: 50px;
+        height: 50px;
+    }
+
+    .dealer-profile-placeholder {
+        font-size: 20px;
+    }
+
+    .dealer-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .dealer-badge {
+        font-size: 10px;
+        padding: 3px 8px;
     }
 }
 </style>

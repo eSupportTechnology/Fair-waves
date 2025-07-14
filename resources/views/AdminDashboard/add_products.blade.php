@@ -58,8 +58,8 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="mb-4">
-                            <label class="form-label">BV (Business Value)</label>
-                            <input name="bv" id="bv" placeholder="BV" type="number" step="0.01" class="form-control" readonly />
+                            <label class="form-label">IV</label>
+                            <input name="bv" id="bv" placeholder="IV" type="number" step="0.01" class="form-control" readonly />
                         </div>
                     </div>
                 </div>
@@ -168,34 +168,28 @@
 </div>
 </form>
 
-
 <script>
-document.addEventListener('DOMContentLoaded', function () {
     const sellingPriceInput = document.getElementById('selling_price');
     const purchasedPriceInput = document.getElementById('purchased_price');
     const profitInput = document.getElementById('profit');
     const bvInput = document.getElementById('bv');
 
-    // Function to calculate profit and BV
     function calculateProfitAndBV() {
         const sellingPrice = parseFloat(sellingPriceInput.value) || 0;
         const purchasedPrice = parseFloat(purchasedPriceInput.value) || 0;
-        
-        // Calculate profit: Selling Price - Purchased Price
+
         const profit = sellingPrice - purchasedPrice;
+        const bv = (profit * 0.4) / 100;
+
         profitInput.value = profit.toFixed(2);
-        
-        // Calculate BV: Profit / 100 (1 BV = 100 LKR)
-        const bv = profit / 100;
         bvInput.value = bv.toFixed(2);
     }
 
-    // Add event listeners for real-time calculation
     sellingPriceInput.addEventListener('input', calculateProfitAndBV);
     purchasedPriceInput.addEventListener('input', calculateProfitAndBV);
-});
+</script>
 
-
+<script>
 
     //image upload
     document.addEventListener('DOMContentLoaded', function () {
@@ -315,34 +309,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
     let variationIndex = 1;
-
-    // Auto-calculate profit and BV when selling price or purchased price changes
-    function calculateProfitAndBV() {
-        const sellingPrice = parseFloat(document.getElementById('selling_price').value) || 0;
-        const purchasedPrice = parseFloat(document.getElementById('purchased_price').value) || 0;
-        
-        const profit = sellingPrice - purchasedPrice;
-        const bv = profit / 100; // 1 BV = 100 LKR
-        
-        document.getElementById('profit').value = profit.toFixed(2);
-        document.getElementById('bv').value = bv.toFixed(2);
-    }
-
-    // Add event listeners for selling price and purchased price fields
-    document.addEventListener('DOMContentLoaded', function() {
-        const sellingPriceField = document.getElementById('selling_price');
-        const purchasedPriceField = document.getElementById('purchased_price');
-        
-        if (sellingPriceField) {
-            sellingPriceField.addEventListener('input', calculateProfitAndBV);
-            sellingPriceField.addEventListener('change', calculateProfitAndBV);
-        }
-        
-        if (purchasedPriceField) {
-            purchasedPriceField.addEventListener('input', calculateProfitAndBV);
-            purchasedPriceField.addEventListener('change', calculateProfitAndBV);
-        }
-    });
 
     function addVariation() {
         const variationsContainer = document.getElementById('variationsContainer');

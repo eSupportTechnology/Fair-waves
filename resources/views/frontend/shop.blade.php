@@ -70,11 +70,11 @@
                             @if(request('rating'))
                                 <input type="hidden" name="rating" value="{{ request('rating') }}">
                             @endif
-                            
+
                             <ul class="overflow-y-auto max-h-540 scroll-sm">
                                 <li class="mb-24 d-flex align-items-center">
-                                    <input type="checkbox" id="all_categories" class="category-checkbox me-2" 
-                                           onchange="handleAllCategoriesChange(this)" 
+                                    <input type="checkbox" id="all_categories" class="category-checkbox me-2"
+                                           onchange="handleAllCategoriesChange(this)"
                                            {{ (!isset($categoryIds) || empty($categoryIds)) || (isset($allCategoriesSelected) && $allCategoriesSelected) ? 'checked' : '' }}>
                                     <label for="all_categories" class="text-gray-900 hover-text-main-600 {{ (!isset($categoryIds) || empty($categoryIds)) || (isset($allCategoriesSelected) && $allCategoriesSelected) ? 'font-bold' : '' }} mb-0 cursor-pointer">
                                         All Categories
@@ -85,15 +85,15 @@
                                 </li>
                                 @foreach($categories as $category)
                                     <li class="mb-24 d-flex align-items-center">
-                                        <input type="checkbox" id="category_{{ $category->id }}" 
-                                               name="category_ids[]" value="{{ $category->id }}" 
-                                               class="category-checkbox me-2" 
+                                        <input type="checkbox" id="category_{{ $category->id }}"
+                                               name="category_ids[]" value="{{ $category->id }}"
+                                               class="category-checkbox me-2"
                                                onchange="handleCategoryChange()"
                                                {{ isset($categoryIds) && in_array($category->id, $categoryIds) ? 'checked' : '' }}>
                                         <label for="category_{{ $category->id }}" class="text-gray-900 hover-text-main-600 {{ isset($categoryIds) && in_array($category->id, $categoryIds) ? 'font-bold' : '' }} mb-0 cursor-pointer flex-grow-1">
                                             {{ $category->name }} ({{ $category->products_count }})
                                         </label>
-                                        <a href="{{ route('shop.index', ['category_id' => $category->id]) }}" 
+                                        <a href="{{ route('shop.index', ['category_id' => $category->id]) }}"
                                            class="ms-2 text-gray-500 hover-text-main-600 text-decoration-none">
                                             <i class="ph ph-arrow-square-out"></i>
                                         </a>
@@ -131,11 +131,11 @@
                                     <input type="hidden" name="category_ids[]" value="{{ $catId }}">
                                 @endforeach
                             @endif
-                            
+
                             <ul class="overflow-y-auto max-h-540 scroll-sm">
                                 <li class="mb-24 d-flex align-items-center">
-                                    <input type="checkbox" id="all_brands" class="brand-checkbox me-2" 
-                                           onchange="handleAllBrandsChange(this)" 
+                                    <input type="checkbox" id="all_brands" class="brand-checkbox me-2"
+                                           onchange="handleAllBrandsChange(this)"
                                            {{ (!isset($brandSlugs) || empty($brandSlugs)) || (isset($allBrandsSelected) && $allBrandsSelected) ? 'checked' : '' }}>
                                     <label for="all_brands" class="text-gray-900 hover-text-main-600 {{ (!isset($brandSlugs) || empty($brandSlugs)) || (isset($allBrandsSelected) && $allBrandsSelected) ? 'font-bold' : '' }} mb-0 cursor-pointer">
                                         All Brands
@@ -146,15 +146,15 @@
                                 </li>
                                 @foreach($brands as $brand)
                                     <li class="mb-24 d-flex align-items-center">
-                                        <input type="checkbox" id="brand_{{ $brand->id }}" 
-                                               name="brand_slugs[]" value="{{ $brand->slug }}" 
-                                               class="brand-checkbox me-2" 
+                                        <input type="checkbox" id="brand_{{ $brand->id }}"
+                                               name="brand_slugs[]" value="{{ $brand->slug }}"
+                                               class="brand-checkbox me-2"
                                                onchange="handleBrandChange()"
                                                {{ isset($brandSlugs) && in_array($brand->slug, $brandSlugs) ? 'checked' : '' }}>
                                         <label for="brand_{{ $brand->id }}" class="text-gray-900 hover-text-main-600 {{ isset($brandSlugs) && in_array($brand->slug, $brandSlugs) ? 'font-bold' : '' }} mb-0 cursor-pointer flex-grow-1">
                                             {{ $brand->name }} ({{ $brand->products_count }})
                                         </label>
-                                        <a href="{{ route('shop.index', ['brand_slug' => $brand->slug]) }}" 
+                                        <a href="{{ route('shop.index', ['brand_slug' => $brand->slug]) }}"
                                            class="ms-2 text-gray-500 hover-text-main-600 text-decoration-none">
                                             <i class="ph ph-arrow-square-out"></i>
                                         </a>
@@ -233,7 +233,7 @@
 
                                 <div class="mt-8 mb-20 product-card__price">
                                     @if($isDealer)
-                                        <span class="text-heading text-md fw-semibold ">Rs {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} BV)</span>
+                                        <span class="text-heading text-md fw-semibold ">Rs {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} IV)</span>
                                     @else
                                         @if($product->affiliate_price && $product->affiliate_price != $product->normal_price)
                                             <span class="text-gray-500 text-sm text-decoration-line-through">Rs {{ number_format($product->affiliate_price, 2) }}</span>
@@ -275,7 +275,7 @@
 
                                                 <div class="mt-8 mb-3 product-price d-flex align-items-center">
                                                     @if($isDealer)
-                                                        <h6 class="mb-0">Rs {{ $product->normal_price }} ({{ $product->bv ? $product->bv : '0' }} BV)</h6>
+                                                        <h6 class="mb-0">Rs {{ $product->normal_price }} ({{ $product->bv ? $product->bv : '0' }} IV)</h6>
                                                     @else
                                                         @if($product->affiliate_price && $product->affiliate_price != $product->normal_price)
                                                             <span class="text-gray-500 text-sm text-decoration-line-through me-2">Rs {{ number_format($product->affiliate_price, 2) }}</span>
@@ -403,13 +403,13 @@ function toggleWishlist(button, productId) {
 // Category filter handling
 function handleAllCategoriesChange(checkbox) {
     const categoryCheckboxes = document.querySelectorAll('input[name="category_ids[]"]');
-    
+
     if (checkbox.checked) {
         // Check all category checkboxes
         categoryCheckboxes.forEach(cb => {
             cb.checked = true;
         });
-        
+
         // Get all category IDs and submit
         const allCategoryIds = Array.from(categoryCheckboxes).map(cb => cb.value);
         const url = '{{ route("shop.index") }}' + buildQueryStringWithCategories(allCategoryIds);
@@ -419,7 +419,7 @@ function handleAllCategoriesChange(checkbox) {
         categoryCheckboxes.forEach(cb => {
             cb.checked = false;
         });
-        
+
         // Submit form to show all products (no category filter)
         window.location.href = '{{ route("shop.index") }}' + buildQueryString(true);
     }
@@ -429,10 +429,10 @@ function handleCategoryChange() {
     const allCategoriesCheckbox = document.getElementById('all_categories');
     const categoryCheckboxes = document.querySelectorAll('input[name="category_ids[]"]');
     const checkedCategories = document.querySelectorAll('input[name="category_ids[]"]:checked');
-    
+
     // Check if all categories are selected
     const allSelected = checkedCategories.length === categoryCheckboxes.length;
-    
+
     if (checkedCategories.length > 0) {
         if (allSelected) {
             // All categories are selected, check "All Categories"
@@ -441,7 +441,7 @@ function handleCategoryChange() {
             // Some but not all categories selected, uncheck "All Categories"
             allCategoriesCheckbox.checked = false;
         }
-        
+
         // Build URL with multiple category IDs
         const categoryIds = Array.from(checkedCategories).map(cb => cb.value);
         const url = '{{ route("shop.index") }}' + buildQueryStringWithCategories(categoryIds);
@@ -455,12 +455,12 @@ function handleCategoryChange() {
 
 function buildQueryStringWithCategories(categoryIds) {
     const params = new URLSearchParams();
-    
+
     // Add category IDs
     categoryIds.forEach(id => {
         params.append('category_ids[]', id);
     });
-    
+
     // Preserve existing filters
     @if(request('search'))
         params.append('search', '{{ request("search") }}');
@@ -483,7 +483,7 @@ function buildQueryStringWithCategories(categoryIds) {
     @if(request('rating'))
         params.append('rating', '{{ request("rating") }}');
     @endif
-    
+
     const queryString = params.toString();
     return queryString ? '?' + queryString : '';
 }
@@ -491,13 +491,13 @@ function buildQueryStringWithCategories(categoryIds) {
 // Brand filter handling
 function handleAllBrandsChange(checkbox) {
     const brandCheckboxes = document.querySelectorAll('input[name="brand_slugs[]"]');
-    
+
     if (checkbox.checked) {
         // Check all brand checkboxes
         brandCheckboxes.forEach(cb => {
             cb.checked = true;
         });
-        
+
         // Get all brand slugs and submit
         const allBrandSlugs = Array.from(brandCheckboxes).map(cb => cb.value);
         const url = '{{ route("shop.index") }}' + buildQueryStringWithBrands(allBrandSlugs);
@@ -507,7 +507,7 @@ function handleAllBrandsChange(checkbox) {
         brandCheckboxes.forEach(cb => {
             cb.checked = false;
         });
-        
+
         // Submit form to show all products (no brand filter)
         window.location.href = '{{ route("shop.index") }}' + buildQueryString(false, true);
     }
@@ -517,10 +517,10 @@ function handleBrandChange() {
     const allBrandsCheckbox = document.getElementById('all_brands');
     const brandCheckboxes = document.querySelectorAll('input[name="brand_slugs[]"]');
     const checkedBrands = document.querySelectorAll('input[name="brand_slugs[]"]:checked');
-    
+
     // Check if all brands are selected
     const allSelected = checkedBrands.length === brandCheckboxes.length;
-    
+
     if (checkedBrands.length > 0) {
         if (allSelected) {
             // All brands are selected, check "All Brands"
@@ -529,7 +529,7 @@ function handleBrandChange() {
             // Some but not all brands selected, uncheck "All Brands"
             allBrandsCheckbox.checked = false;
         }
-        
+
         // Build URL with multiple brand slugs
         const brandSlugs = Array.from(checkedBrands).map(cb => cb.value);
         const url = '{{ route("shop.index") }}' + buildQueryStringWithBrands(brandSlugs);
@@ -543,12 +543,12 @@ function handleBrandChange() {
 
 function buildQueryStringWithBrands(brandSlugs) {
     const params = new URLSearchParams();
-    
+
     // Add brand slugs
     brandSlugs.forEach(slug => {
         params.append('brand_slugs[]', slug);
     });
-    
+
     // Preserve existing filters including category IDs
     @if(request('search'))
         params.append('search', '{{ request("search") }}');
@@ -576,14 +576,14 @@ function buildQueryStringWithBrands(brandSlugs) {
     @if(request('rating'))
         params.append('rating', '{{ request("rating") }}');
     @endif
-    
+
     const queryString = params.toString();
     return queryString ? '?' + queryString : '';
 }
 
 function buildQueryString(excludeCategoryId = false, excludeBrandSlug = false) {
     const params = new URLSearchParams();
-    
+
     // Preserve existing filters
     @if(request('search'))
         params.append('search', '{{ request("search") }}');
@@ -606,7 +606,7 @@ function buildQueryString(excludeCategoryId = false, excludeBrandSlug = false) {
     @if(request('rating'))
         params.append('rating', '{{ request("rating") }}');
     @endif
-    
+
     // Preserve multiple category IDs if not excluding them
     @if(isset($categoryIds) && !empty($categoryIds))
         if (!excludeCategoryId) {
@@ -615,7 +615,7 @@ function buildQueryString(excludeCategoryId = false, excludeBrandSlug = false) {
             @endforeach
         }
     @endif
-    
+
     // Preserve multiple brand slugs if not excluding them
     @if(isset($brandSlugs) && !empty($brandSlugs))
         if (!excludeBrandSlug) {
@@ -624,7 +624,7 @@ function buildQueryString(excludeCategoryId = false, excludeBrandSlug = false) {
             @endforeach
         }
     @endif
-    
+
     const queryString = params.toString();
     return queryString ? (excludeCategoryId || excludeBrandSlug ? '&' + queryString : '?' + queryString) : '';
 }
@@ -639,42 +639,42 @@ document.addEventListener('DOMContentLoaded', function() {
             accent-color: #3B82F6;
             cursor: pointer;
         }
-        
+
         .brand-checkbox {
             width: 18px;
             height: 18px;
             accent-color: #3B82F6;
             cursor: pointer;
         }
-        
+
         .cursor-pointer {
             cursor: pointer;
         }
-        
+
         .d-flex {
             display: flex;
         }
-        
+
         .align-items-center {
             align-items: center;
         }
-        
+
         .me-2 {
             margin-right: 0.5rem;
         }
-        
+
         .ms-2 {
             margin-left: 0.5rem;
         }
-        
+
         .mb-0 {
             margin-bottom: 0;
         }
-        
+
         .flex-grow-1 {
             flex-grow: 1;
         }
-        
+
         .text-decoration-none {
             text-decoration: none;
         }

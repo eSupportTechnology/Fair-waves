@@ -184,9 +184,9 @@
                                             </div>
                                             <div class="u">
                                                 @if($isDealer)
-                                                    <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} BV)</span>
+                                                    <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} IV)</span>
                                                 @else
-                                                   
+
                                                     <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
                                                 @endif
                                             </div>
@@ -310,7 +310,7 @@
                                                 @if($isDealer)
                                                     <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} BV)</span>
                                                 @else
-                                                    
+
                                                     <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
                                                 @endif
                                             </div>
@@ -375,7 +375,7 @@
                                                 @if($isDealer)
                                                     <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }} ({{ $product->bv ? $product->bv : '0' }} BV)</span>
                                                 @else
-                                                  
+
                                                     <span class="selling-price">Rs. {{ number_format($product->normal_price, 2) }}</span>
                                                 @endif
                                             </div>

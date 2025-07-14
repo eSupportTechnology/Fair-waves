@@ -505,5 +505,19 @@ Route::prefix('dealer')->group(function () {
 Route::prefix('showroom')->group(function () {
     Route::get('/{dealer_shop_name}', [ShowRoomController::class, 'index'])->name('showroom.index');
     Route::get('/{dealer_shop_name}/product/{unique_code}', [ShowRoomController::class, 'productView'])->name('showroom.productView');
+    Route::post('/cart/add/{id}', [ShowRoomController::class, 'dealerAdd'])->name('dealer.cart.add');
+    Route::post('/buy-now/{id}', [ShowRoomController::class, 'dealerbuyNow'])->name('dealer.buy.now');
+
+
     // Route::post('/withdraw', [DealerController::class, 'requestWithdrawal'])->name('dealer.withdraw.request');
 });
+
+Route::get('/product/checkout', function () {
+    $item = session('buy_now');
+    return view('frontend.DealerShowroom.checkout', compact('item'));
+})->name('dealer.checkout.page');
+Route::post('/product/buy_now_place-order', [ShowRoomController::class, 'dealer_buynow_placeOrder'])->name('dealer_buynow_placeOrder');
+Route::get('/product/payment/{order_code}', [ShowRoomController::class, 'showPaymentPage'])->name('dealerPayment');
+Route::post('/product/confirm-cod-order/{order_code}', [ShowRoomController::class, 'confirmCODOrder'])->name('dealer.confirm.cod.order');
+Route::post('/product/confirm-card-order/{order_code}', [ShowRoomController::class, 'confirmcardOrder'])->name('dealer.confirm.card.order');
+Route::get('/product/order/order_received/{order_code}', [ShowRoomController::class, 'getOrderDetails'])->name('dealer.order.thankyou');

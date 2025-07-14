@@ -1,8 +1,6 @@
-@extends ('AdminDashboard.master')
-
-@section('content')
-<form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
-@csrf
+<?php $__env->startSection('content'); ?>
+<form method="POST" action="<?php echo e(route('products.store')); ?>" enctype="multipart/form-data">
+<?php echo csrf_field(); ?>
 <div class="row">
     <div class="col-12">
         <div class="content-header">
@@ -31,10 +29,7 @@
                     <label class="form-label">Total Quantity <i class="text-danger">*</i></label>
                     <input name="quantity" id="quantity" type="number" class="form-control"/>
                 </div>
-                {{-- <label class="form-check mb-4">
-                    <input name="is_affiliate" id="affiliate_checkbox" class="form-check-input" type="checkbox" />
-                    <span class="form-check-label">Affiliate the Product</span>
-                </label> --}}
+                
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="mb-4">
@@ -110,7 +105,7 @@
             </div>
             <div class="card-body">
                 <div class="input-upload">
-                    <img src="{{ asset('backend/assets/imgs/theme/upload.svg') }}" alt="" />
+                    <img src="<?php echo e(asset('backend/assets/imgs/theme/upload.svg')); ?>" alt="" />
                     <input name="images[]" id="media_upload" class="form-control" type="file" multiple />
                 </div>
                 <div class="image-preview mt-4" id="image_preview_container" style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -128,9 +123,9 @@
                         <label class="form-label">Category <i class="text-danger">*</i></label>
                         <select name="category_id" class="form-select" id="categorySelect">
                             <option value="">Select a category</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
                     <div class="col-sm-6 mb-3">
@@ -149,9 +144,9 @@
                         <label class="form-label">Brand </label>
                         <select name="brand_id" class="form-select" id="brandSelect">
                             <option value="">Select a brand</option>
-                            @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($brand->id); ?>"><?php echo e($brand->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
                     <div class="mb-4">
@@ -364,4 +359,6 @@
     }
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('AdminDashboard.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/AdminDashboard/add_products.blade.php ENDPATH**/ ?>

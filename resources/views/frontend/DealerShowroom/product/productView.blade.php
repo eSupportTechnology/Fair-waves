@@ -21,7 +21,7 @@
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         min-height: 100vh;
     }
-    
+
     .breadcrumb-custom {
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
         padding: 20px 0;
@@ -46,7 +46,7 @@
         color: var(--primary-dark);
         text-decoration: underline;
     }
-    
+
     .product-images-container {
         position: sticky;
         top: 20px;
@@ -64,7 +64,7 @@
         background: #f8f9fa;
         margin-bottom: 20px;
     }
-    
+
     .main-image {
         width: 100%;
         height: 450px;
@@ -93,14 +93,14 @@
     .main-image-wrapper:hover .image-zoom-indicator {
         opacity: 1;
     }
-    
+
     .thumbnail-images {
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     .thumbnail {
         width: 90px;
         height: 90px;
@@ -111,13 +111,13 @@
         transition: var(--transition);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    
+
     .thumbnail:hover, .thumbnail.active {
         border-color: var(--primary-color);
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(255, 88, 0, 0.3);
     }
-    
+
     .product-info-card {
         background: var(--white);
         border-radius: var(--border-radius);
@@ -185,7 +185,7 @@
         font-weight: 600;
         color: #2d3748;
     }
-    
+
     .showroom-banner {
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
         color: white;
@@ -466,15 +466,15 @@
         .product-title {
             font-size: 1.75rem;
         }
-        
+
         .product-meta {
             grid-template-columns: 1fr;
         }
-        
+
         .action-buttons {
             flex-direction: column;
         }
-        
+
         .btn-primary-custom, .btn-outline-custom {
             width: 100%;
             justify-content: center;
@@ -563,21 +563,21 @@
             <div class="product-images-container fade-in">
                 @if($productLink->product->images->count() > 0)
                     <div class="main-image-wrapper">
-                        <img src="{{ asset('storage/' . $productLink->product->images->first()->image_path) }}" 
-                             alt="{{ $productLink->product->product_name }}" 
-                             class="main-image" 
+                        <img src="{{ asset('storage/' . $productLink->product->images->first()->image_path) }}"
+                             alt="{{ $productLink->product->product_name }}"
+                             class="main-image"
                              id="mainImage">
                         <div class="image-zoom-indicator">
                             <i class="fas fa-search-plus me-1"></i>
                             Click to zoom
                         </div>
                     </div>
-                    
+
                     @if($productLink->product->images->count() > 1)
                     <div class="thumbnail-images">
                         @foreach($productLink->product->images as $index => $image)
-                            <img src="{{ asset('storage/' . $image->image_path) }}" 
-                                 alt="{{ $productLink->product->product_name }}" 
+                            <img src="{{ asset('storage/' . $image->image_path) }}"
+                                 alt="{{ $productLink->product->product_name }}"
                                  class="thumbnail {{ $index === 0 ? 'active' : '' }}"
                                  onclick="changeMainImage('{{ asset('storage/' . $image->image_path) }}', this)">
                         @endforeach
@@ -585,8 +585,8 @@
                     @endif
                 @else
                     <div class="main-image-wrapper">
-                        <img src="https://via.placeholder.com/500x450/f8f9fa/6c757d?text=No+Image+Available" 
-                             alt="{{ $productLink->product->product_name }}" 
+                        <img src="https://via.placeholder.com/500x450/f8f9fa/6c757d?text=No+Image+Available"
+                             alt="{{ $productLink->product->product_name }}"
                              class="main-image">
                     </div>
                 @endif
@@ -597,7 +597,7 @@
         <div class="col-lg-6">
             <div class="product-info-card fade-in">
                 <h1 class="product-title">{{ $productLink->product->product_name }}</h1>
-                
+
                 <div class="product-price">
                     <i class="fas fa-tag me-2"></i>
                     Rs. {{ number_format($productLink->product->normal_price, 2) }}
@@ -653,66 +653,64 @@
                     </div>
                 </div>
 
-                <!-- Sizes Section -->
-                @if ($productLink->product->variations->pluck('value')->filter()->unique()->isNotEmpty())
-                <div class="variations-section">
-                    <h6 class="variation-title">
-                        <i class="fas fa-ruler me-2"></i>
-                        Available Sizes
-                    </h6>
-                    <div class="d-flex flex-wrap">
-                        @foreach ($productLink->product->variations->pluck('value')->filter()->unique() as $size)
-                            <span class="size-badge">{{ $size }}</span>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
+                <!-- Sizes Section (if any) -->
+@if ($productLink->product->variations->pluck('value')->filter()->unique()->isNotEmpty())
+<div class="variations-section mb-3">
+    <h6 class="variation-title"><i class="fas fa-ruler me-2"></i>Select Size (Optional)</h6>
+    <div class="d-flex flex-wrap gap-2">
+        @foreach ($productLink->product->variations->pluck('value')->filter()->unique() as $size)
+            <label class="size-badge selectable">
+                <input type="radio" name="size_option" value="{{ $size }}" class="d-none size-input">
+                <span>{{ $size }}</span>
+            </label>
+        @endforeach
+    </div>
+</div>
+@endif
 
-                <!-- Colors Section -->
-                @if ($productLink->product->variations->pluck('hex_value')->filter()->unique()->isNotEmpty())
-                <div class="variations-section">
-                    <h6 class="variation-title">
-                        <i class="fas fa-palette me-2"></i>
-                        Available Colors
-                    </h6>
-                    <div class="d-flex flex-wrap align-items-center">
-                        @foreach ($productLink->product->variations->pluck('hex_value')->filter()->unique() as $color)
-                            <span class="color-circle" 
-                                  style="background-color: {{ $color }};"
-                                  title="Color: {{ $color }}"
-                                  data-bs-toggle="tooltip">
-                            </span>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
+<!-- Colors Section (if any) -->
+@if ($productLink->product->variations->pluck('hex_value')->filter()->unique()->isNotEmpty())
+<div class="variations-section mb-3">
+    <h6 class="variation-title"><i class="fas fa-palette me-2"></i>Select Color (Optional)</h6>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+        @foreach ($productLink->product->variations->pluck('hex_value')->filter()->unique() as $color)
+            <label class="color-circle-wrapper" title="{{ $color }}">
+                <input type="radio" name="color_option" value="{{ $color }}" class="d-none color-input">
+                <span class="color-circle" style="background-color: {{ $color }}"></span>
+            </label>
+        @endforeach
+    </div>
+</div>
+@endif
 
-                <!-- Action Buttons -->
+<!-- Action Buttons -->
                 <div class="action-buttons">
-                    @auth
-                        @if($productLink->product->quantity > 0)
-                            <button type="button" class="btn btn-primary-custom">
-                                <i class="fas fa-shopping-cart me-2"></i>
-                                Add To Cart
-                            </button>
-                            <button type="button" class="btn btn-outline-custom">
-                                <i class="fas fa-bolt me-2"></i>
-                                Buy Now
-                            </button>
-                        @else
-                            <button type="button" class="btn btn-secondary" disabled>
-                                <i class="fas fa-times me-2"></i>
-                                Out of Stock
-                            </button>
-                        @endif
-                        
-                    @else
-                        <div class="alert-custom">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Please <a href="{{ route('login') }}" class="fw-bold text-decoration-none">log in</a> to purchase this item.
-                        </div>
-                    @endauth
-                </div>
+@if($productLink->product->quantity > 0)
+    <!-- Add to Cart Form -->
+    <form action="{{ route('dealer.cart.add', $productLink->product->id) }}" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
+        @csrf
+        <input type="hidden" name="size">
+        <input type="hidden" name="color">
+        <button type="submit" class="btn btn-primary-custom mt-2">
+            <i class="fas fa-shopping-cart me-2"></i> Add To Cart
+        </button>
+    </form>
+
+    <!-- Buy Now Form -->
+    <form action="{{ route('dealer.buy.now', $productLink->product->id) }}" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
+        @csrf
+        <input type="hidden" name="size">
+        <input type="hidden" name="color">
+        <button type="submit" class="btn btn-outline-custom mt-2">
+            <i class="fas fa-bolt me-2"></i> Buy Now
+        </button>
+    </form>
+@else
+    <button type="button" class="btn btn-secondary mt-2" disabled>
+        <i class="fas fa-times me-2"></i> Out of Stock
+    </button>
+@endif
+
 
                 <!-- Product Description -->
                 @if($productLink->product->product_description)
@@ -726,6 +724,7 @@
                 @endif
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Additional Information Section -->
@@ -749,7 +748,7 @@
                             {{ $productLink->product->product_name }}
                         </div>
                     </div>
-                    
+
                     <div class="spec-item">
                         <div class="spec-label">Product ID</div>
                         <div class="spec-value">
@@ -759,7 +758,7 @@
                             <code class="bg-light px-2 py-1 rounded">{{ $productLink->product->product_id }}</code>
                         </div>
                     </div>
-                    
+
                     <div class="spec-item">
                         <div class="spec-label">Category</div>
                         <div class="spec-value">
@@ -769,7 +768,7 @@
                             <span class="badge bg-primary">{{ $productLink->product->category->name ?? 'N/A' }}</span>
                         </div>
                     </div>
-                    
+
                     <div class="spec-item">
                         <div class="spec-label">Brand</div>
                         <div class="spec-value">
@@ -779,7 +778,7 @@
                             {{ $productLink->product->brand->name ?? 'N/A' }}
                         </div>
                     </div>
-                    
+
                     <div class="spec-item">
                         <div class="spec-label">Price</div>
                         <div class="spec-value">
@@ -789,7 +788,7 @@
                             <span class="fw-bold text-success fs-5">Rs. {{ number_format($productLink->product->normal_price, 2) }}</span>
                         </div>
                     </div>
-                    
+
                     <div class="spec-item">
                         <div class="spec-label">Availability</div>
                         <div class="spec-value">
@@ -809,7 +808,7 @@
                             @endif
                         </div>
                     </div>
-                    
+
                     @if($productLink->product->variations->pluck('value')->filter()->unique()->isNotEmpty())
                     <div class="spec-item">
                         <div class="spec-label">Available Sizes</div>
@@ -825,7 +824,7 @@
                         </div>
                     </div>
                     @endif
-                    
+
                     @if($productLink->product->variations->pluck('hex_value')->filter()->unique()->isNotEmpty())
                     <div class="spec-item">
                         <div class="spec-label">Available Colors</div>
@@ -835,7 +834,7 @@
                             </div>
                             <div class="d-flex flex-wrap gap-2 align-items-center">
                                 @foreach ($productLink->product->variations->pluck('hex_value')->filter()->unique() as $color)
-                                    <span class="d-inline-block" 
+                                    <span class="d-inline-block"
                                           style="width: 24px; height: 24px; background-color: {{ $color }}; border-radius: 50%; border: 2px solid #dee2e6; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
                                           title="{{ $color }}"
                                           data-bs-toggle="tooltip">
@@ -856,7 +855,7 @@
                     <i class="fas fa-store me-2"></i>
                     Dealer Information
                 </h6>
-                
+
                 <div class="dealer-info-item">
                     <div class="dealer-icon">
                         <i class="fas fa-user"></i>
@@ -884,7 +883,7 @@
                     </div>
                     <div>
                         <small class="text-muted d-block">Phone</small>
-                        <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}" 
+                        <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}"
                            class="text-decoration-none fw-bold">
                             {{ $productLink->dealer->dealerProfile->phone }}
                         </a>
@@ -899,7 +898,7 @@
                     </div>
                     <div>
                         <small class="text-muted d-block">Email</small>
-                        <a href="mailto:{{ $productLink->dealer->email }}" 
+                        <a href="mailto:{{ $productLink->dealer->email }}"
                            class="text-decoration-none fw-bold">
                             {{ $productLink->dealer->email }}
                         </a>
@@ -918,17 +917,17 @@
                     </div>
                 </div>
                 @endif
-                
+
                 <div class="mt-4 d-grid gap-2">
                     @if($productLink->dealer->dealerProfile->phone)
-                    <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}" 
+                    <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}"
                        class="btn btn-primary-custom">
                         <i class="fas fa-phone me-2"></i>
                         Call Dealer
                     </a>
                     @endif
                     @if($productLink->dealer->email)
-                    <a href="mailto:{{ $productLink->dealer->email }}" 
+                    <a href="mailto:{{ $productLink->dealer->email }}"
                        class="btn btn-outline-custom">
                         <i class="fas fa-envelope me-2"></i>
                         Email Dealer
@@ -941,23 +940,49 @@
 </div>
 
 <script>
+function copyOptionalSelections(form) {
+    const selectedSize = document.querySelector('input[name="size_option"]:checked');
+    const selectedColor = document.querySelector('input[name="color_option"]:checked');
+
+    form.querySelector('input[name="size"]').value = selectedSize ? selectedSize.value : '';
+    form.querySelector('input[name="color"]').value = selectedColor ? selectedColor.value : '';
+
+    return true; // Always allow submit
+}
+</script>
+
+
+<script>
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            const submitButton = form.querySelector('.btn-primary-custom, .btn-outline-custom');
+            if (submitButton) {
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                submitButton.disabled = true;
+            }
+        });
+    });
+</script>
+
+
+<script>
 // Enhanced image gallery functionality
 function changeMainImage(imageSrc, thumbnailElement) {
     const mainImage = document.getElementById('mainImage');
-    
+
     // Add fade effect
     mainImage.style.opacity = '0.7';
-    
+
     setTimeout(() => {
         mainImage.src = imageSrc;
         mainImage.style.opacity = '1';
     }, 150);
-    
+
     // Update active thumbnail
     document.querySelectorAll('.thumbnail').forEach(thumb => {
         thumb.classList.remove('active');
     });
-    
+
     if (thumbnailElement) {
         thumbnailElement.classList.add('active');
     }
@@ -970,7 +995,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
-    
+
     // Add smooth scrolling for internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -984,22 +1009,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    // Add loading animation for action buttons
-    document.querySelectorAll('.btn-primary-custom, .btn-outline-custom').forEach(button => {
-        button.addEventListener('click', function() {
-            const originalContent = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
-            this.disabled = true;
-            
-            // Simulate processing time (remove this in production)
-            setTimeout(() => {
-                this.innerHTML = originalContent;
-                this.disabled = false;
-            }, 2000);
-        });
-    });
-    
+
+    // // Add loading animation for action buttons
+    // document.querySelectorAll('.btn-primary-custom, .btn-outline-custom').forEach(button => {
+    //     button.addEventListener('click', function() {
+    //         const originalContent = this.innerHTML;
+    //         this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+    //         this.disabled = true;
+
+    //         // Simulate processing time (remove this in production)
+    //         setTimeout(() => {
+    //             this.innerHTML = originalContent;
+    //             this.disabled = false;
+    //         }, 2000);
+    //     });
+    // });
+
     // Add image zoom functionality
     const mainImage = document.getElementById('mainImage');
     if (mainImage) {
@@ -1020,24 +1045,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             `;
-            
+
             document.body.appendChild(modal);
             const bsModal = new bootstrap.Modal(modal);
             bsModal.show();
-            
+
             // Remove modal from DOM when hidden
             modal.addEventListener('hidden.bs.modal', function() {
                 document.body.removeChild(modal);
             });
         });
     }
-    
+
     // Add intersection observer for fade-in animations
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -1046,7 +1071,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }, observerOptions);
-    
+
     // Observe fade-in elements
     document.querySelectorAll('.fade-in').forEach(el => {
         el.style.opacity = '0';
@@ -1054,7 +1079,7 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
-    
+
     // Add size selection functionality
     document.querySelectorAll('.size-badge').forEach(badge => {
         badge.addEventListener('click', function() {
@@ -1062,7 +1087,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('selected');
         });
     });
-    
+
     // Add color selection functionality
     document.querySelectorAll('.color-circle').forEach(circle => {
         circle.addEventListener('click', function() {
@@ -1074,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 200);
         });
     });
-    
+
     console.log('Professional product view page loaded successfully');
 });
 
@@ -1088,11 +1113,11 @@ style.textContent = `
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(255, 88, 0, 0.3);
     }
-    
+
     .color-circle.selected {
         box-shadow: 0 0 0 3px var(--primary-color) !important;
     }
-    
+
     .btn-primary-custom:disabled,
     .btn-outline-custom:disabled {
         opacity: 0.7;

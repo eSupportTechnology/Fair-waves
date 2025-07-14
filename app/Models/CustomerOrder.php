@@ -27,6 +27,7 @@ class CustomerOrder extends Model
         'payment_method',
         'payment_status',
         'activity_logs', // Include activity_logs in fillable
+        'order_type',
     ];
 
     // Cast activity_logs as an array to handle JSON data

@@ -55,6 +55,9 @@
         padding: 25px;
         box-shadow: var(--box-shadow);
         border: 1px solid #e9ecef;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .main-image-wrapper {
@@ -63,6 +66,10 @@
         border-radius: var(--border-radius);
         background: #f8f9fa;
         margin-bottom: 20px;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .main-image {
@@ -71,6 +78,7 @@
         object-fit: cover;
         transition: transform 0.3s ease;
         cursor: zoom-in;
+        border-radius: var(--border-radius);
     }
 
     .main-image:hover {
@@ -124,7 +132,25 @@
         padding: 30px;
         box-shadow: var(--box-shadow);
         border: 1px solid #e9ecef;
-        height: fit-content;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-info-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .product-info-main {
+        flex-grow: 1;
+    }
+
+    .product-info-actions {
+        margin-top: auto;
+        padding-top: 20px;
     }
 
     .product-title {
@@ -338,6 +364,24 @@
         border: 1px solid #e9ecef;
         position: sticky;
         top: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dealer-card .section-title {
+        margin-bottom: 20px;
+    }
+
+    .dealer-card .dealer-info-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dealer-card .dealer-actions {
+        margin-top: auto;
+        padding-top: 20px;
     }
 
     .dealer-info-item {
@@ -375,6 +419,9 @@
         box-shadow: var(--box-shadow);
         border: 1px solid #e9ecef;
         overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .specifications-header {
@@ -394,6 +441,9 @@
 
     .specifications-body {
         padding: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 
     .spec-item {
@@ -484,11 +534,34 @@
             padding: 20px 0;
         }
 
+        .showroom-container .row {
+            flex-direction: column;
+        }
+
+        .additional-info-row {
+            flex-direction: column;
+        }
+
+        .additional-info-row .col-lg-8,
+        .additional-info-row .col-lg-4 {
+            flex-direction: column;
+        }
+
         .product-images-container,
         .product-info-card,
-        .dealer-card {
+        .dealer-card,
+        .specifications-card {
             position: static;
             margin-bottom: 20px;
+            height: auto;
+        }
+
+        .main-image-wrapper {
+            height: auto;
+        }
+
+        .main-image {
+            height: 300px;
         }
     }
 
@@ -506,6 +579,41 @@
             transform: translateY(0);
         }
     }
+
+    .showroom-container .row {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .showroom-container .row .col-lg-6 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Additional Information Section Equal Heights */
+    .additional-info-row {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .additional-info-row .col-lg-8,
+    .additional-info-row .col-lg-4 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-images-container {
+        position: sticky;
+        top: 20px;
+        background: var(--white);
+        border-radius: var(--border-radius);
+        padding: 25px;
+        box-shadow: var(--box-shadow);
+        border: 1px solid #e9ecef;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 </style>
 
 <!-- Breadcrumb -->
@@ -513,11 +621,7 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('home') }}">
-                        <i class="fas fa-home me-1"></i> Home
-                    </a>
-                </li>
+               
                 <li class="breadcrumb-item">
                     <a href="{{ route('showroom.index', $productLink->dealer->dealerProfile->dealer_shop_name) }}">
                         <i class="fas fa-store me-1"></i> {{ $productLink->dealer->dealerProfile->dealer_shop_name }}
@@ -596,64 +700,66 @@
         <!-- Product Information -->
         <div class="col-lg-6">
             <div class="product-info-card fade-in">
-                <h1 class="product-title">{{ $productLink->product->product_name }}</h1>
+                <div class="product-info-content">
+                    <div class="product-info-main">
+                        <h1 class="product-title">{{ $productLink->product->product_name }}</h1>
 
-                <div class="product-price">
-                    <i class="fas fa-tag me-2"></i>
-                    Rs. {{ number_format($productLink->product->normal_price, 2) }}
-                </div>
+                        <div class="product-price">
+                            <i class="fas fa-tag me-2"></i>
+                            Rs. {{ number_format($productLink->product->normal_price, 2) }}
+                        </div>
 
-                <!-- Product Meta Information -->
-                <div class="product-meta">
-                    <div class="meta-item">
-                        <div class="meta-icon">
-                            <i class="fas fa-barcode"></i>
+                        <!-- Product Meta Information -->
+                        <div class="product-meta">
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="fas fa-barcode"></i>
+                                </div>
+                                <div class="meta-content">
+                                    <h6>Product ID</h6>
+                                    <p>{{ $productLink->product->product_id }}</p>
+                                </div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="fas fa-layer-group"></i>
+                                </div>
+                                <div class="meta-content">
+                                    <h6>Category</h6>
+                                    <p>{{ $productLink->product->category->name ?? 'N/A' }}</p>
+                                </div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="fas fa-trademark"></i>
+                                </div>
+                                <div class="meta-content">
+                                    <h6>Brand</h6>
+                                    <p>{{ $productLink->product->brand->name ?? 'N/A' }}</p>
+                                </div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                                <div class="meta-content">
+                                    <h6>Stock Status</h6>
+                                    <p>
+                                        @if($productLink->product->quantity > 0)
+                                            <span class="status-badge bg-success text-white">
+                                                {{ $productLink->product->quantity }} Available
+                                            </span>
+                                        @else
+                                            <span class="status-badge bg-danger text-white">
+                                                Out of Stock
+                                            </span>
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="meta-content">
-                            <h6>Product ID</h6>
-                            <p>{{ $productLink->product->product_id }}</p>
-                        </div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-icon">
-                            <i class="fas fa-layer-group"></i>
-                        </div>
-                        <div class="meta-content">
-                            <h6>Category</h6>
-                            <p>{{ $productLink->product->category->name ?? 'N/A' }}</p>
-                        </div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-icon">
-                            <i class="fas fa-trademark"></i>
-                        </div>
-                        <div class="meta-content">
-                            <h6>Brand</h6>
-                            <p>{{ $productLink->product->brand->name ?? 'N/A' }}</p>
-                        </div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-icon">
-                            <i class="fas fa-cube"></i>
-                        </div>
-                        <div class="meta-content">
-                            <h6>Stock Status</h6>
-                            <p>
-                                @if($productLink->product->quantity > 0)
-                                    <span class="status-badge bg-success text-white">
-                                        {{ $productLink->product->quantity }} Available
-                                    </span>
-                                @else
-                                    <span class="status-badge bg-danger text-white">
-                                        Out of Stock
-                                    </span>
-                                @endif
-                            </p>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Sizes Section (if any) -->
+                        <!-- Sizes Section (if any) -->
 @if ($productLink->product->variations->pluck('value')->filter()->unique()->isNotEmpty())
 <div class="variations-section mb-3">
     <h6 class="variation-title"><i class="fas fa-ruler me-2"></i>Select Size (Optional)</h6>
@@ -684,7 +790,7 @@
 @endif
 
 <!-- Action Buttons -->
-                <div class="action-buttons">
+                        <div class="action-buttons">
 @if($productLink->product->quantity > 0)
     <!-- Add to Cart Form -->
     <form action="{{ route('dealer.cart.add', $productLink->product->id) }}" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
@@ -712,23 +818,25 @@
 @endif
 
 
-                <!-- Product Description -->
-                @if($productLink->product->product_description)
-                <div class="description-section">
-                    <h5 class="section-title">
-                        <i class="fas fa-align-left me-2"></i>
-                        Product Description
-                    </h5>
-                    <p class="text-muted lh-lg">{{ $productLink->product->product_description }}</p>
+                        <!-- Product Description -->
+                        @if($productLink->product->product_description)
+                        <div class="description-section">
+                            <h5 class="section-title">
+                                <i class="fas fa-align-left me-2"></i>
+                                Product Description
+                            </h5>
+                            <p class="text-muted lh-lg">{{ $productLink->product->product_description }}</p>
+                        </div>
+                        @endif
+                    </div>
                 </div>
-                @endif
             </div>
         </div>
     </div>
     </div>
 
     <!-- Additional Information Section -->
-    <div class="row mt-4">
+    <div class="row mt-4 additional-info-row">
         <!-- Product Specifications -->
         <div class="col-lg-8">
             <div class="specifications-card fade-in">
@@ -850,89 +958,93 @@
 
         <!-- Dealer Contact Information -->
         <div class="col-lg-4">
-            <div class="dealer-card fade-in">
+            <div class="dealer-card fade-in" id="dealer-info">
                 <h6 class="section-title mb-3">
                     <i class="fas fa-store me-2"></i>
                     Dealer Information
                 </h6>
 
-                <div class="dealer-info-item">
-                    <div class="dealer-icon">
-                        <i class="fas fa-user"></i>
+                <div class="dealer-info-content">
+                    <div class="dealer-info-item">
+                        <div class="dealer-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Dealer Name</small>
+                            <strong>{{ $productLink->dealer->name }}</strong>
+                        </div>
                     </div>
-                    <div>
-                        <small class="text-muted d-block">Dealer Name</small>
-                        <strong>{{ $productLink->dealer->name }}</strong>
-                    </div>
-                </div>
 
-                <div class="dealer-info-item">
-                    <div class="dealer-icon">
-                        <i class="fas fa-store"></i>
+                    <div class="dealer-info-item">
+                        <div class="dealer-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Shop Name</small>
+                            <strong>{{ $productLink->dealer->dealerProfile->dealer_shop_name }}</strong>
+                        </div>
                     </div>
-                    <div>
-                        <small class="text-muted d-block">Shop Name</small>
-                        <strong>{{ $productLink->dealer->dealerProfile->dealer_shop_name }}</strong>
-                    </div>
-                </div>
 
-                @if($productLink->dealer->dealerProfile->phone)
-                <div class="dealer-info-item">
-                    <div class="dealer-icon">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <div>
-                        <small class="text-muted d-block">Phone</small>
-                        <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}"
-                           class="text-decoration-none fw-bold">
-                            {{ $productLink->dealer->dealerProfile->phone }}
-                        </a>
-                    </div>
-                </div>
-                @endif
-
-                @if($productLink->dealer->email)
-                <div class="dealer-info-item">
-                    <div class="dealer-icon">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <div>
-                        <small class="text-muted d-block">Email</small>
-                        <a href="mailto:{{ $productLink->dealer->email }}"
-                           class="text-decoration-none fw-bold">
-                            {{ $productLink->dealer->email }}
-                        </a>
-                    </div>
-                </div>
-                @endif
-
-                @if($productLink->dealer->dealerProfile->address)
-                <div class="dealer-info-item">
-                    <div class="dealer-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div>
-                        <small class="text-muted d-block">Address</small>
-                        <span class="fw-bold">{{ $productLink->dealer->dealerProfile->address }}</span>
-                    </div>
-                </div>
-                @endif
-
-                <div class="mt-4 d-grid gap-2">
                     @if($productLink->dealer->dealerProfile->phone)
-                    <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}"
-                       class="btn btn-primary-custom">
-                        <i class="fas fa-phone me-2"></i>
-                        Call Dealer
-                    </a>
+                    <div class="dealer-info-item">
+                        <div class="dealer-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Phone</small>
+                            <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}"
+                               class="text-decoration-none fw-bold">
+                                {{ $productLink->dealer->dealerProfile->phone }}
+                            </a>
+                        </div>
+                    </div>
                     @endif
+
                     @if($productLink->dealer->email)
-                    <a href="mailto:{{ $productLink->dealer->email }}"
-                       class="btn btn-outline-custom">
-                        <i class="fas fa-envelope me-2"></i>
-                        Email Dealer
-                    </a>
+                    <div class="dealer-info-item">
+                        <div class="dealer-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Email</small>
+                            <a href="mailto:{{ $productLink->dealer->email }}"
+                               class="text-decoration-none fw-bold">
+                                {{ $productLink->dealer->email }}
+                            </a>
+                        </div>
+                    </div>
                     @endif
+
+                    @if($productLink->dealer->dealerProfile->address)
+                    <div class="dealer-info-item">
+                        <div class="dealer-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Address</small>
+                            <span class="fw-bold">{{ $productLink->dealer->dealerProfile->address }}</span>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+
+                <div class="dealer-actions">
+                    <div class="d-grid gap-2">
+                        @if($productLink->dealer->dealerProfile->phone)
+                        <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}"
+                           class="btn btn-primary-custom">
+                            <i class="fas fa-phone me-2"></i>
+                            Call Dealer
+                        </a>
+                        @endif
+                        @if($productLink->dealer->email)
+                        <a href="mailto:{{ $productLink->dealer->email }}"
+                           class="btn btn-outline-custom">
+                            <i class="fas fa-envelope me-2"></i>
+                            Email Dealer
+                        </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -1101,6 +1213,60 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     console.log('Professional product view page loaded successfully');
+
+    // Function to ensure equal heights for product containers
+    function equalizeHeights() {
+        const imageContainer = document.querySelector('.product-images-container');
+        const infoContainer = document.querySelector('.product-info-card');
+        
+        if (imageContainer && infoContainer) {
+            // Reset heights
+            imageContainer.style.height = 'auto';
+            infoContainer.style.height = 'auto';
+            
+            // Get heights
+            const imageHeight = imageContainer.offsetHeight;
+            const infoHeight = infoContainer.offsetHeight;
+            
+            // Set equal heights
+            const maxHeight = Math.max(imageHeight, infoHeight);
+            imageContainer.style.height = maxHeight + 'px';
+            infoContainer.style.height = maxHeight + 'px';
+        }
+    }
+
+    // Call equalizeHeights on load and resize
+    equalizeHeights();
+    window.addEventListener('resize', equalizeHeights);
+
+    // Handle navigation clicks for better UX
+    document.querySelectorAll('.contact-scroll').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Handle products navigation - scroll to products section in showroom
+    document.querySelectorAll('a[href*="#products-section"]').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            // If the link contains a hash, it means it's trying to scroll to a section
+            const href = this.getAttribute('href');
+            if (href.includes('#products-section')) {
+                // Let the browser handle the navigation to the showroom page
+                // The hash will be handled by the showroom page
+                window.location.href = href;
+            }
+        });
+    });
 });
 
 // Add CSS for selected states

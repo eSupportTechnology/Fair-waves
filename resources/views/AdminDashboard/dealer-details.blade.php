@@ -141,11 +141,7 @@
         <div class="card profile-card">
             <div class="profile-header text-center">
                 <div class="profile-image-container">
-                    @if($dealer->profile_image)
-                        <img src="{{ asset('storage/' . $dealer->profile_image) }}" alt="Profile Image" class="profile-image">
-                    @else
-                        <img src="{{ asset('frontend/newstyle/assets/images/user-placeholder.jpg') }}" alt="Default Profile" class="profile-image">
-                    @endif
+                    <img src="{{ $dealer->profile_image_url }}" alt="Profile Image" class="profile-image">
                 </div>
                 <h4 class="mt-3">{{ $dealer->name }}</h4>
                 <p class="text-muted mb-0">{{ $dealer->email }}</p>

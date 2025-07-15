@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Image Upload</title>
+    <style>
+        .profile-image-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .profile-image-preview {
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-image-preview:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 60, 0, 0.4) !important;
+        }
+        
+        .profile-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .profile-image-container:hover .profile-image-overlay {
+            opacity: 1;
+        }
+        
+        .profile-image-overlay i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Test Profile Image Upload</h2>
+    
+    <div class="profile-image-container" onclick="document.getElementById('profileImageInput').click();">
+        <div class="profile-image-placeholder" 
+             id="profileImagePreview"
+             style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #ff3c00, #ff6b3d); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 60, 0, 0.3); color: white; font-size: 60px;">
+            <i class="fas fa-user">👤</i>
+        </div>
+        <div class="profile-image-overlay">
+            <i class="fas fa-camera">📷</i>
+            <span>Click to change</span>
+        </div>
+    </div>
+    
+    <input type="file" id="profileImageInput" name="profile_image" accept="image/*" style="display: none;">
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileImageInput = document.getElementById('profileImageInput');
+            const profileImagePreview = document.getElementById('profileImagePreview');
+            const profileImageContainer = document.querySelector('.profile-image-container');
+
+            profileImageInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                console.log('File selected:', file);
+                
+                if (file) {
+                    console.log('File size:', file.size);
+                    console.log('File type:', file.type);
+                    
+                    // Check file size (2MB limit)
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('File size must be less than 2MB');
+                        event.target.value = '';
+                        return;
+                    }
+
+                    // Check file type
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                    if (!allowedTypes.includes(file.type)) {
+                        alert('Please select a valid image file (JPG, PNG, JPEG)');
+                        event.target.value = '';
+                        return;
+                    }
+
+                    // Preview the image
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        console.log('Image loaded successfully');
+                        
+                        // Create or update the image element
+                        if (profileImagePreview.tagName === 'DIV') {
+                            console.log('Replacing placeholder div with image');
+                            // Replace placeholder div with img element
+                            const imgElement = document.createElement('img');
+                            imgElement.src = e.target.result;
+                            imgElement.alt = 'Profile Image';
+                            imgElement.className = 'profile-image-preview';
+                            imgElement.id = 'profileImagePreview';
+                            imgElement.style.cssText = 'width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #ff3c00; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 60, 0, 0.3);';
+                            
+                            const container = profileImagePreview.parentElement;
+                            container.replaceChild(imgElement, profileImagePreview);
+                        } else {
+                            console.log('Updating existing image');
+                            // Just update the src if it's already an image
+                            profileImagePreview.src = e.target.result;
+                        }
+                        
+                        alert('Image preview updated successfully! This would be uploaded when the form is submitted.');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

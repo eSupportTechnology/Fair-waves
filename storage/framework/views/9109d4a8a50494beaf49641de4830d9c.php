@@ -1,15 +1,26 @@
 <?php $__env->startSection('content'); ?>
-
+<div class="main-wrapper">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
     .dashboard-container {
         margin-left: 280px;
         padding: 20px 30px;
-        min-height: calc(100vh - 80px);
+        min-height: calc(100vh - 200px);
         background-color: #f8f9fa;
         transition: margin-left 0.3s ease;
         margin-bottom: 20px;
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Dashboard header adjustments */
+    .dashboard-header {
+        margin-top: 40px !important; /* Increased from 5px to 20px to add more space */
+        margin-bottom: 15px !important;
+        padding-top: 5px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 1px solid #e0e0e0 !important;
     }
 
     /* Footer adjustments for sidebar layout */
@@ -17,9 +28,13 @@
         margin-left: 280px;
         transition: margin-left 0.3s ease;
         position: relative;
-        z-index: 999;
+        z-index: 998;
         width: calc(100% - 280px);
         box-sizing: border-box;
+        clear: both;
+        margin-top: auto;
+        margin-bottom: 0;
+        padding-bottom: 0;
     }
 
     /* Ensure footer content is properly spaced */
@@ -28,11 +43,14 @@
         padding-left: 15px;
         padding-right: 15px;
     }
-
-    /* Additional footer styling for dashboard pages */
-    .footer-with-sidebar {
-        margin-top: auto;
+    
+    /* Special handling for dealer dashboard pages to prevent overlap */
+    body.dealer-dashboard-page .footer-with-sidebar {
+        position: relative;
+        width: calc(100% - 280px);
+        margin-left: 280px;
         clear: both;
+        float: right;
     }
 
     /* Make sure footer content is readable */
@@ -74,6 +92,13 @@
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+    
+    /* Special handling for dealer dashboard body */
+    body.dealer-dashboard-page {
+        overflow-x: hidden; /* Prevent horizontal scrolling */
     }
 
     /* Wrapper for main content and footer */
@@ -81,6 +106,8 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        position: relative;
+        z-index: 1;
     }
 
     .breadcrumb {
@@ -134,11 +161,13 @@
         box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
         border-right: 1px solid #e5e7eb;
         padding: 20px 0;
-        transition: all 0.3s ease;
+        transition: all 0.3s ease, bottom 0.1s ease, height 0.1s ease;
+        display: flex;
+        flex-direction: column;
         display: flex;
         flex-direction: column;
         overflow-y: auto;
-        z-index: 1000;
+        z-index: 1050;
     }
 
     .sidebar .nav {
@@ -273,6 +302,13 @@
             padding-left: 12px;
             padding-right: 12px;
         }
+        
+        /* Dealer dashboard footer adjustments for mobile */
+        body.dealer-dashboard-page .footer-with-sidebar {
+            margin-left: 0;
+            width: 100%;
+            float: none;
+        }
 
         .card1 {
             min-height: unset;
@@ -283,6 +319,12 @@
             flex-direction: column;
             align-items: flex-start;
             gap: 8px;
+        }
+        
+        /* Ensure sidebar responsiveness with footer interaction */
+        .sidebar {
+            height: 100vh !important; /* Always full height on mobile */
+            bottom: 0 !important; /* Don't adjust position on mobile */
         }
     }
 
@@ -437,6 +479,7 @@
 <div class="dashboard-container">
     <?php echo $__env->yieldContent('dashboard-content'); ?>
 </div>
+<!-- Ensure footer appears after content -->
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -502,11 +545,57 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebarOverlay.classList.remove('show');
         }
     });
+    
+    // Fix sidebar and footer overlap issue by creating a more robust solution
+    function adjustSidebarPosition() {
+        const footer = document.querySelector('footer');
+        if (!footer) return;
+        
+        // Set sidebar to have overflow-y auto to enable scrolling within the sidebar
+        sidebar.style.overflowY = 'auto';
+        
+        // Set the sidebar to take up the full height of the viewport
+        sidebar.style.height = '100vh';
+        
+        // Make sure the footer is always positioned after the main content
+        footer.style.position = 'relative';
+        footer.style.zIndex = '999';
+        
+        // Check if we're on a dealer dashboard page
+        const isDealerDashboard = window.location.href.includes('dealer');
+        if (isDealerDashboard) {
+            // Add dealer dashboard class to body
+            document.body.classList.add('dealer-dashboard-page');
+        } else {
+            document.body.classList.remove('dealer-dashboard-page');
+        }
+        
+        // Ensure the content container has enough space for content
+        const dashboardContainer = document.querySelector('.dashboard-container');
+        if (dashboardContainer) {
+            dashboardContainer.style.minHeight = 'calc(100vh - 250px)';
+        }
+    }
+    
+    // Initial adjustment and listen for events
+    adjustSidebarPosition();
+    window.addEventListener('resize', adjustSidebarPosition);
+    window.addEventListener('load', adjustSidebarPosition);
+    
+    // Check for path changes (for SPA-like behavior if any)
+    let lastPath = window.location.pathname;
+    setInterval(() => {
+        if (window.location.pathname !== lastPath) {
+            lastPath = window.location.pathname;
+            adjustSidebarPosition();
+        }
+    }, 500);
 });
 </script>
 
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</div><!-- End of main-wrapper -->
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/layouts/user_sidebar.blade.php ENDPATH**/ ?>

@@ -1,4 +1,8 @@
-<!-- Professional Dealer Footer Section -->
+<!-- Profe                        <div class="d-flex align-items-center mb-3">
+                            <img src="<?php echo e($dealer->profile_image_url); ?>"
+                                 alt="<?php echo e($dealer->name); ?>"
+                                 class="dealer-footer-logo me-3">
+                        </div>ler Footer Section -->
 <footer class="professional-footer">
     <div class="container">
         <!-- Main Footer Content -->

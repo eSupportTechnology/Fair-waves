@@ -58,6 +58,17 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get the profile image URL.
+     */
+    public function getProfileImageUrlAttribute()
+    {
+        if ($this->profile_image) {
+            return asset('storage/' . $this->profile_image);
+        }
+        return asset('backend/assets/images/default-user.png');
+    }
+
 
     public function customerOrders()
     {

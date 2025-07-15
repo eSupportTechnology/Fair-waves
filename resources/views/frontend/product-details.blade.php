@@ -1,3 +1,6 @@
+@php
+    use App\Models\DealerProductLink;
+@endphp
 @extends ('frontend.master')
 
 @section('content')
@@ -341,6 +344,36 @@ img{
                 @endif
                                     </h6>
                                 </div>
+                                @if(Auth::check() && Auth::user()->role === 'dealer')
+                                    @php
+                                        // Check if the dealer has already generated the link for this product
+                                        $linkGenerated = DealerProductLink::where('dealer_id', Auth::user()->id)
+                                            ->where('product_id', $product->id)
+                                            ->first();
+                                    @endphp
+                                    <div class="mt-2">
+                                        @if($linkGenerated)
+                                            <button class="btn btn-success" disabled>
+                                                Link Generated
+                                            </button>
+                                            <a href="/showroom/{{$linkGenerated->dealer->dealerProfile->dealer_shop_name}}/product/{{$linkGenerated->unique_code}}" class="btn btn-outline-success ms-2" style="background-color: #ff9800; color: #fff; border-color: #ff9800;"
+                                               onmouseover="this.style.backgroundColor='#e65100'; this.style.color='#fff';"
+                                               onmouseout="this.style.backgroundColor='#ff9800'; this.style.color='#fff';">
+                                                View Link
+                                            </a>
+                                        @else
+                                            <form action="{{ route('dealer.link.generate') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <button type="submit" class="btn btn-main">
+                                                    Generate Link
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                @endif
+
+
                             </div>
 
                             <span class="mt-32 pt-32 text-gray-700 border-top border-gray-100 d-block"></span>

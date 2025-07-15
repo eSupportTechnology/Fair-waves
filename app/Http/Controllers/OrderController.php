@@ -48,22 +48,31 @@ class OrderController extends Controller
 
         // Define valid transitions for the admin
         $validTransitions = [
+            'Pending' => ['Accepted'], // ✅ Allow first transition
+            'Accepted' => ['Packed'],
             'Packed' => ['Pickup Done'],
             'Pickup Done' => ['Ready to Ship'],
             'Ready to Ship' => ['Shipped'],
             'Shipped' => ['In Transit'],
-            'In Transit' => ['Delivered'],
+            'In Transit' => ['Delivered', 'Customer Unavailable', 'Rescheduled'],
+            'Customer Unavailable' => ['Rescheduled', 'In Transit'],
+            'Rescheduled' => ['In Transit'],
             'Delivered' => [],
             'Cancelled' => [],
             'Returned' => [],
         ];
 
+
         // Define activity log messages
         $statusMessages = [
+            'Accepted' => 'Order has been accepted.',
+            'Packed' => 'Order has been packed.',
             'Pickup Done' => 'Order picked up by the delivery partner.',
             'Ready to Ship' => 'Order is ready to ship.',
             'Shipped' => 'Order shipped to the customer.',
             'In Transit' => 'Order is in transit.',
+            'Customer Unavailable' => 'Customer was unavailable at delivery.',
+            'Rescheduled' => 'Delivery has been rescheduled.',
             'Delivered' => 'Order delivered to the customer.',
             'Cancelled' => 'Order has been cancelled.',
             'Returned' => 'Order has been returned.',

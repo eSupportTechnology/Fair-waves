@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\VendorReportController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\AdminTemplateController;
 use App\Http\Controllers\HomeTemplateController;
 use App\Http\Controllers\AffiliateTemplateController;
@@ -279,7 +280,6 @@ Route::get('/admin/reviews-details/{id}', [ReviewsController::class, 'adminViewD
 Route::patch('/reviews/{id}/status', [ReviewsController::class, 'updateStatus'])->name('reviews.updateStatus');
 Route::delete('/reviews/{review}', [ReviewsController::class, 'destroy'])->name('admin.reviews.destroy');
 
-
 // Route::view('/admin/reviews', 'AdminDashboard.reviews')->name('reviews');
 Route::get('/admin/customer_inquiries', [InquiryController::class, 'index'])->name('admin.customer.inquiries');
 Route::post('/admin/inquiries/reply/{id}', [InquiryController::class, 'storeReply'])->name('admin.inquiries.reply');
@@ -398,6 +398,41 @@ Route::get('home/My-Account', [ProfileController::class, 'dashboard'])->name('da
 Route::get('home/My-Account/my-orders', [ProfileController::class, 'myOrders'])->name('my-orders');
 Route::get('/track-order/{orderCode}', [ProfileController::class, 'trackOrder'])->name('user.track-order');
 Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('user.profile.update');
+
+// Test route for profile image upload debugging
+Route::get('/test-profile-upload', function() {
+    return view('test-profile-upload');
+})->middleware('auth')->name('test.profile.upload');
+Route::post('/test-profile-upload', function(Request $request) {
+    \Log::info('Test profile upload request received');
+    \Log::info('Request data:', $request->all());
+    \Log::info('Has file:', [$request->hasFile('profile_image')]);
+    
+    if ($request->hasFile('profile_image')) {
+        $file = $request->file('profile_image');
+        \Log::info('File details:', [
+            'name' => $file->getClientOriginalName(),
+            'size' => $file->getSize(),
+            'type' => $file->getMimeType(),
+            'error' => $file->getError()
+        ]);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'File received successfully',
+            'file' => [
+                'name' => $file->getClientOriginalName(),
+                'size' => $file->getSize(),
+                'type' => $file->getMimeType()
+            ]
+        ]);
+    }
+    
+    return response()->json([
+        'success' => false,
+        'message' => 'No file received'
+    ]);
+})->name('test.profile.upload');
 Route::get('home/My-Account/edit-password', [ProfileController::class, 'editPassword'])->name('edit-password');
 Route::post('/user/change-password', [ProfileController::class, 'changePassword'])->name('user.change_password');
 
@@ -504,6 +539,7 @@ Route::prefix('dealer')->group(function () {
 
 Route::prefix('showroom')->group(function () {
     Route::get('/{dealer_shop_name}', [ShowRoomController::class, 'index'])->name('showroom.index');
+    Route::get('/{dealer_shop_name}/about', [ShowRoomController::class, 'about'])->name('showroom.about');
     Route::get('/{dealer_shop_name}/product/{unique_code}', [ShowRoomController::class, 'productView'])->name('showroom.productView');
     Route::post('/cart/add/{id}', [ShowRoomController::class, 'dealerAdd'])->name('dealer.cart.add');
     Route::post('/buy-now/{id}', [ShowRoomController::class, 'dealerbuyNow'])->name('dealer.buy.now');

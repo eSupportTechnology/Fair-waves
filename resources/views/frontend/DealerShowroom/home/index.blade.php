@@ -103,19 +103,6 @@
         margin-bottom: 3rem !important;
     }
 
-    .product-badge {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: #ff5800;
-        color: white;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-
     .product-content {
         padding: 25px;
         flex-grow: 1;
@@ -124,17 +111,47 @@
         justify-content: space-between;
     }
 
+    .product-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        gap: 15px;
+    }
+
     .product-title {
         font-size: 1.2rem;
         font-weight: 600;
         color: #2d3748;
-        margin-bottom: 10px;
+        margin-bottom: 0;
         line-height: 1.4;
-        height: 50px;
+        flex: 1;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+    }
+
+    .product-availability {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .product-availability.available {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .product-availability.out-of-stock {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
     }
 
     .product-price {
@@ -346,7 +363,7 @@
                 <div class="showroom-badge">
                     <span class="badge bg-success fs-6 p-3">
                         <i class="fas fa-certificate me-2"></i>
-                        Verified Dealer
+                        Verified Seller
                     </span>
                 </div>
             </div>
@@ -354,7 +371,7 @@
     </div>
 
 <!-- Products Section -->
-<div class="products-section">
+<div class="products-section" id="products-section">
     <div class="container">
         @if($dealerProducts->count() > 0)
             <h2 class="section-title">Product Collection</h2>
@@ -372,16 +389,17 @@
                                 <img src="https://via.placeholder.com/300x250/f8f9fa/6c757d?text=No+Image" 
                                      alt="{{ $productLink->product->product_name }}">
                             @endif
-                            
-                            @if($productLink->product->quantity > 0)
-                                <div class="product-badge">Available</div>
-                            @else
-                                <div class="product-badge" style="background: #dc3545;">Out of Stock</div>
-                            @endif
                         </div>
                         
                         <div class="product-content">
-                            <h4 class="product-title">{{ $productLink->product->product_name }}</h4>
+                            <div class="product-header">
+                                <h4 class="product-title">{{ $productLink->product->product_name }}</h4>
+                                @if($productLink->product->quantity > 0)
+                                    <div class="product-availability available">Available</div>
+                                @else
+                                    <div class="product-availability out-of-stock">Out of Stock</div>
+                                @endif
+                            </div>
                             
                             <div class="product-price">
                                 Rs. {{ number_format($productLink->product->normal_price, 2) }}
@@ -447,5 +465,52 @@
 </div>
 
 <div style="margin-bottom: 60px;"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle hash navigation for products section
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+
+    // Check if there's a hash in the URL on page load
+    if (window.location.hash) {
+        const hash = window.location.hash.substring(1);
+        setTimeout(() => {
+            scrollToSection(hash);
+        }, 500); // Small delay to ensure page is fully loaded
+    }
+
+    // Handle navigation clicks for smooth scrolling
+    document.querySelectorAll('a[href*="#products-section"]').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#products-section')) {
+                // If we're on the same page, prevent default and scroll
+                if (window.location.pathname === this.pathname) {
+                    e.preventDefault();
+                    scrollToSection('products-section');
+                }
+                // Otherwise, let the browser handle navigation
+            }
+        });
+    });
+
+    // Handle contact scroll
+    document.querySelectorAll('.contact-scroll').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            scrollToSection(targetId);
+        });
+    });
+});
+</script>
 
 @endsection

@@ -183,9 +183,9 @@
                                             </div>
                                             <div class="u">
                                                 <?php if($isDealer): ?>
-                                                    <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)</span>
+                                                    <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> IV)</span>
                                                 <?php else: ?>
-                                                   
+
                                                     <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?></span>
                                                 <?php endif; ?>
                                             </div>
@@ -310,7 +310,7 @@
                                                 <?php if($isDealer): ?>
                                                     <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)</span>
                                                 <?php else: ?>
-                                                    
+
                                                     <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?></span>
                                                 <?php endif; ?>
                                             </div>
@@ -376,7 +376,7 @@
                                                 <?php if($isDealer): ?>
                                                     <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)</span>
                                                 <?php else: ?>
-                                                  
+
                                                     <span class="selling-price">Rs. <?php echo e(number_format($product->normal_price, 2)); ?></span>
                                                 <?php endif; ?>
                                             </div>

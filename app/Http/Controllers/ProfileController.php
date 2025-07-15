@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 
 use App\Models\CustomerOrder;
@@ -99,6 +100,12 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
+        // Debug: Check if user is authenticated
+        \Log::info('Profile update request received');
+        \Log::info('User authenticated:', [Auth::check()]);
+        \Log::info('User ID:', [Auth::id()]);
+        \Log::info('Has file:', [$request->hasFile('profile_image')]);
+        
         // Validate the request
         $request->validate([
             'full_name' => 'required|string|max:255',
@@ -120,13 +127,32 @@ class ProfileController extends Controller
 
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
-            $file = $request->file('profile_image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/profile_images'), $filename);
-            $user->profile_image = $filename; // Save filename in the database
+            try {
+                \Log::info('Processing profile image upload');
+                
+                // Delete old profile image if it exists
+                if ($user->profile_image) {
+                    Storage::delete('public/' . $user->profile_image);
+                    \Log::info('Old profile image deleted: ' . $user->profile_image);
+                }
+                
+                $file = $request->file('profile_image');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $imagePath = $file->storeAs('profile_images', $filename, 'public');
+                $user->profile_image = $imagePath;
+                
+                // Log successful upload
+                \Log::info('Profile image uploaded successfully: ' . $imagePath);
+            } catch (\Exception $e) {
+                \Log::error('Profile image upload failed: ' . $e->getMessage());
+                return redirect()->route('edit-profile')->with('error', 'Failed to upload profile image. Please try again.');
+            }
+        } else {
+            \Log::info('No profile image file in request');
         }
 
         $user->save();
+        \Log::info('User profile updated successfully');
 
         return redirect()->route('edit-profile')->with('success', 'Profile updated successfully.');
     }

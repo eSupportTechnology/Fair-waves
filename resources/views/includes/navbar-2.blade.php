@@ -141,7 +141,8 @@
 
                                                 <div class="log-user-img dropdown col-2-5">
                                                     <a href="#"><img
-                                                            src="https://buyabans.com/themes/buyabans/assets/images/icon/dummy-user.png"></a>
+                                                            src="{{ auth()->user()->profile_image_url }}" 
+                                                            style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></a>
                                                     <div class="dropdown-box">
                                                         <div class="user-name">
                                                             Hi!

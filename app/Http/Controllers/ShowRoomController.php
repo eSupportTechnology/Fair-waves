@@ -66,6 +66,20 @@ class ShowRoomController extends Controller
         return view('frontend.DealerShowroom.product.productView', compact('productLink', 'dealer'));
     }
 
+    public function about($dealer_shop_name)
+    {
+        // Find the dealer by shop name
+        $dealer = User::whereHas('dealerProfile', function($query) use ($dealer_shop_name) {
+            $query->where('dealer_shop_name', $dealer_shop_name);
+        })->where('role', 'dealer')->with('dealerProfile')->first();
+
+        if (!$dealer) {
+            abort(404, 'Showroom not found');
+        }
+
+        return view('frontend.DealerShowroom.about.index', compact('dealer'));
+    }
+
     public function dealerAdd($id, Request $request)
     {
         $product = Product::findOrFail($id);
@@ -228,7 +242,7 @@ class ShowRoomController extends Controller
         try {
             $order = CustomerOrder::where('order_code', $order_code)->where('user_id', Auth::id())->firstOrFail();
 
-            // Update the payment method and payment status
+            // Update the payment method and
             $order->update([
                 'payment_method' => 'Card',
                 'payment_status' => 'Paid',

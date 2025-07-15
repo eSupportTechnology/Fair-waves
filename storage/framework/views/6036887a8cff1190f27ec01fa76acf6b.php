@@ -744,13 +744,57 @@
                 padding: 0.5rem 1rem !important;
             }
         }
+
+        /* Profile Image Styles */
+        .profile-image-dashboard {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-placeholder-dashboard {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .profile-image-dashboard,
+            .profile-placeholder-dashboard {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .profile-placeholder-dashboard {
+                font-size: 20px;
+            }
+        }
     </style>
 
     <!-- Dashboard Header -->
     <div class="dashboard-header">
         <div class="container-fluid px-4">
             <div class="row align-items-center">
-                <div class="col-md-8 col-12">
+                <div class="col-md-1 col-2 text-center">
+                    <!-- Profile Image -->
+                    <div class="profile-image-container">
+                        <img src="<?php echo e($dealerProfile->user->profile_image_url); ?>" 
+                             alt="Profile Image" 
+                             class="profile-image-dashboard">
+                    </div>
+                </div>
+                <div class="col-md-7 col-10">
                     <h2 class="mb-2">Welcome back, <?php echo e($dealerProfile->user->name); ?>!</h2>
                     <p class="mb-0 opacity-75">Manage your dealer network and track your commissions</p>
                 </div>

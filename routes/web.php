@@ -499,6 +499,7 @@ Route::prefix('dealer')->group(function () {
     Route::get('/dealer-products/orders/{linkId}', [DealerController::class, 'dealerProductOrders'])->name('dealer.products.orders');
     Route::delete('/dealer-products/delete/{linkId}', [DealerController::class, 'deleteDealerProductLink'])->name('dealer.products.delete');
     Route::delete('/dealer-products/orders/delete/{orderId}', [DealerController::class, 'deleteDealerProductOrder'])->name('dealer.products.orders.delete');
+    Route::post('/generate-link', [DealerController::class, 'generateDealerLink'])->name('dealer.link.generate');
 });
 
 

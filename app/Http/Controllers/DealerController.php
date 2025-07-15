@@ -529,7 +529,7 @@ class DealerController extends Controller
     public function checkShopName(Request $request)
     {
         $shopName = $request->input('shop_name');
-        
+
         if (empty($shopName)) {
             return response()->json([
                 'available' => false,
@@ -545,7 +545,7 @@ class DealerController extends Controller
         }
 
         $exists = DealerProfile::where('dealer_shop_name', trim($shopName))->exists();
-        
+
         return response()->json([
             'available' => !$exists,
             'message' => $exists ? 'This shop name is already in use. Please enter a different shop name.' : 'Shop name is available!'
@@ -627,8 +627,9 @@ class DealerController extends Controller
 
 
 
-    public function generateDealerLink(Request $request, $productId)
+    public function generateDealerLink(Request $request)
     {
+        $productId = $request->get('product_id');
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'You must be logged in to view your orders.');
         }

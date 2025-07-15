@@ -68,11 +68,11 @@
                             <?php if(request('rating')): ?>
                                 <input type="hidden" name="rating" value="<?php echo e(request('rating')); ?>">
                             <?php endif; ?>
-                            
+
                             <ul class="overflow-y-auto max-h-540 scroll-sm">
                                 <li class="mb-24 d-flex align-items-center">
-                                    <input type="checkbox" id="all_categories" class="category-checkbox me-2" 
-                                           onchange="handleAllCategoriesChange(this)" 
+                                    <input type="checkbox" id="all_categories" class="category-checkbox me-2"
+                                           onchange="handleAllCategoriesChange(this)"
                                            <?php echo e((!isset($categoryIds) || empty($categoryIds)) || (isset($allCategoriesSelected) && $allCategoriesSelected) ? 'checked' : ''); ?>>
                                     <label for="all_categories" class="text-gray-900 hover-text-main-600 <?php echo e((!isset($categoryIds) || empty($categoryIds)) || (isset($allCategoriesSelected) && $allCategoriesSelected) ? 'font-bold' : ''); ?> mb-0 cursor-pointer">
                                         All Categories
@@ -83,15 +83,15 @@
                                 </li>
                                 <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <li class="mb-24 d-flex align-items-center">
-                                        <input type="checkbox" id="category_<?php echo e($category->id); ?>" 
-                                               name="category_ids[]" value="<?php echo e($category->id); ?>" 
-                                               class="category-checkbox me-2" 
+                                        <input type="checkbox" id="category_<?php echo e($category->id); ?>"
+                                               name="category_ids[]" value="<?php echo e($category->id); ?>"
+                                               class="category-checkbox me-2"
                                                onchange="handleCategoryChange()"
                                                <?php echo e(isset($categoryIds) && in_array($category->id, $categoryIds) ? 'checked' : ''); ?>>
                                         <label for="category_<?php echo e($category->id); ?>" class="text-gray-900 hover-text-main-600 <?php echo e(isset($categoryIds) && in_array($category->id, $categoryIds) ? 'font-bold' : ''); ?> mb-0 cursor-pointer flex-grow-1">
                                             <?php echo e($category->name); ?> (<?php echo e($category->products_count); ?>)
                                         </label>
-                                        <a href="<?php echo e(route('shop.index', ['category_id' => $category->id])); ?>" 
+                                        <a href="<?php echo e(route('shop.index', ['category_id' => $category->id])); ?>"
                                            class="ms-2 text-gray-500 hover-text-main-600 text-decoration-none">
                                             <i class="ph ph-arrow-square-out"></i>
                                         </a>
@@ -129,11 +129,11 @@
                                     <input type="hidden" name="category_ids[]" value="<?php echo e($catId); ?>">
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php endif; ?>
-                            
+
                             <ul class="overflow-y-auto max-h-540 scroll-sm">
                                 <li class="mb-24 d-flex align-items-center">
-                                    <input type="checkbox" id="all_brands" class="brand-checkbox me-2" 
-                                           onchange="handleAllBrandsChange(this)" 
+                                    <input type="checkbox" id="all_brands" class="brand-checkbox me-2"
+                                           onchange="handleAllBrandsChange(this)"
                                            <?php echo e((!isset($brandSlugs) || empty($brandSlugs)) || (isset($allBrandsSelected) && $allBrandsSelected) ? 'checked' : ''); ?>>
                                     <label for="all_brands" class="text-gray-900 hover-text-main-600 <?php echo e((!isset($brandSlugs) || empty($brandSlugs)) || (isset($allBrandsSelected) && $allBrandsSelected) ? 'font-bold' : ''); ?> mb-0 cursor-pointer">
                                         All Brands
@@ -144,15 +144,15 @@
                                 </li>
                                 <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <li class="mb-24 d-flex align-items-center">
-                                        <input type="checkbox" id="brand_<?php echo e($brand->id); ?>" 
-                                               name="brand_slugs[]" value="<?php echo e($brand->slug); ?>" 
-                                               class="brand-checkbox me-2" 
+                                        <input type="checkbox" id="brand_<?php echo e($brand->id); ?>"
+                                               name="brand_slugs[]" value="<?php echo e($brand->slug); ?>"
+                                               class="brand-checkbox me-2"
                                                onchange="handleBrandChange()"
                                                <?php echo e(isset($brandSlugs) && in_array($brand->slug, $brandSlugs) ? 'checked' : ''); ?>>
                                         <label for="brand_<?php echo e($brand->id); ?>" class="text-gray-900 hover-text-main-600 <?php echo e(isset($brandSlugs) && in_array($brand->slug, $brandSlugs) ? 'font-bold' : ''); ?> mb-0 cursor-pointer flex-grow-1">
                                             <?php echo e($brand->name); ?> (<?php echo e($brand->products_count); ?>)
                                         </label>
-                                        <a href="<?php echo e(route('shop.index', ['brand_slug' => $brand->slug])); ?>" 
+                                        <a href="<?php echo e(route('shop.index', ['brand_slug' => $brand->slug])); ?>"
                                            class="ms-2 text-gray-500 hover-text-main-600 text-decoration-none">
                                             <i class="ph ph-arrow-square-out"></i>
                                         </a>
@@ -231,7 +231,7 @@
 
                                 <div class="mt-8 mb-20 product-card__price">
                                     <?php if($isDealer): ?>
-                                        <span class="text-heading text-md fw-semibold ">Rs <?php echo e(number_format($product->normal_price, 2)); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)</span>
+                                        <span class="text-heading text-md fw-semibold ">Rs <?php echo e(number_format($product->normal_price, 2)); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> IV)</span>
                                     <?php else: ?>
                                         <?php if($product->affiliate_price && $product->affiliate_price != $product->normal_price): ?>
                                             <span class="text-gray-500 text-sm text-decoration-line-through">Rs <?php echo e(number_format($product->affiliate_price, 2)); ?></span>
@@ -273,7 +273,7 @@
 
                                                 <div class="mt-8 mb-3 product-price d-flex align-items-center">
                                                     <?php if($isDealer): ?>
-                                                        <h6 class="mb-0">Rs <?php echo e($product->normal_price); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)</h6>
+                                                        <h6 class="mb-0">Rs <?php echo e($product->normal_price); ?> (<?php echo e($product->bv ? $product->bv : '0'); ?> IV)</h6>
                                                     <?php else: ?>
                                                         <?php if($product->affiliate_price && $product->affiliate_price != $product->normal_price): ?>
                                                             <span class="text-gray-500 text-sm text-decoration-line-through me-2">Rs <?php echo e(number_format($product->affiliate_price, 2)); ?></span>
@@ -401,13 +401,13 @@ function toggleWishlist(button, productId) {
 // Category filter handling
 function handleAllCategoriesChange(checkbox) {
     const categoryCheckboxes = document.querySelectorAll('input[name="category_ids[]"]');
-    
+
     if (checkbox.checked) {
         // Check all category checkboxes
         categoryCheckboxes.forEach(cb => {
             cb.checked = true;
         });
-        
+
         // Get all category IDs and submit
         const allCategoryIds = Array.from(categoryCheckboxes).map(cb => cb.value);
         const url = '<?php echo e(route("shop.index")); ?>' + buildQueryStringWithCategories(allCategoryIds);
@@ -417,7 +417,7 @@ function handleAllCategoriesChange(checkbox) {
         categoryCheckboxes.forEach(cb => {
             cb.checked = false;
         });
-        
+
         // Submit form to show all products (no category filter)
         window.location.href = '<?php echo e(route("shop.index")); ?>' + buildQueryString(true);
     }
@@ -427,10 +427,10 @@ function handleCategoryChange() {
     const allCategoriesCheckbox = document.getElementById('all_categories');
     const categoryCheckboxes = document.querySelectorAll('input[name="category_ids[]"]');
     const checkedCategories = document.querySelectorAll('input[name="category_ids[]"]:checked');
-    
+
     // Check if all categories are selected
     const allSelected = checkedCategories.length === categoryCheckboxes.length;
-    
+
     if (checkedCategories.length > 0) {
         if (allSelected) {
             // All categories are selected, check "All Categories"
@@ -439,7 +439,7 @@ function handleCategoryChange() {
             // Some but not all categories selected, uncheck "All Categories"
             allCategoriesCheckbox.checked = false;
         }
-        
+
         // Build URL with multiple category IDs
         const categoryIds = Array.from(checkedCategories).map(cb => cb.value);
         const url = '<?php echo e(route("shop.index")); ?>' + buildQueryStringWithCategories(categoryIds);
@@ -453,12 +453,12 @@ function handleCategoryChange() {
 
 function buildQueryStringWithCategories(categoryIds) {
     const params = new URLSearchParams();
-    
+
     // Add category IDs
     categoryIds.forEach(id => {
         params.append('category_ids[]', id);
     });
-    
+
     // Preserve existing filters
     <?php if(request('search')): ?>
         params.append('search', '<?php echo e(request("search")); ?>');
@@ -481,7 +481,7 @@ function buildQueryStringWithCategories(categoryIds) {
     <?php if(request('rating')): ?>
         params.append('rating', '<?php echo e(request("rating")); ?>');
     <?php endif; ?>
-    
+
     const queryString = params.toString();
     return queryString ? '?' + queryString : '';
 }
@@ -489,13 +489,13 @@ function buildQueryStringWithCategories(categoryIds) {
 // Brand filter handling
 function handleAllBrandsChange(checkbox) {
     const brandCheckboxes = document.querySelectorAll('input[name="brand_slugs[]"]');
-    
+
     if (checkbox.checked) {
         // Check all brand checkboxes
         brandCheckboxes.forEach(cb => {
             cb.checked = true;
         });
-        
+
         // Get all brand slugs and submit
         const allBrandSlugs = Array.from(brandCheckboxes).map(cb => cb.value);
         const url = '<?php echo e(route("shop.index")); ?>' + buildQueryStringWithBrands(allBrandSlugs);
@@ -505,7 +505,7 @@ function handleAllBrandsChange(checkbox) {
         brandCheckboxes.forEach(cb => {
             cb.checked = false;
         });
-        
+
         // Submit form to show all products (no brand filter)
         window.location.href = '<?php echo e(route("shop.index")); ?>' + buildQueryString(false, true);
     }
@@ -515,10 +515,10 @@ function handleBrandChange() {
     const allBrandsCheckbox = document.getElementById('all_brands');
     const brandCheckboxes = document.querySelectorAll('input[name="brand_slugs[]"]');
     const checkedBrands = document.querySelectorAll('input[name="brand_slugs[]"]:checked');
-    
+
     // Check if all brands are selected
     const allSelected = checkedBrands.length === brandCheckboxes.length;
-    
+
     if (checkedBrands.length > 0) {
         if (allSelected) {
             // All brands are selected, check "All Brands"
@@ -527,7 +527,7 @@ function handleBrandChange() {
             // Some but not all brands selected, uncheck "All Brands"
             allBrandsCheckbox.checked = false;
         }
-        
+
         // Build URL with multiple brand slugs
         const brandSlugs = Array.from(checkedBrands).map(cb => cb.value);
         const url = '<?php echo e(route("shop.index")); ?>' + buildQueryStringWithBrands(brandSlugs);
@@ -541,12 +541,12 @@ function handleBrandChange() {
 
 function buildQueryStringWithBrands(brandSlugs) {
     const params = new URLSearchParams();
-    
+
     // Add brand slugs
     brandSlugs.forEach(slug => {
         params.append('brand_slugs[]', slug);
     });
-    
+
     // Preserve existing filters including category IDs
     <?php if(request('search')): ?>
         params.append('search', '<?php echo e(request("search")); ?>');
@@ -574,14 +574,14 @@ function buildQueryStringWithBrands(brandSlugs) {
     <?php if(request('rating')): ?>
         params.append('rating', '<?php echo e(request("rating")); ?>');
     <?php endif; ?>
-    
+
     const queryString = params.toString();
     return queryString ? '?' + queryString : '';
 }
 
 function buildQueryString(excludeCategoryId = false, excludeBrandSlug = false) {
     const params = new URLSearchParams();
-    
+
     // Preserve existing filters
     <?php if(request('search')): ?>
         params.append('search', '<?php echo e(request("search")); ?>');
@@ -604,7 +604,7 @@ function buildQueryString(excludeCategoryId = false, excludeBrandSlug = false) {
     <?php if(request('rating')): ?>
         params.append('rating', '<?php echo e(request("rating")); ?>');
     <?php endif; ?>
-    
+
     // Preserve multiple category IDs if not excluding them
     <?php if(isset($categoryIds) && !empty($categoryIds)): ?>
         if (!excludeCategoryId) {
@@ -613,7 +613,7 @@ function buildQueryString(excludeCategoryId = false, excludeBrandSlug = false) {
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         }
     <?php endif; ?>
-    
+
     // Preserve multiple brand slugs if not excluding them
     <?php if(isset($brandSlugs) && !empty($brandSlugs)): ?>
         if (!excludeBrandSlug) {
@@ -622,7 +622,7 @@ function buildQueryString(excludeCategoryId = false, excludeBrandSlug = false) {
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         }
     <?php endif; ?>
-    
+
     const queryString = params.toString();
     return queryString ? (excludeCategoryId || excludeBrandSlug ? '&' + queryString : '?' + queryString) : '';
 }
@@ -637,42 +637,42 @@ document.addEventListener('DOMContentLoaded', function() {
             accent-color: #3B82F6;
             cursor: pointer;
         }
-        
+
         .brand-checkbox {
             width: 18px;
             height: 18px;
             accent-color: #3B82F6;
             cursor: pointer;
         }
-        
+
         .cursor-pointer {
             cursor: pointer;
         }
-        
+
         .d-flex {
             display: flex;
         }
-        
+
         .align-items-center {
             align-items: center;
         }
-        
+
         .me-2 {
             margin-right: 0.5rem;
         }
-        
+
         .ms-2 {
             margin-left: 0.5rem;
         }
-        
+
         .mb-0 {
             margin-bottom: 0;
         }
-        
+
         .flex-grow-1 {
             flex-grow: 1;
         }
-        
+
         .text-decoration-none {
             text-decoration: none;
         }

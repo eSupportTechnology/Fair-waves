@@ -1,6 +1,10 @@
 <!-- Profe                        <div class="d-flex align-items-center mb-3">
-                            <img src="{{ $dealer->profile_image_url }}"
-                                 alt="{{ $dealer->name }}"
+                            <img src="h
+                            {{-- {{ $dealer->profile_image_url }} --}}
+                            "
+                                 alt="
+                                 {{-- {{ $dealer->name }} --}}
+                                  "
                                  class="dealer-footer-logo me-3">
                         </div>ler Footer Section -->
 <footer class="professional-footer">

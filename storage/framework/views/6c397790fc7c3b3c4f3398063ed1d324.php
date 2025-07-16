@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 
 <style>
@@ -75,22 +73,24 @@
         overflow: hidden;
         height: 280px;
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: center;
         background: #f8f9fa;
+        padding: 0;
     }
 
     .product-image img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
-        object-position: center top;
+        object-fit: cover;
+        object-position: center;
         transition: transform 0.3s ease;
-        padding: 15px;
+        margin: 0;
+        padding: 0;
     }
 
     .product-card:hover .product-image img {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
     /* Additional spacing for card rows */

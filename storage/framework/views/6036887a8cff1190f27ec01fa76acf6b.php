@@ -431,6 +431,8 @@
 
             .dashboard-header {
                 margin-bottom: 1rem;
+              
+
             }
 
             .dashboard-header .container {

@@ -8,17 +8,30 @@
     .dashboard-container {
         margin-left: 280px;
         padding: 20px 30px;
-        min-height: calc(100vh - 200px);
+        min-height: calc(100vh - 250px);
         background-color: #f8f9fa;
         transition: margin-left 0.3s ease;
         margin-bottom: 20px;
         position: relative;
-        z-index: 2;
+        z-index: 15;
+        width: calc(100% - 280px);
     }
     
     /* Dashboard header adjustments */
-    .dashboard-header {
-        margin-top: 40px !important; /* Increased from 5px to 20px to add more space */
+    .dashboard-header    /* Fix sidebar and footer overlap issue by creating a more robust solution */
+    function adjustSidebarPosition() {
+        const footer = document.querySelector('footer');
+        if (!footer) return;
+        
+        // Set sidebar to have overflow-y auto to enable scrolling within the sidebar
+        sidebar.style.overflowY = 'auto';
+        
+        // Set the sidebar to take up the full height of the viewport
+        sidebar.style.height = '100%';
+        
+        // Make sure the footer is always positioned after the main content
+        footer.style.position = 'relative';
+        footer.style.zIndex = '20';gin-top: 40px !important;
         margin-bottom: 15px !important;
         padding-top: 5px !important;
         padding-bottom: 10px !important;
@@ -30,13 +43,11 @@
         margin-left: 280px;
         transition: margin-left 0.3s ease;
         position: relative;
-        z-index: 998;
+        z-index: 20;
         width: calc(100% - 280px);
-        box-sizing: border-box;
-        clear: both;
+        background-color: #fff;
         margin-top: auto;
-        margin-bottom: 0;
-        padding-bottom: 0;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
     }
 
     /* Ensure footer content is properly spaced */
@@ -108,8 +119,23 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        min-height: 100vh;
         position: relative;
         z-index: 1;
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 280px;
+        background: #fff;
+        box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        z-index: 100;
+        padding: 20px;
+        overflow-y: auto;
     }
 
     .breadcrumb {
@@ -159,17 +185,15 @@
         top: 0;
         left: 0;
         width: 280px;
-        height: 100vh;
+        height: 100%;
         box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
         border-right: 1px solid #e5e7eb;
         padding: 20px 0;
-        transition: all 0.3s ease, bottom 0.1s ease, height 0.1s ease;
-        display: flex;
-        flex-direction: column;
+        transition: all 0.3s ease;
         display: flex;
         flex-direction: column;
         overflow-y: auto;
-        z-index: 1050;
+        z-index: 10;
     }
 
     .sidebar .nav {
@@ -277,12 +301,25 @@
         font-size: 16px;
     }
 
+    /* Main wrapper adjustments */
+    .main-wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+        z-index: 200;
+    }
+
     /* Responsive Enhancements */
     @media (max-width: 991.98px) {
         .sidebar {
             transform: translateX(-100%);
             position: fixed;
-            z-index: 1050;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            bottom: 0;
         }
         
         .sidebar.show {

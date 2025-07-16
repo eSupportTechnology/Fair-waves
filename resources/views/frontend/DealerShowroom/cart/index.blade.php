@@ -1,0 +1,380 @@
+@extends('frontend.DealerShowroom.master')
+
+@section('content')
+<style>
+    .cart-table {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .cart-item {
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .product-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quantity-btn {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .quantity-btn:hover {
+        background: #e9ecef;
+    }
+
+    .quantity-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .quantity-input {
+        width: 60px;
+        text-align: center;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 5px;
+    }
+
+    .remove-item {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        line-height: 1;
+    }
+
+    .remove-item:hover {
+        background-color: #ff3333;
+        transform: scale(1.1);
+        box-shadow: 0 2px 4px rgba(255, 77, 77, 0.2);
+    }
+
+    .cart-summary {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .checkout-btn {
+        background: linear-gradient(135deg, #ff5800, #ff7a3d);
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 25px;
+        font-weight: 600;
+        margin-top: 20px;
+    }
+
+    .checkout-btn:hover {
+        background: linear-gradient(135deg, #ff7a3d, #ff5800);
+        transform: translateY(-1px);
+    }
+
+    .loading {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+</style>
+
+<div class="container py-5">
+    <h2 class="mb-4">Shopping Cart</h2>
+
+    @if(empty($cart))
+        <div class="alert alert-info">
+            Your cart is empty. <a href="{{ url()->previous() }}">Continue shopping</a>
+        </div>
+    @else
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="cart-table">
+                    @foreach($cart as $productId => $item)
+                        <div class="cart-item" data-product-id="{{ $productId }}">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    @if($item['image'])
+                                        <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}" class="product-image">
+                                    @else
+                                        <img src="{{ asset('images/default-product.jpg') }}" alt="{{ $item['name'] }}" class="product-image">
+                                    @endif
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>{{ $item['name'] }}</h5>
+                                    @if($item['size'])
+                                        <small class="d-block">Size: {{ $item['size'] }}</small>
+                                    @endif
+                                    @if($item['color'])
+                                        <small class="d-block">Color: {{ $item['color'] }}</small>
+                                    @endif
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="price">Rs. {{ number_format($item['price'], 2) }}</div>
+                                    <div class="mt-2">
+                                        <div class="item-subtotal">Rs. {{ number_format($item['price'] * $item['quantity'], 2) }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="quantity-control">
+                                        <button type="button" class="quantity-btn btn-minus" data-product-id="{{ $productId }}" data-action="decrease">
+                                            -
+                                        </button>
+                                        <input type="number" class="quantity-input" value="{{ $item['quantity'] }}" min="1" readonly>
+                                        <button type="button" class="quantity-btn btn-plus" data-product-id="{{ $productId }}" data-action="increase">
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <form action="{{ route('showroom.cart.remove', $productId) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="remove-item" onclick="return confirm('Are you sure you want to remove this item?')" title="Remove item">
+                                            ×
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart-summary">
+                    <h4 class="mb-4">Order Summary</h4>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">Rs. {{ number_format($total, 2) }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Fee</span>
+                        <span>Rs. {{ number_format($deliveryFee, 2) }}</span>
+                    </div>
+                    <hr>
+                    <div class="summary-row">
+                        <strong>Total</strong>
+                        <strong id="cart-total">Rs. {{ number_format($total, 2) }}</strong>
+                    </div>
+                    <a href="{{ route('dealer.checkout.page') }}" class="checkout-btn d-block text-center text-white text-decoration-none">
+                        Proceed to Checkout
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>
+
+<script>
+function showMessage(message, type = 'success') {
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        const container = document.querySelector('.container');
+        container.insertBefore(alertDiv, container.firstChild);
+        
+        // Auto-dismiss after 3 seconds
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // Handle quantity updates
+    document.querySelectorAll('.quantity-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            const action = this.dataset.action;
+            const inputElement = this.parentElement.querySelector('.quantity-input');
+            let currentQty = parseInt(inputElement.value);
+            
+            let newQty = action === 'increase' ? currentQty + 1 : currentQty - 1;
+            if (newQty < 1) newQty = 1;
+            
+            // Show loading state
+            button.disabled = true;
+            
+            // Send AJAX request to update cart
+            fetch(`/showroom/cart/update/${productId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    quantity: newQty
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update quantity input
+                    inputElement.value = newQty;
+                    
+                    // Update item subtotal
+                    const cartItem = button.closest('.cart-item');
+                    const subtotalElement = cartItem.querySelector('.item-subtotal');
+                    const priceElement = cartItem.querySelector('.price');
+                    const price = parseFloat(priceElement.textContent.replace('Rs. ', '').replace(',', ''));
+                    const newSubtotal = price * newQty;
+                    subtotalElement.textContent = 'Rs. ' + newSubtotal.toFixed(2);
+                    
+                    // Update cart total
+                    document.getElementById('cart-subtotal').textContent = 'Rs. ' + data.total.toFixed(2);
+                    document.getElementById('cart-total').textContent = 'Rs. ' + data.total.toFixed(2);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('An error occurred while updating the cart.', 'error');
+            })
+            .finally(() => {
+                button.disabled = false;
+                cartItem.classList.remove('loading');
+            });
+        });
+    });
+    // Add event listeners to all quantity buttons
+    document.querySelectorAll('.quantity-btn').forEach(button => {
+        button.addEventListener('click', handleQuantityChange);
+    });
+
+    function handleQuantityChange(event) {
+        const button = event.target;
+        const productId = button.dataset.productId;
+        const action = button.dataset.action;
+        const cartItem = button.closest('.cart-item');
+        const quantityInput = cartItem.querySelector('.quantity-input');
+        const currentQuantity = parseInt(quantityInput.value);
+        
+        let newQuantity = currentQuantity;
+        
+        if (action === 'increase') {
+            newQuantity = currentQuantity + 1;
+        } else if (action === 'decrease' && currentQuantity > 1) {
+            newQuantity = currentQuantity - 1;
+        } else if (action === 'decrease' && currentQuantity === 1) {
+            // Don't allow quantity to go below 1
+            return;
+        }
+
+        // Show loading state
+        cartItem.classList.add('loading');
+        button.disabled = true;
+
+        // Update quantity via AJAX
+        updateQuantity(productId, newQuantity, cartItem);
+    }
+
+    function updateQuantity(productId, newQuantity, cartItem) {
+        fetch(`/showroom/cart/update/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+            body: JSON.stringify({
+                quantity: newQuantity
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                showMessage('Cart updated successfully!', 'success');
+                // Update quantity input
+                const quantityInput = cartItem.querySelector('.quantity-input');
+                quantityInput.value = newQuantity;
+                
+                // Update item subtotal
+                const itemPrice = parseFloat(cartItem.querySelector('.price').textContent.replace('Rs. ', '').replace(',', ''));
+                const newSubtotal = (itemPrice * newQuantity).toFixed(2);
+                const subtotalElement = cartItem.querySelector('.item-subtotal');
+                subtotalElement.textContent = `Rs. ${parseFloat(newSubtotal).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+                // Update cart summary
+                const formattedTotal = parseFloat(data.total).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                document.getElementById('cart-subtotal').textContent = `Rs. ${formattedTotal}`;
+                document.getElementById('cart-total').textContent = `Rs. ${formattedTotal}`;
+
+                // Show success message (optional)
+                showMessage('Cart updated successfully!', 'success');
+            } else {
+                showMessage('Failed to update cart: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('An error occurred while updating the cart.', 'error');
+        })
+        .finally(() => {
+            // Remove loading state
+            cartItem.classList.remove('loading');
+            cartItem.querySelectorAll('.quantity-btn').forEach(btn => {
+                btn.disabled = false;
+            });
+        });
+    }
+
+    function showMessage(message, type) {
+        // Create a simple toast notification
+        const toast = document.createElement('div');
+        toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
+        toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        toast.textContent = message;
+        
+        document.body.appendChild(toast);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+});
+</script>
+@endsection

@@ -6,35 +6,44 @@
             <div class="col-md-6 col-8">
                 <div class="d-flex align-items-center">
                     <?php if(isset($dealer)): ?>
-                        <!-- Dealer Profile Image -->
-                        <div class="dealer-profile-wrapper me-3">
-                            <?php if($dealer->profile_image): ?>
-                                <img src="<?php echo e(asset('storage/' . $dealer->profile_image)); ?>"
-                                     alt="<?php echo e($dealer->name); ?>"
-                                     class="dealer-profile-img">
-                            <?php else: ?>
-                                <div class="dealer-profile-placeholder">
-                                    <i class="fas fa-user"></i>
+                        <!-- Dealer Information with Profile Image -->
+                        <div class="dealer-info d-flex align-items-center">
+                            <!-- Dealer Profile Image -->
+                            <div class="dealer-profile-wrapper me-3">
+                                <?php if($dealer->profile_image): ?>
+                                    <img src="<?php echo e(asset('storage/' . $dealer->profile_image)); ?>"
+                                         alt="<?php echo e($dealer->name); ?>"
+                                         class="dealer-profile-img">
+                                <?php else: ?>
+                                    <div class="dealer-profile-placeholder">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <!-- Dealer Name and Details -->
+                            <div class="dealer-content">
+                                <h3 class="dealer-name mb-1 text-dark fw-bold">
+                                    <?php if($dealer->dealerProfile->dealer_shop_name): ?>
+                                        <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="text-dark text-decoration-none">
+                                            <?php echo e($dealer->dealerProfile->dealer_shop_name); ?>
+
+                                        </a>
+                                    <?php else: ?>
+                                        <?php echo e($dealer->name); ?>
+
+                                    <?php endif; ?>
+                                </h3>
+                                <div class="dealer-details">
+                                    <small class="text-muted me-3 dealer-owner">
+                                        <?php echo e($dealer->name); ?>
+
+                                    </small>
+                                    <span class="dealer-badge">
+                                        <i class="fas fa-certificate me-1"></i>
+                                        Verified Seller
+                                    </span>
                                 </div>
-                            <?php endif; ?>
-                        </div>
-                        
-                        <!-- Dealer Information -->
-                        <div class="dealer-info">
-                            <h4 class="dealer-name mb-0 text-dark fw-bold">
-                                <?php echo e($dealer->dealerProfile->dealer_shop_name ?? $dealer->name); ?>
-
-                            </h4>
-                            <div class="dealer-details">
-                                <small class="text-muted me-2">
-                                    <i class="fas fa-user me-1"></i>
-                                    <?php echo e($dealer->name); ?>
-
-                                </small>
-                                <span class="dealer-badge">
-                                    <i class="fas fa-certificate me-1"></i>
-                                    Verified Dealer
-                                </span>
                             </div>
                         </div>
                     <?php else: ?>
@@ -53,22 +62,29 @@
 
             <!-- Navigation and Cart -->
             <div class="col-md-6 col-4">
-                <div class="d-flex align-items-center justify-content-end">
+                <div class="d-flex align-items-center justify-content-end h-100">
                     <!-- Navigation Menu (Desktop) -->
                     <nav class="header-navigation d-none d-md-flex me-4">
-                        <a href="" class="nav-link text-dark me-3 hover-orange">Home</a>
-                        <a href="" class="nav-link text-dark me-3 hover-orange">Products</a>
-                        <a href="" class="nav-link text-dark me-3 hover-orange">About</a>
-                        <a href="" class="nav-link text-dark hover-orange">Contact</a>
+                        <?php if(isset($dealer)): ?>
+                            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="nav-link text-dark me-3 hover-orange">Home</a>
+                            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
+                            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>" class="nav-link text-dark me-3 hover-orange">About</a>
+                            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
+                        <?php else: ?>
+                            <a href="" class="nav-link text-dark me-3 hover-orange">Home</a>
+                            <a href="" class="nav-link text-dark me-3 hover-orange">Products</a>
+                            <a href="" class="nav-link text-dark me-3 hover-orange">About</a>
+                            <a href="" class="nav-link text-dark hover-orange">Contact</a>
+                        <?php endif; ?>
                     </nav>
 
-                    <!-- Cart Icon with Count -->
-                    <div class="cart-section position-relative">
-                        
-                        <a href="" class="btn btn-outline-dark position-relative">
+                    <!-- Cart Icon with Count - Always Visible -->
+                    <div class="cart-section position-relative d-flex align-items-center" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
+                        <a href="<?php echo e(route('cart')); ?>" class="btn btn-cart-custom position-relative" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                  id="cart-count">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge"
+                                  id="cart-count"
+                                  style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
                                 <?php echo e(session('cart_count', 0)); ?>
 
                             </span>
@@ -89,11 +105,17 @@
         <!-- Mobile Menu -->
         <div class="collapse d-md-none" id="mobileMenu">
             <div class="mobile-nav-menu py-3 border-top">
-                
-                <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
-                <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
-                <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
-                <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">Contact</a>
+                <?php if(isset($dealer)): ?>
+                    <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+                    <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+                    <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+                    <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
+                <?php else: ?>
+                    <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+                    <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+                    <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+                    <a href="" class="d-block py-2 text-dark text-decoration-none hover-orange">Contact</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -106,6 +128,91 @@
 
 .cart-section .badge {
     font-size: 0.7rem;
+}
+
+/* Enhanced Dealer Profile Styling */
+.dealer-profile-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dealer-profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ff5800;
+    box-shadow: 0 4px 12px rgba(255, 88, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.dealer-profile-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 88, 0, 0.3);
+}
+
+.dealer-profile-placeholder {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff5800, #ff7a3d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+.dealer-profile-placeholder:hover {
+    transform: scale(1.05);
+}
+
+/* Enhanced Dealer Content Styling */
+.dealer-info {
+    display: flex;
+    align-items: center;
+}
+
+.dealer-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.dealer-name {
+    font-size: 1.25rem;
+    transition: color 0.3s ease;
+    margin-bottom: 5px;
+}
+
+.dealer-name a:hover {
+    color: #ff5800 !important;
+    text-decoration: none;
+}
+
+.dealer-owner {
+    font-size: 0.85rem;
+    margin-bottom: 3px;
+}
+
+.dealer-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dealer-details .dealer-badge {
+    background: #ff5800;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(255, 88, 0, 0.2);
 }
 
 .shop-logo {
@@ -127,6 +234,9 @@
 /* Dealer Profile Styling */
 .dealer-profile-wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dealer-profile-img {
@@ -160,28 +270,54 @@
 
 .dealer-info {
     flex: 1;
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+}
+
+.dealer-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 0;
 }
 
 .dealer-name {
-    font-size: 1.4rem;
+    font-size: 1.9rem;
     color: #2d3748;
-    margin-bottom: 5px;
-    font-weight: 700;
+    margin-bottom: 2px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.dealer-name a:hover {
+    color: #ff5800 !important;
+    transition: color 0.3s ease;
+}
+
+.dealer-owner {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6b7280 !important;
+    margin-bottom: 0;
 }
 
 .dealer-details {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
+    margin-top: 2px;
 }
 
 .dealer-badge {
     background: linear-gradient(135deg, #28a745, #20c997);
     color: white;
-    padding: 4px 10px;
-    border-radius: 15px;
-    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -219,29 +355,138 @@
 }
 
 /* Cart Button Styling */
-.cart-section .btn {
+.cart-section {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.btn-cart-custom {
     border-radius: 25px;
-    padding: 8px 16px;
+    padding: 10px 18px;
     transition: all 0.3s ease;
     border: 2px solid #ff5800;
     color: #ff5800;
+    background-color: transparent;
+    font-weight: 500;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    height: 45px;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-.cart-section .btn:hover {
+.btn-cart-custom:hover {
     background: #ff5800;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 88, 0, 0.3);
 }
 
-.cart-section .badge {
+.btn-cart-custom:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 88, 0, 0.2);
+}
+
+.cart-badge {
     background: #dc3545 !important;
     font-weight: 600;
+    font-size: 0.7rem;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* Override any external CSS that might hide the cart */
+.cart-section,
+.cart-section *,
+.btn-cart-custom,
+.btn-cart-custom *,
+.cart-badge {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Force cart visibility - override hover-only behavior */
+.cart-section:not(:hover),
+.cart-section:hover,
+.btn-cart-custom:not(:hover),
+.btn-cart-custom:hover,
+.cart-badge:not(:hover),
+.cart-badge:hover {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Additional overrides for common CSS patterns that might hide cart */
+.cart-section {
+    position: relative !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.btn-cart-custom {
+    position: relative !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.cart-badge {
+    position: absolute !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translate(50%, -50%) !important;
+}
+
+/* Ensure cart is visible on all screen sizes */
+@media (max-width: 1200px) {
+    .cart-section {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .btn-cart-custom {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .cart-section {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .btn-cart-custom {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
 }
 
 @media (max-width: 768px) {
     .dealer-name {
-        font-size: 1.1rem;
+        font-size: 1.4rem;
+        margin-bottom: 2px;
     }
 
     .dealer-profile-img,
@@ -254,16 +499,224 @@
         font-size: 20px;
     }
 
+    .dealer-owner {
+        font-size: 0.8rem;
+    }
+
     .dealer-details {
         flex-direction: column;
         align-items: flex-start;
-        gap: 5px;
+        gap: 6px;
+        margin-top: 2px;
     }
 
     .dealer-badge {
-        font-size: 10px;
-        padding: 3px 8px;
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+
+    .btn-cart-custom {
+        padding: 8px 14px;
+        min-width: 50px;
+        height: 40px;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .cart-section {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .cart-badge {
+        font-size: 0.6rem;
+        min-width: 16px;
+        height: 16px;
+    }
+
+    .header-navigation {
+        display: none !important;
+    }
+
+    .col-4 {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
     }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scrolling for contact links (for current page dealer info)
+    document.querySelectorAll('.contact-scroll').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Handle contact navigation to about page
+    document.querySelectorAll('.contact-about-scroll').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#contact-section')) {
+                // Let the browser handle navigation to the about page
+                // The hash will be handled by the about page's JavaScript
+                window.location.href = href;
+            }
+        });
+    });
+    
+    // Ensure cart is always visible and override any hover-only behavior
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartSection = document.querySelector('.cart-section');
+        const cartButton = document.querySelector('.btn-cart-custom');
+        const cartBadge = document.querySelector('.cart-badge');
+        
+        if (cartSection) {
+            cartSection.style.display = 'flex';
+            cartSection.style.visibility = 'visible';
+            cartSection.style.opacity = '1';
+        }
+        
+        if (cartButton) {
+            cartButton.style.display = 'flex';
+            cartButton.style.visibility = 'visible';
+            cartButton.style.opacity = '1';
+        }
+        
+        if (cartBadge) {
+            cartBadge.style.display = 'flex';
+            cartBadge.style.visibility = 'visible';
+            cartBadge.style.opacity = '1';
+        }
+        
+        // Override any CSS that might hide the cart
+        const style = document.createElement('style');
+        style.textContent = `
+            .cart-section,
+            .cart-section *,
+            .btn-cart-custom,
+            .btn-cart-custom *,
+            .cart-badge {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            /* Force cart visibility - override hover-only behavior */
+            .cart-section:not(:hover),
+            .cart-section:hover,
+            .btn-cart-custom:not(:hover),
+            .btn-cart-custom:hover,
+            .cart-badge:not(:hover),
+            .cart-badge:hover {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            /* Additional overrides for common CSS patterns that might hide cart */
+            .cart-section {
+                position: relative !important;
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            
+            .btn-cart-custom {
+                position: relative !important;
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                transform: none !important;
+                transition: all 0.3s ease !important;
+            }
+            
+            .cart-badge {
+                position: absolute !important;
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                transform: translate(50%, -50%) !important;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Continuously monitor and force cart visibility
+        setInterval(function() {
+            const cartSection = document.querySelector('.cart-section');
+            const cartButton = document.querySelector('.btn-cart-custom');
+            const cartBadge = document.querySelector('.cart-badge');
+            
+            if (cartSection) {
+                cartSection.style.display = 'flex';
+                cartSection.style.visibility = 'visible';
+                cartSection.style.opacity = '1';
+            }
+            
+            if (cartButton) {
+                cartButton.style.display = 'flex';
+                cartButton.style.visibility = 'visible';
+                cartButton.style.opacity = '1';
+            }
+            
+            if (cartBadge) {
+                cartBadge.style.display = 'flex';
+                cartBadge.style.visibility = 'visible';
+                cartBadge.style.opacity = '1';
+            }
+        }, 1000); // Check every second
+        
+        // Watch for DOM changes that might affect cart visibility
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && 
+                    (mutation.attributeName === 'style' || 
+                     mutation.attributeName === 'class')) {
+                    
+                    const target = mutation.target;
+                    if (target.classList.contains('cart-section') ||
+                        target.classList.contains('btn-cart-custom') ||
+                        target.classList.contains('cart-badge')) {
+                        
+                        // Force visibility
+                        target.style.display = 'flex';
+                        target.style.visibility = 'visible';
+                        target.style.opacity = '1';
+                    }
+                }
+            });
+        });
+        
+        // Start observing
+        const cartSection = document.querySelector('.cart-section');
+        const cartButton = document.querySelector('.btn-cart-custom');
+        const cartBadge = document.querySelector('.cart-badge');
+        
+        if (cartSection) {
+            observer.observe(cartSection, { attributes: true, attributeFilter: ['style', 'class'] });
+        }
+        if (cartButton) {
+            observer.observe(cartButton, { attributes: true, attributeFilter: ['style', 'class'] });
+        }
+        if (cartBadge) {
+            observer.observe(cartBadge, { attributes: true, attributeFilter: ['style', 'class'] });
+        }
+    });
+});
+</script>
 <?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/DealerShowroom/layouts/header.blade.php ENDPATH**/ ?>

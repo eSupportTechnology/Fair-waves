@@ -95,6 +95,7 @@
                     <input type="hidden" name="products[0][size]" value="{{ $item['size'] ?? '' }}">
                     <input type="hidden" name="products[0][color]" value="{{ $item['color'] ?? '' }}">
                     <input type="hidden" name="products[0][cost]" value="{{ $item['price'] }}">
+                    <input type="hidden" name="products[0][dealerProductLink]" value="{{ $item['dealerProductLink'] }}">
 
                     <div class="border-top border-gray-100 pt-30 mt-30">
                         <div class="mb-0 flex-between gap-8">

@@ -418,7 +418,7 @@ Route::post('/test-profile-upload', function(Request $request) {
     \Log::info('Test profile upload request received');
     \Log::info('Request data:', $request->all());
     \Log::info('Has file:', [$request->hasFile('profile_image')]);
-    
+
     if ($request->hasFile('profile_image')) {
         $file = $request->file('profile_image');
         \Log::info('File details:', [
@@ -427,7 +427,7 @@ Route::post('/test-profile-upload', function(Request $request) {
             'type' => $file->getMimeType(),
             'error' => $file->getError()
         ]);
-        
+
         return response()->json([
             'success' => true,
             'message' => 'File received successfully',
@@ -438,7 +438,7 @@ Route::post('/test-profile-upload', function(Request $request) {
             ]
         ]);
     }
-    
+
     return response()->json([
         'success' => false,
         'message' => 'No file received'
@@ -554,7 +554,7 @@ Route::prefix('showroom')->group(function () {
     Route::get('/{dealer_shop_name}/about', [ShowRoomController::class, 'about'])->name('showroom.about');
     Route::get('/{dealer_shop_name}/product/{unique_code}', [ShowRoomController::class, 'productView'])->name('showroom.productView');
     Route::post('/cart/add/{id}', [ShowRoomController::class, 'dealerAdd'])->name('dealer.cart.add');
-    Route::post('/buy-now/{id}', [ShowRoomController::class, 'dealerbuyNow'])->name('dealer.buy.now');
+    Route::post('/buy-now/{id}/{dpid}', [ShowRoomController::class, 'dealerbuyNow'])->name('dealer.buy.now');
 
 
     // Route::post('/withdraw', [DealerController::class, 'requestWithdrawal'])->name('dealer.withdraw.request');

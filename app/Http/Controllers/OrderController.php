@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commission;
 use App\Models\User;
 use App\Models\CustomerOrder;
 use App\Models\CustomerOrderItems;
 use Illuminate\Http\Request;
-
-
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -107,10 +107,82 @@ class OrderController extends Controller
             'status' => $request->status,
         ]);
 
+        if($request->status == 'Delivered' && $order->order_type == 'annonymous'){
+            $this->dealerPointAdd($order);
+        }
+
         // Return success message
         return redirect()->back()->with('success', "Order status updated to '{$request->status}' successfully.");
     }
 
+    protected function dealerPointAdd($customerOrder){
+        // 1. Get dealer and product IV
+        // Assuming items() returns a relationship and dealerProductLink() returns a related model with dealer_id
+        $firstItem = $customerOrder->items()->first();
+        $dealerProductLink = $firstItem ? $firstItem->dealerProductLink : null;
+        $dealerId = $dealerProductLink ? $dealerProductLink->dealer_id : null;
+        $dealer = $dealerId ? User::find($dealerId) : null;
+        $dealerProfile = $dealer->dealerProfile;
 
+        // IV = Distributor Profit / 100
+        $iv = $customerOrder->iv_value ?? round($customerOrder->total_price / 100); // fallback
+        $rankPercent = $this->getRankPercentage($dealerProfile->rank);
 
+        // 2. Direct Commission (self)
+        $directCommission = $iv * $rankPercent;
+
+        Commission::create([
+            'dealer_id' => $dealer->id,
+            'from_user_id' => $dealer->id,
+            'bv' => $iv,
+            'amount' => $directCommission,
+            'level' => 'direct',
+            'customer_order_id' => $customerOrder->id,
+        ]);
+
+        // 3. Traverse uplines
+        $currentDealer = $dealer;
+        $currentPercent = $rankPercent;
+
+        while ($uplineRef = $currentDealer->referredByDealer) {
+            $upline = $uplineRef->dealer;
+
+            if (!$upline || !$upline->dealerProfile) break;
+
+            $uplinePercent = $this->getRankPercentage($upline->dealerProfile->rank);
+            $gap = $uplinePercent - $currentPercent;
+
+            if ($gap > 0) {
+                $gapCommission = $iv * $gap;
+
+                Commission::create([
+                    'dealer_id' => $upline->id,
+                    'from_user_id' => $dealer->id,
+                    'bv' => $iv,
+                    'amount' => $gapCommission,
+                    'level' => 'indirect',
+                    'customer_order_id' => $customerOrder->id,
+                ]);
+            }
+
+            $currentDealer = $upline;
+            $currentPercent = $uplinePercent;
+
+            // optional: break if upline is top (Diamond)
+            if ($uplinePercent == 100) break;
+        }
+    }
+
+    protected function getRankPercentage($rank)
+    {
+        return match ($rank) {
+            'Loyalty Member' => 50,
+            'Bronze Member' => 60,
+            'Silver Member' => 70,
+            'Gold Member' => 80,
+            'Platinum Member' => 90,
+            'Diamond Member' => 100,
+            default => 0,
+        };
+    }
 }

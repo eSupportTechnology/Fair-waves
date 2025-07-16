@@ -13,6 +13,9 @@
         <a class="nav-link {{ request('status') === 'All' || !request('status') ? 'active' : '' }}" href="{{ route('orders', ['status' => 'All']) }}">All Orders</a>
     </li>
     <li class="nav-item">
+        <a class="nav-link {{ request('status') === 'Pending' ? 'active' : '' }}" href="{{ route('orders', ['status' => 'Pending']) }}">Pending</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link {{ request('status') === 'Packed' ? 'active' : '' }}" href="{{ route('orders', ['status' => 'Packed']) }}">Packed</a>
     </li>
     <li class="nav-item">

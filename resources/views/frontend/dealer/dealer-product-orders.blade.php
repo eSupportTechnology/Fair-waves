@@ -21,10 +21,10 @@
             <tbody>
                 @foreach($orders as $order)
                     <tr>
-                        <td>{{ $order->customer_name }}</td>
-                        <td>{{ $order->quantity }}</td>
+                        <td>{{ $order->order->order->customer_name }}</td>
+                        <td>{{ $order->order->quantity }}</td>
                         <td>₹{{ number_format($order->total_price, 2) }}</td>
-                        <td>{{ ucfirst($order->status) }}</td>
+                        <td>{{ ucfirst($order->order->order->status) }}</td>
                         <td>{{ $order->created_at->format('d M Y') }}</td>
                         <td>
                             <a href="https://track.example.com/order/{{ $order->id }}" target="_blank" class="btn btn-sm btn-outline-secondary">

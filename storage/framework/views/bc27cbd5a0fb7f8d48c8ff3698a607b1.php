@@ -11,6 +11,9 @@
         <a class="nav-link <?php echo e(request('status') === 'All' || !request('status') ? 'active' : ''); ?>" href="<?php echo e(route('orders', ['status' => 'All'])); ?>">All Orders</a>
     </li>
     <li class="nav-item">
+        <a class="nav-link <?php echo e(request('status') === 'Pending' ? 'active' : ''); ?>" href="<?php echo e(route('orders', ['status' => 'Pending'])); ?>">Pending</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link <?php echo e(request('status') === 'Packed' ? 'active' : ''); ?>" href="<?php echo e(route('orders', ['status' => 'Packed'])); ?>">Packed</a>
     </li>
     <li class="nav-item">

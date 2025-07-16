@@ -14,6 +14,7 @@ class CustomerOrderItems extends Model
 
     protected $fillable = [
         'order_code', 'product_id', 'quantity', 'size', 'color', 'cost', 'date','bv',
+        'dealer_product_link_id',
     ];
 
     public function order()
@@ -30,5 +31,10 @@ class CustomerOrderItems extends Model
 {
     return $this->hasOne(Review::class, 'order_item_id', 'id');
 }
+
+    public function dealerProductLink()
+    {
+        return $this->belongsTo(DealerProductLink::class, 'dealer_product_link_id', 'id');
+    }
 
 }

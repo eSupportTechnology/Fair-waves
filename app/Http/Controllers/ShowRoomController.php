@@ -6,6 +6,7 @@ use App\Models\AffiliateReferral;
 use App\Models\CustomerOrder;
 use App\Models\CustomerOrderItems;
 use App\Models\DealerProductLink;
+use App\Models\DealerProductOrder;
 use App\Models\Product;
 use App\Models\RaffleTicket;
 use App\Models\User;
@@ -98,7 +99,7 @@ class ShowRoomController extends Controller
         return redirect()->back()->with('success', 'Product added to cart.');
     }
 
-    public function dealerBuyNow($id, Request $request)
+    public function dealerBuyNow($id,$dpid, Request $request)
     {
         // dd($request->all());
 
@@ -112,6 +113,7 @@ class ShowRoomController extends Controller
             "quantity" => 1,
             "size" => $request->input('size'), // can be null
             "color" => $request->input('color'), // can be null
+            "dealerProductLink"=> $dpid,
         ]);
 
         return redirect()->route('dealer.checkout.page');
@@ -135,6 +137,7 @@ class ShowRoomController extends Controller
             'postal_code' => 'required|string|max:20',
             'products' => 'required|array|min:1',
             'products.*.product_id' => 'required|integer|exists:products,id',
+            'products.*.dealerProductLink' => 'required|integer|exists:dealer_product_links,id',
             'products.*.quantity' => 'required|integer|min:1',
             'products.*.cost' => 'required|numeric|min:0',
             'products.*.size' => 'nullable|string|max:50',
@@ -150,7 +153,7 @@ class ShowRoomController extends Controller
         // Create customer order
         $order = CustomerOrder::create([
             'order_code' => $orderCode,
-            'user_id' => null, // anonymous user
+            'user_id' => Auth::id() ?? null, // set user id if logged in, else null
             'customer_name' => $request->first_name . ' ' . $request->last_name,
             'phone' => $request->phone,
             'email' => $request->email,
@@ -166,18 +169,28 @@ class ShowRoomController extends Controller
             'order_type' => 'annonymous',
         ]);
 
+
+
         // Add products to the order
         foreach ($request->products as $product) {
             $itemSubtotal = $product['cost'] * $product['quantity'];
 
-            CustomerOrderItems::create([
+            $customerOrder= CustomerOrderItems::create([
                 'order_code' => $orderCode,
                 'product_id' => $product['product_id'],
+                'dealer_product_link_id' => $product['dealerProductLink'],
                 'quantity' => $product['quantity'],
                 'size' => $product['size'],
                 'color' => $product['color'],
                 'cost' => $itemSubtotal,
                 'date' => Carbon::now(),
+            ]);
+
+            $dealer = DealerProductLink::where('id', $product['dealerProductLink'])->first();
+            DealerProductOrder::create([
+                'dealer_product_link_id'=>$product['dealerProductLink'],
+                'customer_order_item_id'=>$customerOrder->id,
+                'user_id'=>$dealer ? $dealer->dealer_id : null,
             ]);
 
             // Decrease product quantity

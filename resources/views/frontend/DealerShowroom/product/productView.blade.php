@@ -344,6 +344,21 @@
         box-shadow: var(--box-shadow);
         border: 1px solid #e9ecef;
         margin-bottom: 25px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .product-info-main {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-info-content {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
     }
 
     .section-title {
@@ -793,7 +808,7 @@
                         <div class="action-buttons">
 @if($productLink->product->quantity > 0)
     <!-- Add to Cart Form -->
-    <form action="{{ route('dealer.cart.add', $productLink->product->id) }}" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
+    <form action="{{ route('showroom.cart.add', $productLink->product->id) }}" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
         @csrf
         <input type="hidden" name="size">
         <input type="hidden" name="color">

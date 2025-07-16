@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'About ' . $dealer->dealerProfile->dealer_shop_name); ?>
 
 <?php $__env->startSection('content'); ?>

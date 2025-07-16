@@ -48,6 +48,17 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\VendorProductController;
 use App\Http\Controllers\VendorOrderController;
 use App\Http\Controllers\VendorAccountController;
+use App\Http\Controllers\ShowroomCartController;
+
+// Showroom Cart Routes
+Route::prefix('showroom/cart')->group(function () {
+    Route::post('/add/{productId}', [ShowroomCartController::class, 'addToCart'])->name('showroom.cart.add');
+    Route::get('/', [ShowroomCartController::class, 'showCart'])->name('showroom.cart');
+    Route::delete('/remove/{productId}', [ShowroomCartController::class, 'removeFromCart'])->name('showroom.cart.remove');
+    Route::patch('/update/{productId}', [ShowroomCartController::class, 'updateCart'])->name('showroom.cart.update');
+    Route::post('/clear', [ShowroomCartController::class, 'clearCart'])->name('showroom.cart.clear');
+    Route::get('/count', [ShowroomCartController::class, 'getCartCount'])->name('showroom.cart.count');
+});
 use App\Http\Controllers\VendorShopController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\VendorWalletController;
@@ -549,10 +560,7 @@ Route::prefix('showroom')->group(function () {
     // Route::post('/withdraw', [DealerController::class, 'requestWithdrawal'])->name('dealer.withdraw.request');
 });
 
-Route::get('/product/checkout', function () {
-    $item = session('buy_now');
-    return view('frontend.DealerShowroom.checkout', compact('item'));
-})->name('dealer.checkout.page');
+Route::get('/product/checkout', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.checkout.page');
 Route::post('/product/buy_now_place-order', [ShowRoomController::class, 'dealer_buynow_placeOrder'])->name('dealer_buynow_placeOrder');
 Route::get('/product/payment/{order_code}', [ShowRoomController::class, 'showPaymentPage'])->name('dealerPayment');
 Route::post('/product/confirm-cod-order/{order_code}', [ShowRoomController::class, 'confirmCODOrder'])->name('dealer.confirm.cod.order');

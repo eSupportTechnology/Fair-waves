@@ -76,12 +76,11 @@
                     </nav>
 
                     <!-- Cart Icon with Count - Always Visible -->
-                    <div class="cart-section position-relative d-flex align-items-center" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
-                        <a href="{{ route('cart') }}" class="btn btn-cart-custom position-relative" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
+                    <div class="cart-section position-relative d-flex align-items-center">
+                        <a href="{{ route('showroom.cart') }}" class="btn btn-cart-custom position-relative">
                             <i class="fas fa-shopping-cart"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge"
-                                  id="cart-count"
-                                  style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
+                                  id="cart-count">
                                 {{ session('cart_count', 0) }}
                             </span>
                         </a>
@@ -350,35 +349,34 @@
     width: 100%;
 }
 
-/* Cart Button Styling */
+/* Cart Button Styling - Simple Orange Button */
 .cart-section {
-    display: flex !important;
+    display: flex;
     align-items: center;
     justify-content: center;
-    visibility: visible !important;
-    opacity: 1 !important;
 }
 
 .btn-cart-custom {
-    border-radius: 25px;
-    padding: 10px 18px;
-    transition: all 0.3s ease;
-    border: 2px solid #ff5800;
-    color: #ff5800;
-    background-color: transparent;
-    font-weight: 500;
-    display: flex !important;
+    background-color: #ff5800;
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 60px;
-    height: 45px;
-    visibility: visible !important;
-    opacity: 1 !important;
+    min-width: 50px;
+    height: 50px;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
 .btn-cart-custom:hover {
-    background: #ff5800;
-    color: white;
+    background-color: #e04e00;
+    color: #000000;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 88, 0, 0.3);
 }
@@ -388,8 +386,13 @@
     box-shadow: 0 0 0 3px rgba(255, 88, 0, 0.2);
 }
 
+.btn-cart-custom .fas {
+    color: #000000;
+}
+
 .cart-badge {
     background: #dc3545 !important;
+    color: white;
     font-weight: 600;
     font-size: 0.7rem;
     min-width: 18px;
@@ -400,82 +403,23 @@
     border-radius: 50%;
 }
 
-/* Override any external CSS that might hide the cart */
-.cart-section,
-.cart-section *,
-.btn-cart-custom,
-.btn-cart-custom *,
-.cart-badge {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Force cart visibility - override hover-only behavior */
-.cart-section:not(:hover),
-.cart-section:hover,
-.btn-cart-custom:not(:hover),
-.btn-cart-custom:hover,
-.cart-badge:not(:hover),
-.cart-badge:hover {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Additional overrides for common CSS patterns that might hide cart */
-.cart-section {
-    position: relative !important;
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-}
-
-.btn-cart-custom {
-    position: relative !important;
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    transform: none !important;
-    transition: all 0.3s ease !important;
-}
-
-.cart-badge {
-    position: absolute !important;
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    transform: translate(50%, -50%) !important;
-}
-
-/* Ensure cart is visible on all screen sizes */
 @media (max-width: 1200px) {
     .cart-section {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+        display: flex;
     }
     
     .btn-cart-custom {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+        display: flex;
     }
 }
 
 @media (max-width: 992px) {
     .cart-section {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+        display: flex;
     }
     
     .btn-cart-custom {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+        display: flex;
     }
 }
 
@@ -512,18 +456,14 @@
     }
 
     .btn-cart-custom {
-        padding: 8px 14px;
-        min-width: 50px;
-        height: 40px;
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+        padding: 10px 14px;
+        min-width: 45px;
+        height: 45px;
+        font-size: 16px;
     }
 
     .cart-section {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+        display: flex;
     }
 
     .cart-badge {
@@ -572,146 +512,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = href;
             }
         });
-    });
-    
-    // Ensure cart is always visible and override any hover-only behavior
-    document.addEventListener('DOMContentLoaded', function() {
-        const cartSection = document.querySelector('.cart-section');
-        const cartButton = document.querySelector('.btn-cart-custom');
-        const cartBadge = document.querySelector('.cart-badge');
-        
-        if (cartSection) {
-            cartSection.style.display = 'flex';
-            cartSection.style.visibility = 'visible';
-            cartSection.style.opacity = '1';
-        }
-        
-        if (cartButton) {
-            cartButton.style.display = 'flex';
-            cartButton.style.visibility = 'visible';
-            cartButton.style.opacity = '1';
-        }
-        
-        if (cartBadge) {
-            cartBadge.style.display = 'flex';
-            cartBadge.style.visibility = 'visible';
-            cartBadge.style.opacity = '1';
-        }
-        
-        // Override any CSS that might hide the cart
-        const style = document.createElement('style');
-        style.textContent = `
-            .cart-section,
-            .cart-section *,
-            .btn-cart-custom,
-            .btn-cart-custom *,
-            .cart-badge {
-                display: flex !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-            
-            /* Force cart visibility - override hover-only behavior */
-            .cart-section:not(:hover),
-            .cart-section:hover,
-            .btn-cart-custom:not(:hover),
-            .btn-cart-custom:hover,
-            .cart-badge:not(:hover),
-            .cart-badge:hover {
-                display: flex !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-            
-            /* Additional overrides for common CSS patterns that might hide cart */
-            .cart-section {
-                position: relative !important;
-                display: flex !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                transform: none !important;
-                transition: none !important;
-            }
-            
-            .btn-cart-custom {
-                position: relative !important;
-                display: flex !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                transform: none !important;
-                transition: all 0.3s ease !important;
-            }
-            
-            .cart-badge {
-                position: absolute !important;
-                display: flex !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                transform: translate(50%, -50%) !important;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Continuously monitor and force cart visibility
-        setInterval(function() {
-            const cartSection = document.querySelector('.cart-section');
-            const cartButton = document.querySelector('.btn-cart-custom');
-            const cartBadge = document.querySelector('.cart-badge');
-            
-            if (cartSection) {
-                cartSection.style.display = 'flex';
-                cartSection.style.visibility = 'visible';
-                cartSection.style.opacity = '1';
-            }
-            
-            if (cartButton) {
-                cartButton.style.display = 'flex';
-                cartButton.style.visibility = 'visible';
-                cartButton.style.opacity = '1';
-            }
-            
-            if (cartBadge) {
-                cartBadge.style.display = 'flex';
-                cartBadge.style.visibility = 'visible';
-                cartBadge.style.opacity = '1';
-            }
-        }, 1000); // Check every second
-        
-        // Watch for DOM changes that might affect cart visibility
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && 
-                    (mutation.attributeName === 'style' || 
-                     mutation.attributeName === 'class')) {
-                    
-                    const target = mutation.target;
-                    if (target.classList.contains('cart-section') ||
-                        target.classList.contains('btn-cart-custom') ||
-                        target.classList.contains('cart-badge')) {
-                        
-                        // Force visibility
-                        target.style.display = 'flex';
-                        target.style.visibility = 'visible';
-                        target.style.opacity = '1';
-                    }
-                }
-            });
-        });
-        
-        // Start observing
-        const cartSection = document.querySelector('.cart-section');
-        const cartButton = document.querySelector('.btn-cart-custom');
-        const cartBadge = document.querySelector('.cart-badge');
-        
-        if (cartSection) {
-            observer.observe(cartSection, { attributes: true, attributeFilter: ['style', 'class'] });
-        }
-        if (cartButton) {
-            observer.observe(cartButton, { attributes: true, attributeFilter: ['style', 'class'] });
-        }
-        if (cartBadge) {
-            observer.observe(cartBadge, { attributes: true, attributeFilter: ['style', 'class'] });
-        }
     });
 });
 </script>

@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('dealer_product_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dealer_product_link_id')->constrained()->onDelete('cascade');
-            $table->string('customer_name');
-            $table->integer('quantity');
-            $table->decimal('total_price', 10, 2);
-            $table->enum('status', ['Pending', 'Accepted', 'Shipped', 'Delivered', 'Cancelled', 'Returned'])->default('Pending');
+            $table->foreignId('customer_order_item_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

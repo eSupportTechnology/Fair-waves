@@ -621,7 +621,7 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
-               
+
                 <li class="breadcrumb-item">
                     <a href="{{ route('showroom.index', $productLink->dealer->dealerProfile->dealer_shop_name) }}">
                         <i class="fas fa-store me-1"></i> {{ $productLink->dealer->dealerProfile->dealer_shop_name }}
@@ -803,7 +803,7 @@
     </form>
 
     <!-- Buy Now Form -->
-    <form action="{{ route('dealer.buy.now', $productLink->product->id) }}" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
+    <form action="{{ route('dealer.buy.now', [$productLink->product->id, $productLink->id]) }}" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
         @csrf
         <input type="hidden" name="size">
         <input type="hidden" name="color">
@@ -1218,16 +1218,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function equalizeHeights() {
         const imageContainer = document.querySelector('.product-images-container');
         const infoContainer = document.querySelector('.product-info-card');
-        
+
         if (imageContainer && infoContainer) {
             // Reset heights
             imageContainer.style.height = 'auto';
             infoContainer.style.height = 'auto';
-            
+
             // Get heights
             const imageHeight = imageContainer.offsetHeight;
             const infoHeight = infoContainer.offsetHeight;
-            
+
             // Set equal heights
             const maxHeight = Math.max(imageHeight, infoHeight);
             imageContainer.style.height = maxHeight + 'px';
@@ -1245,7 +1245,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 targetElement.scrollIntoView({
                     behavior: 'smooth',

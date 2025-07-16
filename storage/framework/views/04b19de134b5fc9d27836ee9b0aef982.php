@@ -93,6 +93,7 @@
                     <input type="hidden" name="products[0][size]" value="<?php echo e($item['size'] ?? ''); ?>">
                     <input type="hidden" name="products[0][color]" value="<?php echo e($item['color'] ?? ''); ?>">
                     <input type="hidden" name="products[0][cost]" value="<?php echo e($item['price']); ?>">
+                    <input type="hidden" name="products[0][dealerProductLink]" value="<?php echo e($item['dealerProductLink']); ?>">
 
                     <div class="border-top border-gray-100 pt-30 mt-30">
                         <div class="mb-0 flex-between gap-8">

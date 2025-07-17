@@ -23,6 +23,7 @@
             padding: 1.5rem 0;
             margin: -25px -25px 1.5rem -25px;
             border-radius: 0 0 12px 12px;
+            margin-top: 20px;
         }
 
         .rank-badge {
@@ -1107,6 +1108,8 @@
 
 
                 <!-- Team Hierarchy -->
+
+<!-- Team Hierarchy -->
 <div class="team-hierarchy flex-grow-1">
     <h5 class="mb-3"><i class="fas fa-sitemap text-primary me-2"></i>Team Overview</h5>
     <div class="hierarchy-node">
@@ -1118,7 +1121,7 @@
     </div>
 
     <div style="margin-left: 1.5rem;">
-        <?php $__empty_1 = true; $__currentLoopData = $directReferrals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $referral): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $directReferrals->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $referral): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <div class="hierarchy-node">
                 <div class="node-avatar"><?php echo e(strtoupper(substr($referral->name, 0, 2))); ?></div>
                 <div>
@@ -1129,6 +1132,12 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <p class="text-muted ms-3">No team members yet.</p>
         <?php endif; ?>
+        
+        <?php if($directReferrals->count() > 3): ?>
+            <div class="text-center mt-2">
+                <small class="text-muted">+<?php echo e($directReferrals->count() - 3); ?> more members</small>
+            </div>
+        <?php endif; ?>
     </div>
 
     <div class="text-center mt-3">
@@ -1137,7 +1146,6 @@
         </a>
     </div>
 </div>
-
 
                 <!-- Quick Actions -->
                 <div class="stats-card">

@@ -130,7 +130,7 @@
                             <div class="row align-items-center">
                                 <div class="col-md-2">
                                     @if($item['image'])
-                                        <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}" class="product-image">
+                                        <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}" class="product-image">
                                     @else
                                         <img src="{{ asset('images/default-product.jpg') }}" alt="{{ $item['name'] }}" class="product-image">
                                     @endif
@@ -191,9 +191,8 @@
                         <strong>Total</strong>
                         <strong id="cart-total">Rs. {{ number_format($total, 2) }}</strong>
                     </div>
-                    <a href="{{ route('dealer.checkout.page') }}" class="checkout-btn d-block text-center text-white text-decoration-none">
-                        Proceed to Checkout
-                    </a>
+                
+                        <a href="{{ route('cart.checkout') }}" class="btn btn-primary checkout-btn">Proceed to Checkout</a>
                 </div>
             </div>
         </div>

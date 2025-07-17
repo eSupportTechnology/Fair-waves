@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('content'); ?>
 
 <!-- Breadcrumb -->
@@ -7,10 +9,18 @@
             <h6 class="mb-0">Checkout</h6>
             <ul class="flex-align gap-8 flex-wrap">
                 <li class="text-sm">
-                    <a href="<?php echo e(url('/')); ?>" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                    <a href="<?php echo e(url('/')); ?>" class="text-gray-900 flex-align gap-8 home-link">
                         <i class="ph ph-house"></i> Home
                     </a>
                 </li>
+                <style>
+                    .home-link {
+                        transition: color 0.3s ease;
+                    }
+                    .home-link:hover {
+                        color: #ffffff !important;
+                    }
+                </style>
                 <li class="flex-align"><i class="ph ph-caret-right"></i></li>
                 <li class="text-sm text-main-600">Checkout</li>
             </ul>
@@ -20,11 +30,7 @@
 
 <!-- Checkout -->
 <section class="checkout py-80">
-<?php if(session('buy_now')): ?>
-    <form action="<?php echo e(route('dealer_buynow_placeOrder')); ?>" method="POST">
-<?php else: ?>
-    <form action="<?php echo e(route('dealer.cart.placeOrder')); ?>" method="POST">
-<?php endif; ?>
+<form action="<?php echo e(route('dealer.cart.placeOrder')); ?>" method="POST">
 <?php echo csrf_field(); ?>
 
 <div class="container container-lg">
@@ -75,29 +81,36 @@
                     </div>
 
                     <?php
-                        $item = session('buy_now');
-                        $product = \App\Models\Product::find($item['id']);
-                        $subtotal = $item['price'] * $item['quantity'];
+                        $cart = session('showroom_cart', []);
+                        $subtotal = 0;
                         $deliveryFee = 300;
-                        $total = $subtotal + $deliveryFee;
                     ?>
 
-                    <div class="flex-between gap-24 mb-32">
-                        <div class="flex-align gap-12">
-                            <span class="text-gray-900 fw-normal text-sm font-heading-two w-144"><?php echo e($item['name']); ?></span>
-                            <span class="text-gray-900 fw-normal text-sm font-heading-two"><i class="ph-bold ph-x"></i></span>
-                            <span class="text-gray-900 fw-semibold text-sm font-heading-two"><?php echo e($item['quantity']); ?></span>
-                        </div>
-                        <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs <?php echo e(number_format($subtotal, 2)); ?></span>
-                    </div>
+                    <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="flex-between gap-24 mb-32">
+                            <div class="flex-align gap-12">
+                                <span class="text-gray-900 fw-normal text-sm font-heading-two w-144"><?php echo e($item['name']); ?></span>
+                                <span class="text-gray-900 fw-normal text-sm font-heading-two"><i class="ph-bold ph-x"></i></span>
+                                <span class="text-gray-900 fw-semibold text-sm font-heading-two"><?php echo e($item['quantity']); ?></span>
+                            </div>
+                            <?php
+                                $itemSubtotal = $item['price'] * $item['quantity'];
+                                $subtotal += $itemSubtotal;
+                            ?>
+                            <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs <?php echo e(number_format($itemSubtotal, 2)); ?></span>
 
-                    <!-- Hidden Fields -->
-                    <input type="hidden" name="products[0][product_id]" value="<?php echo e($item['id']); ?>">
-                    <input type="hidden" name="products[0][quantity]" value="<?php echo e($item['quantity']); ?>">
-                    <input type="hidden" name="products[0][size]" value="<?php echo e($item['size'] ?? ''); ?>">
-                    <input type="hidden" name="products[0][color]" value="<?php echo e($item['color'] ?? ''); ?>">
-                    <input type="hidden" name="products[0][cost]" value="<?php echo e($item['price']); ?>">
-                    <input type="hidden" name="products[0][dealerProductLink]" value="<?php echo e($item['dealerProductLink']); ?>">
+                            <!-- Hidden Fields -->
+                            <input type="hidden" name="products[<?php echo e($index); ?>][product_id]" value="<?php echo e($item['id']); ?>">
+                            <input type="hidden" name="products[<?php echo e($index); ?>][quantity]" value="<?php echo e($item['quantity']); ?>">
+                            <input type="hidden" name="products[<?php echo e($index); ?>][size]" value="<?php echo e($item['size'] ?? ''); ?>">
+                            <input type="hidden" name="products[<?php echo e($index); ?>][color]" value="<?php echo e($item['color'] ?? ''); ?>">
+                            <input type="hidden" name="products[<?php echo e($index); ?>][cost]" value="<?php echo e($item['price']); ?>">
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                    <?php
+                        $total = $subtotal + $deliveryFee;
+                    ?>
 
                     <div class="border-top border-gray-100 pt-30 mt-30">
                         <div class="mb-0 flex-between gap-8">
@@ -140,4 +153,4 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('frontend.DealerShowroom.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/checkout.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('frontend.DealerShowroom.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/cart/checkout.blade.php ENDPATH**/ ?>

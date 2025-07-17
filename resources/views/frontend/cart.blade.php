@@ -3,8 +3,29 @@
 
 @section('content')
 <style>
+    :root {
+        --primary-color: #ff5800;
+        --primary-dark: #e64a00;
+        --secondary-color: #6c757d;
+        --success-color: #28a745;
+        --warning-color: #ffc107;
+        --danger-color: #dc3545;
+        --light-bg: #f8f9fa;
+        --white: #ffffff;
+        --border-radius: 12px;
+        --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-.color-circle {
+    .breadcrumb-custom {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        padding: 20px 0;
+        margin-bottom: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .color-circle {
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -44,8 +65,8 @@
 </style>
 
     <!-- ========================= Breadcrumb Start =============================== -->
-<div class="breadcrumb mb-0 py-26 bg-main-two-50">
-    <div class="container container-lg">
+<div class="breadcrumb-custom">
+    <div class="container">
         <div class="breadcrumb-wrapper flex-between flex-wrap gap-16">
             <h6 class="mb-0">Cart</h6>
             <ul class="flex-align gap-8 flex-wrap">

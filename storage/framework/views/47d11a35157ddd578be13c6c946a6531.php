@@ -130,7 +130,7 @@
                             <div class="row align-items-center">
                                 <div class="col-md-2">
                                     <?php if($item['image']): ?>
-                                        <img src="<?php echo e(asset('storage/' . $item['image'])); ?>" alt="<?php echo e($item['name']); ?>" class="product-image">
+                                        <img src="<?php echo e(asset($item['image'])); ?>" alt="<?php echo e($item['name']); ?>" class="product-image">
                                     <?php else: ?>
                                         <img src="<?php echo e(asset('images/default-product.jpg')); ?>" alt="<?php echo e($item['name']); ?>" class="product-image">
                                     <?php endif; ?>
@@ -191,9 +191,8 @@
                         <strong>Total</strong>
                         <strong id="cart-total">Rs. <?php echo e(number_format($total, 2)); ?></strong>
                     </div>
-                    <a href="<?php echo e(route('dealer.checkout.page')); ?>" class="checkout-btn d-block text-center text-white text-decoration-none">
-                        Proceed to Checkout
-                    </a>
+                
+                        <a href="<?php echo e(route('cart.checkout')); ?>" class="btn btn-primary checkout-btn">Proceed to Checkout</a>
                 </div>
             </div>
         </div>

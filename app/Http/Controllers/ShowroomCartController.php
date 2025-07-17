@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\DealerProductOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class ShowroomCartController extends Controller
 {
@@ -15,7 +17,7 @@ class ShowroomCartController extends Controller
         $cart = Session::get('showroom_cart', []);
         
         // Get the first image from product_images table using relationship
-        $productImage = $product->images()->first();
+        $productImage = ProductImage::where('product_id', $product->id)->first();
         $imagePath = $productImage ? $productImage->image_path : 'images/default-product.jpg';
         
         $cartItem = [
@@ -31,11 +33,6 @@ class ShowroomCartController extends Controller
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity']++;
         } else {
-            // Get the first product image from product_images table
-            $productImage = ProductImage::where('product_id', $productId)
-                ->first();
-            
-            $cartItem['image'] = $productImage ? $productImage->image_path : 'images/default-product.jpg';
             $cart[$productId] = $cartItem;
         }
 
@@ -128,6 +125,17 @@ class ShowroomCartController extends Controller
 
     public function proceedToCheckout()
     {
+        // If this is a direct buy-now checkout
+        if (session()->has('buy_now')) {
+            $item = session()->get('buy_now');
+            $subtotal = $item['price'] * $item['quantity'];
+            $deliveryFee = 300; // Fixed delivery fee
+            $total = $subtotal + $deliveryFee;
+            
+            return view('frontend.DealerShowroom.checkout', compact('item', 'subtotal', 'deliveryFee', 'total'));
+        }
+
+        // If this is a cart checkout
         $cart = Session::get('showroom_cart', []);
         if (empty($cart)) {
             return redirect()->back()->with('error', 'Your cart is empty');
@@ -137,10 +145,76 @@ class ShowroomCartController extends Controller
         foreach ($cart as $item) {
             $subtotal += $item['price'] * $item['quantity'];
         }
-        
         $deliveryFee = 300; // Fixed delivery fee
         $total = $subtotal + $deliveryFee;
 
-        return view('frontend.DealerShowroom.checkout', compact('cart', 'subtotal', 'deliveryFee', 'total'));
+        return view('frontend.DealerShowroom.cart.checkout', compact('cart', 'subtotal', 'deliveryFee', 'total'));
+    }
+
+    public function placeOrder(Request $request)
+    {
+        $validatedData = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'house_no' => 'required|string',
+            'city' => 'required|string',
+            'postal_code' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|email'
+        ]);
+
+        $orderCode = 'ORD-' . strtoupper(Str::random(8));
+        $cart = Session::get('showroom_cart', []);
+        
+        if (empty($cart)) {
+            return redirect()->back()->with('error', 'Your cart is empty');
+        }
+
+        try {
+            // Create order record
+            $order = DealerProductOrder::create([
+                'order_code' => $orderCode,
+                'first_name' => $validatedData['first_name'],
+                'last_name' => $validatedData['last_name'],
+                'house_no' => $validatedData['house_no'],
+                'city' => $validatedData['city'],
+                'postal_code' => $validatedData['postal_code'],
+                'phone' => $validatedData['phone'],
+                'email' => $validatedData['email'],
+                'total_amount' => $this->calculateTotal($cart),
+                'status' => 'pending'
+            ]);
+
+            // Create order items
+            foreach ($cart as $item) {
+                $order->items()->create([
+                    'product_id' => $item['id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'size' => $item['size'] ?? null,
+                    'color' => $item['color'] ?? null
+                ]);
+            }
+
+            // Clear the cart after successful order
+            Session::forget('showroom_cart');
+
+            return redirect()->route('dealer.order.success', ['order_code' => $orderCode])
+                        ->with('success', 'Order placed successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                        ->with('error', 'Failed to place order. Please try again.')
+                        ->withInput();
+        }
+    }
+
+    private function calculateTotal($cart)
+    {
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $subtotal += $item['price'] * $item['quantity'];
+        }
+        return $subtotal + 300; // Adding fixed delivery fee
     }
 }

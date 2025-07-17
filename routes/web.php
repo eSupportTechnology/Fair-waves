@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartCheckoutController;
 use App\Http\Controllers\AdminReportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewsController;
@@ -58,6 +59,13 @@ Route::prefix('showroom/cart')->group(function () {
     Route::patch('/update/{productId}', [ShowroomCartController::class, 'updateCart'])->name('showroom.cart.update');
     Route::post('/clear', [ShowroomCartController::class, 'clearCart'])->name('showroom.cart.clear');
     Route::get('/count', [ShowroomCartController::class, 'getCartCount'])->name('showroom.cart.count');
+    // Cart checkout routes
+    Route::get('/cart-checkout', [CartCheckoutController::class, 'cartCheckout'])->name('cart.checkout');
+    Route::post('/cart-checkout/process', [CartCheckoutController::class, 'processCartCheckout'])->name('cart.checkout.process');
+    
+    // Buy now checkout routes
+    Route::get('/checkout', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.cart.checkout');
+    Route::post('/place-order', [ShowroomCartController::class, 'placeOrder'])->name('dealer.cart.placeOrder');
 });
 use App\Http\Controllers\VendorShopController;
 use App\Http\Controllers\VendorController;

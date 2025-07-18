@@ -125,7 +125,7 @@ class OrderController extends Controller
         $dealerProfile = $dealer->dealerProfile;
 
         // IV = Distributor Profit / 100
-        $iv = $customerOrder->iv_value ?? round($customerOrder->total_price / 100); // fallback
+        $iv = $customerOrder->items()->sum('bv');
         $rankPercent = $this->getRankPercentage($dealerProfile->rank);
 
         // 2. Direct Commission (self)
@@ -160,7 +160,7 @@ class OrderController extends Controller
                     'from_user_id' => $dealer->id,
                     'bv' => $iv,
                     'amount' => $gapCommission,
-                    'level' => 'indirect',
+                    'level' => 'rank',
                     'customer_order_id' => $customerOrder->id,
                 ]);
             }

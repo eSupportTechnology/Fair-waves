@@ -3,27 +3,27 @@
 
 
   .card {
-    border-radius: 0; 
+    border-radius: 0;
     width: 90%;
   }
 
   .thank-you-section {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
 
   }
 
   .card-container {
     display: flex;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
 
   }
 </style>
 
 <div class="container mt-20" >
-  
+
   <section class="thank-you-section">
     <!-- Payment -->
     <div class="col-md-12 mb-4 card-container" >

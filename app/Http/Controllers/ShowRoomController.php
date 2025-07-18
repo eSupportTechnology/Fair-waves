@@ -114,6 +114,7 @@ class ShowRoomController extends Controller
             "size" => $request->input('size'), // can be null
             "color" => $request->input('color'), // can be null
             "dealerProductLink"=> $dpid,
+            "bv" => $product->bv,
         ]);
 
         return redirect()->route('dealer.checkout.page');
@@ -140,6 +141,7 @@ class ShowRoomController extends Controller
             'products.*.dealerProductLink' => 'required|integer|exists:dealer_product_links,id',
             'products.*.quantity' => 'required|integer|min:1',
             'products.*.cost' => 'required|numeric|min:0',
+            'products.*.bv' => 'required|numeric|min:0',
             'products.*.size' => 'nullable|string|max:50',
             'products.*.color' => 'nullable|string|max:50',
         ]);
@@ -184,6 +186,7 @@ class ShowRoomController extends Controller
                 'color' => $product['color'],
                 'cost' => $itemSubtotal,
                 'date' => Carbon::now(),
+                'bv' => $product['bv'],
             ]);
 
             $dealer = DealerProductLink::where('id', $product['dealerProductLink'])->first();

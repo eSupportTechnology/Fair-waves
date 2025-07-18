@@ -50,6 +50,19 @@
 
                         </select>
 
+                        @if ($order->status === 'Ready to Ship')
+                            <div class="mt-2">
+                                <input type="text" name="tracking_number" class="form-control mb-2"
+                                    placeholder="Tracking Number"
+                                    value="{{ old('tracking_number', $order->tracking_number ?? '') }}" required>
+
+                                <input type="url" name="tracking_link" class="form-control"
+                                    placeholder="Tracking Link (optional)"
+                                    value="{{ old('tracking_link', $order->tracking_link ?? '') }}">
+                            </div>
+                        @endif
+
+
                         <button type="submit" class="btn btn-primary p-2">Update</button>
                     </form>
                     <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a>

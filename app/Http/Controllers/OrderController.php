@@ -95,6 +95,8 @@ class OrderController extends Controller
                     }
                 },
             ],
+            'tracking_number'=> 'nullable|string|max:255',
+            'tracking_link' => 'nullable|url|max:255',
         ]);
 
         // Add an activity log for the status change
@@ -103,9 +105,16 @@ class OrderController extends Controller
         }
 
         // Update the order status
-        $order->update([
+        $updateData = [
             'status' => $request->status,
-        ]);
+        ];
+
+        if ($request->status == 'Shipped') {
+            $updateData['tracking_number'] = $request->tracking_number;
+            $updateData['tracking_link'] = $request->tracking_link;
+        }
+
+        $order->update($updateData);
 
         if($request->status == 'Delivered' && $order->order_type == 'annonymous'){
             $this->dealerPointAdd($order);

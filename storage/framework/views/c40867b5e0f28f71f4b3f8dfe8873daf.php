@@ -1,7 +1,6 @@
-@extends('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <main class="content-container">
+
 
     <style>
         .spacing-top {
@@ -9,113 +8,20 @@
             /* Adjust based on desired spacing */
         }
 
-        .monial-graph {
-            list-style-type: circle;
-        }
-
         @media (max-width: 768px) {
             .spacing-top {
                 height: 60px;
             }
         }
-
-        .table-container {
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .styled-table {
-            width: 100%;
-            max-width: 800px;
-            border-collapse: collapse;
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .styled-table th,
-        .styled-table td {
-            padding: 15px;
-            text-align: left;
-            border: 1px solid #e0e0e0;
-            vertical-align: top;
-        }
-
-        .styled-table th {
-            background-color: rgba(170, 170, 170, 0.64);
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            text-transform: uppercase;
-            width: 30%;
-        }
-
-        .styled-table td {
-            color: #333;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .styled-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .styled-table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .styled-table ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        .styled-table ul li {
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 600px) {
-
-            .styled-table th,
-            .styled-table td {
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            .styled-table th {
-                width: 40%;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .styled-table {
-                font-size: 12px;
-            }
-
-            .styled-table th,
-            .styled-table td {
-                display: block;
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .styled-table th {
-                text-align: center;
-            }
-        }
     </style>
-
 
     <div class="spacing-top"></div>
 
 
-
-    <div class="mb-0 breadcrumb py-26 bg-main-two-50">
+    <div class="mb-0 breadcrumb py-26 bg-main-two-50" >
         <div class="container container-lg">
             <div class="flex-wrap gap-16 breadcrumb-wrapper flex-between">
-                <h6 class="mb-0">Terms And Conditions</h6>
+                <h6 class="mb-0">Privacy Policy</h6>
                 <ul class="flex-wrap gap-8 flex-align">
                     <li class="text-sm">
                         <a href="/" class="gap-8 text-gray-900 flex-align hover-text-main-600">
@@ -126,7 +32,7 @@
                     <li class="flex-align">
                         <i class="ph ph-caret-right"></i>
                     </li>
-                    <li class="text-sm text-main-600">Terms And Conditions</li>
+                    <li class="text-sm text-main-600"> Privacy Policy </li>
                 </ul>
             </div>
         </div>
@@ -136,29 +42,28 @@
         <div class="row">
             <div class="col-md-3 terms-nav">
                 <div class="nav flex-column nav-pills" id="v-pills-tab">
-                    <a class="nav-link  active " id="v-pills-one-tab" href="/terms-condition" role="tab">Terms and
+                    <a class="nav-link " id="v-pills-one-tab" href="/terms-condition" role="tab">Terms and
                         Conditions</a>
-                    <a class="nav-link " id="v-pills-two-tab" href="/privacy-policy">Privacy Policy</a>
+                    <a class="nav-link  active " id="v-pills-two-tab" href="/privacy-policy">Privacy Policy</a>
                     <a class="nav-link " id="v-pills-three-tab" href="/return-refund">Return and Refund Policy</a>
                 </div>
             </div>
             <div class="col-md-9">
                 <div class="tab-content terms-tab" id="v-pills-tabContent">
-                    <div class="tab-pane fade  show active " id="v-pills-one" role="tabpanel"
-                        aria-labelledby="v-pills-one-tab">
+                    <div class="tab-pane fade " id="v-pills-one" role="tabpanel" aria-labelledby="v-pills-one-tab">
                         <div id="accordion" role="tablist">
                             <h3 class="title-terms pt-0">Terms and Conditions</h3>
 
-                            <p>Welcome to crown.esupportsystem.shop, the online purchasing platform for Abans PLC (Sri Lanka).
-                                The crown.esupportsystem.shop website provides services to its valued customers under the following
+                            <p>Welcome to www.BuyAbans.com, the online purchasing platform for Abans PLC (Sri Lanka).
+                                The BuyAbans.com website provides services to its valued customers under the following
                                 conditions. Please read and accept the under-mentioned conditions and guidelines
                                 carefully before using the services of this website.</p>
 
-                            <h3 class="title-terms">Product information at crown.esupportsystem.shop website</h3>
-                            <p>The crown.esupportsystem.shop website attempts to be as accurate as possible with the information
-                                displayed on the site. However, crown.esupportsystem.shop does not guarantee that product
+                            <h3 class="title-terms">Product information at BuyAbans.com website</h3>
+                            <p>The BuyAbans.com website attempts to be as accurate as possible with the information
+                                displayed on the site. However, BuyAbans.com does not guarantee that product
                                 descriptions or other content on this site are 100% accurate, complete, reliable or
-                                completely free of errors. If a product offered by crown.esupportsystem.shop is not as described on
+                                completely free of errors. If a product offered by BuyAbans.com is not as described on
                                 the website, a customer’s sole remedy is to return it in an unused condition within two
                                 days of delivery. If there is any external damage to the package, a customer is
                                 responsible for checking the item when it is handed over. An item will not be exchanged
@@ -167,10 +72,10 @@
                                 faults and are subjected to a fine or penalty for the cost. </p>
 
                             <p>In case the item received is found defective, customers should immediately inform
-                                crown.esupportsystem.shop within 24 hours to arrange a replacement with a brand-new unit or a full
+                                BuyAbans.com within 24 hours to arrange a replacement with a brand-new unit or a full
                                 refund will be provided if the stock is unavailable. </p>
 
-                            <p>Regarding the items sold through crown.esupportsystem.shop, the price of an item cannot be confirmed
+                            <p>Regarding the items sold through BuyAbans.com, the price of an item cannot be confirmed
                                 until the customer orders the item. Even though every effort is made to provide accurate
                                 pricing, there may be a negligible probability that some items can be mispriced. If the
                                 new price is higher than the mentioned price, we will not cancel or deliver the item
@@ -179,7 +84,7 @@
                                 the additional amount but if you decide to cancel, we will issue a refund. </p>
 
                             <p>Due to current international exchange laws and conventions, even if delivery of the
-                                selected item is canceled, crown.esupportsystem.shop cannot refund your money. You will, however, be
+                                selected item is canceled, BuyAbans.com cannot refund your money. You will, however, be
                                 provided with credit on the website to purchase another available product up to the
                                 value of the previous item.</p>
 
@@ -228,7 +133,7 @@
                                     <li>In the event of purchasing an AC unit with low capacity, the consumer is only
                                         eligible for a credit note for the amount of their purchase or they can switch
                                         to a
-                                        unit with a higher capacity. crown.esupportsystem.shop will not be issuing refunds for these
+                                        unit with a higher capacity. BuyAbans.com will not be issuing refunds for these
                                         cases.</li>
                                     <li>Customers can use the BTU calculator when purchasing AC to calculate the exact
                                         capacity that best suits
@@ -244,25 +149,25 @@
                                         will only be issued under specific circumstances as outlined in our policy.</li>
                                 </ul>
 
-                                <p class="pt-2 pb-2">The prices for all the items mentioned on crown.esupportsystem.shop are the
+                                <p class="pt-2 pb-2">The prices for all the items mentioned on BuyAbans.com are the
                                     final
                                     and last prices of
                                     sale via online means.</p>
                             </div>
 
                             <div class="content-section">
-                                <h3 class="title-terms">Using crown.esupportsystem.shop accounts</h3>
+                                <h3 class="title-terms">Using BuyAbans.com accounts</h3>
                                 <p>It is the responsibility of the users of this site to keep their passwords, other
                                     account
                                     information, and the computer used to log on to the site, secure. Website account
                                     holders are solely responsible for all activities conducted via through their
-                                    crown.esupportsystem.shop account or their passwords and BuyAbans shall be indemnified from any
+                                    BuyAbans.com account or their passwords and BuyAbans shall be indemnified from any
                                     such
                                     liability.</p>
                             </div>
 
                             <div class="content-section">
-                                <h3 class="title-terms">Abans Duty Free purchase via www.crown.esupportsystem.shop</h3>
+                                <h3 class="title-terms">Abans Duty Free purchase via www.BuyAbans.com</h3>
                                 <p>The payment will be considered as conditional purchase as the transaction will
                                     complete
                                     once the passenger physically arrives to the BIA and fulfil the requirements of the
@@ -287,7 +192,7 @@
 
                             <div class="content-section">
                                 <h3 class="title-terms">Warranty:</h3>
-                                <p>The warranty provided through the crown.esupportsystem.shop website is the same as the common
+                                <p>The warranty provided through the BuyAbans.com website is the same as the common
                                     warranty
                                     provided to all Abans PLC showrooms. For any warranty-related issues, please contact
                                     the
@@ -366,81 +271,92 @@
                             </div>
 
                             <div class="content-section">
-                                <div class="table-container">
-                                    <table class="styled-table">
-                                        <tbody>
-                                            <tr>
-                                                <th>Refrigerators, Bottle Coolers, Freezers</th>
-                                                <td>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>5 years for compressor only. Customer shall bear any charges for labor or accessories in relation to the replacement of compressor.</li>
-                                                        <li>10-year warranty shall apply only on compressors of selected refrigerator models.</li>
-                                                        <li>Humidity on the surface shall not be considered a defect.</li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Televisions LCD/LED</th>
-                                                <td>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>If it is a manufacturing fault within the warranty period, Abans PLC will repair it free of charge.</li>
-                                                        <li>1-year warranty for panel and 3-year warranty for other parts including Main and Power PCB.</li>
-                                                        <li>Color dots up to 7 on LCD/LED TV screens shall be considered a normal industrial cause due to pixel burnout and shall not warrant replacement.</li>
-                                                        <li>No warranty for Main/Power PCB damages due to signal wire connections, careless plugging/unplugging, or usage of multi-plugs.</li>
-                                                        <li>No replacements allowed for backlight replacements.</li>
-                                                        <li>No warranty for TV and AV accessories, remotes, speakers, mics, wires, HDMI ports, or cables.</li>
-                                                        <li>Televisions fixed on mobile vehicles shall not be covered under this warranty.</li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Audio</th>
-                                                <td>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>No warranty for speaker body corrosion, color fading, or fungus.</li>
-                                                        <li>No warranty for remotes, audio speakers, mics, wires, or jacks.</li>
-                                                        <li>If a similar model is not available and the customer requests a refund:
-                                                            <ul>
-                                                                <li>Usage Period 0–6 months: Refund 85% of the invoiced value.</li>
-                                                                <li>Usage Period 6–12 months: Refund 75% of the invoiced value.</li>
-                                                            </ul>
-                                                        </li>
-                                                        <li>When customer requests an upgrade:
-                                                            <ul>
-                                                                <li>Usage Period 0–6 months: Get balance amount + remaining warranty.</li>
-                                                                <li>Usage Period 6–12 months: Get balance amount + remaining warranty.</li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Washing Machine</th>
-                                                <td>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>5/10-year warranty on Stainless Steel Drum against rusting, Direct Drive, or Smart Inverter Motor for selected models only.</li>
-                                                        <li>5-year warranty on selected washing machines.</li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Water Purifier</th>
-                                                <td>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>Refer to warranty instruction sheet for more details.</li>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td class="left-td-terms"><strong>Refrigerators Bottle Coolers
+                                                    Freezers</strong>
+                                            </td>
+                                            <td>
+                                                <p>05 years for compressor only. Customer shall bear any charges for
+                                                    labour
+                                                    or accessories in relation to the replacement of compressor. 10-Year
+                                                    warranty shall apply only on compressors of selected refrigerator
+                                                    models. Humidity on the surface shall not be considered a defect.
+                                                </p>
+                                            </td>
+                                        </tr>
 
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Solar System</th>
-                                                <td>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>Refer to warranty instruction sheet for more details.</li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                        <tr>
+                                            <td><strong>Televisions LCD/LED</strong></td>
+                                            <td>
+                                                <p>If there is a manufacturing fault within the warranty period, Abans
+                                                    PLC will
+                                                    repair it free of charge.</p>
+                                                <p>1-year warranty for panel and 3-year warranty for other parts
+                                                    including
+                                                    Main and Power PCB.
+                                                </p>
+
+                                                <p>Colour dots up to 7 numbers on LCD/LED TV screens shall be considered
+                                                    as
+                                                    a normal occurrence resulting from pixel burn-in and shall not
+                                                    warrant product replacement.</p>
+                                                <p>No warranty for Main/Power PCB damages due to signal wire
+                                                    connections/careless plugging/unplugging and usage of multi plugs.
+                                                </p>
+                                                <p>No replacements allowed for backlight replacements.<br>No warranty
+                                                    for
+                                                    TV and AV accessories / remotes / speakers / mics / wires / HDMI
+                                                    ports /
+                                                    Cables.<br>
+                                                    Televisions fixed on mobile vehicles shall not be covered under this
+                                                    warranty.</p>
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Audio</strong></td>
+                                            <td>
+                                                <p>No warranty for Speaker body corrosion, colour fading and fungus.<br>
+                                                    No warranty for Remote / Audio Speakers / Mics / Wires / Jacks.</p>
+
+                                                <p>If similar model is not available and customer request for refund,
+                                                    the
+                                                    refund value depends on the usage period.</p>
+                                                <p>Usage Period 00-06 months: Refund 85% of the invoiced value.<br>
+                                                    Usage Period 06-12 months: Refund 75% of the invoiced value.</p>
+
+                                                <p><strong><i>When customer request upgrade</i></strong><br>
+                                                    Usage Period 00-06 months: Get balance amount + Remaining
+                                                    warranty.<br>
+                                                    Usage Period 06-12 months: Get balance amount + Remaining warranty.
+                                                </p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Washing Machine</strong></td>
+                                            <td>
+                                                <p>05/10-year warranty on Stainless Steel Drum against rusting / Direct
+                                                    Drive or Smart Inverter Motor for selected models only.</p>
+                                                <p>05-year warranty on selected washing machines.</p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Water Purifier</strong></td>
+                                            <td>
+                                                <p>Refer warranty instruction sheet for more details.</p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Solar System</strong></td>
+                                            <td>Refer warranty instruction sheet for more details.</td>
+                                        </tr>
+
                                     </table>
                                 </div>
                             </div>
@@ -451,85 +367,144 @@
 
                             <div class="content-section">
                                 <h3 class="title-terms">SPECIAL WARRANTY TERMS</h3>
-                                <div class="table-container">
-                                    <table class="styled-table">
-                                        <!-- <thead>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
                                         <tr>
-                                            <th style="background-color:rgba(10, 10, 10, 0.37);">Product</th>
-                                            <th style="background-color:rgb(10, 10, 10, 0.37);">Special Warranty Terms for Products / Parts / Accessories</th>
+                                            <td class="left-td-terms"><strong>Product</strong></td>
+                                            <td><strong>Special Warranty Terms for Products / Parts /
+                                                    Accessories</strong>
+                                            </td>
                                         </tr>
-                                    </thead> -->
-                                        <tbody>
-                                            <tr>
-                                                <td style="background-color:rgba(10, 10, 10, 0.37);">Product</th>
-                                                <td style="background-color:rgba(10, 10, 10, 0.37);">Special Warranty Terms for Products / Parts / Accessories</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Air Conditioners</th>
-                                                <td>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>Within the standard one-year warranty period, 3 services will be provided free of charge.</li>
-                                                        <li>10-year warranty for the compressor of LG Inverter Air Conditioner (residential, 9000–24000 BTU) and 5-year warranty for compressors of other inverter and non-inverter Air Conditioner brands (residential, 9000–36000 BTU) apply only if a 4-year service agreement is signed with Abans Electrical PLC at the end of the first year. Customer shall bear any charges for labor and accessories for compressor replacement.</li>
-                                                        <li>Additional services will be provided subject to additional payments.</li>
-                                                        <li>No warranty for corrosion on outdoor unit due to environmental conditions or sea breeze.</li>
-                                                        <li>5-year warranty for compressors of all Air Conditioner brands (commercial, 12000–100000 BTU) applies only if a 4-year service agreement is signed with Abans Electrical PLC at the end of the first year. Customer shall bear any charges for labor and accessories for compressor replacement.</li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Computers, Laptops, Tablets</th>
-                                                <td>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>Color dots up to 7 on laptops, tablet screens, and monitors are considered a normal industrial cause due to pixel burnout and do not warrant replacement.</li>
 
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Mobile Phones</th>
-                                                <td>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>12-month warranty for the main unit.</li>
-                                                        <li>6-month warranty for battery and charger.</li>
-                                                        <li>1-month warranty for other accessories.</li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Apple Products</th>
-                                                <td>
-                                                    <div><strong>The Apple One-Year Limited Warranty is a voluntary manufacturer’s warranty that can be claimed from any Apple store worldwide and only at Abans Apple Authorized Service Centres.</strong></div>
-                                                    <ul style="list-style-type: disc;">
-                                                        <li>Apple warrants Apple-branded hardware products against defects in materials and workmanship under normal use for one (1) year from the date of retail purchase by the original end-user purchaser ("Warranty Period").</li>
-                                                        <li>If a hardware defect arises and a valid receipt is provided within the warranty period, the following applies per Apple's diagnosis system report at the service centre:
-                                                            <ol style="list-style-type: lower-roman;">
-                                                                <li>For iPhones, iPads, Apple Watch, and Apple-branded accessories: Exchange the defective product with a product that is new or manufactured from new or serviceable used parts and is at least functionally equivalent to the original product.</li>
-                                                                <li>For Macs: Repair the hardware defect at no charge using new spare parts. AppleCare can be enabled for Macs before the first-year warranty ends, extending an additional 2-year warranty (visit <a target="_blank" href="https://www.apple.com/legal/sales-support/applecare/appmacapacen.html">AppleCare Protection Plan for Mac</a> for more info).</li>
-                                                                <li>If the product is dropped, water-damaged, or physically damaged due to customer negligence, there is no warranty.</li>
-                                                                <li>No DOA policy for any Apple products; replacement will only be done through service.</li>
-                                                                <li>A sufficient lead time is required to obtain spare parts for repair or replacement per Apple's guidance.</li>
-                                                            </ol>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                        <tr>
+                                            <td><strong>Air Conditioners</strong></td>
+                                            <td>
+                                                <p>Within the standard one-year warranty period, 3 services will be
+                                                    provided
+                                                    free of charge.</p>
+                                                <p>10-year warranty for the compressor of the LG Inverter Air
+                                                    Conditioner
+                                                    (residential) in the range of 9000 BTU to 24000 BTU and 05-year
+                                                    warranty
+                                                    for the compressor of all other inverter and non-inverter Air
+                                                    Conditioner (residential) brands in the range 9000 BTU to 36000 BTU
+                                                    shall apply only if the service agreement is signed with Abans
+                                                    Electrical PLC for 04 years at the end of the first year. Customer
+                                                    shall
+                                                    bear any charges for the labour and accessories to the relation to
+                                                    the
+                                                    replacement of the compressor.</p>
+                                                <p>Additional services will be provided subject to additional payments.
+                                                </p>
+                                                <p>No warranty for corrosion on outdoor unit of air conditioner due to
+                                                    environment conditions/sea breeze.</p>
+                                                <p>05-year warranty for the compressor of all Air Conditioner brands
+                                                    (Commercial) in the range of 12000 BTU to 100000 BTU shall apply
+                                                    only if
+                                                    the service agreement is signed with Abans Electrical PLC for 04
+                                                    years
+                                                    at the end of the first year. Customer shall bear any charges for
+                                                    the
+                                                    labour and accessories in relation to the replacement of the
+                                                    compressor.
+                                                </p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Computers Laptops Tablets</strong></td>
+                                            <td>
+                                                <p>Colour dots up to 7 numbers on Laptops, Tablet Screens and Monitors
+                                                    shall
+                                                    be considered as occurrence resulting pixel burn-in and shall not
+                                                    replace the said products on that effect.</p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Mobile Phones</strong></td>
+                                            <td>
+                                                <p>12-month warranty for main unit, 06-month for battery and charger,
+                                                    01-month for any other accessories</p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Apple Products</strong></td>
+                                            <td>
+
+                                                <p><strong>
+                                                        The Apple One-Year Limited Warranty is a voluntary
+                                                        manufacturer’s
+                                                        warranty that can be claimed from any Apple store worldwide and
+                                                        only at
+                                                        Abans Apple Authorized Service Centres</strong></p>
+
+                                                <p>Apple, as defined, warrants Apple-branded hardware products against
+                                                    defects in materials and workmanship under normal use for a period
+                                                    of
+                                                    ONE (1) YEAR from the date of retail purchase by the original
+                                                    end-user
+                                                    purchaser ("Warranty Period").</p>
+                                                <p>If a hardware defect arises and a valid receipt is provided within
+                                                    the
+                                                    warranty period, it will be as below in guidance as per Apple's
+                                                    diagnosis system report set up at the service center.</p>
+                                                <ol style="list-style-type: lower-roman;">
+                                                    <li>&nbsp;For iPhones, iPads, Apple Watch and Apple-branded
+                                                        accessories:
+                                                        exchange the defective product with a product that is new or
+                                                        which
+                                                        has been manufactured from new or serviceable used parts and is
+                                                        at
+                                                        least functionally equivalent to the original product.</li>
+                                                    <li>&nbsp;For Macs: repair the hardware defect at no charge, using
+                                                        new
+                                                        spare parts. Apple Care can be enabled for Macs through service
+                                                        before the first-year warranty period is over. Once enabled, an
+                                                        additional 2-year warranty will be extended (visit the link for
+                                                        more
+                                                        info on <a
+                                                            href="https://www.apple.com/legal/sales-support/applecare/appmacapacen.html">Apple
+                                                            Legal - AppleCare Protection Plan for Mac</a>).</li>
+                                                    <li>&nbsp;If the product is dropped, water damaged or physically
+                                                        damaged
+                                                        due to customer's negligence there will be no warranty for the
+                                                        same.
+                                                    </li>
+                                                    <li>&nbsp;No DOA policy for any Apple products and replacement will
+                                                        only
+                                                        be done through service.</li>
+                                                    <li>&nbsp;A sufficient lead time will be required to get the spare
+                                                        parts
+                                                        to repair the product or replace the product in guidance with
+                                                        Apple.
+                                                    </li>
+                                                </ol>
+                                            </td>
+                                        </tr>
                                     </table>
+
+                                    <p><i>Please note that these are standard warranty details therefore the warranty
+                                            remarks/conditions printed on the invoice/ warranty card will be
+                                            applicable</i>
+                                    </p>
+
                                 </div>
                             </div>
 
 
                             <div class="content-section">
                                 <h3 class="title-terms">Exchange of Goods: </h3>
-                                <p>crown.esupportsystem.shop may exchange the purchased item on valid for another item requested by
+                                <p>BuyAbans.com may exchange the purchased item on valid for another item requested by
                                     the
                                     customer. The said customer will have to pay for any difference in the price and
                                     that
                                     payment will also need to be completed within 48 hours from the time of purchase.
                                 </p>
-                                <p>crown.esupportsystem.shop is not allowed to exchange any goods purchased at the BIA Duty Free
+                                <p>BuyAbans.com is not allowed to exchange any goods purchased at the BIA Duty Free
                                     unless
-                                    the products sold contain internal technical faults.crown.esupportsystem.shop can only provide
+                                    the products sold contain internal technical faults.BuyAbans.com can only provide
                                     like-for-like exchanges when stock is available at our showrooms outside the
                                     Duty-Free zones. </p>
 
@@ -537,10 +512,10 @@
 
 
                             <div class="content-section">
-                                <h3 class="title-terms">Policy for information gathered by crown.esupportsystem.shop</h3>
+                                <h3 class="title-terms">Policy for information gathered by BuyAbans.com</h3>
                                 <p>
 
-                                    All information entered in to crown.esupportsystem.shop by site visitors will be collected and
+                                    All information entered in to BuyAbans.com by site visitors will be collected and
                                     stored. If certain visitors decide not to provide certain information, they will not
                                     be
                                     able to acquire the valuable advantages and features of this website. This vital
@@ -551,7 +526,7 @@
                                     be
                                     divulged to 03rd parties. Customer information is used only as described below and
                                     with
-                                    affiliates of crown.esupportsystem.shop.</p>
+                                    affiliates of BuyAbans.com.</p>
 
 
                                 <p><i>Note: Customer is responsible for informing the change of his/her phone no. and/or
@@ -563,8 +538,8 @@
                                 <h3 class="title-terms">Copyrights</h3>
                                 <p>
 
-                                    The content of the crown.esupportsystem.shop site is the property of Abans PLC (Sri Lanka) and is
-                                    protected under international copyright laws. The trademark of www.crown.esupportsystem.shop is a
+                                    The content of the BuyAbans.com site is the property of Abans PLC (Sri Lanka) and is
+                                    protected under international copyright laws. The trademark of www.BuyAbans.com is a
                                     registered trademark and the sole rights of changing, modifying, assigning, or using
                                     this trademark is solely with Abans PLC (Sri Lanka). Anyone other than Abans PLC who
                                     is
@@ -575,12 +550,12 @@
                             </div>
 
                             <div class="content-section">
-                                <h3 class="title-terms">Communication between you and crown.esupportsystem.shop</h3>
+                                <h3 class="title-terms">Communication between you and BuyAbans.com</h3>
                                 <p>
 
-                                    When you visit the crown.esupportsystem.shop website or communicate with crown.esupportsystem.shop via
+                                    When you visit the BuyAbans.com website or communicate with BuyAbans.com via
                                     e-mails,
-                                    you are considered as communicating with crown.esupportsystem.shop. This permits crown.esupportsystem.shop to
+                                    you are considered as communicating with BuyAbans.com. This permits BuyAbans.com to
                                     send
                                     e-mails and to communicate with you and you are deemed as agreeing to all terms and
                                     conditions, notices and other means of communications that we provide to you
@@ -592,7 +567,7 @@
                                 <h3 class="title-terms">Contact Details:</h3>
 
                                 <div class="border-box-table">
-                                    <p><strong>www.crown.esupportsystem.shop</strong></p>
+                                    <p><strong>www.Buyabans.com</strong></p>
                                     <p>No. 498,<br>
                                         Galle Road, Colombo 03.<br>
                                         Sri Lanka.</p>
@@ -604,7 +579,7 @@
 
                                         <tr>
                                             <td>Web </td>
-                                            <td> : www.crown.esupportsystem.shop</td>
+                                            <td> : www.buyabans.com</td>
                                         </tr>
 
 
@@ -630,7 +605,7 @@
 
                                         <tr>
                                             <td>Web </td>
-                                            <td> : www.crown.esupportsystem.shop</td>
+                                            <td> : www.buyabans.com</td>
                                         </tr>
 
 
@@ -643,17 +618,18 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade " id="v-pills-two" role="tabpanel" aria-labelledby="v-pills-two-tab">
+                    <div class="tab-pane fade  show active " id="v-pills-two" role="tabpanel"
+                        aria-labelledby="v-pills-two-tab">
 
                         <h3 class="title-terms" style="padding-top: 0px;">Privacy Policy</h3>
                         <p class="monial-graph">We, Abans PLC (PV 5301 PB/PQ), having its registered office at No. 498,
                             Galle Road, Colombo 03 are pleased to provide our policy on privacy for the users of our
-                            website <a href="www.buyabans.html">www.crown.esupportsystem.shop</a>. We collect, use, maintain and
+                            website <a href="https://crown.esupportsystem.shop/">crown.esupportsystem.shop</a>. We collect, use, maintain and
                             disclose
                             information collected from users of our website. We assure you that, we use our best and
                             reasonable
                             effort to protect the privacy of users of our website, <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a>.</p>
+                                href="https://crown.esupportsystem.shop/">crown.esupportsystem.shop</a>.</p>
                         <p class="monial-graph">We receive your personal information such as Name, Address, E-mail
                             address,
                             National Identity Card Number, Mobile Number, Credit Card details &amp; Transaction
@@ -661,7 +637,7 @@
                             usage &amp; preference information, Log and device information, etc., and we only collect
                             and
                             store the information you submit voluntarily when you use our website, <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a>. You can always refuse to provide personal
+                                href="https://crown.esupportsystem.shop/">crown.esupportsystem.shop</a>. You can always refuse to provide personal
                             information, except that it may prevent you from engaging in certain site-related
                             activities.
                         </p>
@@ -707,18 +683,18 @@
                             sites
                             that are subject to their privacy policies.</p>
                         <p class="monial-graph">The information contained on <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a>
+                                href="https://crown.esupportsystem.shop/">crown.esupportsystem.shop</a>
                             website is for general information purposes only. The <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a> website assumes no responsibility for
+                                href="https://crown.esupportsystem.shop/">crown.esupportsystem.shop</a> website assumes no responsibility for
                             errors or
                             omissions in the content of the services. In no event shall <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a> website be liable for any special, direct,
+                                href="https://crown.esupportsystem.shop/">crown.esupportsystem.shop</a> website be liable for any special, direct,
                             indirect, consequential, or incidental damages or any damages whatsoever, whether in an
                             action
                             of contract, negligence or other tort, arising out of or in connection with the use of the
                             services or the content of the service. We reserve the right to make additions, deletions or
                             modifications to the content on the services at any time without prior notice. The <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a> website does not warrant that the website
+                                href="https://crown.esupportsystem.shop/">crown.esupportsystem.shop</a> website does not warrant that the website
                             is
                             free from viruses or other harmful components.</p>
                         <p class="monial-graph">We may change this privacy policy from time to time, as necessary. When
@@ -750,16 +726,23 @@
                         <table style="margin-bottom: 1rem;">
                             <tr>
                                 <td>Tel :</td>
-                                <td><a href="tel:+94772222888">+94 112 222 888</a></td>
+                                <td><a href="tel:+94 112 222 888">+94 112 222 888</a></td>
                             </tr>
 
                             <tr>
                                 <td>Email :</td>
-                                <td><a href="cdn-cgi/l/email-protection.html#ec85828a83ac8e99958d8e8d829fc28f8381"><span
-                                            class="__cf_email__"
-                                            data-cfemail="6d04030b022d0f18140c0f0c031e430e0200">[email&#160;protected]</span></a>
+                                <td>
+                                    <a href="#" id="email-link">[email protected]</a>
+                                    <script>
+                                        const user = "crownelectronics";
+                                        const domain = "gmail.com";
+                                        const link = document.getElementById("email-link");
+                                        link.textContent = `${user}@${domain}`;
+                                        link.href = `mailto:${user}@${domain}`;
+                                    </script>
                                 </td>
                             </tr>
+
 
                         </table>
 
@@ -819,7 +802,7 @@
                                     to its own operational time for which BuyAbans will not be responsible.</li>
                                 <li>In the event of purchasing an AC unit with low capacity, the consumer is only
                                     eligible for a credit note for the amount of their purchase or they can switch to a
-                                    unit with a higher capacity. crown.esupportsystem.shop will not be issuing refunds for these
+                                    unit with a higher capacity. BuyAbans.com will not be issuing refunds for these
                                     cases.</li>
                                 <li>Customers can use the BTU calculator when purchasing AC to calculate the exact
                                     capacity that best suits
@@ -835,7 +818,7 @@
                                     only be issued under specific circumstances as outlined in our policy.</li>
                             </ul>
 
-                            <p class="pt-2 pb-2">The prices for all the items mentioned on crown.esupportsystem.shop are the final
+                            <p class="pt-2 pb-2">The prices for all the items mentioned on BuyAbans.com are the final
                                 and last prices of
                                 sale via online means.</p>
                         </div>
@@ -851,4 +834,6 @@
 
 
 </main>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/PrivacyPolicy.blade.php ENDPATH**/ ?>

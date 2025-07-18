@@ -9,7 +9,7 @@
     margin-bottom: 20px;
     margin-top: 20px;
     background: #fff;
-   
+
 }
 .privacy-policy h1 {
     font-size: 32px;
@@ -17,7 +17,7 @@
     text-align: center;
     font-weight: 700;
     margin-top: 20px;
-    
+
 }
 .privacy-policy h2 {
     font-size: 24px;
@@ -60,7 +60,7 @@
         font-size: 14px;
     }
 }
- 
+
 </style>
 <div class="mb-0 breadcrumb py-26 bg-main-two-50">
     <div class="container container-lg">
@@ -86,13 +86,13 @@
 <div class="container privacy-policy">
     <h1>Privacy Policy</h1>
     <p>
-        Welcome to DK-Mart, your trusted online shopping destination. This Privacy Policy outlines how we collect, use, 
+        Welcome to DK-Mart, your trusted online shopping destination. This Privacy Policy outlines how we collect, use,
         and protect your personal information. By accessing our website, you agree to the terms outlined in this policy.
     </p>
 
     <h2>1. Information We Collect</h2>
     <p>
-        We collect your personal details such as name, email, phone number, and address to enhance your shopping experience. 
+        We collect your personal details such as name, email, phone number, and address to enhance your shopping experience.
         We also collect non-personal information like browser type and IP address for analytics.
     </p>
 
@@ -105,13 +105,13 @@
 
     <h2>3. Information Sharing</h2>
     <p>
-        We do not sell or rent your personal information to third parties. However, we may share it with trusted partners for 
+        We do not sell or rent your personal information to third parties. However, we may share it with trusted partners for
         order delivery, payment processing, or legal obligations.
     </p>
 
     <h2>4. Data Security</h2>
     <p>
-        We implement advanced security measures to protect your data. However, no method of transmission over the Internet 
+        We implement advanced security measures to protect your data. However, no method of transmission over the Internet
         is 100% secure.
     </p>
 
@@ -134,13 +134,13 @@
     <div class="contact-info">
         <ul>
             <li>
-                <strong>Phone:</strong> 
+                <strong>Phone:</strong>
                 <a href="tel:0787004900" style="color: hsl(0, 92%, 36%); text-decoration: none;">
                     0787004900
                 </a>
             </li>
             <li>
-                <strong>Email:</strong> 
+                <strong>Email:</strong>
                 <a href="mailto:admin@dkmart.lk" style="color:hsl(0, 92%, 36%); text-decoration: none;">
                     admin@dkmart.lk
                 </a>
@@ -150,7 +150,7 @@
             </li>
         </ul>
     </div>
-    
+
 </div>
 
 @endsection

@@ -1,6 +1,4 @@
-@extends ('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
 
@@ -33,8 +31,8 @@
         <div class="row gy-5">
             <div class="col-lg-8">
                 <div class="px-24 py-40 border border-gray-100 contact-box rounded-16">
-                <form action="{{ route('store.inquiries') }}" method="post" enctype="multipart/form-data">
-                    @csrf
+                <form action="<?php echo e(route('store.inquiries')); ?>" method="post" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <h6 class="mb-32">Make Custom Request</h6>
 
                     <div class="row gy-4">
@@ -69,20 +67,20 @@
             <div class="col-lg-4">
                 <div class="px-24 py-40 border border-gray-100 contact-box rounded-16">
                     <h6 class="mb-48">Get In Touch</h6>
-                         @php
+                         <?php
                             $companySettings = \App\Models\CompanySettings::first();
-                        @endphp
+                        ?>
                     <div class="gap-16 mb-16 flex-align">
                         <span class="flex-shrink-0 w-40 h-40 text-2xl border border-gray-100 flex-center rounded-circle text-main-two-600"><i class="ph-fill ph-phone-call"></i></span>
-                        <a href="tel:{{$companySettings->contact}}" class="text-gray-900 text-md hover-text-main-600">{{$companySettings->contact}}</a>
+                        <a href="tel:<?php echo e($companySettings->contact); ?>" class="text-gray-900 text-md hover-text-main-600"><?php echo e($companySettings->contact); ?></a>
                     </div>
                     <div class="gap-16 mb-16 flex-align">
                         <span class="flex-shrink-0 w-40 h-40 text-2xl border border-gray-100 flex-center rounded-circle text-main-two-600"><i class="ph-fill ph-envelope"></i></span>
-                        <a href="mailto:{{$companySettings->email}}" class="text-gray-900 text-md hover-text-main-600">{{$companySettings->email}}</a>
+                        <a href="mailto:<?php echo e($companySettings->email); ?>" class="text-gray-900 text-md hover-text-main-600"><?php echo e($companySettings->email); ?></a>
                     </div>
                     <div class="gap-16 mb-0 flex-align">
                         <span class="flex-shrink-0 w-40 h-40 text-2xl border border-gray-100 flex-center rounded-circle text-main-two-600"><i class="ph-fill ph-map-pin"></i></span>
-                        <span class="text-gray-900 text-md ">{{ $companySettings->address }}</span>
+                        <span class="text-gray-900 text-md "><?php echo e($companySettings->address); ?></span>
                     </div>
                 </div>
                 <div class="flex-wrap gap-16 mt-24 flex-align">
@@ -106,6 +104,8 @@
 
 
 
- @endsection
+ <?php $__env->stopSection(); ?>
 
 
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/contact.blade.php ENDPATH**/ ?>

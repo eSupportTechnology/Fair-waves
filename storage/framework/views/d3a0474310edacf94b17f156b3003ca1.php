@@ -50,7 +50,7 @@
                             We bring you the latest technology at competitive prices.
                         </p>
                     <?php endif; ?>
-                    
+
                     <div class="social-links">
                         <a href="#" class="social-link" aria-label="Facebook">
                             <i class="fab fa-facebook-f"></i>
@@ -195,7 +195,8 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <p class="copyright mb-0">
-                        © <?php echo e(date('Y')); ?> 
+                        © <?php echo e(date('Y')); ?>
+
                         <?php if(isset($dealer)): ?>
                             <?php echo e($dealer->dealerProfile->dealer_shop_name ?? $dealer->name); ?>
 
@@ -537,48 +538,48 @@
     .professional-footer {
         text-align: center;
     }
-    
+
     .dealer-footer-logo,
     .dealer-footer-placeholder {
         width: 40px;
         height: 40px;
     }
-    
+
     .footer-title {
         font-size: 1rem;
         margin-bottom: 1rem;
     }
-    
+
     .social-links {
         justify-content: center;
     }
-    
+
     .payment-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
     }
-    
+
     .payment-item {
         padding: 8px;
         min-height: 50px;
     }
-    
+
     .payment-logo {
         height: 28px;
         max-width: 60px;
     }
-    
+
     .footer-links-inline {
         justify-content: center;
         margin-top: 15px;
     }
-    
+
     .contact-item {
         flex-direction: column;
         text-align: center;
         gap: 8px;
     }
-    
+
     .contact-item i {
         margin-top: 0;
     }
@@ -588,12 +589,12 @@
     .payment-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .footer-links-inline {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .separator {
         display: none;
     }

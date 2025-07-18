@@ -19,10 +19,10 @@
             <tbody>
                 <?php $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td><?php echo e($order->customer_name); ?></td>
-                        <td><?php echo e($order->quantity); ?></td>
+                        <td><?php echo e($order->order->order->customer_name); ?></td>
+                        <td><?php echo e($order->order->quantity); ?></td>
                         <td>₹<?php echo e(number_format($order->total_price, 2)); ?></td>
-                        <td><?php echo e(ucfirst($order->status)); ?></td>
+                        <td><?php echo e(ucfirst($order->order->order->status)); ?></td>
                         <td><?php echo e($order->created_at->format('d M Y')); ?></td>
                         <td>
                             <a href="https://track.example.com/order/<?php echo e($order->id); ?>" target="_blank" class="btn btn-sm btn-outline-secondary">

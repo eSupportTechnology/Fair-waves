@@ -1,4 +1,6 @@
-<?php $__env->startSection('content'); ?>
+@extends ('frontend.DealerShowroom.master')
+
+@section('content')
 
 <!-- Breadcrumb -->
 <div class="breadcrumb mb-0 py-26 bg-main-two-50">
@@ -7,10 +9,18 @@
             <h6 class="mb-0">Checkout</h6>
             <ul class="flex-align gap-8 flex-wrap">
                 <li class="text-sm">
-                    <a href="<?php echo e(url('/')); ?>" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                    <a href="{{ url('/') }}" class="text-gray-900 flex-align gap-8 home-link">
                         <i class="ph ph-house"></i> Home
                     </a>
                 </li>
+                <style>
+                    .home-link {
+                        transition: color 0.3s ease;
+                    }
+                    .home-link:hover {
+                        color: #ffffff !important;
+                    }
+                </style>
                 <li class="flex-align"><i class="ph ph-caret-right"></i></li>
                 <li class="text-sm text-main-600">Checkout</li>
             </ul>
@@ -20,12 +30,8 @@
 
 <!-- Checkout -->
 <section class="checkout py-80">
-<?php if(session('buy_now')): ?>
-    <form action="<?php echo e(route('dealer_buynow_placeOrder')); ?>" method="POST">
-<?php else: ?>
-    <form action="<?php echo e(route('dealer.cart.placeOrder')); ?>" method="POST">
-<?php endif; ?>
-<?php echo csrf_field(); ?>
+<form action="{{ route('cart.checkout.process') }}" method="POST">
+@csrf
 
 <div class="container container-lg">
     <div class="row">
@@ -74,43 +80,50 @@
                         <span class="text-gray-900 fw-medium text-xl font-heading-two">Subtotal</span>
                     </div>
 
-                    <?php
-                        $item = session('buy_now');
-                        $product = \App\Models\Product::find($item['id']);
-                        $subtotal = $item['price'] * $item['quantity'];
+                    @php
+                        $cart = session('showroom_cart', []);
+                        $subtotal = 0;
                         $deliveryFee = 300;
-                        $total = $subtotal + $deliveryFee;
-                    ?>
+                    @endphp
 
-                    <div class="flex-between gap-24 mb-32">
-                        <div class="flex-align gap-12">
-                            <span class="text-gray-900 fw-normal text-sm font-heading-two w-144"><?php echo e($item['name']); ?></span>
-                            <span class="text-gray-900 fw-normal text-sm font-heading-two"><i class="ph-bold ph-x"></i></span>
-                            <span class="text-gray-900 fw-semibold text-sm font-heading-two"><?php echo e($item['quantity']); ?></span>
+                    @foreach($cart as $index => $item)
+                        <div class="flex-between gap-24 mb-32">
+                            <div class="flex-align gap-12">
+                                <span class="text-gray-900 fw-normal text-sm font-heading-two w-144">{{ $item['name'] }}</span>
+                                <span class="text-gray-900 fw-normal text-sm font-heading-two"><i class="ph-bold ph-x"></i></span>
+                                <span class="text-gray-900 fw-semibold text-sm font-heading-two">{{ $item['quantity'] }}</span>
+                            </div>
+                            @php
+                                $itemSubtotal = $item['price'] * $item['quantity'];
+                                $subtotal += $itemSubtotal;
+                            @endphp
+                            <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs {{ number_format($itemSubtotal, 2) }}</span>
+
+                            <!-- Hidden Fields -->
+                            <input type="hidden" name="products[{{$index}}][product_id]" value="{{ $item['id'] }}">
+                            <input type="hidden" name="products[{{$index}}][quantity]" value="{{ $item['quantity'] }}">
+                            <input type="hidden" name="products[{{$index}}][size]" value="{{ $item['size'] ?? '' }}">
+                            <input type="hidden" name="products[{{$index}}][color]" value="{{ $item['color'] ?? '' }}">
+                            <input type="hidden" name="products[{{$index}}][cost]" value="{{ $item['price'] }}">
                         </div>
-                        <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs <?php echo e(number_format($subtotal, 2)); ?></span>
-                    </div>
+                    @endforeach
 
-                    <!-- Hidden Fields -->
-                    <input type="hidden" name="products[0][product_id]" value="<?php echo e($item['id']); ?>">
-                    <input type="hidden" name="products[0][quantity]" value="<?php echo e($item['quantity']); ?>">
-                    <input type="hidden" name="products[0][size]" value="<?php echo e($item['size'] ?? ''); ?>">
-                    <input type="hidden" name="products[0][color]" value="<?php echo e($item['color'] ?? ''); ?>">
-                    <input type="hidden" name="products[0][cost]" value="<?php echo e($item['price']); ?>">
-                    <input type="hidden" name="products[0][dealerProductLink]" value="<?php echo e($item['dealerProductLink']); ?>">
+                    @php
+                        $total = $subtotal + $deliveryFee;
+                    @endphp
 
                     <div class="border-top border-gray-100 pt-30 mt-30">
                         <div class="mb-0 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two text-md fw-semibold">Subtotal</span>
-                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs <?php echo e(number_format($subtotal, 2)); ?></span>
+                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs {{ number_format($subtotal, 2) }}</span>
                         </div>
                         <div class="mb-32 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two text-md fw-semibold">Delivery Fee</span>
-                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs <?php echo e(number_format($deliveryFee, 2)); ?></span>
+                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs {{ number_format($deliveryFee, 2) }}</span>
                         </div>
                         <div class="mb-0 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two text-xl fw-bold">Total</span>
-                            <span class="text-gray-900 font-heading-two text-xl fw-bold">Rs <?php echo e(number_format($total, 2)); ?></span>
+                            <span class="text-gray-900 font-heading-two text-xl fw-bold">Rs {{ number_format($total, 2) }}</span>
                         </div>
                     </div>
                 </div>
@@ -138,6 +151,4 @@
 </form>
 </section>
 
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('frontend.DealerShowroom.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/checkout.blade.php ENDPATH**/ ?>
+@endsection

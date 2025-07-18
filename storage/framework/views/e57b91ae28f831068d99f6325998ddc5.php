@@ -1,3 +1,8 @@
+<?php
+    use App\Models\DealerProductLink;
+?>
+
+
 <?php $__env->startSection('content'); ?>
 
 
@@ -336,10 +341,40 @@ img{
                                     <h6 class="text-xl text-gray-400 mb-0 fw-medium">Rs <?php echo e($product->normal_price); ?>
 
                                     <?php if(Auth::check() && Auth::user()->role === 'dealer'): ?>
-              (<?php echo e($product->bv ? $product->bv : '0'); ?> BV)
+              (<?php echo e($product->bv ? $product->bv : '0'); ?> IV)
                 <?php endif; ?>
                                     </h6>
                                 </div>
+                                <?php if(Auth::check() && Auth::user()->role === 'dealer'): ?>
+                                    <?php
+                                        // Check if the dealer has already generated the link for this product
+                                        $linkGenerated = DealerProductLink::where('dealer_id', Auth::user()->id)
+                                            ->where('product_id', $product->id)
+                                            ->first();
+                                    ?>
+                                    <div class="mt-2">
+                                        <?php if($linkGenerated): ?>
+                                            <button class="btn btn-success" disabled>
+                                                Link Generated
+                                            </button>
+                                            <a href="/showroom/<?php echo e($linkGenerated->dealer->dealerProfile->dealer_shop_name); ?>/product/<?php echo e($linkGenerated->unique_code); ?>" class="btn btn-outline-success ms-2" style="background-color: #ff9800; color: #fff; border-color: #ff9800;"
+                                               onmouseover="this.style.backgroundColor='#e65100'; this.style.color='#fff';"
+                                               onmouseout="this.style.backgroundColor='#ff9800'; this.style.color='#fff';">
+                                                View Link
+                                            </a>
+                                        <?php else: ?>
+                                            <form action="<?php echo e(route('dealer.link.generate')); ?>" method="POST" class="d-inline">
+                                                <?php echo csrf_field(); ?>
+                                                <input type="hidden" name="product_id" value="<?php echo e($product->id); ?>">
+                                                <button type="submit" class="btn btn-main">
+                                                    Generate Link
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+
+
                             </div>
 
                             <span class="mt-32 pt-32 text-gray-700 border-top border-gray-100 d-block"></span>

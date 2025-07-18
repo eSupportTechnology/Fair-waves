@@ -22,7 +22,11 @@
 
 <!-- Checkout -->
 <section class="checkout py-80">
-<form action="{{ route('dealer_buynow_placeOrder') }}" method="POST">
+@if(session('buy_now'))
+    <form action="{{ route('dealer_buynow_placeOrder') }}" method="POST">
+@else
+    <form action="{{ route('dealer.cart.placeOrder') }}" method="POST">
+@endif
 @csrf
 
 <div class="container container-lg">

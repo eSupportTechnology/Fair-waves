@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 <style>
     .cart-table {
@@ -129,8 +127,8 @@
                         <div class="cart-item" data-product-id="<?php echo e($productId); ?>">
                             <div class="row align-items-center">
                                 <div class="col-md-2">
-                                    <?php if($item['image']): ?>
-                                        <img src="<?php echo e(asset($item['image'])); ?>" alt="<?php echo e($item['name']); ?>" class="product-image">
+                                    <?php if(isset($item['product']) && $item['product']->images->isNotEmpty()): ?>
+                                        <img src="<?php echo e(asset('storage/' . $item['product']->images->first()->image_path)); ?>" alt="<?php echo e($item['name']); ?>" class="product-image">
                                     <?php else: ?>
                                         <img src="<?php echo e(asset('images/default-product.jpg')); ?>" alt="<?php echo e($item['name']); ?>" class="product-image">
                                     <?php endif; ?>

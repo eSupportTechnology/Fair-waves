@@ -814,6 +814,7 @@
         <?php echo csrf_field(); ?>
         <input type="hidden" name="size">
         <input type="hidden" name="color">
+        <input type="hidden" name="image_path" value="<?php echo e($productLink->product->images->first() ? $productLink->product->images->first()->image_path : ''); ?>">
         <button type="submit" class="btn btn-primary-custom mt-2">
             <i class="fas fa-shopping-cart me-2"></i> Add To Cart
         </button>

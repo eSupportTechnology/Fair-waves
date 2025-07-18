@@ -43,7 +43,9 @@ use App\Http\Controllers\AffiliatePaymentController;
 use App\Http\Controllers\AffiliateWithdrawalsController;
 use App\Http\Controllers\AffiliateUserController;
 use App\Http\Controllers\WishlistController;
-
+use App\Http\Controllers\UnpaidOrdersController;
+use App\Http\Controllers\ToBeShippedController;
+use App\Http\Controllers\ShippedOrdersController;
 
 //Vendor_Dashboard Links
 use App\Http\Controllers\VendorProductController;
@@ -62,6 +64,11 @@ Route::prefix('showroom/cart')->group(function () {
     // Cart checkout routes
     Route::get('/cart-checkout', [CartCheckoutController::class, 'cartCheckout'])->name('cart.checkout');
     Route::post('/cart-checkout/process', [CartCheckoutController::class, 'processCartCheckout'])->name('cart.checkout.process');
+    
+    // Cart payment routes
+    Route::get('/payment/{order_code}', [CartCheckoutController::class, 'showPayment'])->name('cart.payment');
+    Route::post('/payment/card/{order_code}', [CartCheckoutController::class, 'confirmCardPayment'])->name('cart.payment.card');
+    Route::post('/payment/cod/{order_code}', [CartCheckoutController::class, 'confirmCODPayment'])->name('cart.payment.cod');
     
     // Buy now checkout routes
     Route::get('/checkout', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.cart.checkout');
@@ -123,6 +130,9 @@ Route::get('/cart', function () {
 
 Route::get('/wishlist', [WishlistController::class, 'showWishlist'])->name('wishlist');
 Route::delete('/wishlist/remove/{productId}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+// Shipped Orders Route
+Route::get('/shipped-orders', [ShippedOrdersController::class, 'index'])->name('user.shipped.orders');
 Route::get('/wishlist/count', [WishlistController::class, 'getWishlistCount'])->name('wishlist.count');
 Route::post('/wishlist/toggle', [WishlistController::class, 'toggleWishlist'])->name('wishlist.toggle');
 Route::post('/wishlist/check-multiple', [WishlistController::class, 'checkMultipleWishlist'])->name('wishlist.checkMultiple');
@@ -183,7 +193,30 @@ Route::get('/brands-data', [BrandController::class, 'getBrands']);
 
 Route::get('/brand/{slug}', [BrandController::class, 'showBrandProducts'])->name('brand.products');
 
+// User dashboard routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-account/unpaid-orders', [UnpaidOrdersController::class, 'index'])->name('user.unpaid.orders');
+    Route::get('/my-account/to-be-shipped', [ToBeShippedController::class, 'index'])->name('user.to.be.shipped');
+});
 
+
+
+//cart payment routes
+Route::prefix('showroom/cart')->group(function () {
+    // Checkout routes
+    Route::get('/cart-checkout', [CartCheckoutController::class, 'cartCheckout'])->name('cart.checkout');
+    Route::post('/cart-checkout/process', [CartCheckoutController::class, 'processCartCheckout'])->name('cart.checkout.process');
+    
+    // Payment routes
+    Route::get('/payment/{order_code}', [CartCheckoutController::class, 'showPayment'])->name('cart.payment');
+    Route::post('/payment/cod/{order_code}', [CartCheckoutController::class, 'confirmCODPayment'])->name('cart.payment.cod');
+    Route::post('/payment/card/{order_code}', [CartCheckoutController::class, 'confirmCardPayment'])->name('cart.payment.card');
+});
+
+// User dashboard routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-account/unpaid-orders', [UnpaidOrdersController::class, 'index'])->name('user.unpaid.orders');
+});
 
 //admin dashboard
 use App\Http\Controllers\Auth\AdminLoginController;

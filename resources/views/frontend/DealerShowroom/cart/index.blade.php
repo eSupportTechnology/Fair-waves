@@ -129,8 +129,8 @@
                         <div class="cart-item" data-product-id="{{ $productId }}">
                             <div class="row align-items-center">
                                 <div class="col-md-2">
-                                    @if($item['image'])
-                                        <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}" class="product-image">
+                                    @if(isset($item['product']) && $item['product']->images->isNotEmpty())
+                                        <img src="{{ asset('storage/' . $item['product']->images->first()->image_path) }}" alt="{{ $item['name'] }}" class="product-image">
                                     @else
                                         <img src="{{ asset('images/default-product.jpg') }}" alt="{{ $item['name'] }}" class="product-image">
                                     @endif

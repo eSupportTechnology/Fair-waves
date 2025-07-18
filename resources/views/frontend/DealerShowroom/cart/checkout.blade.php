@@ -30,7 +30,7 @@
 
 <!-- Checkout -->
 <section class="checkout py-80">
-<form action="{{ route('dealer.cart.placeOrder') }}" method="POST">
+<form action="{{ route('cart.checkout.process') }}" method="POST">
 @csrf
 
 <div class="container container-lg">

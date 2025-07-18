@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 
 <!-- Breadcrumb -->
@@ -30,7 +28,7 @@
 
 <!-- Checkout -->
 <section class="checkout py-80">
-<form action="<?php echo e(route('dealer.cart.placeOrder')); ?>" method="POST">
+<form action="<?php echo e(route('cart.checkout.process')); ?>" method="POST">
 <?php echo csrf_field(); ?>
 
 <div class="container container-lg">

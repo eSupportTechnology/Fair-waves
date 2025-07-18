@@ -105,18 +105,18 @@
 <div class="orders-section">
     <h5>My Orders</h5>
     <div class="orders-row">
-        <div class="orders-box">
+        <a href="<?php echo e(route('user.unpaid.orders')); ?>" class="orders-box" style="text-decoration: none; color: inherit;">
             <img src="https://icons.veryicon.com/png/128/miscellaneous/bigmk_app_icon/unpaid-2.png" alt="Unpaid">
             <p>Unpaid</p>
-        </div>
-        <div class="orders-box">
+        </a>
+        <a href="<?php echo e(route('user.to.be.shipped')); ?>" class="orders-box" style="text-decoration: none; color: inherit;">
             <img src="https://icons.veryicon.com/png/128/miscellaneous/cb/to-be-shipped-25.png" alt="To be shipped">
             <p>To be shipped</p>
-        </div>
-        <div class="orders-box">
+        </a>
+        <a href="<?php echo e(route('user.shipped.orders')); ?>" class="orders-box" style="text-decoration: none; color: inherit;">
             <img src="https://icons.veryicon.com/png/128/miscellaneous/bigmk_app_icon/in-transit.png" alt="Shipped">
             <p>Shipped</p>
-        </div>
+        </a>
         <div class="orders-box">
             <img src="https://icons.veryicon.com/png/128/miscellaneous/document-format/reviewed-5.png" alt="To be reviewed">
             <p>To be reviewed</p>

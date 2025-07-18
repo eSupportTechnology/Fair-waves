@@ -94,6 +94,7 @@
                     <input type="hidden" name="products[0][color]" value="<?php echo e($item['color'] ?? ''); ?>">
                     <input type="hidden" name="products[0][cost]" value="<?php echo e($item['price']); ?>">
                     <input type="hidden" name="products[0][dealerProductLink]" value="<?php echo e($item['dealerProductLink']); ?>">
+                    <input type="hidden" name="products[0][bv]" value="<?php echo e($item['bv']); ?>">
 
                     <div class="border-top border-gray-100 pt-30 mt-30">
                         <div class="mb-0 flex-between gap-8">
@@ -114,7 +115,19 @@
                 <div class="mt-32 pt-32 border-top border-gray-100">
                     <p class="text-gray-500">Your personal data will be used to process your order and support your experience on this site. See our <a href="#" class="text-main-600 text-decoration-underline">privacy policy</a>.</p>
                 </div>
-                <button type="submit" class="btn btn-main mt-40 py-18 w-100 rounded-8">Place Order</button>
+                <style>
+                    .btn-order {
+                        background: #ff5800;
+                        color: white;
+                        transition: all 0.3s ease;
+                    }
+                    .btn-order:hover {
+                        background: #ff7a3d;
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(255, 88, 0, 0.2);
+                    }
+                </style>
+                <button type="submit" class="btn btn-order mt-40 py-18 w-100 rounded-8">Place Order</button>
             </div>
         </div>
     </div>

@@ -28,6 +28,8 @@ class CustomerOrder extends Model
         'payment_status',
         'activity_logs', // Include activity_logs in fillable
         'order_type',
+        'tracking_number', // New field for tracking number
+        'tracking_link',   // New field for tracking link
     ];
 
     // Cast activity_logs as an array to handle JSON data

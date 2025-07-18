@@ -92,6 +92,7 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('l
 
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\FAQController;
 use App\Http\Controllers\SearchController;
 
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
@@ -110,15 +111,39 @@ Route::get('/contact', function () {
     return view('frontend.contact');
 })->name('contact');
 
+Route::get('/faq', function () {
+    return view('frontend.faq');
+})->name('buy');
+
+Route::get('/buy', function () {
+    return view('frontend.how-to-buy');
+})->name('buy');
+
+Route::get('/shipping-delivery', function () {
+    return view('frontend.ShippingDelivery');
+})->name('shipping-delivery');
+
+Route::get('/warranty', function () {
+    return view('frontend.warranty');
+})->name('warranty');
 
 
-Route::get('/privacy-policy', function () {
-    return view('frontend.privacy-policy');
-})->name('privacy-policy');
+// Route::get('/privacy-policy', function () {
+//     return view('frontend.privacy-policy');
+// })->name('privacy-policy');
 
 Route::get('/privacy-policy', function () {
     return view('frontend.PrivacyPolicy');
 })->name('PrivacyPolicy');
+
+Route::get('/return-refund', function () {
+    return view('frontend.ReturnRefund');
+})->name('return-refund');
+
+Route::get('/terms-condition', function () {
+    return view('frontend.TermsCondition');
+})->name('terms-condition');
+
 
 Route::post('/contact', [InquiryController::class, 'store'])->name('store.inquiries');
 

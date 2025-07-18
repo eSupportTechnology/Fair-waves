@@ -2,19 +2,17 @@
 
 @section('content')
 
-    
-
 
 
 
     <!-- ========================= Breadcrumb Start =============================== -->
-<div class="breadcrumb mb-0 py-26 bg-main-two-50">
+<div class="mb-0 breadcrumb py-26 bg-main-two-50" style="margin-top: 120px">
     <div class="container container-lg">
-        <div class="breadcrumb-wrapper flex-between flex-wrap gap-16">
+        <div class="flex-wrap gap-16 breadcrumb-wrapper flex-between">
             <h6 class="mb-0">Contact</h6>
-            <ul class="flex-align gap-8 flex-wrap">
+            <ul class="flex-wrap gap-8 flex-align">
                 <li class="text-sm">
-                    <a href="index.html" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                    <a href="index.html" class="gap-8 text-gray-900 flex-align hover-text-main-600">
                         <i class="ph ph-house"></i>
                         Home
                     </a>
@@ -34,34 +32,34 @@
     <div class="container container-lg">
         <div class="row gy-5">
             <div class="col-lg-8">
-                <div class="contact-box border border-gray-100 rounded-16 px-24 py-40">
+                <div class="px-24 py-40 border border-gray-100 contact-box rounded-16">
                 <form action="{{ route('store.inquiries') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <h6 class="mb-32">Make Custom Request</h6>
 
                     <div class="row gy-4">
                         <div class="col-sm-6 col-xs-6">
-                            <label for="name" class="flex-align gap-4 text-sm font-heading-two text-gray-900 fw-semibold mb-4">Full Name <span class="text-danger text-xl line-height-1">*</span> </label>
-                            <input type="text" name="full_name" class="common-input px-16" id="full_name" placeholder="Full name">
+                            <label for="name" class="gap-4 mb-4 text-sm text-gray-900 flex-align font-heading-two fw-semibold">Full Name <span class="text-xl text-danger line-height-1">*</span> </label>
+                            <input type="text" name="full_name" class="px-16 common-input" id="full_name" placeholder="Full name">
                         </div>
                         <div class="col-sm-6 col-xs-6">
-                            <label for="email" class="flex-align gap-4 text-sm font-heading-two text-gray-900 fw-semibold mb-4">Email Address <span class="text-danger text-xl line-height-1">*</span> </label>
-                            <input type="email" name="email" class="common-input px-16" id="email" placeholder="Email address">
+                            <label for="email" class="gap-4 mb-4 text-sm text-gray-900 flex-align font-heading-two fw-semibold">Email Address <span class="text-xl text-danger line-height-1">*</span> </label>
+                            <input type="email" name="email" class="px-16 common-input" id="email" placeholder="Email address">
                         </div>
                         <div class="col-sm-6 col-xs-6">
-                            <label for="phone" class="flex-align gap-4 text-sm font-heading-two text-gray-900 fw-semibold mb-4">Phone Number<span class="text-danger text-xl line-height-1">*</span> </label>
-                            <input type="number" name="phone" class="common-input px-16" id="phone" placeholder="Phone Number*">
+                            <label for="phone" class="gap-4 mb-4 text-sm text-gray-900 flex-align font-heading-two fw-semibold">Phone Number<span class="text-xl text-danger line-height-1">*</span> </label>
+                            <input type="number" name="phone" class="px-16 common-input" id="phone" placeholder="Phone Number*">
                         </div>
                         <div class="col-sm-6 col-xs-6">
-                            <label for="subject" class="flex-align gap-4 text-sm font-heading-two text-gray-900 fw-semibold mb-4">Subject <span class="text-danger text-xl line-height-1">*</span> </label>
-                            <input type="text" name="subject" class="common-input px-16" id="subject" placeholder="Subject">
+                            <label for="subject" class="gap-4 mb-4 text-sm text-gray-900 flex-align font-heading-two fw-semibold">Subject <span class="text-xl text-danger line-height-1">*</span> </label>
+                            <input type="text" name="subject" class="px-16 common-input" id="subject" placeholder="Subject">
                         </div>
                         <div class="col-sm-12">
-                            <label for="message" class="flex-align gap-4 text-sm font-heading-two text-gray-900 fw-semibold mb-4">Message <span class="text-danger text-xl line-height-1">*</span> </label>
-                            <textarea name="message" class="common-input px-16" id="message" placeholder="Type your message"></textarea>
+                            <label for="message" class="gap-4 mb-4 text-sm text-gray-900 flex-align font-heading-two fw-semibold">Message <span class="text-xl text-danger line-height-1">*</span> </label>
+                            <textarea name="message" class="px-16 common-input" id="message" placeholder="Type your message"></textarea>
                         </div>
-                        <div class="col-sm-12 mt-32">
-                            <button type="submit" class="btn btn-main py-18 px-32 rounded-8">Send</button>
+                        <div class="mt-32 col-sm-12">
+                            <button type="submit" class="px-32 btn btn-main py-18 rounded-8">Send</button>
                         </div>
                     </div>
                 </form>
@@ -69,32 +67,32 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="contact-box border border-gray-100 rounded-16 px-24 py-40">
+                <div class="px-24 py-40 border border-gray-100 contact-box rounded-16">
                     <h6 class="mb-48">Get In Touch</h6>
                          @php
-                            $companySettings = \App\Models\CompanySettings::first(); 
+                            $companySettings = \App\Models\CompanySettings::first();
                         @endphp
-                    <div class="flex-align gap-16 mb-16">
-                        <span class="w-40 h-40 flex-center rounded-circle border border-gray-100 text-main-two-600 text-2xl flex-shrink-0"><i class="ph-fill ph-phone-call"></i></span>
-                        <a href="tel:{{$companySettings->contact}}" class="text-md text-gray-900 hover-text-main-600">{{$companySettings->contact}}</a>
+                    <div class="gap-16 mb-16 flex-align">
+                        <span class="flex-shrink-0 w-40 h-40 text-2xl border border-gray-100 flex-center rounded-circle text-main-two-600"><i class="ph-fill ph-phone-call"></i></span>
+                        <a href="tel:{{$companySettings->contact}}" class="text-gray-900 text-md hover-text-main-600">{{$companySettings->contact}}</a>
                     </div>
-                    <div class="flex-align gap-16 mb-16">
-                        <span class="w-40 h-40 flex-center rounded-circle border border-gray-100 text-main-two-600 text-2xl flex-shrink-0"><i class="ph-fill ph-envelope"></i></span>
-                        <a href="mailto:{{$companySettings->email}}" class="text-md text-gray-900 hover-text-main-600">{{$companySettings->email}}</a>
+                    <div class="gap-16 mb-16 flex-align">
+                        <span class="flex-shrink-0 w-40 h-40 text-2xl border border-gray-100 flex-center rounded-circle text-main-two-600"><i class="ph-fill ph-envelope"></i></span>
+                        <a href="mailto:{{$companySettings->email}}" class="text-gray-900 text-md hover-text-main-600">{{$companySettings->email}}</a>
                     </div>
-                    <div class="flex-align gap-16 mb-0">
-                        <span class="w-40 h-40 flex-center rounded-circle border border-gray-100 text-main-two-600 text-2xl flex-shrink-0"><i class="ph-fill ph-map-pin"></i></span>
-                        <span class="text-md text-gray-900 ">{{ $companySettings->address }}</span>
+                    <div class="gap-16 mb-0 flex-align">
+                        <span class="flex-shrink-0 w-40 h-40 text-2xl border border-gray-100 flex-center rounded-circle text-main-two-600"><i class="ph-fill ph-map-pin"></i></span>
+                        <span class="text-gray-900 text-md ">{{ $companySettings->address }}</span>
                     </div>
                 </div>
-                <div class="mt-24 flex-align flex-wrap gap-16">
-                    <a href="#" class="bg-neutral-600 hover-bg-main-600 rounded-8 p-10 px-16 flex-between flex-wrap gap-8 flex-grow-1">
+                <div class="flex-wrap gap-16 mt-24 flex-align">
+                    <a href="#" class="flex-wrap gap-8 p-10 px-16 bg-neutral-600 hover-bg-main-600 rounded-8 flex-between flex-grow-1">
                         <span class="text-white fw-medium">Get Support On Call</span>
-                        <span class="w-36 h-36 bg-main-600 rounded-8 flex-center text-xl text-white"><i class="ph ph-headset"></i></span>
+                        <span class="text-xl text-white w-36 h-36 bg-main-600 rounded-8 flex-center"><i class="ph ph-headset"></i></span>
                     </a>
-                    <a href="#" class="bg-neutral-600 hover-bg-main-600 rounded-8 p-10 px-16 flex-between flex-wrap gap-8 flex-grow-1">
+                    <a href="#" class="flex-wrap gap-8 p-10 px-16 bg-neutral-600 hover-bg-main-600 rounded-8 flex-between flex-grow-1">
                         <span class="text-white fw-medium">Get Direction</span>
-                        <span class="w-36 h-36 bg-main-600 rounded-8 flex-center text-xl text-white"><i class="ph ph-map-pin"></i></span>
+                        <span class="text-xl text-white w-36 h-36 bg-main-600 rounded-8 flex-center"><i class="ph ph-map-pin"></i></span>
                     </a>
                 </div>
             </div>
@@ -103,11 +101,11 @@
 </section>
 <!-- ============================ Contact Section End ================================== -->
 
-  
 
 
-      
- 
+
+
+
  @endsection
 
 

@@ -95,6 +95,8 @@ class OrderController extends Controller
                     }
                 },
             ],
+            'tracking_number'=> 'nullable|string|max:255',
+            'tracking_link' => 'nullable|url|max:255',
         ]);
 
         // Add an activity log for the status change
@@ -103,9 +105,16 @@ class OrderController extends Controller
         }
 
         // Update the order status
-        $order->update([
+        $updateData = [
             'status' => $request->status,
-        ]);
+        ];
+
+        if ($request->status == 'Shipped') {
+            $updateData['tracking_number'] = $request->tracking_number;
+            $updateData['tracking_link'] = $request->tracking_link;
+        }
+
+        $order->update($updateData);
 
         if($request->status == 'Delivered' && $order->order_type == 'annonymous'){
             $this->dealerPointAdd($order);
@@ -125,7 +134,7 @@ class OrderController extends Controller
         $dealerProfile = $dealer->dealerProfile;
 
         // IV = Distributor Profit / 100
-        $iv = $customerOrder->iv_value ?? round($customerOrder->total_price / 100); // fallback
+        $iv = $customerOrder->items()->sum('bv');
         $rankPercent = $this->getRankPercentage($dealerProfile->rank);
 
         // 2. Direct Commission (self)
@@ -160,7 +169,7 @@ class OrderController extends Controller
                     'from_user_id' => $dealer->id,
                     'bv' => $iv,
                     'amount' => $gapCommission,
-                    'level' => 'indirect',
+                    'level' => 'rank',
                     'customer_order_id' => $customerOrder->id,
                 ]);
             }

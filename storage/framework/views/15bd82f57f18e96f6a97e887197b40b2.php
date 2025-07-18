@@ -1,6 +1,4 @@
-@extends('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <main class="content-container">
 
     <style>
@@ -9,9 +7,100 @@
             /* Adjust based on desired spacing */
         }
 
+        .monial-graph {
+            list-style-type: circle;
+        }
+
         @media (max-width: 768px) {
             .spacing-top {
                 height: 60px;
+            }
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .styled-table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .styled-table th {
+            background-color: rgba(170, 170, 170, 0.64);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+            width: 30%;
+        }
+
+        .styled-table td {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .styled-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .styled-table ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .styled-table ul li {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+
+            .styled-table th,
+            .styled-table td {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .styled-table th {
+                width: 40%;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .styled-table {
+                font-size: 12px;
+            }
+
+            .styled-table th,
+            .styled-table td {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .styled-table th {
+                text-align: center;
             }
         }
     </style>
@@ -23,7 +112,7 @@
     <div class="mb-0 breadcrumb py-26 bg-main-two-50">
         <div class="container container-lg">
             <div class="flex-wrap gap-16 breadcrumb-wrapper flex-between">
-                <h6 class="mb-0">Return Products Request</h6>
+                <h6 class="mb-0">Warranty Information</h6>
                 <ul class="flex-wrap gap-8 flex-align">
                     <li class="text-sm">
                         <a href="/" class="gap-8 text-gray-900 flex-align hover-text-main-600">
@@ -34,7 +123,7 @@
                     <li class="flex-align">
                         <i class="ph ph-caret-right"></i>
                     </li>
-                    <li class="text-sm text-main-600"> Return Products Request </li>
+                    <li class="text-sm text-main-600"> Warranty Information </li>
                 </ul>
             </div>
         </div>
@@ -50,10 +139,9 @@
 
                     <a class="nav-link " id="v-pills-three-tab" href="shipping-delivery">Shipping & Delivery</a>
 
-                    <a class="nav-link " id="v-pills-three-tab" href="warranty">Warranty Information</a>
+                    <a class="nav-link  active " id="v-pills-three-tab" href="warranty">Warranty Information</a>
 
-                    <a href="return-product" class="nav-link  active " id="v-pills-four-tab"
-                        href="return-product">Return
+                    <a href="return-product" class="nav-link " id="v-pills-four-tab" href="return-product">Return
                         Products</a>
                 </div>
             </div>
@@ -319,128 +407,180 @@
 
 
 
-                    <div class="tab-pane fade " id="v-pills-four" role="tabpanel"
+                    <div class="tab-pane fade  show active " id="v-pills-four" role="tabpanel"
                         aria-labelledby="v-pills-four-tab">
 
                         <h3 class="title-terms mb-4">Warranty</h3>
-                        <p class="monial-graph">The warranty provided through the BuyAbans.com website is the same as
-                            the
-                            common warranty provided to all Abans PLC showrooms. For any warranty-related issues, please
-                            contact the Service Centre via the contact details on the warranty card.</p>
-                        <p class="monial-graph">We guarantee that all products sold by Abans PLC are in good quality
-                            and
-                            working order and tested for quality and handed over to the customer for normal and standard
-                            usage, subject to the following terms and conditions. Abans PLC agrees to repair the
-                            manufacturing defects in products on free of charge basis only <strong
-                                class="warrenty-first-strong">within the 01-year standard warranty period except for
-                                products covered under different warranty periods.</strong></p>
-                        <p class="monial-graph">Extended warranty will be provided subject to payments, for extended
-                            warranty terms and conditions refer the extended warranty card.</p>
-                        <p class="monial-graph">The warranty will not be effective for <strong
-                                class="warrenty-second-strong">repairs/installations/services done by any 03rd party
-                                other
-                                than Abans Electricals PLC/Abans PLC or its authorized service agents, damage caused by
-                                ancillary equipment and non-recommended accessories, normal wear, tear and corrosion,
-                                corrosion of copper tanks, promotional Items given free of charge with the main product,
-                                damages due to split and liquid, drop damages, seepage, secretion from insects, rodents
-                                or
-                                domestic pets, accident, fire, theft, act of god, power surges, electrical leakage,
-                                voltage
-                                fluctuations, negligence, misuse, abuse, incorrect installations, modifications,
-                                improper
-                                testing operation, maintenance installation, charging of batteries other than standard
-                                charges, defaced, obliterated or removed, substance damage to coil cards and connectors
-                                due
-                                to misuse, damage due to shock or external force, lightning, being operated in alkaline
-                                or
-                                unsuitable atmosphere, use of products outside specification, use for purpose not
-                                recommended, use beyond the guidelines, directions and user capacity of product,
-                                alterations, defaced or suspected warranty cards and serial number alteration, unclear
-                                rubber stamp of showroom managers and dealers, any damage or loss to any 03rd party or
-                                property, batteries, chargers, carrying cases, laptop bags, power adaptors, power
-                                cables,
-                                internet connection cables, printer cables, cartridges, toner, knobs, locks, bulbs,
-                                filters,
-                                racks, shelves, gas charging, switches, remote controllers, AV cables, antenna cables,
-                                inter
-                                connection cables, brushers, drive belts, pulleys, pads, plug tops, burner caps, trivet,
-                                tube, ignition plugs, telephone shower, plastic jug, blades, handles, lids, pouches,
-                                speaker
-                                cables, speakers, speaker boxes, water tap and any other consumable parts.</strong></p>
-                        <p class="monial-graph">Failure to install software, video, audio and file formats are not
-                            considered as manufacturing defects. No warranty is provided for the quality of the software
-                            and
-                            hardware used by the customer, hardware and software defects and corruption, virus attacks,
-                            spywares, firmware upgrades, defects due to use of third-party application and unauthorized
-                            and
-                            illegal software and company will not be responsible for any data losses at point of repair.
-                        </p>
-                        <p class="monial-graph">If the product delivered by the company contains any damage during
-                            transit
-                            or handling, customer shall be informed at the same time on date of delivery. If the product
-                            is
-                            delivered by the customer, company shall not be liable for any damage arising while
-                            transporting. Customer is advised to check before moving out product from showroom
-                            premises/Duty
-                            Free showrooms.</p>
-                        <p class="monial-graph">Services shall not be provided if Hire Purchase Instalments are due.
-                        </p>
-                        <p class="monial-graph">If the product is beyond economical repair, product replacement with
-                            similar working condition and warranty shall be effective for remaining period.</p>
-                        <p class="monial-graph">It is recommended to use the product with power guard and stabilizers.
-                        </p>
+                        <ol style=" list-style-type: circle">
+                            <li>
+                                <p class="monial-graph">The warranty provided through the crown.esupportsystem.shop website is the same as
+                                    the
+                                    common warranty provided to all Abans PLC showrooms. For any warranty-related issues, please
+                                    contact the Service Centre via the contact details on the warranty card.</p>
+                            </li>
+                            <li>
+                                <p class="monial-graph">We guarantee that all products sold by Abans PLC are in good quality
+                                    and
+                                    working order and tested for quality and handed over to the customer for normal and standard
+                                    usage, subject to the following terms and conditions. Abans PLC agrees to repair the
+                                    manufacturing defects in products on free of charge basis only <strong
+                                        class="warrenty-first-strong">within the 01-year standard warranty period except for
+                                        products covered under different warranty periods.</strong></p>
+                            </li>
+                            <li>
+                                <p class="monial-graph">Extended warranty will be provided subject to payments, for extended
+                                    warranty terms and conditions refer the extended warranty card.</p>
+                            </li>
+                            <li>
+                                <p class="monial-graph">The warranty will not be effective for <strong
+                                        class="warrenty-second-strong">repairs/installations/services done by any 03rd party
+                                        other
+                                        than Crown Electronics or its authorized service agents, damage caused by
+                                        ancillary equipment and non-recommended accessories, normal wear, tear and corrosion,
+                                        corrosion of copper tanks, promotional Items given free of charge with the main product,
+                                        damages due to split and liquid, drop damages, seepage, secretion from insects, rodents
+                                        or
+                                        domestic pets, accident, fire, theft, act of god, power surges, electrical leakage,
+                                        voltage
+                                        fluctuations, negligence, misuse, abuse, incorrect installations, modifications,
+                                        improper
+                                        testing operation, maintenance installation, charging of batteries other than standard
+                                        charges, defaced, obliterated or removed, substance damage to coil cards and connectors
+                                        due
+                                        to misuse, damage due to shock or external force, lightning, being operated in alkaline
+                                        or
+                                        unsuitable atmosphere, use of products outside specification, use for purpose not
+                                        recommended, use beyond the guidelines, directions and user capacity of product,
+                                        alterations, defaced or suspected warranty cards and serial number alteration, unclear
+                                        rubber stamp of showroom managers and dealers, any damage or loss to any 03rd party or
+                                        property, batteries, chargers, carrying cases, laptop bags, power adaptors, power
+                                        cables,
+                                        internet connection cables, printer cables, cartridges, toner, knobs, locks, bulbs,
+                                        filters,
+                                        racks, shelves, gas charging, switches, remote controllers, AV cables, antenna cables,
+                                        inter
+                                        connection cables, brushers, drive belts, pulleys, pads, plug tops, burner caps, trivet,
+                                        tube, ignition plugs, telephone shower, plastic jug, blades, handles, lids, pouches,
+                                        speaker
+                                        cables, speakers, speaker boxes, water tap and any other consumable parts.</strong></p>
+                            </li>
+                            <li>
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
+                                <p class="monial-graph">Failure to install software, video, audio and file formats are not
+                                    considered as manufacturing defects. No warranty is provided for the quality of the software
+                                    and
+                                    hardware used by the customer, hardware and software defects and corruption, virus attacks,
+                                    spywares, firmware upgrades, defects due to use of third-party application and unauthorized
+                                    and
+                                    illegal software and company will not be responsible for any data losses at point of repair.
+                                </p>
+                            </li>
+                            <li>
+
+                                <p class="monial-graph">If the product delivered by the company contains any damage during
+                                    transit
+                                    or handling, customer shall be informed at the same time on date of delivery. If the product
+                                    is
+                                    delivered by the customer, company shall not be liable for any damage arising while
+                                    transporting. Customer is advised to check before moving out product from showroom
+                                    premises/Duty
+                                    Free showrooms.</p>
+                            </li>
+                            <li>
+
+                                <p class="monial-graph">Services shall not be provided if Hire Purchase Instalments are due.
+                                </p>
+                            </li>
+                            <li>
+
+                                <p class="monial-graph">If the product is beyond economical repair, product replacement with
+                                    similar working condition and warranty shall be effective for remaining period.</p>
+                            </li>
+                            <li>
+
+                                <p class="monial-graph">It is recommended to use the product with power guard and stabilizers.
+                                </p>
+
+                            </li>
+
+                        </ol>
+
+
+
+
+                        <div class="table-container">
+                            <table class="styled-table">
                                 <tbody>
                                     <tr>
-                                        <td style="width: 30%;"><strong>Refrigerators Bottle Coolers Freezers</strong>
+                                        <th>Refrigerators, Bottle Coolers, Freezers</th>
+                                        <td>
+                                            <ul style="list-style-type: disc;">
+                                                <li>5 years for compressor only. Customer shall bear any charges for labor or accessories in relation to the replacement of compressor.</li>
+                                                <li>10-year warranty shall apply only on compressors of selected refrigerator models.</li>
+                                                <li>Humidity on the surface shall not be considered a defect.</li>
+                                            </ul>
                                         </td>
-                                        <td style="width:70%;">05 years for compressor only. Customer shall bear any
-                                            charges for labour or
-                                            accessories in relation to the replacement of compressor. 10-Year warranty
-                                            shall apply only on compressors of selected refrigerator models. Humidity on
-                                            the surface shall not be considered as defect.</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Televisions LCD/LED</strong></td>
-                                        <td>If it is a manufacturing fault within the warranty period, Abans PLC will
-                                            repair it free of charge.<br><br>1-year warranty for panel and 3-year
-                                            warranty for other parts including Main and Power PCB.<br><br>Colour dots up
-                                            to 7 numbers on LCD/LED TV screens shall be considered as a normal
-                                            industrial cause as a result of pixel burnt and shall not replace the said
-                                            products on that effect.<br><br>No warranty for Main/Power PCB damages due
-                                            to signal wire connections/careless plugging/unplugging and usage of multi
-                                            plugs.<br><br>No replacements allowed for back light replacements.<br>No
-                                            warranty for TV and AV accessories / remotes / speakers / mics / wires /
-                                            HDMI ports / Cables.<br>Televisions fixed on mobile vehicles shall not be
-                                            covered under this warranty.</td>
+                                        <th>Televisions LCD/LED</th>
+                                        <td>
+                                            <ul style="list-style-type: disc;">
+                                                <li>If it is a manufacturing fault within the warranty period, Abans PLC will repair it free of charge.</li>
+                                                <li>1-year warranty for panel and 3-year warranty for other parts including Main and Power PCB.</li>
+                                                <li>Color dots up to 7 on LCD/LED TV screens shall be considered a normal industrial cause due to pixel burnout and shall not warrant replacement.</li>
+                                                <li>No warranty for Main/Power PCB damages due to signal wire connections, careless plugging/unplugging, or usage of multi-plugs.</li>
+                                                <li>No replacements allowed for backlight replacements.</li>
+                                                <li>No warranty for TV and AV accessories, remotes, speakers, mics, wires, HDMI ports, or cables.</li>
+                                                <li>Televisions fixed on mobile vehicles shall not be covered under this warranty.</li>
+                                            </ul>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Audio</strong></td>
-                                        <td>No warranty for Speaker body corrosion, colour fading and fungus.<br>No
-                                            warranty for Remote / Audio Speakers / Mics / Wires / Jacks.<br><br>If
-                                            similar model is not available and customer request for refund, the refund
-                                            value depends on the usage period.<br>Usage Period 00-06 months: Refund 85%
-                                            from the invoiced value.<br>Usage Period 06-12 months: Refund 75% from the
-                                            invoiced value.<br><br><strong>When customer request
-                                                upgrade</strong><br>Usage Period 00-06 months: Get balance amount +
-                                            Remaining warranty. <br>Usage Period 06-12 months: Get balance amount +
-                                            Remaining warranty.</td>
+                                        <th>Audio</th>
+                                        <td>
+                                            <ul style="list-style-type: disc;">
+                                                <li>No warranty for speaker body corrosion, color fading, or fungus.</li>
+                                                <li>No warranty for remotes, audio speakers, mics, wires, or jacks.</li>
+                                                <li>If a similar model is not available and the customer requests a refund:
+                                                    <ul>
+                                                        <li>Usage Period 0–6 months: Refund 85% of the invoiced value.</li>
+                                                        <li>Usage Period 6–12 months: Refund 75% of the invoiced value.</li>
+                                                    </ul>
+                                                </li>
+                                                <li>When customer requests an upgrade:
+                                                    <ul>
+                                                        <li>Usage Period 0–6 months: Get balance amount + remaining warranty.</li>
+                                                        <li>Usage Period 6–12 months: Get balance amount + remaining warranty.</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Washing Machine</strong></td>
-                                        <td>05/10-year warranty on Stainless Steel Drum against rusting / Direct Drive
-                                            or Smart Inverter Motor for selected models only.<br>05-year warranty on
-                                            selected washing machines.</td>
+                                        <th>Washing Machine</th>
+                                        <td>
+                                            <ul style="list-style-type: disc;">
+                                                <li>5/10-year warranty on Stainless Steel Drum against rusting, Direct Drive, or Smart Inverter Motor for selected models only.</li>
+                                                <li>5-year warranty on selected washing machines.</li>
+                                            </ul>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Water Purifier</strong></td>
-                                        <td>Refer warranty instruction sheet for more details.</td>
+                                        <th>Water Purifier</th>
+                                        <td>
+                                            <ul style="list-style-type: disc;">
+                                                <li>Refer to warranty instruction sheet for more details.</li>
+
+                                            </ul>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Solar System</strong></td>
-                                        <td>Refer warranty instruction sheet for more details.</td>
+                                        <th>Solar System</th>
+                                        <td>
+                                            <ul style="list-style-type: disc;">
+                                                <li>Refer to warranty instruction sheet for more details.</li>
+                                            </ul>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -448,106 +588,66 @@
 
                         <div class="table2 " style="margin-top:30px;">
                             <p class="title-terms mb-4">SPECIAL WARRANTY TERMS</p>
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
+                            <div class="table-container">
+                                <table class="styled-table">
+                                    <!-- <thead>
+                                        <tr>
+                                            <th style="background-color:rgba(10, 10, 10, 0.37);">Product</th>
+                                            <th style="background-color:rgb(10, 10, 10, 0.37);">Special Warranty Terms for Products / Parts / Accessories</th>
+                                        </tr>
+                                    </thead> -->
                                     <tbody>
                                         <tr>
-                                            <td style="width: 30%"><strong>Product</strong></td>
-                                            <td style="width: 70%"><strong>Special Warranty Terms for Products / Parts
-                                                    / Accessories</strong>
+                                            <td style="background-color:rgba(10, 10, 10, 0.37);">Product</th>
+                                            <td style="background-color:rgba(10, 10, 10, 0.37);">Special Warranty Terms for Products / Parts / Accessories</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Air Conditioners</th>
+                                            <td>
+                                                <ul style="list-style-type: disc;">
+                                                    <li>Within the standard one-year warranty period, 3 services will be provided free of charge.</li>
+                                                    <li>10-year warranty for the compressor of LG Inverter Air Conditioner (residential, 9000–24000 BTU) and 5-year warranty for compressors of other inverter and non-inverter Air Conditioner brands (residential, 9000–36000 BTU) apply only if a 4-year service agreement is signed with Abans Electrical PLC at the end of the first year. Customer shall bear any charges for labor and accessories for compressor replacement.</li>
+                                                    <li>Additional services will be provided subject to additional payments.</li>
+                                                    <li>No warranty for corrosion on outdoor unit due to environmental conditions or sea breeze.</li>
+                                                    <li>5-year warranty for compressors of all Air Conditioner brands (commercial, 12000–100000 BTU) applies only if a 4-year service agreement is signed with Abans Electrical PLC at the end of the first year. Customer shall bear any charges for labor and accessories for compressor replacement.</li>
+                                                </ul>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Air Conditioners</strong></td>
-                                            <td>Within the standard one-year warranty period, 3 services will be
-                                                provided
-                                                free of charge.<br><br>10-year warranty for the compressor of the LG
-                                                Inverter Air Conditioner (residential) in the range of 9000 BTU to 24000
-                                                BTU
-                                                and 05-year warranty for the compressor of all other inverter and
-                                                non-inverter Air Conditioner (residential) brands in the range 9000 BTU
-                                                to
-                                                36000 BTU shall apply only if the service agreement is signed with Abans
-                                                Electrical PLC for 04 years at the end of the first year. Customer shall
-                                                bear any charges for the labour and accessories in relation to the
-                                                replacement of the compressor. <br><br>Additional services will be
-                                                provided
-                                                subject to additional payments. <br><br>No warranty for corrosion on
-                                                outdoor
-                                                unit of air conditioner due to environment conditions/sea
-                                                breeze.<br><br>05-year warranty for the compressor of all Air
-                                                Conditioner
-                                                brands (Commercial) in the range of 12000 BTU to 100000 BTU shall apply
-                                                only
-                                                if the service agreement is signed with Abans Electrical PLC for 04
-                                                years at
-                                                the end of the first year. Customer shall bear any charges for the
-                                                labour
-                                                and accessories in relation to the replacement of the compressor.</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Computers Laptops Tablets</strong></td>
-                                            <td>Colour dots up to 7 numbers on Laptops, Tablet Screens and Monitors
-                                                shall be
-                                                considered as a normal industrial cause as a result of pixel burnt and
-                                                shall
-                                                not replace the said products on that effect.</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Mobile Phones</strong></td>
-                                            <td>12-month warranty for main unit, 06-month for battery and charger,
-                                                01-month
-                                                for any other accessories</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Apple Products</strong></td>
+                                            <th>Computers, Laptops, Tablets</th>
                                             <td>
-                                                <div><strong>The Apple One-Year Limited Warranty is a voluntary
-                                                        manufacturer’s warranty that can be claimed from any Apple store
-                                                        world-wide and only at Abans Apple Authorized Service
-                                                        Centres</strong></div>
-                                                <br>Apple, as defined, warrants Apple-branded hardware product against
-                                                defects in materials and workmanship under normal use for a period of
-                                                ONE
-                                                (1) YEAR from the date of retail purchase by the original end-user
-                                                purchaser
-                                                ("Warranty Period").<br><br>If a hardware defect arises and a valid
-                                                receipt
-                                                is provided within the warranty period, it will be as below in guidance
-                                                as
-                                                per Apple's diagnosis system report set up at the service
-                                                centre.<br><br>
-                                                <ol style="list-style-type: lower-roman;">
-                                                    <li>&nbsp;For iPhones, iPads, Apple Watch and Apple branded
-                                                        accessories:
-                                                        exchange the defective product with a product that is new or
-                                                        which
-                                                        has been manufactured from new or serviceable used parts and is
-                                                        at
-                                                        least functionally equivalent to the original product.</li>
-                                                    <li>&nbsp;For Macs: repair the hardware defect at no charge, using
-                                                        new
-                                                        spare parts. Apple Care can be enabled for Macs through service
-                                                        before the first year warranty period is over. Once enabled, an
-                                                        additional 2-year warranty will be extended (visit the link for
-                                                        more
-                                                        info <a target="_blank"
-                                                            href="https://www.apple.com/legal/sales-support/applecare/appmacapacen.html">Apple
-                                                            Legal - AppleCare Protection Plan for Mac</a>).</li>
-                                                    <li>&nbsp;If the product is dropped, water damage or physically
-                                                        damaged
-                                                        due to customer's negligence there will be no warranty for the
-                                                        same.
+                                                <ul style="list-style-type: disc;">
+                                                    <li>Color dots up to 7 on laptops, tablet screens, and monitors are considered a normal industrial cause due to pixel burnout and do not warrant replacement.</li>
+
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Mobile Phones</th>
+                                            <td>
+                                                <ul style="list-style-type: disc;">
+                                                    <li>12-month warranty for the main unit.</li>
+                                                    <li>6-month warranty for battery and charger.</li>
+                                                    <li>1-month warranty for other accessories.</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Apple Products</th>
+                                            <td>
+                                                <div><strong>The Apple One-Year Limited Warranty is a voluntary manufacturer’s warranty that can be claimed from any Apple store worldwide and only at Abans Apple Authorized Service Centres.</strong></div>
+                                                <ul style="list-style-type: disc;">
+                                                    <li>Apple warrants Apple-branded hardware products against defects in materials and workmanship under normal use for one (1) year from the date of retail purchase by the original end-user purchaser ("Warranty Period").</li>
+                                                    <li>If a hardware defect arises and a valid receipt is provided within the warranty period, the following applies per Apple's diagnosis system report at the service centre:
+                                                        <ol style="list-style-type: lower-roman;">
+                                                            <li>For iPhones, iPads, Apple Watch, and Apple-branded accessories: Exchange the defective product with a product that is new or manufactured from new or serviceable used parts and is at least functionally equivalent to the original product.</li>
+                                                            <li>For Macs: Repair the hardware defect at no charge using new spare parts. AppleCare can be enabled for Macs before the first-year warranty ends, extending an additional 2-year warranty (visit <a target="_blank" href="https://www.apple.com/legal/sales-support/applecare/appmacapacen.html">AppleCare Protection Plan for Mac</a> for more info).</li>
+                                                            <li>If the product is dropped, water-damaged, or physically damaged due to customer negligence, there is no warranty.</li>
+                                                            <li>No DOA policy for any Apple products; replacement will only be done through service.</li>
+                                                            <li>A sufficient lead time is required to obtain spare parts for repair or replacement per Apple's guidance.</li>
+                                                        </ol>
                                                     </li>
-                                                    <li>&nbsp;No DOA policy for any Apple products and replacement will
-                                                        only
-                                                        be done through service.</li>
-                                                    <li>&nbsp;A sufficient lead time will be required to get the spare
-                                                        parts
-                                                        to repair the product or replace the product in guidance with
-                                                        Apple.
-                                                    </li>
-                                                </ol>
+                                                </ul>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -561,7 +661,7 @@
                     </div>
 
 
-                    <div class="tab-pane fade  show active " id="v-pills-five" role="tabpanel"
+                    <div class="tab-pane fade " id="v-pills-five" role="tabpanel"
                         aria-labelledby="v-pills-five-tab">
                         <h3 class="title-terms">Return Products Request</h3>
 
@@ -613,4 +713,6 @@
 
 
 </main>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/warranty.blade.php ENDPATH**/ ?>

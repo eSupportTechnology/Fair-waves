@@ -1,29 +1,26 @@
-@extends('frontend.master')
+<?php $__env->startSection('content'); ?>
 
-@section('content')
+<style>
+    .spacing-top {
+        height: 120px;
+        /* Adjust based on desired spacing */
+    }
+
+    @media (max-width: 768px) {
+        .spacing-top {
+            height: 60px;
+        }
+    }
+</style>
 <main class="content-container">
 
-    <style>
-        .spacing-top {
-            height: 120px;
-            /* Adjust based on desired spacing */
-        }
-
-        @media (max-width: 768px) {
-            .spacing-top {
-                height: 60px;
-            }
-        }
-    </style>
 
     <div class="spacing-top"></div>
 
-
-
-    <div class="mb-0 breadcrumb py-26 bg-main-two-50">
+    <div class="mb-0 breadcrumb py-26 bg-main-two-50" >
         <div class="container container-lg">
             <div class="flex-wrap gap-16 breadcrumb-wrapper flex-between">
-                <h6 class="mb-0">Return Products Request</h6>
+                <h6 class="mb-0">FAQ</h6>
                 <ul class="flex-wrap gap-8 flex-align">
                     <li class="text-sm">
                         <a href="/" class="gap-8 text-gray-900 flex-align hover-text-main-600">
@@ -34,7 +31,7 @@
                     <li class="flex-align">
                         <i class="ph ph-caret-right"></i>
                     </li>
-                    <li class="text-sm text-main-600"> Return Products Request </li>
+                    <li class="text-sm text-main-600"> FAQ </li>
                 </ul>
             </div>
         </div>
@@ -44,22 +41,22 @@
         <div class="row">
             <div class="col-md-3 terms-nav">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" aria-orientation="vertical">
-                    <a class="nav-link " id="v-pills-one-tab" href="faq">FAQ</a>
+                    <a class="nav-link  active " id="v-pills-one-tab" href="faq.html">FAQ</a>
 
-                    <a class="nav-link " id="v-pills-two-tab" href="buy">How To Buy</a>
+                    <a class="nav-link " id="v-pills-two-tab" href="/buy">How To Buy</a>
 
-                    <a class="nav-link " id="v-pills-three-tab" href="shipping-delivery">Shipping & Delivery</a>
+                    <a class="nav-link " id="v-pills-three-tab" href="/shipping-delivery">Shipping & Delivery</a>
 
-                    <a class="nav-link " id="v-pills-three-tab" href="warranty">Warranty Information</a>
+                    <a class="nav-link " id="v-pills-three-tab" href="/warranty">Warranty Information</a>
 
-                    <a href="return-product" class="nav-link  active " id="v-pills-four-tab"
-                        href="return-product">Return
+                    <a href="return-product" class="nav-link " id="v-pills-four-tab" href="/return-product">Return
                         Products</a>
                 </div>
             </div>
             <div class="col-md-9">
                 <div class="tab-content terms-tab" id="v-pills-tabContent">
-                    <div class="tab-pane fade " id="v-pills-one" role="tabpanel" aria-labelledby="v-pills-one-tab">
+                    <div class="tab-pane fade  show active " id="v-pills-one" role="tabpanel"
+                        aria-labelledby="v-pills-one-tab">
                         <div id="accordion" role="tablist">
 
                             <div class="content-section">
@@ -67,7 +64,7 @@
 
                                 <ol>
                                     <li class="title-other">Do I need to create a user account to buy products on
-                                        BuyAbans.com?
+                                        Crown Electronics?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>No. You can browse and purchase what you want as a guest. However, by
                                                 registering as a user, you can make your online shopping experience even
@@ -78,13 +75,11 @@
                                     </li>
                                     <li class="title-other">Are my online transactions safe?
                                         <ol style="list-style-type: lower-alpha;">
-                                            <li>Yes. We utilize the latest in digital encryption &amp; web technology to
-                                                ensure that your transactions are secure and your personal details are
-                                                safe when
-                                                you shop at BuyAbans.com. You can read our <a href="policy.html">Privacy
-                                                    Policy</a> here for more details on how we keep your personal
-                                                details
-                                                safe.</li>
+                                            <li>
+                                                Yes. We utilize the latest in digital encryption &amp; web technology to ensure that your transactions are secure and your personal details are safe when you shop at Crown Electronics. You can read our
+                                                <a href="<?php echo e(url('privacy-policy')); ?>">Privacy Policy</a> here for more details on how we keep your personal details safe.
+                                            </li>
+
                                         </ol>
                                     </li>
                                     <li class="title-other">What payment methods can I use?
@@ -128,7 +123,7 @@
                                     <li class="title-other">There is something wrong with my order. What do I do?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>You can contact our customer care hotline at <a
-                                                    href="tel:+94112222888">+94 112 222 888</a>, WhatsApp us at
+                                                    href="tel:+94 112 251 202">94 112 251 202</a>, WhatsApp us at
                                                 <a href="tel:+94772222888">+94 772 222 888</a>
                                             </li>
                                         </ol>
@@ -138,7 +133,7 @@
                                         damaged/wrong product. What should I do?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>You can contact our customer care hotline at <a
-                                                    href="tel:+94112222888">+94 112 222 888</a>, WhatsApp us at
+                                                    href="tel:+94 112 251 202">94 112 251 202</a>, WhatsApp us at
                                                 <a href="tel:+94772222888">+94 772 222 888</a>
                                             </li>
                                         </ol>
@@ -159,8 +154,7 @@
                                         Who
                                         do I call?
                                         <ol style="list-style-type: lower-alpha;">
-                                            <li>Contact our customer care hotline at <a href="tel:+94112222888">+94 112
-                                                    222 888</a>, WhatsApp us at <a href="tel:+94772222888">+94 772 222
+                                            <li>Contact our customer care hotline at <a href="tel:+94 112 251 202">+94 112 251 202</a>, WhatsApp us at <a href="tel:+94772222888">+94 772 222
                                                     888</a> and we will send a team within 03 to 04 working days to help
                                                 set up your device.</li>
                                         </ol>
@@ -174,7 +168,7 @@
                                                 contact
                                                 our customer care team, and closely follow their instructions. You can
                                                 call
-                                                them at <a href="tel:+94112222888">+94 112 222 888</a>, WhatsApp at <a
+                                                them at <a href="tel:+94 112 251 202">94 112 251 202</a>, WhatsApp at <a
                                                     href="tel:+94772222888">+94 772 222 888</a>
                                                 If the defective product is an electronic device, please shut
                                                 down/switch off
@@ -197,11 +191,11 @@
                                                 replacement/refund request. Here you can give us details of the issue
                                                 you experienced and share photos of the faulty product to help process
                                                 your request. You can also contact our customer care hotline at<a
-                                                    href="tel:+94112222888"> +94 112 222 888</a>, WhatsApp us at <a
+                                                    href="tel:+94 112 251 202"> +94 94 112 251 202</a>, WhatsApp us at <a
                                                     href="tel:+94772222888">+94 772 222 888</a>.</li>
                                         </ol>
                                     </li>
-                                    <li class="title-other">What is the BuyAbans.com return/refund policy?
+                                    <li class="title-other">What is the Crown Electronics return/refund policy?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>You can read our <a href="refundpolicy.html">Return and Refund
                                                     Policy</a> here.
@@ -218,7 +212,7 @@
                                     <li class="title-other">Further Questions
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>If you have any other questions, please feel free contact us at <a
-                                                    href="tel:+94112222888">+94 112 222 888</a>or WhatsApp us at <a
+                                                    href="tel:+94 112 251 202">+94 112 251 202</a>or WhatsApp us at <a
                                                     href="tel:+94772222888">+94 772 222 888</a>.
 
 
@@ -269,7 +263,7 @@
                         <h3 class="title-terms mb-4">Shipping &amp; Delivery</h3>
 
                         <ol>
-                            <li class="monial-graph">Items ordered online on BuyAbans.com will be delivered in within 3
+                            <li class="monial-graph">Items ordered online on Crown Electronics will be delivered in within 3
                                 to 5 working days anywhere in Sri Lanka.</li>
                             <li class="monial-graph">Estimated delivery time may vary based on the availability of
                                 items
@@ -323,7 +317,7 @@
                         aria-labelledby="v-pills-four-tab">
 
                         <h3 class="title-terms mb-4">Warranty</h3>
-                        <p class="monial-graph">The warranty provided through the BuyAbans.com website is the same as
+                        <p class="monial-graph">The warranty provided through the Crown Electronics website is the same as
                             the
                             common warranty provided to all Abans PLC showrooms. For any warranty-related issues, please
                             contact the Service Centre via the contact details on the warranty card.</p>
@@ -561,7 +555,7 @@
                     </div>
 
 
-                    <div class="tab-pane fade  show active " id="v-pills-five" role="tabpanel"
+                    <div class="tab-pane fade " id="v-pills-five" role="tabpanel"
                         aria-labelledby="v-pills-five-tab">
                         <h3 class="title-terms">Return Products Request</h3>
 
@@ -613,4 +607,6 @@
 
 
 </main>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/faq.blade.php ENDPATH**/ ?>

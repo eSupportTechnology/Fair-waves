@@ -1,6 +1,4 @@
-@extends('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <main class="content-container">
 
     <style>
@@ -613,4 +611,5 @@
 
 
 </main>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/ReturnProduct.blade.php ENDPATH**/ ?>

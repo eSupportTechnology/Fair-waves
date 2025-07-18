@@ -41,250 +41,297 @@
             <!-- mobile hearder begin -->
             <!-- top banner mobile-->
             <div class="mobi-main-header fixed-header">
-                <div id="topupbar_banner_mobile"></div>
-                <header class="header mobile-header ">
-                    <div class="container mobile-header-container">
-                        <div class="mobi-full-row">
-                            <div class="col-5-5">
-                                <div class="d-flex">
-                                    <div class="header-left me-2">
-                                        <a href="#" class="mobile-menu-toggle new-mobile-toggle"
-                                            onclick="if (!window.__cfRLUnblockHandlers) return false;  openMenuMobi()"
-                                            data-cf-modified-a071cb3ff60724c4b8f55cf9-="">
-                                            <img class="mobi-menu-icon"
-                                                src="{{ asset('frontend/newstyle/assets/images/menuLOGO-mbo.png') }}">
-
-
-
-                                        </a>
-                                    </div>
-
-                                    <div class="mobi-logo"><a href="/"><img
-                                                src="{{ asset('frontend/newstyle/assets/images/logo.png') }}"
-                                                alt="logo" />
-                                        </a>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <!-- <div class="col-2-5">
-                        <div class="mobi-header-btn mobi-search-btn">
-                            <img class="cart-icon"
-                                src="frontend/newstyle/assets/images/icon/mobi-search.png">
-                        </div>
-                    </div> -->
-
-
-                            <!-- Header Middle Right start -->
-                            <div class="header-right flex-align d-lg-block d-none">
-                                <div class="flex-wrap gap-32 header-two-activities flex-align">
-                                    <button type="button"
-                                        class="gap-4 flex-align search-icon d-lg-none d-flex item-hover-two">
-                                        <span class="text-2xl text-white d-flex position-relative item-hover__text">
-                                            <i class="ph ph-magnifying-glass"></i>
-                                        </span>
-                                    </button>
-
-
-
-
-
-                                    <a href="javascript:void(0)"
-                                        class="gap-8 ml-10 flex-align flex-column item-hover-two"
-                                        style="margin-right:30px;">
-                                        <span
-                                            class="mt-6 text-2xl text-white d-flex position-relative me-6 item-hover__text">
-                                            <i class="ph ph-shopping-cart-simple"></i>
-                                            <!-- Display the cart count dynamically -->
-                                            <span id="cart-count-1"
-                                                class="w-16 h-16 text-xs text-white flex-center rounded-circle bg-main-two-600 position-absolute top-n6 end-n4">
-                                                {{ $cartCount ?? 0 }}
-
-                                            </span>
-                                        </span>
-                                        <span class="text-white text-md item-hover__text d-none d-lg-flex">Cart</span>
-                                    </a>
-
-
-
-
-                                </div>
-                            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            <div class="col-2-5">
-                                <div class="header-right-con">
-                                    <div class="top-right-nav">
-
-
-                                        <!-- Profile Dropdown -->
-
-                                        <div class="profile-dropdown">
-                                            @auth
-
-
-
-
-
-                                                <div class="log-user-img dropdown col-2-5">
-                                                    <a href="#"><img
-                                                            src="{{ auth()->user()->profile_image_url }}" 
-                                                            style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></a>
-                                                    <div class="dropdown-box">
-                                                        <div class="user-name">
-                                                            Hi!
-                                                            {{ auth()->user()->name }}
-                                                        </div>
-                                                        <ul class="log-popup-links">
-                                                            <li>
-                                                                <a href="/profile">
-                                                                    <img
-                                                                        src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/user.png">My
-                                                                    Account
-                                                                </a>
-                                                            </li>
-
-
-
-                                                            <li>
-                                                                <a>
-                                                                    <img
-                                                                        src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/turn-off.png">
-                                                                    <form method="POST" action="{{ route('logout') }}">
-
-
-                                                                        @csrf
-                                                                        <button type="submit"
-                                                                            class="dropdown-item w-100">Logout</button>
-                                                                    </form>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-
-
-
-
-
-
-
-
-                                                <div class="dropdown-box">
-
-                                                    <ul class="log-popup-links">
-                                                        <li>
-                                                            <a href="{{ route('dashboard') }}">
-                                                                <img
-                                                                    src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/user.png">My
-                                                                Account
-                                                            </a>
-                                                        </li>
-
-                                                        <li>
-                                                            <a>
-                                                                <img
-                                                                    src="https://buyabans.com/themes/buyabans/assets/images/icon/mini-profile/turn-off.png">
-                                                                <form method="POST" action="{{ route('logout') }}">
-
-
-                                                                    @csrf
-                                                                    <button type="submit"
-                                                                        class="dropdown-item w-100">Logout</button>
-                                                                </form>
-                                                            </a>
-                                                        </li>
-
-
-
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @else
-                                    <!-- Default Profile Icon and Links for Guests -->
-                                    <div class="sign-up d-inline-flex">
-                                        <div class= "mobhide">
-                                            <a href="{{ route('login') }}" class="d-flex">
-                                                <div class="dt-icon-div"><img
-                                                        src=" {{ asset('frontend/newstyle/assets/images/account-icon.png') }} ">
-                                                </div>
-                                                <div>Login</div>
-                                            </a>
-                                        </div>
-
-                                        <div class="boder-right"></div>
-
-                                        <div class= "mobhide">
-                                            <a class="sign-up-link" href="{{ route('register') }}"><span>Sign
-                                                    Up</span></a>
-                                        </div>
-                                    </div>
-
-                                    <div class= "mobshow">
-                                        <a href="{{ route('login') }}" class="d-flex">
-                                            <div class="dt-icon-div">
-                                                <img src=" {{ asset('frontend/newstyle/assets/images/account-icon.png') }} "
-                                                    style="padding-bottom: 17px;">
-                                            </div>
-
-
-
-                                        </a>
-                                    </div>
-
-
-
-                                </div>
-
-
-                            @endauth
-
-
-
-
-
-                            <div class="des-cart pos-relative cart-popup ">
-                                <a href="javascript:void(0)" class="gap-8 ml-10 flex-align flex-column item-hover-two"
-                                    style="margin-right:30px;">
-                                    <span
-                                        class="mt-6 text-2xl text-white2 d-flex position-relative me-6 item-hover__text">
-                                        <i class="ph ph-shopping-cart-simple"></i>
-                                        <!-- Display the cart count dynamically -->
-                                        <span id="cart-count-2"
-                                            class="w-16 h-16 text-xs text-white flex-center rounded-circle bg-main-two-600 position-absolute top-n6 end-n4">
-                                            {{ $cartCount ?? 0 }}
-
-                                        </span>
-                                    </span>
-
-                                    <span class="text-white2 text-md item-hover__text d-none d-lg-flex">Cart</span>
+            <div id="topupbar_banner_mobile"></div>
+            <header class="header mobile-header">
+                <div class="container mobile-header-container">
+                    <div class="mobi-full-row d-flex align-items-center justify-content-between">
+                        <!-- Left Section: Menu + Logo -->
+                        <div class="header-left-section d-flex align-items-center">
+                            <div class="header-left me-2">
+                                <a href="#" class="mobile-menu-toggle new-mobile-toggle"
+                                   onclick="if (!window.__cfRLUnblockHandlers) return false; openMenuMobi()"
+                                   data-cf-modified-a071cb3ff60724c4b8f55cf9-="">
+                                    {{--  <img class="mobi-menu-icon"
+                                         src="{{ asset('frontend/newstyle/assets/images/menuLOGO-mbo.png') }}">  --}}
+                                         <i class="ph ph-list mobile-menu-icon mobi-menu-icon" style="color: #ff5800; font-size: 24px;"></i>
                                 </a>
-
                             </div>
 
+                            <div class="mobi-logo">
+                                {{-- @if ($siteLogo && $siteLogo->image_path)
+                                    <a href="{{ url('/') }}">
+                                        <img src="{{ asset('storage/logo_images/' . $siteLogo->image_path) }}"
+                                             alt="Site Logo" class="img-fluid" style="max-height: 60px;">
+                                    </a>
+                                @else --}}
+                                    <a href="/">
+                                        <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}"
+                                             alt="logo" />
+                                    </a>
+                                {{-- @endif --}}
+                            </div>
+                        </div>
 
+                        <!-- Right Section: Account, Cart, Search Icons -->
+                        <div class="header-right-section d-flex align-items-center">
+                            <div class="mobile-icons-container d-flex align-items-center">
 
+                                <!-- Account Icon -->
+                                <div class="mobile-icon-item">
+                                    @auth
+                                        <div class="loged-user">
+                                            <div class="log-user-img">
+                                                <a href="{{ route('dashboard') }}">
+                                                    <img src="https://buyabans.com/themes/buyabans/assets/images/icon/dummy-user.png"
+                                                         alt="User" class="mobile-account-icon">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <a href="{{ route('login') }}" class="mobile-account-link">
+                                            <img src="{{ asset('frontend/newstyle/assets/images/account-icon.png') }}"
+                                                 alt="Account" class="mobile-account-icon">
+                                        </a>
+                                    @endauth
+                                </div>
 
+                                <!-- Cart Icon -->
+                                <div class="mobile-icon-item des-cart cart-popup">
+                                    <a href="javascript:void(0)" class="mobile-cart-link">
+                                        <div class="mobile-cart-wrapper">
+                                            <i class="ph ph-shopping-cart-simple mobile-cart-icon" style="color:#ff5800"></i>
+                                            <span class="mobile-cart-count" id="cart-count-1">{{ $cartCount ?? 0 }}</span>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- Search Icon -->
+                                <div class="mobile-icon-item">
+                                    <button class="mobile-search-btn ">
+                                        {{--  <img src="{{ asset('frontend/newstyle/assets/images/icon/mobi-search.png') }}"
+                                             alt="Search" class="mobile-search-icon"  >  --}}
+                                             <i class="ph ph-magnifying-glass mobile-search-icon" style="color: #ff5800; font-size: 24px;" ></i>
+
+                                    </button>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
+                </div>
 
+                <!-- Search Container -->
+                <div class="search-con search-con-mobile" style="marging-left:100px ">
+                    <div class="search-title col-sm-12" style="display: none;">
+                        <p>Search</p>
+                        <button class="close-search"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="top-search clear-both">
+                        <input type="text" class="form-control main-search top-search-suggestion-mobi"
+                               placeholder="Search for products, categories and more">
+                        <button type="button" class="btn btn-primary submit-search" style=" marging-top:100px"  >
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <div id="suggestions-box-display-mobi" class="suggestions-box suggestions-box-display-mobi"
+                             style="display: none;">
+                            <div class="left-suggestion-no-products" hidden>
+                                <p>No results found.</p>
+                            </div>
+                            <div class="left-suggestion-main-con"></div>
+                            <div class="right-suggestion-main-con">
+                                <div>
+                                    <h4 class="headding search-category-title" hidden>Categories</h4>
+                                    <ul></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
 
-            </div>
+        <!-- Add this CSS for proper mobile header styling -->
+        <style>
+            .mobi-main-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background: #fff;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .mobile-header-container {
+                padding: 10px 15px;
+            }
+
+            .mobi-full-row {
+                width: 100%;
+            }
+
+            .header-left-section {
+                flex: 1;
+            }
+
+            .header-right-section {
+                flex-shrink: 0;
+            }
+
+            .mobile-icons-container {
+                gap: 20px; /* Equal spacing between all icons */
+            }
+
+            .mobile-icon-item {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+            }
+
+            /* Account Icon Styling */
+            .mobile-account-icon {
+                width: 24px;
+                height: 24px;
+                object-fit: contain;
+            }
+
+            .mobile-account-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            /* Cart Icon Styling */
+            .mobile-cart-wrapper {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .mobile-cart-icon {
+                font-size: 24px;
+                color: #333;
+            }
+
+            .mobile-cart-count {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: #ff4444;
+                color: white;
+                border-radius: 50%;
+                width: 18px;
+                height: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-weight: bold;
+                min-width: 18px;
+            }
+
+            .mobile-cart-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                text-decoration: none;
+            }
+
+            /* Search Icon Styling */
+            .mobile-search-btn {
+                background: none;
+                border: none;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
+
+            .mobile-search-icon {
+                width: 24px;
+                height: 24px;
+                object-fit: contain;
+
+            }
+
+            /* Logo styling */
+            .mobi-logo img {
+                max-height: 50px;
+                width: auto;
+            }
+
+            /* Menu icon styling */
+            .mobi-menu-icon {
+                width: 24px;
+                height: 24px;
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 480px) {
+                .mobile-icons-container {
+                    gap: 4px;
+                }
+
+                .mobile-icon-item {
+                    width: 36px;
+                    height: 36px;
+
+                }
+
+                .mobile-account-icon,
+                .mobile-search-icon {
+                    width: 20px;
+                    height: 20px;
+                }
+
+                .mobile-cart-icon {
+                    font-size: 20px;
+                }
+
+                .mobile-cart-count {
+                    width: 16px;
+                    height: 16px;
+                    font-size: 10px;
+                    top: -6px;
+                    right: -6px;
+                }
+            }
+
+            @media (min-width: 480px){
+                  .mobile-icons-container {
+                    gap: 4px;
+                }
+            }
+
+            /* Hover effects */
+            .mobile-icon-item:hover {
+                opacity: 0.7;
+                transition: opacity 0.2s ease;
+            }
+
+            /* Ensure proper alignment */
+            .d-flex {
+                display: flex;
+            }
+
+            .align-items-center {
+                align-items: center;
+            }
+
+            .justify-content-between {
+                justify-content: space-between;
+            }
+        </style>
         </div>
 
 
@@ -315,9 +362,9 @@
 
                             <div class="search-con search-container">
                                 <div class="top-search search-container">
-                                    <input type="text" class="form-control main-search top-search-suggestion"
+                                    <input type="text" class="form-control main-search top-search-suggestion-desk"
                                         placeholder="Search for products, categories and more">
-                                    <button type="button" class="btn btn-primary submit-search"><i
+                                    <button type="button" class="btn btn-primary submit-search-desk"><i
                                             class="fa-solid fa-magnifying-glass"></i></button>
                                     <div id="suggestions-box-display"
                                     class="suggestions-box suggestions-box-display" style="display: none;">
@@ -1068,67 +1115,21 @@
 
 
 <script>
-    document.querySelector('.main-search').addEventListener('keyup', function() {
-        let query = this.value.trim();
-
-        if (query.length < 2) {
-            document.getElementById('suggestions-box-display').style.display = 'none';
-            return;
-        }
-
-        fetch(`/search-suggestions?q=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(data => {
-                const box = document.getElementById('suggestions-box-display');
-                const productCon = box.querySelector('.left-suggestion-main-con');
-                const categoryCon = box.querySelector('.category-list');
-                const noResults = box.querySelector('.left-suggestion-no-products');
-
-                productCon.innerHTML = '';
-                categoryCon.innerHTML = '';
-
-                if (data.products.length === 0 && data.categories.length === 0) {
-                    noResults.hidden = false;
-                    box.style.display = 'block';
-                    return;
-                }
-
-                noResults.hidden = true;
-
-                // Add products
-                data.products.forEach(product => {
-                    const productHTML = `
-                <a class="search-product-element" href="${product.url}">
-                    <div class="suggestion-box">
-                        <div class="suggestion-product-img"><img class="img-fluid" alt="" src="${product.image ?? ''}"></div>
-                        <div class="suggestion-box-details">
-                            <div class="product-line product-name">${product.name}</div>
-                        </div>
-                    </div>
-                </a>
-            `;
-                    productCon.innerHTML += productHTML;
-                });
-
-                // Add categories
-                data.categories.forEach(category => {
-                    const categoryHTML =
-                        `<li><a class="search-category-name" href="${category.url}">${category.name}</a></li>`;
-                    categoryCon.innerHTML += categoryHTML;
-                });
-
-                box.style.display = 'block';
-            })
-            .catch(err => {
-                console.error('Search error:', err);
-            });
-    });
-
     // Handle search button click and Enter key press
     function performSearch() {
         const searchInput = document.querySelector('.main-search');
         const query = searchInput.value.trim();
-        
+
+        if (query !== '') {
+            // Redirect to shop page with search parameter
+            window.location.href = `{{ route('shop.index') }}?search=${encodeURIComponent(query)}`;
+        }
+    }
+
+    function performSearchDesktop() {
+        const searchInput = document.querySelector('.top-search-suggestion-desk');
+        const query = searchInput.value.trim();
+
         if (query !== '') {
             // Redirect to shop page with search parameter
             window.location.href = `{{ route('shop.index') }}?search=${encodeURIComponent(query)}`;
@@ -1136,18 +1137,33 @@
     }
 
     // Search button click handler
+    document.querySelector('.submit-search-desk').addEventListener('click', function(e) {
+        e.preventDefault();
+        performSearchDesktop();
+    });
+
     document.querySelector('.submit-search').addEventListener('click', function(e) {
         e.preventDefault();
         performSearch();
     });
 
     // Enter key press handler
-    document.querySelector('.main-search').addEventListener('keypress', function(e) {
+    document.querySelector('.top-search-suggestion-mobi').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            // Hide suggestions dropdown when searching
+            document.getElementById('suggestions-box-display-mobi').style.display = 'none';
+            performSearch();
+        }
+    });
+
+    // Enter key press handler
+    document.querySelector('.top-search-suggestion-desk').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             // Hide suggestions dropdown when searching
             document.getElementById('suggestions-box-display').style.display = 'none';
-            performSearch();
+            performSearchDesktop();
         }
     });
 </script>
@@ -1173,6 +1189,287 @@
     });
 </script>
 
+
+<script>
+    // Mobile Search Toggle Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the search button and search container elements
+        const searchButton = document.querySelector('.mobile-search-btn');
+        const searchContainer = document.querySelector('.search-con-mobile');
+        const closeButton = document.querySelector('.close-search');
+        const searchTitle = document.querySelector('.search-title');
+
+        // Function to show search container
+        function showSearch() {
+            if (searchContainer) {
+                searchContainer.style.display = 'block';
+                // Show the search title as well
+                if (searchTitle) {
+                    searchTitle.style.display = 'block';
+                }
+                // Focus on the search input for better UX
+                const searchInput = searchContainer.querySelector('.main-search');
+                if (searchInput) {
+                    setTimeout(() => searchInput.focus(), 100);
+                }
+            }
+        }
+
+        // Function to hide search container
+        function hideSearch() {
+            if (searchContainer) {
+                searchContainer.style.display = 'none';
+                // Hide the search title as well
+                if (searchTitle) {
+                    searchTitle.style.display = 'none';
+                }
+            }
+        }
+
+        // Add click event listener to search button
+        if (searchButton) {
+            searchButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSearch();
+            });
+        }
+
+        // Add click event listener to close button
+        if (closeButton) {
+            closeButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                hideSearch();
+            });
+        }
+
+        // Optional: Close search when clicking outside
+        document.addEventListener('click', function(e) {
+            if (searchContainer &&
+                searchContainer.style.display === 'block' &&
+                !searchContainer.contains(e.target) &&
+                !searchButton.contains(e.target)) {
+                hideSearch();
+            }
+        });
+
+        // Optional: Close search with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && searchContainer && searchContainer.style.display === 'block') {
+                hideSearch();
+            }
+        });
+    });
+
+</script>
+
+
+   <script>
+// Mobile Search Toggle Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the search button and search container elements
+    const searchButton = document.querySelector('.mobi-search-btn');
+    const searchContainer = document.querySelector('.search-con-mobile');
+    const closeButton = document.querySelector('.close-search');
+    const searchTitle = document.querySelector('.search-title');
+
+    // Function to show search container
+    function showSearch() {
+        if (searchContainer) {
+            searchContainer.style.display = 'block';
+            // Show the search title as well
+            if (searchTitle) {
+                searchTitle.style.display = 'block';
+            }
+            // Focus on the search input for better UX
+            const searchInput = searchContainer.querySelector('.main-search');
+            if (searchInput) {
+                setTimeout(() => searchInput.focus(), 100);
+            }
+        }
+    }
+
+    // Function to hide search container
+    function hideSearch() {
+        if (searchContainer) {
+            searchContainer.style.display = 'none';
+            // Hide the search title as well
+            if (searchTitle) {
+                searchTitle.style.display = 'none';
+            }
+        }
+    }
+
+    // Add click event listener to search button
+    if (searchButton) {
+        searchButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            showSearch();
+        });
+    }
+
+    // Add click event listener to close button
+    if (closeButton) {
+        closeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            hideSearch();
+        });
+    }
+
+    // Optional: Close search when clicking outside
+    document.addEventListener('click', function(e) {
+        if (searchContainer &&
+            searchContainer.style.display === 'block' &&
+            !searchContainer.contains(e.target) &&
+            !searchButton.contains(e.target)) {
+            hideSearch();
+        }
+    });
+
+    // Optional: Close search with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && searchContainer && searchContainer.style.display === 'block') {
+            hideSearch();
+        }
+    });
+});
+
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.querySelector('.top-search-suggestion-mobi');
+        const suggestionBox = document.getElementById('suggestions-box-display-mobi');
+        const productCon = suggestionBox.querySelector('.left-suggestion-main-con');
+        const categoryCon = suggestionBox.querySelector('.right-suggestion-main-con ul');
+        const noResults = suggestionBox.querySelector('.left-suggestion-no-products');
+        const searchCloseBtn = document.querySelector('.close-search');
+
+        // Search functionality
+        searchInput.addEventListener('keyup', function () {
+            const query = this.value.trim();
+
+            if (query.length < 2) {
+                suggestionBox.style.display = 'none';
+                return;
+            }
+
+            fetch(`/search-suggestions?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    productCon.innerHTML = '';
+                    categoryCon.innerHTML = '';
+
+                    if (data.products.length === 0 && data.categories.length === 0) {
+                        noResults.hidden = false;
+                        suggestionBox.style.display = 'block';
+                        return;
+                    }
+
+                    noResults.hidden = true;
+
+                    // Products
+                    data.products.forEach(product => {
+                        productCon.innerHTML += `
+                            <a class="search-product-element" href="${product.url}">
+                                <div class="suggestion-box">
+                                    <div class="suggestion-product-img">
+                                        <img class="img-fluid" alt="" src="${product.image ?? ''}">
+                                    </div>
+                                    <div class="suggestion-box-details">
+                                        <div class="product-line product-name">${product.name}</div>
+                                    </div>
+                                </div>
+                            </a>`;
+                    });
+
+                    // Categories
+                    data.categories.forEach(category => {
+                        categoryCon.innerHTML += `
+                            <li><a class="search-category-name" href="${category.url}">${category.name}</a></li>`;
+                    });
+
+                    suggestionBox.style.display = 'block';
+                })
+                .catch(err => {
+                    console.error('Mobile search error:', err);
+                });
+        });
+
+        // Close search suggestions
+        if (searchCloseBtn) {
+            searchCloseBtn.addEventListener('click', () => {
+                suggestionBox.style.display = 'none';
+                searchInput.value = '';
+            });
+        }
+    });
+</script>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInputDesktop = document.querySelector('.top-search-suggestion-desk'); // give desktop input a unique class
+        const suggestionBox = document.getElementById('suggestions-box-display');
+        const productCon = suggestionBox?.querySelector('.left-suggestion-main-con');
+        const categoryCon = suggestionBox?.querySelector('.right-suggestion-main-con ul');
+        const noResults = suggestionBox?.querySelector('.left-suggestion-no-products');
+
+        if (!searchInputDesktop) return;
+
+        searchInputDesktop.addEventListener('keyup', function () {
+            const query = this.value.trim();
+
+            if (query.length < 2) {
+                if (suggestionBox) suggestionBox.style.display = 'none';
+                return;
+            }
+
+            fetch(`/search-suggestions?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!suggestionBox) return;
+
+                    productCon.innerHTML = '';
+                    categoryCon.innerHTML = '';
+
+                    if (data.products.length === 0 && data.categories.length === 0) {
+                        noResults.hidden = false;
+                        suggestionBox.style.display = 'block';
+                        return;
+                    }
+
+                    noResults.hidden = true;
+
+                    // Products
+                    data.products.forEach(product => {
+                        productCon.innerHTML += `
+                            <a class="search-product-element" href="${product.url}">
+                                <div class="suggestion-box">
+                                    <div class="suggestion-product-img">
+                                        <img class="img-fluid" alt="" src="${product.image ?? ''}">
+                                    </div>
+                                    <div class="suggestion-box-details">
+                                        <div class="product-line product-name">${product.name}</div>
+                                    </div>
+                                </div>
+                            </a>`;
+                    });
+
+                    // Categories
+                    data.categories.forEach(category => {
+                        categoryCon.innerHTML += `
+                            <li><a class="search-category-name" href="${category.url}">${category.name}</a></li>`;
+                    });
+
+                    suggestionBox.style.display = 'block';
+                })
+                .catch(err => {
+                    console.error('Desktop search error:', err);
+                });
+        });
+    });
+</script>
 
 
     </header>

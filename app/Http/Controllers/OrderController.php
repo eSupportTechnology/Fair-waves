@@ -6,6 +6,7 @@ use App\Models\Commission;
 use App\Models\User;
 use App\Models\CustomerOrder;
 use App\Models\CustomerOrderItems;
+use App\Models\DealerProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -131,11 +132,17 @@ class OrderController extends Controller
         $dealerProductLink = $firstItem ? $firstItem->dealerProductLink : null;
         $dealerId = $dealerProductLink ? $dealerProductLink->dealer_id : null;
         $dealer = $dealerId ? User::find($dealerId) : null;
+
+        if (!$dealer || !$dealer->dealerProfile) return;
+
         $dealerProfile = $dealer->dealerProfile;
 
         // IV = Distributor Profit / 100
         $iv = $customerOrder->items()->sum('bv');
         $rankPercent = $this->getRankPercentage($dealerProfile->rank);
+
+        // 1. Direct Commission
+        $directBVCommission = $iv * ($rankPercent / 100);
 
         // 2. Direct Commission (self)
         $directCommission = $iv * $rankPercent;
@@ -143,11 +150,14 @@ class OrderController extends Controller
         Commission::create([
             'dealer_id' => $dealer->id,
             'from_user_id' => $dealer->id,
-            'bv' => $iv,
+            'bv' => $directBVCommission, // ✅ only the real value used for commission
             'amount' => $directCommission,
             'level' => 'direct',
             'customer_order_id' => $customerOrder->id,
         ]);
+
+        // Insert dealer point to profile
+        $this->insertDealerPointToProfile($dealer->id, $directBVCommission);
 
         // 3. Traverse uplines
         $currentDealer = $dealer;
@@ -163,15 +173,18 @@ class OrderController extends Controller
 
             if ($gap > 0) {
                 $gapCommission = $iv * $gap;
+                $gapBVCommission = $iv * ($gap / 100);
 
                 Commission::create([
                     'dealer_id' => $upline->id,
                     'from_user_id' => $dealer->id,
-                    'bv' => $iv,
+                    'bv' => $gapBVCommission,
                     'amount' => $gapCommission,
                     'level' => 'rank',
                     'customer_order_id' => $customerOrder->id,
                 ]);
+                // Insert dealer point to profile
+                $this->insertDealerPointToProfile($upline->id, $gapBVCommission);
             }
 
             $currentDealer = $upline;
@@ -192,6 +205,131 @@ class OrderController extends Controller
             'Platinum Member' => 90,
             'Diamond Member' => 100,
             default => 0,
+        };
+    }
+
+    protected function insertDealerPointToProfile($dealerId, $point){
+        $dealer = User::where("role", "dealer")->where("id", $dealerId)->first();
+        if (!$dealer || !$dealer->dealerProfile) return;
+
+        $dealerProfile = DealerProfile::find($dealer->dealerProfile->id);
+        if (!$dealerProfile) return;
+        $dealerProfile->bv += $point;
+        $dealerProfile->cbv += $point; // Assuming cbv is the same as bv
+        $dealerProfile->save();
+
+        $newRank = $this->checkDealerCanGoToNextRank($dealerProfile);
+
+        if ($newRank) {
+            $newTier = $this->getTierFromRank($newRank);
+            $dealer->dealerProfile->update([
+                'rank' => $newRank,
+                'tier' => $newTier,
+            ]);
+        }
+    }
+
+    protected function checkDealerCanGoToNextRank($dealerProfile)
+    {
+        $dealer = $dealerProfile->user;
+
+        if (!$dealer || !$dealerProfile) return null;
+
+        $currentRank = $dealerProfile->rank;
+
+        $rankMap = [
+            'Loyalty Member' => [
+                'name' => 'Bronze Member',
+                'target_cbv' => 700,
+                'methods' => [
+                    ['cbv' => 700, 'links' => 0, 'bronze' => 0],
+                ],
+            ],
+            'Bronze Member' => [
+                'name' => 'Silver Member',
+                'target_cbv' => 10000,
+                'methods' => [
+                    ['cbv' => 5000, 'links' => 0, 'bronze' => 0],
+                    ['cbv' => 10000, 'links' => 2, 'bronze' => 2],
+                    ['cbv' => 6000, 'links' => 3, 'bronze' => 3],
+                ],
+            ],
+            'Silver Member' => [
+                'name' => 'Gold Member',
+                'target_cbv' => 15000,
+                'methods' => [
+                    ['cbv' => 15000, 'links' => 0, 'bronze' => 0],
+                    ['cbv' => 40000, 'links' => 2, 'bronze' => 2],
+                    ['cbv' => 26000, 'links' => 3, 'bronze' => 3],
+                ],
+            ],
+            'Gold Member' => [
+                'name' => 'Platinum Member',
+                'target_cbv' => 45000,
+                'methods' => [
+                    ['cbv' => 45000, 'links' => 0, 'bronze' => 0],
+                    ['cbv' => 120000, 'links' => 2, 'bronze' => 2],
+                    ['cbv' => 85000, 'links' => 3, 'bronze' => 3],
+                ],
+            ],
+            'Platinum Member' => [
+                'name' => 'Diamond Member',
+                'target_cbv' => 135000,
+                'methods' => [
+                    ['cbv' => 135000, 'links' => 0, 'bronze' => 0],
+                    ['cbv' => 300000, 'links' => 2, 'bronze' => 2],
+                    ['cbv' => 270000, 'links' => 3, 'bronze' => 3],
+                ],
+            ],
+        ];
+
+        // If current rank is top or not mapped
+        if (!isset($rankMap[$currentRank])) {
+            return null;
+        }
+
+        $nextRank = $rankMap[$currentRank];
+        $cbv = $dealerProfile->cbv;
+
+        // Load direct referrals and their profiles
+        $referrals = $dealer->directReferrals()->with('dealerProfile')->get();
+
+        $qualifiedLinks = $referrals->filter(function ($ref) {
+            return $ref->dealerProfile !== null;
+        });
+
+        $bronzeCount = $qualifiedLinks->filter(function ($ref) {
+            return $ref->dealerProfile->rank === 'Bronze Member';
+        })->count();
+
+        $linkCount = $qualifiedLinks->count();
+
+        // Check if any method qualifies
+        foreach ($nextRank['methods'] as $method) {
+            if (
+                $cbv >= $method['cbv'] &&
+                $linkCount >= $method['links'] &&
+                $bronzeCount >= $method['bronze']
+            ) {
+                return $nextRank['name'];
+            }
+        }
+
+        return null;
+    }
+
+    protected function getTierFromRank($rank)
+    {
+        return match ($rank) {
+            'Loyalty Member' => 'Loyalty',
+            'Bronze Member' => 'Bronze',
+            'Silver Member' => 'Silver',
+            'Gold Member' => 'Gold',
+            'Platinum Member' => 'Platinum',
+            'Diamond Member' => 'Diamond',
+            'Executive Diamond' => 'Executive Diamond',
+            'Royal Diamond' => 'Royal Diamond',
+            default => 'Loyalty', // fallback
         };
     }
 }

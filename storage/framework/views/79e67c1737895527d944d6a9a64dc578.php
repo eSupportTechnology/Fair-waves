@@ -58,6 +58,17 @@
                                     placeholder="Tracking Link (optional)"
                                     value="<?php echo e(old('tracking_link', $order->tracking_link ?? '')); ?>">
                             </div>
+                        <?php elseif(!empty($order->tracking_number) || !empty($order->tracking_link)): ?>
+                            <div class="mt-2">
+                                <input type="text" class="form-control mb-2" 
+                                    value="<?php echo e($order->tracking_number); ?>" 
+                                    placeholder="Tracking Number" 
+                                    readonly>
+                                <input type="url" class="form-control" 
+                                    value="<?php echo e($order->tracking_link); ?>" 
+                                    placeholder="Tracking Link" 
+                                    readonly>
+                            </div>
                         <?php endif; ?>
 
 

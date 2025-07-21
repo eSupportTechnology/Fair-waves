@@ -23,6 +23,7 @@
             padding: 1.5rem 0;
             margin: -25px -25px 1.5rem -25px;
             border-radius: 0 0 12px 12px;
+            margin-top: 20px;
         }
 
         .rank-badge {
@@ -431,6 +432,8 @@
 
             .dashboard-header {
                 margin-bottom: 1rem;
+
+
             }
 
             .dashboard-header .container {
@@ -775,7 +778,7 @@
                 width: 50px;
                 height: 50px;
             }
-            
+
             .profile-placeholder-dashboard {
                 font-size: 20px;
             }
@@ -789,8 +792,8 @@
                 <div class="col-md-1 col-2 text-center">
                     <!-- Profile Image -->
                     <div class="profile-image-container">
-                        <img src="<?php echo e($dealerProfile->user->profile_image_url); ?>" 
-                             alt="Profile Image" 
+                        <img src="<?php echo e($dealerProfile->user->profile_image_url); ?>"
+                             alt="Profile Image"
                              class="profile-image-dashboard">
                     </div>
                 </div>
@@ -825,7 +828,7 @@
                     <i class="fas fa-coins"></i>
                 </div>
                 <h3 class="h4 mb-1"><?php echo e($dealerProfile->bv); ?></h3>
-                <p class="text-muted mb-0">Current BV</p>
+                <p class="text-muted mb-0">Current IV</p>
             </div>
         </div>
         <div class="col-6 col-lg-3 mb-3">
@@ -834,7 +837,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <h3 class="h4 mb-1"><?php echo e($dealerProfile->cbv); ?></h3>
-                <p class="text-muted mb-0">Total CBV</p>
+                <p class="text-muted mb-0">Total CIV</p>
             </div>
         </div>
         <div class="col-6 col-lg-3 mb-3">
@@ -860,9 +863,12 @@
                             </span>
                             <span class="fw-bold"><?php echo e($currentCBV); ?> / <?php echo e($nextRankData['target_cbv'] ?? '-'); ?> CBV</span>
                         </div>
-                        <div class="progress-custom">
-                            <div class="progress-bar-custom" style="width: <?php echo e(number_format($progressPercent, 2)); ?>%;"></div>
-                        </div>
+                        <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: <?php echo e($progressPercent); ?>%;" aria-valuenow="<?php echo e($progressPercent); ?>" aria-valuemin="0" aria-valuemax="100">
+        <?php echo e(number_format($progressPercent, 2)); ?>%
+    </div>
+</div>
+
                     </div>
 
                     <?php if($nextRankData && count($nextRankData['methods']) > 0): ?>
@@ -1105,6 +1111,8 @@
 
 
                 <!-- Team Hierarchy -->
+
+<!-- Team Hierarchy -->
 <div class="team-hierarchy flex-grow-1">
     <h5 class="mb-3"><i class="fas fa-sitemap text-primary me-2"></i>Team Overview</h5>
     <div class="hierarchy-node">
@@ -1116,7 +1124,7 @@
     </div>
 
     <div style="margin-left: 1.5rem;">
-        <?php $__empty_1 = true; $__currentLoopData = $directReferrals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $referral): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $directReferrals->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $referral): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <div class="hierarchy-node">
                 <div class="node-avatar"><?php echo e(strtoupper(substr($referral->name, 0, 2))); ?></div>
                 <div>
@@ -1127,6 +1135,12 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <p class="text-muted ms-3">No team members yet.</p>
         <?php endif; ?>
+
+        <?php if($directReferrals->count() > 3): ?>
+            <div class="text-center mt-2">
+                <small class="text-muted">+<?php echo e($directReferrals->count() - 3); ?> more members</small>
+            </div>
+        <?php endif; ?>
     </div>
 
     <div class="text-center mt-3">
@@ -1135,7 +1149,6 @@
         </a>
     </div>
 </div>
-
 
                 <!-- Quick Actions -->
                 <div class="stats-card">

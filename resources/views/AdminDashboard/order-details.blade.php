@@ -60,6 +60,17 @@
                                     placeholder="Tracking Link (optional)"
                                     value="{{ old('tracking_link', $order->tracking_link ?? '') }}">
                             </div>
+                        @elseif (!empty($order->tracking_number) || !empty($order->tracking_link))
+                            <div class="mt-2">
+                                <input type="text" class="form-control mb-2" 
+                                    value="{{ $order->tracking_number }}" 
+                                    placeholder="Tracking Number" 
+                                    readonly>
+                                <input type="url" class="form-control" 
+                                    value="{{ $order->tracking_link }}" 
+                                    placeholder="Tracking Link" 
+                                    readonly>
+                            </div>
                         @endif
 
 

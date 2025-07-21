@@ -434,7 +434,7 @@
 
             .dashboard-header {
                 margin-bottom: 1rem;
-              
+
 
             }
 
@@ -780,7 +780,7 @@
                 width: 50px;
                 height: 50px;
             }
-            
+
             .profile-placeholder-dashboard {
                 font-size: 20px;
             }
@@ -794,8 +794,8 @@
                 <div class="col-md-1 col-2 text-center">
                     <!-- Profile Image -->
                     <div class="profile-image-container">
-                        <img src="{{ $dealerProfile->user->profile_image_url }}" 
-                             alt="Profile Image" 
+                        <img src="{{ $dealerProfile->user->profile_image_url }}"
+                             alt="Profile Image"
                              class="profile-image-dashboard">
                     </div>
                 </div>
@@ -830,7 +830,7 @@
                     <i class="fas fa-coins"></i>
                 </div>
                 <h3 class="h4 mb-1">{{ $dealerProfile->bv }}</h3>
-                <p class="text-muted mb-0">Current BV</p>
+                <p class="text-muted mb-0">Current IV</p>
             </div>
         </div>
         <div class="col-6 col-lg-3 mb-3">
@@ -839,7 +839,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <h3 class="h4 mb-1">{{ $dealerProfile->cbv }}</h3>
-                <p class="text-muted mb-0">Total CBV</p>
+                <p class="text-muted mb-0">Total CIV</p>
             </div>
         </div>
         <div class="col-6 col-lg-3 mb-3">
@@ -864,9 +864,12 @@
                             </span>
                             <span class="fw-bold">{{ $currentCBV }} / {{ $nextRankData['target_cbv'] ?? '-' }} CBV</span>
                         </div>
-                        <div class="progress-custom">
-                            <div class="progress-bar-custom" style="width: {{ number_format($progressPercent, 2) }}%;"></div>
-                        </div>
+                        <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: {{ $progressPercent }}%;" aria-valuenow="{{ $progressPercent }}" aria-valuemin="0" aria-valuemax="100">
+        {{ number_format($progressPercent, 2) }}%
+    </div>
+</div>
+
                     </div>
 
                     @if($nextRankData && count($nextRankData['methods']) > 0)
@@ -1125,7 +1128,7 @@
         @empty
             <p class="text-muted ms-3">No team members yet.</p>
         @endforelse
-        
+
         @if($directReferrals->count() > 3)
             <div class="text-center mt-2">
                 <small class="text-muted">+{{ $directReferrals->count() - 3 }} more members</small>

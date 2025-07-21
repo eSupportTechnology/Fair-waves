@@ -17,11 +17,12 @@ class ShowroomCartController extends Controller
         $cart = Session::get('showroom_cart', []);
         
         // Get the first image from product_images table using relationship
-        $productImage = ProductImage::where('product_id', $product->id)->first();
+        $productImage = ProductImage::where('product_id', $product->product_id)->first();
         $imagePath = $productImage ? $productImage->image_path : 'images/default-product.jpg';
         
         $cartItem = [
             'id' => $product->id,
+            'product_id' => $product->product_id,
             'name' => $product->product_name,
             'price' => $product->normal_price,
             'quantity' => 1,
@@ -45,8 +46,13 @@ class ShowroomCartController extends Controller
         $cart = Session::get('showroom_cart', []);
         $total = 0;
 
-        foreach ($cart as $item) {
+        // Load product images for each cart item
+        foreach ($cart as $productId => $item) {
             $total += $item['price'] * $item['quantity'];
+            
+            // Load the product with its images
+            $product = Product::with('images')->find($item['id']);
+            $cart[$productId]['product'] = $product;
         }
 
         $subtotal = $total;
@@ -77,21 +83,27 @@ class ShowroomCartController extends Controller
         $cart = Session::get('showroom_cart', []);
         
         if (isset($cart[$productId])) {
-            $cart[$productId]['quantity'] = $request->quantity;
+            $cart[$productId]['quantity'] = $request->input('quantity');
             Session::put('showroom_cart', $cart);
             
             // Calculate new total
-            $total = 0;
+            $subtotal = 0;
             foreach ($cart as $item) {
-                $total += $item['price'] * $item['quantity'];
+                $subtotal += $item['price'] * $item['quantity'];
             }
+            
+            $deliveryFee = 300;
+            $total = $subtotal + $deliveryFee;
             
             return response()->json([
                 'success' => true,
                 'message' => 'Cart updated successfully!',
+                'subtotal' => $subtotal,
                 'total' => $total,
+                'delivery_fee' => $deliveryFee,
                 'item_subtotal' => $cart[$productId]['price'] * $cart[$productId]['quantity'],
                 'cart_count' => array_sum(array_column($cart, 'quantity')),
+                'formatted_subtotal' => number_format($subtotal, 2),
                 'formatted_total' => number_format($total, 2)
             ]);
         }

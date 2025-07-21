@@ -93,9 +93,9 @@
                             <ul>
                                 <li class="footer-nav"><a href="/faq">Frequently Asked Questions</a></li>
                                 <li class="footer-nav"><a href="/buy">How To Buy</a></li>
-                                <li class="footer-nav"><a href="#">Shipping &amp; Delivery</a></li>
-                                <li class="footer-nav"><a href="#">Warranty Information</a></li>
-                                <li class="footer-nav"><a href="#">Return Products</a></li>
+                                <li class="footer-nav"><a href="/shipping-delivery">Shipping &amp; Delivery</a></li>
+                                <li class="footer-nav"><a href="/warranty">Warranty Information</a></li>
+                                <li class="footer-nav"><a href="/return-product">Return Products</a></li>
                             </ul>
                         </div>
                     </div>
@@ -109,9 +109,9 @@
                     <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body">
                             <ul>
-                                <li class="footer-nav"><a href="#">Privacy Policy</a></li>
-                                <li class="footer-nav"><a href="#">Return and Refund Policy</a></li>
-                                <li class="footer-nav"><a href="#">Terms and Conditions</a></li>
+                                <li class="footer-nav"><a href="/privacy-policy">Privacy Policy</a></li>
+                                <li class="footer-nav"><a href="/return-refund">Return and Refund Policy</a></li>
+                                <li class="footer-nav"><a href="/terms-condition">Terms and Conditions</a></li>
                             </ul>
                         </div>
                     </div>
@@ -321,7 +321,7 @@
                         <ul>
                             <li><a class="footer-link" href="/faq">F&Q</a></li>
                             <li><a class="footer-link" href="/buy">How To Buy</a></li>
-                            <li><a class="footer-link" href="#">Shipping &amp; Delivery</a></li>
+                            <li><a class="footer-link" href="/shipping-delivery">Shipping &amp; Delivery</a></li>
 
                         </ul>
                     </div>
@@ -334,9 +334,9 @@
                     <div class="footer-links-set">
                         <p class="footer-title">Policies</p>
                         <ul>
-                            <li><a class="footer-link" href="#">Privacy Policy</a></li>
-                            <li><a class="footer-link" href="#">Return and Refund Policy</a></li>
-                            <li><a class="footer-link" href="#">Terms and Conditions</a></li>
+                            <li><a class="footer-link" href="/privacy-policy">Privacy Policy</a></li>
+                            <li><a class="footer-link" href="/return-refund">Return and Refund Policy</a></li>
+                            <li><a class="footer-link" href="/terms-condition">Terms and Conditions</a></li>
                         </ul>
                     </div>
                 </div>
@@ -346,8 +346,8 @@
                         <p class="footer-title">Quick Links</p>
                         <ul>
                             <li><a class="footer-link" href="#">Brands</a></li>
-                            <li><a class="footer-link" href="#">Warranty Information</a></li>
-                            <li><a class="footer-link" href="#">Return Products</a></li>
+                             <li><a class="footer-link" href="/warranty">Warranty Information</a></li>
+                            <li><a class="footer-link" href="/return-product">Return Products</a></li>
 
                         </ul>
                     </div>

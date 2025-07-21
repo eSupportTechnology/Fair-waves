@@ -180,7 +180,7 @@
                             <!-- Credit Card Section -->
                             <div class="tab-pane fade show active" id="credit-card" role="tabpanel" aria-labelledby="credit-card-tab">
                                 <div class="payment-form p-4">
-                                    <form action="{{ route('cart.payment.card', $order->order_code) }}" method="POST" id="card-payment-form">
+                                    <form action="{{ route('cart.payment.card', $order_code) }}" method="POST" id="card-payment-form">
                                         @csrf
                                         <div class="row">
                                             <div class="col-12 mb-4">
@@ -225,7 +225,7 @@
                                         <li><i class="fas fa-shield-alt text-primary me-2"></i>100% Safe and Secure Delivery</li>
                                     </ul>
                                 </div>
-                                <form action="{{ route('cart.payment.cod', $order->order_code) }}" method="POST">
+                                <form action="{{ route('cart.payment.cod', $order_code) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-pay text-white w-100">
                                         <i class="fas fa-handshake me-2"></i>Confirm Cash on Delivery

@@ -14,43 +14,7 @@
             <!-- Dealer Information -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="footer-widget">
-                    <?php if(isset($dealer)): ?>
-                        <!-- Dealer Branding -->
-                        <div class="d-flex align-items-center mb-3">
-                            <?php if($dealer->profile_image): ?>
-                                <img src="<?php echo e(asset('storage/' . $dealer->profile_image)); ?>"
-                                     alt="<?php echo e($dealer->name); ?>"
-                                     class="dealer-footer-logo me-3">
-                            <?php else: ?>
-                                <div class="dealer-footer-placeholder me-3">
-                                    <i class="fas fa-store"></i>
-                                </div>
-                            <?php endif; ?>
-                            <div>
-                                <h5 class="mb-0 text-white fw-bold"><?php echo e($dealer->dealerProfile->dealer_shop_name ?? $dealer->name); ?></h5>
-                                <small class="text-muted">Authorized Dealer</small>
-                            </div>
-                        </div>
-                        <p class="text-muted mb-3 lh-lg">
-                            Your trusted electronics partner providing premium products with exceptional service and competitive prices.
-                        </p>
-                    <?php else: ?>
-                        <!-- Fallback to Fair Waves -->
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="<?php echo e(asset('frontend/newstyle/assets/images/Fire Waves LOGO.png')); ?>"
-                                 alt="Fair Waves Logo"
-                                 class="dealer-footer-logo me-3">
-                            <div>
-                                <h5 class="mb-0 text-white fw-bold">FAIR WAVES</h5>
-                                <small class="text-muted">Premium Electronics Store</small>
-                            </div>
-                        </div>
-                        <p class="text-muted mb-3 lh-lg">
-                            Your trusted partner for premium electronics and exceptional service.
-                            We bring you the latest technology at competitive prices.
-                        </p>
-                    <?php endif; ?>
-
+             
                     <div class="social-links">
                         <a href="#" class="social-link" aria-label="Facebook">
                             <i class="fab fa-facebook-f"></i>

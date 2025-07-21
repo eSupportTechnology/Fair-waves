@@ -130,14 +130,37 @@
     
     /* Page Title Styling */
     .page-title-section {
-        background-color: #f8f9fa;
+        background: linear-gradient(135deg, #ff5800, #ff7a3d);
+        color: white;
         border-bottom: 1px solid #eaeaea;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .page-title-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -20%;
+        width: 80%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 0 50% 50% 0;
+        transform: skewY(-15deg);
+        z-index: 1;
+    }
+    
+    .page-title-section .container {
+        position: relative;
+        z-index: 2;
     }
     
     .page-title {
-        color: #333;
+        color: white;
         font-size: 1.8rem;
         margin-bottom: 0.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
     
     .breadcrumb {
@@ -147,12 +170,12 @@
     }
     
     .breadcrumb-item a {
-        color: #ff5800;
+        color: rgba(255, 255, 255, 0.9);
         text-decoration: none;
     }
     
     .breadcrumb-item.active {
-        color: #6c757d;
+        color: rgba(255, 255, 255, 0.8);
     }
     
     /* Responsive Styles */
@@ -168,6 +191,11 @@
         
         .page-title {
             font-size: 1.5rem;
+        }
+        
+        .page-title-section::before {
+            left: -30%;
+            width: 100%;
         }
     }
 </style>

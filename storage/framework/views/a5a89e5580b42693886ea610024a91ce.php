@@ -8,12 +8,19 @@
                     <?php if(isset($dealer)): ?>
                         <!-- Dealer Information with Profile Image -->
                         <div class="dealer-info d-flex align-items-center">
-                            <!-- Dealer Profile Image -->
+                            <!-- User Profile Image (Logged in user) -->
                             <div class="dealer-profile-wrapper me-3">
-                                <?php if($dealer->profile_image): ?>
-                                    <img src="<?php echo e(asset('storage/' . $dealer->profile_image)); ?>"
-                                         alt="<?php echo e($dealer->name); ?>"
-                                         class="dealer-profile-img">
+                                <?php if(auth()->check()): ?>
+                                    <?php if(auth()->user()->profile_image): ?>
+                                        <img src="<?php echo e(auth()->user()->profile_image_url); ?>"
+                                             alt="<?php echo e(auth()->user()->name); ?>"
+                                             class="dealer-profile-img">
+                                    <?php else: ?>
+                                        <div class="dealer-profile-placeholder">
+                                            <?php echo e(substr(auth()->user()->name, 0, 1)); ?>
+
+                                        </div>
+                                    <?php endif; ?>
                                 <?php else: ?>
                                     <div class="dealer-profile-placeholder">
                                         <i class="fas fa-user"></i>
@@ -47,14 +54,45 @@
                             </div>
                         </div>
                     <?php else: ?>
-                        <!-- Fallback to Fair Waves if no dealer context -->
-                        <img src="<?php echo e(asset('frontend/newstyle/assets/images/Fire Waves LOGO.png')); ?>"
-                             alt="Fair Waves Logo"
-                             class="shop-logo me-3"
-                             style="height: 50px; width: auto;">
-                        <div>
-                            <h4 class="shop-name mb-0 text-dark fw-bold">FAIR WAVES</h4>
-                            <small class="text-muted">Premium Electronics Store</small>
+                        <!-- Fallback when no dealer context - show logged in user -->
+                        <div class="dealer-info d-flex align-items-center">
+                            <!-- User Profile Image (Logged in user) -->
+                            <div class="dealer-profile-wrapper me-3">
+                                <?php if(auth()->check()): ?>
+                                    <?php if(auth()->user()->profile_image): ?>
+                                        <img src="<?php echo e(auth()->user()->profile_image_url); ?>"
+                                             alt="<?php echo e(auth()->user()->name); ?>"
+                                             class="dealer-profile-img">
+                                    <?php else: ?>
+                                        <div class="dealer-profile-placeholder">
+                                            <?php echo e(substr(auth()->user()->name, 0, 1)); ?>
+
+                                        </div>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    <div class="dealer-profile-placeholder">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <!-- User Name and Info -->
+                            <div class="dealer-content">
+                                <?php if(auth()->check()): ?>
+                                    <h3 class="dealer-name mb-1 text-dark fw-bold">
+                                        <?php echo e(auth()->user()->name); ?>
+
+                                    </h3>
+                                    <div class="dealer-details">
+                                        <small class="text-muted me-3 dealer-owner">
+                                            User
+                                        </small>
+                                    </div>
+                                <?php else: ?>
+                                    <h4 class="dealer-name mb-0 text-dark fw-bold">Guest User</h4>
+                                    <small class="text-muted">Welcome</small>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     <?php endif; ?>
                 </div>

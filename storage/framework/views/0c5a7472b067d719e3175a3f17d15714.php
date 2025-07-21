@@ -1,3 +1,19 @@
+<?php
+    // Get dealer information from session data
+    $dealer = null;
+    if (session('buy_now')) {
+        // Handle Buy Now checkout
+        $buyNowItem = session('buy_now');
+        if (isset($buyNowItem['dealerProductLink'])) {
+            $dealerProductLink = \App\Models\DealerProductLink::find($buyNowItem['dealerProductLink']);
+            if ($dealerProductLink && $dealerProductLink->dealer && $dealerProductLink->dealer->dealerProfile) {
+                $dealer = $dealerProductLink->dealer;
+            }
+        }
+    }
+    // Note: Cart checkout may not have dealer context - navigation will show empty links in that case
+?>
+
 <?php $__env->startSection('content'); ?>
 
 <!-- Breadcrumb -->
@@ -11,6 +27,7 @@
                         <i class="ph ph-house"></i> Home
                     </a>
                 </li>
+                
                 <li class="flex-align"><i class="ph ph-caret-right"></i></li>
                 <li class="text-sm text-main-600">Checkout</li>
             </ul>
@@ -98,6 +115,7 @@
                     <input type="hidden" name="products[0][color]" value="<?php echo e($item['color'] ?? ''); ?>">
                     <input type="hidden" name="products[0][cost]" value="<?php echo e($item['price']); ?>">
                     <input type="hidden" name="products[0][dealerProductLink]" value="<?php echo e($item['dealerProductLink']); ?>">
+                    <input type="hidden" name="products[0][bv]" value="<?php echo e($item['bv']); ?>">
 
                     <div class="border-top border-gray-100 pt-30 mt-30">
                         <div class="mb-0 flex-between gap-8">
@@ -137,6 +155,127 @@
 </div>
 </form>
 </section>
+
+<?php if($dealer && $dealer->dealerProfile): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update desktop navigation links
+    const desktopNav = document.querySelector('.header-navigation');
+    if (desktopNav) {
+        desktopNav.innerHTML = `
+            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="nav-link text-dark me-3 hover-orange">Home</a>
+            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
+            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>" class="nav-link text-dark me-3 hover-orange">About</a>
+            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
+
+    // Update mobile navigation links
+    const mobileNav = document.querySelector('.mobile-nav-menu');
+    if (mobileNav) {
+        mobileNav.innerHTML = `
+            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
+
+    // Handle contact navigation to about page with scrolling
+    document.querySelectorAll('.contact-about-scroll').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#contact-section')) {
+                // Let the browser handle navigation to the about page
+                // The hash will be handled by the about page's JavaScript
+                window.location.href = href;
+            }
+        });
+    });
+});
+</script>
+<?php else: ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fallback for when dealer context is not available
+    // Try to get dealer info from cart session or other sources
+    const desktopNav = document.querySelector('.header-navigation');
+    const mobileNav = document.querySelector('.mobile-nav-menu');
+    
+    <?php
+        // Try to get dealer info from cart items for regular cart checkout
+        $cartDealer = null;
+        if (session('cart') && is_array(session('cart'))) {
+            foreach (session('cart') as $cartItem) {
+                if (isset($cartItem['dealer_shop_name'])) {
+                    $cartDealer = $cartItem;
+                    break;
+                }
+            }
+        }
+    ?>
+    
+    <?php if(isset($cartDealer) && $cartDealer): ?>
+    // Use dealer info from cart items
+    if (desktopNav) {
+        desktopNav.innerHTML = `
+            <a href="<?php echo e(route('showroom.index', $cartDealer['dealer_shop_name'])); ?>" class="nav-link text-dark me-3 hover-orange">Home</a>
+            <a href="<?php echo e(route('showroom.index', $cartDealer['dealer_shop_name'])); ?>#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
+            <a href="<?php echo e(route('showroom.about', $cartDealer['dealer_shop_name'])); ?>" class="nav-link text-dark me-3 hover-orange">About</a>
+            <a href="<?php echo e(route('showroom.about', $cartDealer['dealer_shop_name'])); ?>#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
+
+    if (mobileNav) {
+        mobileNav.innerHTML = `
+            <a href="<?php echo e(route('showroom.index', $cartDealer['dealer_shop_name'])); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+            <a href="<?php echo e(route('showroom.index', $cartDealer['dealer_shop_name'])); ?>#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+            <a href="<?php echo e(route('showroom.about', $cartDealer['dealer_shop_name'])); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+            <a href="<?php echo e(route('showroom.about', $cartDealer['dealer_shop_name'])); ?>#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
+
+    // Handle contact navigation to about page with scrolling
+    document.querySelectorAll('.contact-about-scroll').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#contact-section')) {
+                // Let the browser handle navigation to the about page
+                // The hash will be handled by the about page's JavaScript
+                window.location.href = href;
+            }
+        });
+    });
+    <?php else: ?>
+    // If navigation links are empty and no dealer context, redirect to main site
+    if (desktopNav) {
+        const emptyLinks = desktopNav.querySelectorAll('a[href=""]');
+        if (emptyLinks.length > 0) {
+            // Replace empty navigation links with main site navigation
+            desktopNav.innerHTML = `
+                <a href="<?php echo e(url('/')); ?>" class="nav-link text-dark me-3 hover-orange">Home</a>
+                <a href="<?php echo e(url('/')); ?>" class="nav-link text-dark me-3 hover-orange">Products</a>
+                <a href="<?php echo e(url('/')); ?>" class="nav-link text-dark me-3 hover-orange">About</a>
+                <a href="<?php echo e(url('/')); ?>" class="nav-link text-dark hover-orange">Contact</a>
+            `;
+        }
+    }
+    
+    if (mobileNav) {
+        const emptyLinks = mobileNav.querySelectorAll('a[href=""]');
+        if (emptyLinks.length > 0) {
+            mobileNav.innerHTML = `
+                <a href="<?php echo e(url('/')); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+                <a href="<?php echo e(url('/')); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+                <a href="<?php echo e(url('/')); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+                <a href="<?php echo e(url('/')); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">Contact</a>
+            `;
+        }
+    }
+    <?php endif; ?>
+});
+</script>
+<?php endif; ?>
 
 <?php $__env->stopSection(); ?>
 

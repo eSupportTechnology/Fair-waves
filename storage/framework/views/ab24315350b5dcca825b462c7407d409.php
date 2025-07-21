@@ -85,6 +85,81 @@
         color: #333;
         font-weight: 600;
     }
+
+    .tracking-info {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+        margin-bottom: 15px;
+    }
+
+    .tracking-info .badge-info {
+        background-color: #007bff;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.875rem;
+    }
+
+    .tracking-info .btn-outline-primary {
+        border-color: #007bff;
+        color: #007bff;
+        background-color: #007bff;
+        color: white;
+        font-size: 0.8rem;
+        padding: 4px 12px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
+
+    .tracking-info .btn-outline-primary:hover {
+        background-color: #0056b3;
+        color: white;
+        text-decoration: none;
+    }
+
+    .tracking-link-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    .tracking-link-text {
+        background-color: #f1f3f4;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        color: #495057;
+        word-break: break-all;
+        flex: 1;
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .copy-btn {
+        background-color: #28a745;
+        border: 1px solid #28a745;
+        color: white;
+        font-size: 0.7rem;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .copy-btn:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    .copy-btn:active {
+        background-color: #1e7e34;
+    }
 </style>
 
 <div class="container py-4">
@@ -123,6 +198,35 @@
                             </div>
                         </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <!-- Tracking Information -->
+                    <?php if($order->tracking_number || $order->tracking_link): ?>
+                        <div class="tracking-info mb-3 p-3" style="background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
+                            <?php if($order->tracking_number): ?>
+                                <div class="mb-2">
+                                    <strong>Tracking Number:</strong> 
+                                    <span class="badge badge-info" style="background-color: #007bff; color: white; padding: 4px 8px; border-radius: 4px;"><?php echo e($order->tracking_number); ?></span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if($order->tracking_link): ?>
+                                <div class="mb-2">
+                                    <strong>Track Your Order:</strong>
+                                    <div class="tracking-link-container">
+                                        <div class="tracking-link-text" id="tracking-link-<?php echo e($order->id); ?>" title="<?php echo e($order->tracking_link); ?>">
+                                            <?php echo e($order->tracking_link); ?>
+
+                                        </div>
+                                        <button class="copy-btn" onclick="copyTrackingLink('<?php echo e($order->id); ?>')" title="Copy tracking link">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <a href="<?php echo e($order->tracking_link); ?>" target="_blank" class="btn btn-sm btn-outline-primary" style="text-decoration: none;">
+                                            <i class="fas fa-external-link-alt"></i> Track Order
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                    
                     <div class="order-meta">
                         <div>
                             <strong>Total Amount:</strong> Rs. <?php echo e(number_format($order->total_cost, 2)); ?>
@@ -141,6 +245,44 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     <?php endif; ?>
 </div>
+
+<script>
+function copyTrackingLink(orderId) {
+    const trackingElement = document.getElementById('tracking-link-' + orderId);
+    const trackingLink = trackingElement.textContent || trackingElement.innerText;
+    
+    // Create a temporary textarea element to copy the text
+    const tempTextarea = document.createElement('textarea');
+    tempTextarea.value = trackingLink;
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
+    tempTextarea.setSelectionRange(0, 99999); // For mobile devices
+    
+    try {
+        document.execCommand('copy');
+        
+        // Show feedback to user
+        const copyBtn = event.target.closest('.copy-btn');
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        copyBtn.style.backgroundColor = '#28a745';
+        
+        setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+            copyBtn.style.backgroundColor = '#28a745';
+        }, 2000);
+        
+    } catch (err) {
+        console.error('Failed to copy: ', err);
+        // Fallback: select the text for manual copying
+        trackingElement.select();
+        alert('Please manually copy the selected tracking link');
+    }
+    
+    document.body.removeChild(tempTextarea);
+}
+</script>
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/user_dashboard/to_be_shipped.blade.php ENDPATH**/ ?>

@@ -144,6 +144,7 @@
 
     .product-info-main {
         flex-grow: 1;
+        padding-bottom: 15px;
     }
 
     .product-info-actions {
@@ -152,11 +153,17 @@
     }
 
     .product-title {
-        font-size: 2.25rem;
+        font-size: 1.9rem;
         font-weight: 700;
         color: #2d3748;
-        margin-bottom: 15px;
-        line-height: 1.2;
+        margin-bottom: 30px;
+        line-height: 1.5;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        padding-right: 10px;
+        min-height: auto;
+        display: block;
+        white-space: normal;
     }
 
     .product-price {
@@ -527,7 +534,10 @@
 
     @media (max-width: 768px) {
         .product-title {
-            font-size: 1.75rem;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            min-height: auto;
         }
 
         .product-meta {
@@ -541,6 +551,10 @@
         .btn-primary-custom, .btn-outline-custom {
             width: 100%;
             justify-content: center;
+        }
+
+        .product-info-main {
+            padding: 10px 0;
         }
 
         .showroom-container {
@@ -662,7 +676,7 @@
                 </h5>
                 <p class="mb-0 opacity-75">
                     <i class="fas fa-certificate me-1"></i>
-                    Authorized Dealer Showroom
+                    Authorized Seller Showroom
                 </p>
             </div>
             <div class="col-md-4 text-md-end">
@@ -718,7 +732,7 @@
             <div class="product-info-card fade-in">
                 <div class="product-info-content">
                     <div class="product-info-main">
-                        <h1 class="product-title"><?php echo e($productLink->product->product_name); ?></h1>
+                        <h2 class="product-title"><?php echo e($productLink->product->product_name); ?></h2>
 
                         <div class="product-price">
                             <i class="fas fa-tag me-2"></i>

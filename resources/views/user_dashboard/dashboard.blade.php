@@ -2,87 +2,414 @@
 
 @section('dashboard-content')
 <style>
-    h4.py-2.px-2 {
-        margin-bottom: 20px; /* Adjust the value to increase or decrease the space */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #ff6b00, #ff3c00);
+        --secondary-gradient: linear-gradient(135deg, #667eea, #764ba2);
+        --success-gradient: linear-gradient(135deg, #11998e, #38ef7d);
+        --warning-gradient: linear-gradient(135deg, #f093fb, #f5576c);
+        --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        --card-shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.12);
+        --border-radius: 16px;
+        --text-primary: #2d3748;
+        --text-secondary: #718096;
+        --bg-light: #f7fafc;
+        --white: #ffffff;
     }
 
-    .dashboard-header {
+    /* Dashboard Header Styling */
+    .welcome-banner {
+        background: var(--primary-gradient);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin: 1.5rem 0 2rem 0;
+        color: white;
+        box-shadow: var(--card-shadow);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .welcome-banner::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -30%;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    .welcome-banner::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    .banner-content {
         display: flex;
         align-items: center;
-        padding: 20px;
-        border-bottom: 1px solid #e0e0e0;
-        margin-top: 40px; Increased from 40px to 80px to move it further down */
+        gap: 1.5rem;
+        position: relative;
+        z-index: 2;
     }
 
-    .profile-info {
-        margin-left: 20px;
+    .profile-avatar {
+        position: relative;
+        flex-shrink: 0;
     }
 
-    .profile-info h4 {
+    .profile-avatar img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .profile-avatar:hover img {
+        transform: scale(1.05);
+    }
+
+    .profile-avatar::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 24px;
+        height: 24px;
+        background: #10b981;
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .welcome-text h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .welcome-text p {
+        font-size: 1rem;
         margin: 0;
-        font-size: 18px;
-        font-weight: bold;
+        opacity: 0.9;
+        font-weight: 400;
     }
 
-    .profile-info p {
-        margin: 0;
-        font-size: 14px;
-        color: #888;
+    /* Quick Stats Section */
+    .stats-section {
+        margin: 2rem 0;
     }
 
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: var(--white);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .stat-card:hover {
+        box-shadow: var(--card-shadow-hover);
+        transform: translateY(-2px);
+    }
+
+    .stat-card.pending {
+        border-left-color: #f59e0b;
+        background: linear-gradient(135deg, #fef3c7, #ffffff);
+    }
+
+    .stat-card.processing {
+        border-left-color: #3b82f6;
+        background: linear-gradient(135deg, #dbeafe, #ffffff);
+    }
+
+    .stat-card.shipped {
+        border-left-color: #10b981;
+        background: linear-gradient(135deg, #d1fae5, #ffffff);
+    }
+
+    .stat-card.completed {
+        border-left-color: #8b5cf6;
+        background: linear-gradient(135deg, #e9d5ff, #ffffff);
+    }
+
+    .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: white;
+    }
+
+    .stat-icon.pending {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .stat-icon.processing {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .stat-icon.shipped {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .stat-icon.completed {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    /* Orders Section */
     .orders-section {
-        margin-top: 30px;
-        padding: 20px;
-        border-bottom: 1px solid #e0e0e0;
-        margin-bottom: 20px;
+        background: var(--white);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
     }
 
-    .orders-row {
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
+        align-items: center;
+        gap: 0.75rem;
     }
 
-    .orders-box {
+    .section-title::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: var(--primary-gradient);
+        border-radius: 2px;
+    }
+
+    .orders-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .order-card {
+        background: var(--white);
+        border: 2px solid #f1f5f9;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .order-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .order-card:hover {
+        border-color: #ff3c00;
+        box-shadow: var(--card-shadow-hover);
+        transform: translateY(-4px);
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .order-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .order-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 1rem auto;
+        background: var(--bg-light);
+        border-radius: 50%;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        text-align: center;
-        width: 100px;
-        padding: 10px;
-        border-radius: 8px;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
+        position: relative;
     }
 
-    .orders-box img {
-        width: 40px;
-        height: 40px;
-        margin-bottom: 8px;
+    .order-icon img {
+        width: 32px;
+        height: 32px;
+        filter: sepia(1) saturate(2) hue-rotate(15deg);
+        transition: all 0.3s ease;
     }
 
-    .orders-box p {
+    .order-card:hover .order-icon {
+        background: #ff3c00;
+        transform: scale(1.1);
+    }
+
+    .order-card:hover .order-icon img {
+        filter: brightness(0) invert(1);
+    }
+
+    .order-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .order-description {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
         margin: 0;
-        font-size: 14px;
+        line-height: 1.4;
     }
 
-    /* ✅ Responsive Fixes */
-    @media (max-width: 576px) {
-        .orders-box {
-            width: 40%;
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .welcome-banner {
+            padding: 1.5rem;
+            margin: 1rem 0;
         }
 
-        .orders-row {
-            gap: 15px;
+        .banner-content {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .profile-avatar img {
+            width: 70px;
+            height: 70px;
+        }
+
+        .welcome-text h1 {
+            font-size: 1.5rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+        }
+
+        .orders-section {
+            padding: 1.5rem;
+        }
+
+        .orders-grid {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .order-card {
+            padding: 1rem;
+        }
+
+        .order-icon {
+            width: 56px;
+            height: 56px;
+        }
+
+        .order-icon img {
+            width: 28px;
+            height: 28px;
         }
     }
 
-    @media (max-width: 400px) {
-        .orders-box {
-            width: 100%;
+    @media (max-width: 480px) {
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .orders-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .order-card {
+            padding: 0.875rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
         }
     }
+
+    /* Loading Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .welcome-banner,
+    .stat-card,
+    .orders-section {
+        animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0.1s; }
+    .stat-card:nth-child(2) { animation-delay: 0.2s; }
+    .stat-card:nth-child(3) { animation-delay: 0.3s; }
+    .stat-card:nth-child(4) { animation-delay: 0.4s; }
 </style>
 
 @if (!Auth::check())
@@ -92,37 +419,57 @@
     @php exit; @endphp
 @endif
 
-
-
-<!-- Dashboard Header -->
-<h4 class="px-2 py-2">Dashboard</h4>
-<div class="dashboard-header">
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAAM1BMVEX///+ZmZmVlZXZ2dmQkJDk5OS8vLzo6OjS0tK1tbXz8/P7+/v39/fs7OykpKTHx8eqqqq8lpdBAAAEZUlEQVR4nO1b2ZasIAyUiCLt+v9fe1unZ7pdoBJA23Mu9S4WIQkhS1FkZGRkZGRkZGRkZGRcgO7R98ZUVWVM/+i+zeYJ09R2GhS9oIbJ1o35Hp9HNQ5aP4lsQFrrYaweX6BU1QPpHaE/aBrq6lpG/ag8hP4kpsa+KNqLKFkFGb14KdtfQslMmsfoJa7pfLXv2FL6kNa5bqId98bGoEXjiYplpgBKM/R0mmo12OLctM4RVmfDKT1B9gRWlVTBd6xUcmdaxjH6QZmWUxMpph9Qcz9OaVk1Eh/uhU7GqklFSaWTVZlMTgurJNpesX71G3kykMAztAxGWtmxKctmtApLlVT0/dxCP/6MAj72XuEogmwsqRH9QttNvGQskhaNcZwM+AEdeWno/XVUzNCCWIXUYVhpwBHSFHM5o8MbHO+ox+D/LuYAO8CJnOG3QV+GWyCwPJ8fLMGnwRZo/LtVk+9jFDmHvnGQlnttqEe6Hsap97sDdALg7APdgvUuCuPIU7SqB5wUSKs80PchohqBMx/QAmf4KrRRKP4aXZtyThW69eBG0XWg5YEV2ieOa2FkX0s5oduLIylEynVzOlHBUC36+BRJzw+uiBUdx6xS+xsgqViXwFliA8azCmgEdL5P+5NxQmGwwubHeOprWajAeKiDmBZF0px9bQC9sUJvXc67mmSeipW18+lpi9VcMSz4E93EWdJn0tilzAtMklAd+vPXos4DBMHUL0Q+nWHOP3CwYicjJTEVeiEBVvwEqcQn8ElRvVOLrmYntNwPxwPA6/hj3WkjrBLfUO+PJVeygNTTL6vRvMTVmZGRobqC1JznGGw9jrUdhBUAESnG1bddnptcjCAlWZ82kHx6hvWRXmr+K8wdAdxyl4gUz3mSsmX/2MUKbdeXVvEkJnGejGuGyPqjBMugJbpm8IVM2/zrHgaHGqILGabLBlbdAPpRWZLDH+RRzUykgiy8MMjzhsOSUpQ3UheGw17vKSr5+CIG4cPB88SS5iU8mRLhE8v9kpQX7JwnSNLHqCs7oQNSXcnWcsQJ4s0tcHgGcYLD5dODKoiOOqY4FXTsqYSOJflih0ajA0sq3eFiAVJPKCiHqALWOXrjBtekD7RKh+zwIKYKrKfMOAg7guogu8s0pnS481WBxbVdwSim9JtssW3ai8I5Fe12rVBV2BYhI1Rqv8PgRsu1VoU7hBlrpxDRMLEubMf1OKw9TERhe20zcV1GqwAman/tdA6pqGaJlSWnIxXXVrJShWSkYhtwPh9JcT1i79RsfKvSR1MX1WUE3i5hSNAa+3HBb5M+ErxXSdIYe8dGwXStpwundI2eN2w+vWebbipWKeU0o4xtR5+RuPU7RZP8cMLE0R3HCYooIyTdnDWlEjyiQmeOGYUN86hTh3mKW449zZANiKkrBsRm8Efp9FWjdAst5tBhfR2lBfN4ppsXfWE8c8FrkFVtz5Loa4OsL9xt5PcPy3B0daPh6IyMjIyMjIyMjIyM/wD/AKrlLaHofErWAAAAAElFTkSuQmCC" alt="Profile Image" class="rounded-circle">
-    <div class="profile-info">
-        <h4>{{ $user->name }}</h4>
+<!-- Welcome Banner -->
+<div class="welcome-banner">
+    <div class="banner-content">
+        <div class="profile-avatar">
+            <img src="{{ $user->profile_image_url }}" alt="Profile Image">
+        </div>
+        <div class="welcome-text">
+            <h1>Welcome back, {{ $user->name }}!</h1>
+            <p>Manage your orders and track your purchases with ease</p>
+        </div>
     </div>
 </div>
 
+<!-- Quick Stats Section -->
+
+
 <!-- My Orders Section -->
 <div class="orders-section">
-    <h5>My Orders</h5>
-    <div class="orders-row">
-        <a href="{{ route('user.unpaid.orders') }}" class="orders-box" style="text-decoration: none; color: inherit;">
-            <img src="https://icons.veryicon.com/png/128/miscellaneous/bigmk_app_icon/unpaid-2.png" alt="Unpaid">
-            <p>Unpaid</p>
+    <div class="section-title">My Orders</div>
+    <div class="orders-grid">
+        <a href="{{ route('user.unpaid.orders') }}" class="order-card">
+            <div class="order-icon">
+                <img src="https://icons.veryicon.com/png/128/miscellaneous/bigmk_app_icon/unpaid-2.png" alt="Unpaid">
+            </div>
+            <div class="order-title">Unpaid</div>
+            <div class="order-description">Orders awaiting payment</div>
         </a>
-        <a href="{{ route('user.to.be.shipped') }}" class="orders-box" style="text-decoration: none; color: inherit;">
-            <img src="https://icons.veryicon.com/png/128/miscellaneous/cb/to-be-shipped-25.png" alt="To be shipped">
-            <p>To be shipped</p>
+        
+        <a href="{{ route('user.to.be.shipped') }}" class="order-card">
+            <div class="order-icon">
+                <img src="https://icons.veryicon.com/png/128/miscellaneous/cb/to-be-shipped-25.png" alt="To be shipped">
+            </div>
+            <div class="order-title">To be shipped</div>
+            <div class="order-description">Orders being prepared</div>
         </a>
-        <a href="{{ route('user.shipped.orders') }}" class="orders-box" style="text-decoration: none; color: inherit;">
-            <img src="https://icons.veryicon.com/png/128/miscellaneous/bigmk_app_icon/in-transit.png" alt="Shipped">
-            <p>Shipped</p>
+        
+        <a href="{{ route('user.shipped.orders') }}" class="order-card">
+            <div class="order-icon">
+                <img src="https://icons.veryicon.com/png/128/miscellaneous/bigmk_app_icon/in-transit.png" alt="Shipped">
+            </div>
+            <div class="order-title">Shipped</div>
+            <div class="order-description">Orders on the way</div>
         </a>
-        <div class="orders-box">
-            <img src="https://icons.veryicon.com/png/128/miscellaneous/document-format/reviewed-5.png" alt="To be reviewed">
-            <p>To be reviewed</p>
-        </div>
+        
+        <a href="{{ route('My-Reviews') }}" class="order-card">
+            <div class="order-icon">
+                <img src="https://icons.veryicon.com/png/128/miscellaneous/document-format/reviewed-5.png" alt="To be reviewed">
+            </div>
+            <div class="order-title">To be reviewed</div>
+            <div class="order-description">Completed orders</div>
+        </a>
     </div>
 </div>
 

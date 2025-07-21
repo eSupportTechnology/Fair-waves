@@ -127,8 +127,10 @@
                         <div class="cart-item" data-product-id="<?php echo e($productId); ?>">
                             <div class="row align-items-center">
                                 <div class="col-md-2">
-                                    <?php if(isset($item['product']) && $item['product']->images->isNotEmpty()): ?>
+                                    <?php if(isset($item['product']) && $item['product'] && $item['product']->images->isNotEmpty()): ?>
                                         <img src="<?php echo e(asset('storage/' . $item['product']->images->first()->image_path)); ?>" alt="<?php echo e($item['name']); ?>" class="product-image">
+                                    <?php elseif(isset($item['image']) && $item['image']): ?>
+                                        <img src="<?php echo e(asset('storage/' . $item['image'])); ?>" alt="<?php echo e($item['name']); ?>" class="product-image">
                                     <?php else: ?>
                                         <img src="<?php echo e(asset('images/default-product.jpg')); ?>" alt="<?php echo e($item['name']); ?>" class="product-image">
                                     <?php endif; ?>
@@ -178,7 +180,7 @@
                     <h4 class="mb-4">Order Summary</h4>
                     <div class="summary-row">
                         <span>Subtotal</span>
-                        <span id="cart-subtotal">Rs. <?php echo e(number_format($total, 2)); ?></span>
+                        <span id="cart-subtotal">Rs. <?php echo e(number_format($subtotal, 2)); ?></span>
                     </div>
                     <div class="summary-row">
                         <span>Delivery Fee</span>
@@ -258,7 +260,7 @@ function showMessage(message, type = 'success') {
                     subtotalElement.textContent = 'Rs. ' + newSubtotal.toFixed(2);
                     
                     // Update cart total
-                    document.getElementById('cart-subtotal').textContent = 'Rs. ' + data.total.toFixed(2);
+                    document.getElementById('cart-subtotal').textContent = 'Rs. ' + data.subtotal.toFixed(2);
                     document.getElementById('cart-total').textContent = 'Rs. ' + data.total.toFixed(2);
                 }
             })
@@ -335,8 +337,9 @@ function showMessage(message, type = 'success') {
                 subtotalElement.textContent = `Rs. ${parseFloat(newSubtotal).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
                 // Update cart summary
+                const formattedSubtotal = parseFloat(data.subtotal).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 const formattedTotal = parseFloat(data.total).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                document.getElementById('cart-subtotal').textContent = `Rs. ${formattedTotal}`;
+                document.getElementById('cart-subtotal').textContent = `Rs. ${formattedSubtotal}`;
                 document.getElementById('cart-total').textContent = `Rs. ${formattedTotal}`;
 
                 // Show success message (optional)

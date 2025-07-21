@@ -6,8 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\DealerProductLink;
 use App\Models\DealerProductOrder;
+use App\Models\CustomerOrder;
+use App\Models\CustomerOrderItems;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class CartCheckoutController extends Controller
 {
@@ -137,36 +141,43 @@ class CartCheckoutController extends Controller
                 throw new \Exception('Invalid order information');
             }
 
-            // Create order record
-            $order = DealerProductOrder::create([
+            // Create order record in customer_orders table
+            $order = \App\Models\CustomerOrder::create([
                 'order_code' => $order_code,
-                'first_name' => $checkoutInfo['first_name'],
-                'last_name' => $checkoutInfo['last_name'],
-                'house_no' => $checkoutInfo['house_no'],
-                'city' => $checkoutInfo['city'],
-                'postal_code' => $checkoutInfo['postal_code'],
+                'user_id' => \Illuminate\Support\Facades\Auth::id(),
+                'customer_name' => $checkoutInfo['first_name'] . ' ' . $checkoutInfo['last_name'],
                 'phone' => $checkoutInfo['phone'],
                 'email' => $checkoutInfo['email'],
-                'total_amount' => $cartSummary['total'],
+                'house_no' => $checkoutInfo['house_no'],
+                'apartment' => $checkoutInfo['apartment'],
+                'city' => $checkoutInfo['city'],
+                'postal_code' => $checkoutInfo['postal_code'],
+                'date' => \Carbon\Carbon::now(),
+                'total_cost' => $cartSummary['total'],
+                'status' => 'Pending',
                 'payment_method' => 'COD',
-                'status' => 'pending'
+                'payment_status' => 'Pending',
+                'order_type' => \Illuminate\Support\Facades\Auth::check() ? 'customer' : 'annonymous'
             ]);
 
-            // Create order items
+            // Create order items in customer_order_items table
             foreach ($cartSummary['items'] as $item) {
-                $order->items()->create([
+                \App\Models\CustomerOrderItems::create([
+                    'order_code' => $order_code,
                     'product_id' => $item['id'],
                     'quantity' => $item['quantity'],
-                    'price' => $item['price'],
+                    'cost' => $item['price'] * $item['quantity'],
                     'size' => $item['size'] ?? null,
-                    'color' => $item['color'] ?? null
+                    'color' => $item['color'] ?? null,
+                    'date' => \Carbon\Carbon::now(),
+                    'dealer_product_link_id' => $item['dealer_product_link_id'] ?? null
                 ]);
             }
 
             // Clear cart and checkout data
             session()->forget(['showroom_cart', 'cart_summary', 'checkout_info']);
 
-            return redirect()->route('dealer.order.thankyou', ['order_code' => $order_code])
+            return redirect()->route('order.thankyou', ['order_code' => $order_code])
                         ->with('success', 'Order placed successfully!');
 
         } catch (\Exception $e) {
@@ -185,37 +196,43 @@ class CartCheckoutController extends Controller
                 throw new \Exception('Invalid order information');
             }
 
-            // Create order record
-            $order = DealerProductOrder::create([
+            // Create order record in customer_orders table
+            $order = \App\Models\CustomerOrder::create([
                 'order_code' => $order_code,
-                'first_name' => $checkoutInfo['first_name'],
-                'last_name' => $checkoutInfo['last_name'],
-                'house_no' => $checkoutInfo['house_no'],
-                'city' => $checkoutInfo['city'],
-                'postal_code' => $checkoutInfo['postal_code'],
+                'user_id' => \Illuminate\Support\Facades\Auth::id(),
+                'customer_name' => $checkoutInfo['first_name'] . ' ' . $checkoutInfo['last_name'],
                 'phone' => $checkoutInfo['phone'],
                 'email' => $checkoutInfo['email'],
-                'total_amount' => $cartSummary['total'],
+                'house_no' => $checkoutInfo['house_no'],
+                'apartment' => $checkoutInfo['apartment'],
+                'city' => $checkoutInfo['city'],
+                'postal_code' => $checkoutInfo['postal_code'],
+                'date' => \Carbon\Carbon::now(),
+                'total_cost' => $cartSummary['total'],
+                'status' => 'Pending',
                 'payment_method' => 'Card',
                 'payment_status' => 'Paid',
-                'status' => 'pending'
+                'order_type' => \Illuminate\Support\Facades\Auth::check() ? 'customer' : 'annonymous'
             ]);
 
-            // Create order items
+            // Create order items in customer_order_items table
             foreach ($cartSummary['items'] as $item) {
-                $order->items()->create([
+                \App\Models\CustomerOrderItems::create([
+                    'order_code' => $order_code,
                     'product_id' => $item['id'],
                     'quantity' => $item['quantity'],
-                    'price' => $item['price'],
+                    'cost' => $item['price'] * $item['quantity'],
                     'size' => $item['size'] ?? null,
-                    'color' => $item['color'] ?? null
+                    'color' => $item['color'] ?? null,
+                    'date' => \Carbon\Carbon::now(),
+                    'dealer_product_link_id' => $item['dealer_product_link_id'] ?? null
                 ]);
             }
 
             // Clear cart and checkout data
             session()->forget(['showroom_cart', 'cart_summary', 'checkout_info']);
 
-            return redirect()->route('dealer.order.thankyou', ['order_code' => $order_code])
+            return redirect()->route('order.thankyou', ['order_code' => $order_code])
                         ->with('success', 'Order placed successfully!');
 
         } catch (\Exception $e) {

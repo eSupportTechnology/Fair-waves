@@ -8,12 +8,18 @@
                     @if(isset($dealer))
                         <!-- Dealer Information with Profile Image -->
                         <div class="dealer-info d-flex align-items-center">
-                            <!-- Dealer Profile Image -->
+                            <!-- User Profile Image (Logged in user) -->
                             <div class="dealer-profile-wrapper me-3">
-                                @if($dealer->profile_image)
-                                    <img src="{{ asset('storage/' . $dealer->profile_image) }}"
-                                         alt="{{ $dealer->name }}"
-                                         class="dealer-profile-img">
+                                @if(auth()->check())
+                                    @if(auth()->user()->profile_image)
+                                        <img src="{{ auth()->user()->profile_image_url }}"
+                                             alt="{{ auth()->user()->name }}"
+                                             class="dealer-profile-img">
+                                    @else
+                                        <div class="dealer-profile-placeholder">
+                                            {{ substr(auth()->user()->name, 0, 1) }}
+                                        </div>
+                                    @endif
                                 @else
                                     <div class="dealer-profile-placeholder">
                                         <i class="fas fa-user"></i>
@@ -44,14 +50,43 @@
                             </div>
                         </div>
                     @else
-                        <!-- Fallback to Fair Waves if no dealer context -->
-                        <img src="{{ asset('frontend/newstyle/assets/images/Fire Waves LOGO.png') }}"
-                             alt="Fair Waves Logo"
-                             class="shop-logo me-3"
-                             style="height: 50px; width: auto;">
-                        <div>
-                            <h4 class="shop-name mb-0 text-dark fw-bold">FAIR WAVES</h4>
-                            <small class="text-muted">Premium Electronics Store</small>
+                        <!-- Fallback when no dealer context - show logged in user -->
+                        <div class="dealer-info d-flex align-items-center">
+                            <!-- User Profile Image (Logged in user) -->
+                            <div class="dealer-profile-wrapper me-3">
+                                @if(auth()->check())
+                                    @if(auth()->user()->profile_image)
+                                        <img src="{{ auth()->user()->profile_image_url }}"
+                                             alt="{{ auth()->user()->name }}"
+                                             class="dealer-profile-img">
+                                    @else
+                                        <div class="dealer-profile-placeholder">
+                                            {{ substr(auth()->user()->name, 0, 1) }}
+                                        </div>
+                                    @endif
+                                @else
+                                    <div class="dealer-profile-placeholder">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                @endif
+                            </div>
+                            
+                            <!-- User Name and Info -->
+                            <div class="dealer-content">
+                                @if(auth()->check())
+                                    <h3 class="dealer-name mb-1 text-dark fw-bold">
+                                        {{ auth()->user()->name }}
+                                    </h3>
+                                    <div class="dealer-details">
+                                        <small class="text-muted me-3 dealer-owner">
+                                            User
+                                        </small>
+                                    </div>
+                                @else
+                                    <h4 class="dealer-name mb-0 text-dark fw-bold">Guest User</h4>
+                                    <small class="text-muted">Welcome</small>
+                                @endif
+                            </div>
                         </div>
                     @endif
                 </div>

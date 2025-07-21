@@ -180,7 +180,7 @@
                             <!-- Credit Card Section -->
                             <div class="tab-pane fade show active" id="credit-card" role="tabpanel" aria-labelledby="credit-card-tab">
                                 <div class="payment-form p-4">
-                                    <form action="<?php echo e(route('cart.payment.card', $order->order_code)); ?>" method="POST" id="card-payment-form">
+                                    <form action="<?php echo e(route('cart.payment.card', $order_code)); ?>" method="POST" id="card-payment-form">
                                         <?php echo csrf_field(); ?>
                                         <div class="row">
                                             <div class="col-12 mb-4">
@@ -226,7 +226,7 @@
                                         <li><i class="fas fa-shield-alt text-primary me-2"></i>100% Safe and Secure Delivery</li>
                                     </ul>
                                 </div>
-                                <form action="<?php echo e(route('cart.payment.cod', $order->order_code)); ?>" method="POST">
+                                <form action="<?php echo e(route('cart.payment.cod', $order_code)); ?>" method="POST">
                                     <?php echo csrf_field(); ?>
                                     <button type="submit" class="btn btn-pay text-white w-100">
                                         <i class="fas fa-handshake me-2"></i>Confirm Cash on Delivery

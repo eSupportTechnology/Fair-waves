@@ -1,6 +1,4 @@
-@extends('AdminDashboard.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="content-header">
         <div>
             <h2 class="content-title card-title">Order Details</h2>
@@ -12,16 +10,16 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
                     <span> <i class="material-icons md-calendar_today"></i>
-                        <b>{{ \Carbon\Carbon::parse($order->created_at)->format('D, M d, Y, h:i A') }}</b> </span> <br />
-                    <a href="#" class="fw-bold">Order ID: #{{ $order->order_code }}</a>
+                        <b><?php echo e(\Carbon\Carbon::parse($order->created_at)->format('D, M d, Y, h:i A')); ?></b> </span> <br />
+                    <a href="#" class="fw-bold">Order ID: #<?php echo e($order->order_code); ?></a>
                 </div>
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
-                    <form action="{{ route('order.updateStatus', $order->order_code) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('PATCH')
+                    <form action="<?php echo e(route('order.updateStatus', $order->order_code)); ?>" method="POST" class="d-inline">
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('PATCH'); ?>
                         <select name="status" class="form-select d-inline-block mb-lg-0 mr-5 mw-200">
-                            <option selected disabled>{{ $order->status }}</option>
-                            @php
+                            <option selected disabled><?php echo e($order->status); ?></option>
+                            <?php
                                 $validTransitions = [
                                     'Pending' => ['Accepted'],
                                     'Accepted' => ['Packed'],
@@ -37,41 +35,41 @@
                                     'Returned' => [],
                                 ];
                                 $nextStatuses = $validTransitions[$order->status] ?? [];
-                            @endphp
+                            ?>
 
-                            @foreach ($nextStatuses as $next)
-                                <option value="{{ $next }}">{{ $next }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = $nextStatuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $next): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($next); ?>"><?php echo e($next); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                            @if (!in_array($order->status, ['Cancelled', 'Returned']))
+                            <?php if(!in_array($order->status, ['Cancelled', 'Returned'])): ?>
                                 <option value="Cancelled">Cancelled</option>
                                 <option value="Returned">Returned</option>
-                            @endif
+                            <?php endif; ?>
 
                         </select>
 
-                        @if ($order->status === 'Ready to Ship')
+                        <?php if($order->status === 'Ready to Ship'): ?>
                             <div class="mt-2">
                                 <input type="text" name="tracking_number" class="form-control mb-2"
                                     placeholder="Tracking Number"
-                                    value="{{ old('tracking_number', $order->tracking_number ?? '') }}" required>
+                                    value="<?php echo e(old('tracking_number', $order->tracking_number ?? '')); ?>" required>
 
                                 <input type="url" name="tracking_link" class="form-control"
                                     placeholder="Tracking Link (optional)"
-                                    value="{{ old('tracking_link', $order->tracking_link ?? '') }}">
+                                    value="<?php echo e(old('tracking_link', $order->tracking_link ?? '')); ?>">
                             </div>
-                        @elseif (!empty($order->tracking_number) || !empty($order->tracking_link))
+                        <?php elseif(!empty($order->tracking_number) || !empty($order->tracking_link)): ?>
                             <div class="mt-2">
                                 <input type="text" class="form-control mb-2" 
-                                    value="{{ $order->tracking_number }}" 
+                                    value="<?php echo e($order->tracking_number); ?>" 
                                     placeholder="Tracking Number" 
                                     readonly>
                                 <input type="url" class="form-control" 
-                                    value="{{ $order->tracking_link }}" 
+                                    value="<?php echo e($order->tracking_link); ?>" 
                                     placeholder="Tracking Link" 
                                     readonly>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
 
                         <button type="submit" class="btn btn-primary p-2">Update</button>
@@ -91,9 +89,10 @@
                         <div class="text">
                             <h6 class="mb-1">Customer</h6>
                             <p class="mb-1">
-                                {{ $order->customer_name }} <br />
-                                {{ $order->email }} <br />
-                                {{ $order->phone }}
+                                <?php echo e($order->customer_name); ?> <br />
+                                <?php echo e($order->email); ?> <br />
+                                <?php echo e($order->phone); ?>
+
                             </p>
                         </div>
                     </article>
@@ -106,9 +105,9 @@
                         <div class="text">
                             <h6 class="mb-1">Shipping Details</h6>
                             <p class="mb-1">
-                                Address: {{ $order->house_no }}, {{ $order->apartment }}<br />
-                                City: {{ $order->city }} <br />
-                                Postal code: {{ $order->postal_code }} <br />
+                                Address: <?php echo e($order->house_no); ?>, <?php echo e($order->apartment); ?><br />
+                                City: <?php echo e($order->city); ?> <br />
+                                Postal code: <?php echo e($order->postal_code); ?> <br />
                             </p>
                         </div>
                     </article>
@@ -121,9 +120,10 @@
                         <div class="text">
                             <h6 class="mb-1">Billing Details </h6>
                             <p class="mb-1">
-                                Pay method: {{ $order->payment_method }} <br />
-                                Amount charged: Rs {{ $order->total_cost }} <br />
-                                Payment Status: {{ $order->payment_status }}
+                                Pay method: <?php echo e($order->payment_method); ?> <br />
+                                Amount charged: Rs <?php echo e($order->total_cost); ?> <br />
+                                Payment Status: <?php echo e($order->payment_status); ?>
+
                             </p>
                         </div>
                     </article>
@@ -144,27 +144,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($order->items as $item)
+                                <?php $__currentLoopData = $order->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
                                         <td>
                                             <a class="itemside" href="#">
                                                 <div class="left">
-                                                    @if ($item->product->images->isNotEmpty())
-                                                        <img src="{{ asset('storage/' . $item->product->images->first()->image_path) }}"
+                                                    <?php if($item->product->images->isNotEmpty()): ?>
+                                                        <img src="<?php echo e(asset('storage/' . $item->product->images->first()->image_path)); ?>"
                                                             width="40" height="40" class="img-xs" alt="Item" />
-                                                    @else
-                                                        <img src="{{ asset('path/to/default-image.jpg') }}" width="40"
+                                                    <?php else: ?>
+                                                        <img src="<?php echo e(asset('path/to/default-image.jpg')); ?>" width="40"
                                                             height="40" class="img-xs" alt="Default Image" />
-                                                    @endif
+                                                    <?php endif; ?>
                                                 </div>
-                                                <div>{{ $item->product->product_name }}</div>
+                                                <div><?php echo e($item->product->product_name); ?></div>
                                             </a>
                                         </td>
-                                        <td>Rs {{ $item->product->normal_price }}</td>
-                                        <td>{{ $item->quantity }}</td>
-                                        <td class="text-end">Rs {{ $item->product->normal_price * $item->quantity }}</td>
+                                        <td>Rs <?php echo e($item->product->normal_price); ?></td>
+                                        <td><?php echo e($item->quantity); ?></td>
+                                        <td class="text-end">Rs <?php echo e($item->product->normal_price * $item->quantity); ?></td>
                                     </tr>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
                         </table>
                     </div>
@@ -177,7 +177,7 @@
                             <h6 class="mb-3">Order Summary</h6>
                             <dl class="dlist">
                                 <dt>Subtotal:</dt>
-                                <dd>Rs {{ number_format($order->total_cost - 300, 2) }}</dd>
+                                <dd>Rs <?php echo e(number_format($order->total_cost - 300, 2)); ?></dd>
                             </dl>
                             <dl class="dlist">
                                 <dt>Delivery Fee:</dt>
@@ -185,7 +185,7 @@
                             </dl>
                             <dl class="dlist">
                                 <dt class="h5">Total:</dt>
-                                <dd><b class="h5">Rs {{ number_format($order->total_cost, 2) }}</b></dd>
+                                <dd><b class="h5">Rs <?php echo e(number_format($order->total_cost, 2)); ?></b></dd>
                             </dl>
                         </div>
                     </div>
@@ -197,7 +197,7 @@
     <div class="progress-container mt-4">
         <h5>Order Progress</h5>
         <div class="progress-wrapper">
-            @php
+            <?php
                 $statuses = [
                     'Pending' => 'Order Placed',
                     'Accepted' => 'Order Accepted',
@@ -214,15 +214,15 @@
                 ];
 
                 $currentStatusIndex = array_search($order->status, array_keys($statuses));
-            @endphp
+            ?>
 
             <ul class="progress-timeline">
-                @foreach ($statuses as $key => $label)
-                    <li class="{{ $currentStatusIndex >= array_search($key, array_keys($statuses)) ? 'completed' : '' }}">
-                        <div class="step-circle">{{ $loop->index + 1 }}</div>
-                        <span class="step-label">{{ $label }}</span>
+                <?php $__currentLoopData = $statuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li class="<?php echo e($currentStatusIndex >= array_search($key, array_keys($statuses)) ? 'completed' : ''); ?>">
+                        <div class="step-circle"><?php echo e($loop->index + 1); ?></div>
+                        <span class="step-label"><?php echo e($label); ?></span>
                     </li>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
     </div>
@@ -299,4 +299,6 @@
             color: white;
         }
     </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('AdminDashboard.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/AdminDashboard/order-details.blade.php ENDPATH**/ ?>

@@ -1,6 +1,4 @@
-@extends('layouts.user_sidebar')
-
-@section('dashboard-content')
+<?php $__env->startSection('dashboard-content'); ?>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -794,19 +792,19 @@
                 <div class="col-md-1 col-2 text-center">
                     <!-- Profile Image -->
                     <div class="profile-image-container">
-                        <img src="{{ $dealerProfile->user->profile_image_url }}"
+                        <img src="<?php echo e($dealerProfile->user->profile_image_url); ?>"
                              alt="Profile Image"
                              class="profile-image-dashboard">
                     </div>
                 </div>
                 <div class="col-md-7 col-10">
-                    <h2 class="mb-2">Welcome back, {{ $dealerProfile->user->name}}!</h2>
+                    <h2 class="mb-2">Welcome back, <?php echo e($dealerProfile->user->name); ?>!</h2>
                     <p class="mb-0 opacity-75">Manage your dealer network and track your commissions</p>
                 </div>
                 <div class="col-md-4 col-12 text-md-end text-center">
                     <div class="rank-badge">
                         <i class="fas fa-crown"></i>
-                        <span>{{ $dealerProfile->rank}}</span>
+                        <span><?php echo e($dealerProfile->rank); ?></span>
                     </div>
                 </div>
             </div>
@@ -820,7 +818,7 @@
                 <div class="stats-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--info-color);">
                     <i class="fas fa-users"></i>
                 </div>
-                <h3 class="h4 mb-1">{{ $teamCount }}</h3>
+                <h3 class="h4 mb-1"><?php echo e($teamCount); ?></h3>
                 <p class="text-muted mb-0">Total Team Members</p>
             </div>
         </div>
@@ -829,7 +827,7 @@
                 <div class="stats-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success-color);">
                     <i class="fas fa-coins"></i>
                 </div>
-                <h3 class="h4 mb-1">{{ $dealerProfile->bv }}</h3>
+                <h3 class="h4 mb-1"><?php echo e($dealerProfile->bv); ?></h3>
                 <p class="text-muted mb-0">Current IV</p>
             </div>
         </div>
@@ -838,7 +836,7 @@
                 <div class="stats-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning-color);">
                     <i class="fas fa-chart-line"></i>
                 </div>
-                <h3 class="h4 mb-1">{{ $dealerProfile->cbv }}</h3>
+                <h3 class="h4 mb-1"><?php echo e($dealerProfile->cbv); ?></h3>
                 <p class="text-muted mb-0">Total CIV</p>
             </div>
         </div>
@@ -847,7 +845,7 @@
                 <div class="stats-icon" style="background: rgba(255, 88, 0, 0.1); color: var(--primary-color);">
                     <i class="fas fa-wallet"></i>
                 </div>
-                <h3 class="h4 mb-1">₹{{ number_format($weeklyEarnings, 2) }}</h3>
+                <h3 class="h4 mb-1">₹<?php echo e(number_format($weeklyEarnings, 2)); ?></h3>
                 <p class="text-muted mb-0">Weekly Earnings</p>
             </div>
         </div>
@@ -860,63 +858,68 @@
                     <div class="mb-3">
                         <div class="d-flex justify-content-between mb-2 flex-wrap">
                             <span class="mb-1 mb-sm-0">
-                                Progress to {{ $nextRankData['name'] ?? 'N/A' }}
+                                Progress to <?php echo e($nextRankData['name'] ?? 'N/A'); ?>
+
                             </span>
-                            <span class="fw-bold">{{ $currentCBV }} / {{ $nextRankData['target_cbv'] ?? '-' }} CBV</span>
+                            <span class="fw-bold"><?php echo e($currentCBV); ?> / <?php echo e($nextRankData['target_cbv'] ?? '-'); ?> CBV</span>
                         </div>
                         <div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: {{ $progressPercent }}%;" aria-valuenow="{{ $progressPercent }}" aria-valuemin="0" aria-valuemax="100">
-        {{ number_format($progressPercent, 2) }}%
+    <div class="progress-bar" role="progressbar" style="width: <?php echo e($progressPercent); ?>%;" aria-valuenow="<?php echo e($progressPercent); ?>" aria-valuemin="0" aria-valuemax="100">
+        <?php echo e(number_format($progressPercent, 2)); ?>%
     </div>
 </div>
 
                     </div>
 
-                    @if($nextRankData && count($nextRankData['methods']) > 0)
+                    <?php if($nextRankData && count($nextRankData['methods']) > 0): ?>
                         <div class="mt-4">
-                            <h6>Next Rank Requirements ({{ $nextRankData['name'] }}):</h6>
+                            <h6>Next Rank Requirements (<?php echo e($nextRankData['name']); ?>):</h6>
                             <div class="row">
-                                @foreach($nextRankData['methods'] as $index => $method)
-                                    @php
+                                <?php $__currentLoopData = $nextRankData['methods']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $method): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
                                         $metCBV = $currentCBV >= $method['cbv'];
                                         $metLinks = $linkCount >= ($method['links'] ?? 0);
                                         $metAssistants = $marketingAssistants >= ($method['assistants'] ?? 0);
 
                                         $isComplete = $metCBV && $metLinks && $metAssistants;
                                         $isActive = !$isComplete && ($metCBV || $metLinks || $metAssistants);
-                                    @endphp
+                                    ?>
                                     <div class="col-md-4 col-12 d-flex">
-                                        <div class="rank-tier {{ $isComplete ? 'completed' : ($isActive ? 'active' : '') }} flex-fill">
+                                        <div class="rank-tier <?php echo e($isComplete ? 'completed' : ($isActive ? 'active' : '')); ?> flex-fill">
                                             <div>
-                                                <div class="rank-number" style="background: {{ $isComplete ? 'var(--success-color)' : ($isActive ? 'var(--primary-color)' : '#6b7280') }};">
-                                                    {{ $isComplete ? '✓' : $index + 1 }}
+                                                <div class="rank-number" style="background: <?php echo e($isComplete ? 'var(--success-color)' : ($isActive ? 'var(--primary-color)' : '#6b7280')); ?>;">
+                                                    <?php echo e($isComplete ? '✓' : $index + 1); ?>
+
                                                 </div>
                                                 <div>
-                                                    <div class="fw-bold">Method {{ $index + 1 }}</div>
+                                                    <div class="fw-bold">Method <?php echo e($index + 1); ?></div>
                                                     <small class="text-muted">
-                                                        {{ $method['cbv'] }} CBV
-                                                        {{ $method['links'] ? '+ ' . $method['links'] . ' Links' : '' }}
-                                                        {{ $method['assistants'] ? '+ ' . $method['assistants'] . ' MA' : '' }}
+                                                        <?php echo e($method['cbv']); ?> CBV
+                                                        <?php echo e($method['links'] ? '+ ' . $method['links'] . ' Links' : ''); ?>
+
+                                                        <?php echo e($method['assistants'] ? '+ ' . $method['assistants'] . ' MA' : ''); ?>
+
                                                     </small>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
                 <div class="col-md-4 col-12">
                     <div class="text-center mt-3 mt-md-0">
                         <div class="rank-badge mb-3" style="font-size: 1.1rem; padding: 1rem 2rem;">
                             <i class="fas fa-medal me-2"></i>
-                            {{ $dealerProfile->rank }}
+                            <?php echo e($dealerProfile->rank); ?>
+
                         </div>
                         <p class="text-muted">Current Dealership Tier</p>
                         <div class="d-flex justify-content-center gap-2 flex-wrap">
-                            <span class="badge bg-warning text-dark">{{ ucfirst($dealerProfile->tier) }} Dealer</span>
-                            <span class="badge bg-info">{{ $dealerProfile->bv }} BV</span>
+                            <span class="badge bg-warning text-dark"><?php echo e(ucfirst($dealerProfile->tier)); ?> Dealer</span>
+                            <span class="badge bg-info"><?php echo e($dealerProfile->bv); ?> BV</span>
                         </div>
                     </div>
                 </div>
@@ -938,11 +941,11 @@
                             </button>
                         </div>
                         <div class="bg-white p-3 rounded border">
-                            @php
+                            <?php
                             $referralLink = url('/become-a-dealer') . '?ref=' . ($dealerProfile->dealer_code ?? '');
-                        @endphp
+                        ?>
                             <code id="referralLink"
-                                style="word-break: break-all;">{{ $referralLink }}</code>
+                                style="word-break: break-all;"><?php echo e($referralLink); ?></code>
                         </div>
                         <small class="text-muted mt-2 d-block">
                             Share this link to earn 20% commission on direct referrals
@@ -960,7 +963,7 @@
                             <br><small class="text-muted">From direct referral purchases</small>
                         </div>
                         <div class="text-end">
-                            <strong class="text-success">₹{{ number_format($commissionBreakdown['direct'], 2) }}</strong>
+                            <strong class="text-success">₹<?php echo e(number_format($commissionBreakdown['direct'], 2)); ?></strong>
                         </div>
                     </div>
 
@@ -970,7 +973,7 @@
                             <br><small class="text-muted">From level 1 sub-dealers</small>
                         </div>
                         <div class="text-end">
-                            <strong class="text-success">₹{{ number_format($commissionBreakdown['layer1'], 2) }}</strong>
+                            <strong class="text-success">₹<?php echo e(number_format($commissionBreakdown['layer1'], 2)); ?></strong>
                         </div>
                     </div>
 
@@ -980,7 +983,7 @@
                             <br><small class="text-muted">From level 2 sub-dealers</small>
                         </div>
                         <div class="text-end">
-                            <strong class="text-success">₹{{ number_format($commissionBreakdown['layer2'], 2) }}</strong>
+                            <strong class="text-success">₹<?php echo e(number_format($commissionBreakdown['layer2'], 2)); ?></strong>
                         </div>
                     </div>
 
@@ -990,7 +993,7 @@
                             <br><small class="text-muted">Based on team BV</small>
                         </div>
                         <div class="text-end">
-                            <strong class="text-success">₹{{ number_format($commissionBreakdown['team'], 2) }}</strong>
+                            <strong class="text-success">₹<?php echo e(number_format($commissionBreakdown['team'], 2)); ?></strong>
                         </div>
                     </div>
 
@@ -999,7 +1002,7 @@
                             <strong>Total Weekly Earnings</strong>
                         </div>
                         <div class="text-end">
-                            <strong class="text-primary fs-5">₹{{ number_format($totalWeeklyEarnings, 2) }}</strong>
+                            <strong class="text-primary fs-5">₹<?php echo e(number_format($totalWeeklyEarnings, 2)); ?></strong>
                         </div>
                     </div>
                 </div>
@@ -1022,43 +1025,46 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($recentActivities as $activity)
+                                <?php $__empty_1 = true; $__currentLoopData = $recentActivities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="node-avatar me-2" style="width: 25px; height: 25px; font-size: 0.7rem;">
-                                                    {{ $activity['initials'] }}
+                                                    <?php echo e($activity['initials']); ?>
+
                                                 </div>
-                                                <span class="d-none d-sm-inline">{{ $activity['name'] }}</span>
-                                                <span class="d-sm-none">{{ substr($activity['name'], 0, 1) }}. {{ Str::after($activity['name'], ' ') }}</span>
+                                                <span class="d-none d-sm-inline"><?php echo e($activity['name']); ?></span>
+                                                <span class="d-sm-none"><?php echo e(substr($activity['name'], 0, 1)); ?>. <?php echo e(Str::after($activity['name'], ' ')); ?></span>
                                             </div>
                                         </td>
                                         <td>
-                                            @if($activity['type'] === 'purchase')
+                                            <?php if($activity['type'] === 'purchase'): ?>
                                                 <span class="badge bg-success">Purchase</span>
-                                            @else
+                                            <?php else: ?>
                                                 <span class="badge bg-primary">Joined</span>
-                                            @endif
+                                            <?php endif; ?>
                                         </td>
                                         <td>
-                                            @if($activity['amount'])
-                                                ₹{{ number_format($activity['amount'], 2) }}
-                                            @else
+                                            <?php if($activity['amount']): ?>
+                                                ₹<?php echo e(number_format($activity['amount'], 2)); ?>
+
+                                            <?php else: ?>
                                                 -
-                                            @endif
+                                            <?php endif; ?>
                                         </td>
                                         <td class="text-success">
-                                            @if($activity['commission'])
-                                                +₹{{ number_format($activity['commission'], 2) }}
-                                            @else
+                                            <?php if($activity['commission']): ?>
+                                                +₹<?php echo e(number_format($activity['commission'], 2)); ?>
+
+                                            <?php else: ?>
                                                 -
-                                            @endif
+                                            <?php endif; ?>
                                         </td>
-                                        <td>{{ $activity['date']->diffForHumans() }}</td>
+                                        <td><?php echo e($activity['date']->diffForHumans()); ?></td>
                                     </tr>
-                                @empty
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <tr><td colspan="5" class="text-center text-muted">No recent activity.</td></tr>
-                                @endforelse
+                                <?php endif; ?>
                             </tbody>
 
                         </table>
@@ -1073,32 +1079,33 @@
                     <h5 class="mb-3"><i class="fas fa-money-bill-wave text-success me-2"></i>Withdrawals</h5>
 
                     <div class="text-center mb-3">
-                        <h4 class="text-success">₹{{ number_format($availableWithdrawalLKR, 2) }}</h4>
+                        <h4 class="text-success">₹<?php echo e(number_format($availableWithdrawalLKR, 2)); ?></h4>
                         <small class="text-muted">Available for withdrawal</small>
                     </div>
 
                     <div class="withdrawal-days">
-                        @foreach (['Thu', 'Fri', 'Sat'] as $day)
-                            <div class="day-badge {{ Carbon\Carbon::now()->format('D') === $day ? 'today' : 'available' }}">{{ $day }}</div>
-                        @endforeach
+                        <?php $__currentLoopData = ['Thu', 'Fri', 'Sat']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $day): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="day-badge <?php echo e(Carbon\Carbon::now()->format('D') === $day ? 'today' : 'available'); ?>"><?php echo e($day); ?></div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <div class="day-badge unavailable">Other Days</div>
                     </div>
 
-                    <form method="POST" action="{{ route('dealer.withdraw.request') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-success w-100 mb-2" {{ !$isWithdrawalDay ? 'disabled' : '' }}>
+                    <form method="POST" action="<?php echo e(route('dealer.withdraw.request')); ?>">
+                        <?php echo csrf_field(); ?>
+                        <button type="submit" class="btn btn-success w-100 mb-2" <?php echo e(!$isWithdrawalDay ? 'disabled' : ''); ?>>
                             <i class="fas fa-download me-2"></i>Request Withdrawal
                         </button>
                     </form>
 
                     <small class="text-muted d-block text-center">
-                        @if($isWithdrawalDay)
+                        <?php if($isWithdrawalDay): ?>
                             Withdrawals allowed today
-                        @elseif($nextWithdrawalDayFormatted)
-                            Next withdrawal window: {{ $nextWithdrawalDayFormatted }}
-                        @else
+                        <?php elseif($nextWithdrawalDayFormatted): ?>
+                            Next withdrawal window: <?php echo e($nextWithdrawalDayFormatted); ?>
+
+                        <?php else: ?>
                             Withdrawals not available this week
-                        @endif
+                        <?php endif; ?>
                     </small>
                 </div>
 
@@ -1109,35 +1116,35 @@
 <div class="team-hierarchy flex-grow-1">
     <h5 class="mb-3"><i class="fas fa-sitemap text-primary me-2"></i>Team Overview</h5>
     <div class="hierarchy-node">
-        <div class="node-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+        <div class="node-avatar"><?php echo e(strtoupper(substr(auth()->user()->name, 0, 2))); ?></div>
         <div>
             <div class="fw-bold">You</div>
-            <small class="text-muted">{{ auth()->user()->dealerProfile->rank ?? '-' }}</small>
+            <small class="text-muted"><?php echo e(auth()->user()->dealerProfile->rank ?? '-'); ?></small>
         </div>
     </div>
 
     <div style="margin-left: 1.5rem;">
-        @forelse($directReferrals->take(3) as $referral)
+        <?php $__empty_1 = true; $__currentLoopData = $directReferrals->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $referral): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <div class="hierarchy-node">
-                <div class="node-avatar">{{ strtoupper(substr($referral->name, 0, 2)) }}</div>
+                <div class="node-avatar"><?php echo e(strtoupper(substr($referral->name, 0, 2))); ?></div>
                 <div>
-                    <div class="fw-bold">{{ $referral->name }}</div>
-                    <small class="text-muted">{{ $referral->dealerProfile->rank ?? 'N/A' }}</small>
+                    <div class="fw-bold"><?php echo e($referral->name); ?></div>
+                    <small class="text-muted"><?php echo e($referral->dealerProfile->rank ?? 'N/A'); ?></small>
                 </div>
             </div>
-        @empty
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <p class="text-muted ms-3">No team members yet.</p>
-        @endforelse
+        <?php endif; ?>
 
-        @if($directReferrals->count() > 3)
+        <?php if($directReferrals->count() > 3): ?>
             <div class="text-center mt-2">
-                <small class="text-muted">+{{ $directReferrals->count() - 3 }} more members</small>
+                <small class="text-muted">+<?php echo e($directReferrals->count() - 3); ?> more members</small>
             </div>
-        @endif
+        <?php endif; ?>
     </div>
 
     <div class="text-center mt-3">
-        <a href="{{ route('dealer.team.full') }}" class="view-hierarchy-btn" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important;">
+        <a href="<?php echo e(route('dealer.team.full')); ?>" class="view-hierarchy-btn" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important;">
             <i class="fas fa-eye me-1"></i>View Full Hierarchy
         </a>
     </div>
@@ -1147,19 +1154,19 @@
                 <div class="stats-card">
                     <h6 class="mb-3"><i class="fas fa-bolt text-warning me-2"></i>Quick Actions</h6>
                     <div class="d-grid gap-3">
-                        <a href="{{ route('dealer.referrals.pending') }}" class="btn btn-primary btn-sm w-100 quick-action-btn">
+                        <a href="<?php echo e(route('dealer.referrals.pending')); ?>" class="btn btn-primary btn-sm w-100 quick-action-btn">
                             <i class="fas fa-user-plus me-2"></i>
-                            Approve New Members ({{ $pendingReferralsCount }})
+                            Approve New Members (<?php echo e($pendingReferralsCount); ?>)
                         </a>
-                        <a href="{{ route('dealer.analytics') }}" class="btn btn-info btn-sm w-100 quick-action-btn">
+                        <a href="<?php echo e(route('dealer.analytics')); ?>" class="btn btn-info btn-sm w-100 quick-action-btn">
                             <i class="fas fa-chart-bar me-2"></i>
                             View Analytics
                         </a>
-                        <a href="{{ route('dealer.notifications') }}" class="btn btn-warning btn-sm w-100 quick-action-btn">
+                        <a href="<?php echo e(route('dealer.notifications')); ?>" class="btn btn-warning btn-sm w-100 quick-action-btn">
                             <i class="fas fa-bell me-2"></i>
-                            Notifications ({{ $notificationCount }})
+                            Notifications (<?php echo e($notificationCount); ?>)
                         </a>
-                        <a href="{{ route('dealer.products.dashboard') }}" class="btn btn-success btn-sm w-100 quick-action-btn">
+                        <a href="<?php echo e(route('dealer.products.dashboard')); ?>" class="btn btn-success btn-sm w-100 quick-action-btn">
                             <i class="fas fa-box me-2"></i>
                             Dealer's Products
                         </a>
@@ -1278,4 +1285,6 @@
             document.head.appendChild(style);
         }
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/dealer/dashboard.blade.php ENDPATH**/ ?>

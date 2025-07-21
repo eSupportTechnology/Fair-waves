@@ -129,7 +129,7 @@ class DealerController extends Controller
 
         // Count MAs in downlines
         $marketingAssistants = $downlines->filter(function ($user) {
-            return $user->dealerProfile?->rank === 'Marketing Assistant';
+            return $user->dealerProfile?->rank === 'Bronze Member';
         })->count();
 
         // Count how many links (groups under him)
@@ -140,13 +140,15 @@ class DealerController extends Controller
 
         // Get current rank and define next rank info
         $rankMap = [
-            'Beginner' => [
-                'name' => 'Marketing Assistant',
+            'Loyalty Member' => [
+                'name' => 'Bronze Member',
                 'target_cbv' => 700,
-                'methods' => [],
+                'methods' => [
+                    ['cbv' => 700, 'links' => 0, 'assistants' => 0],
+                ],
             ],
-            'Marketing Assistant' => [
-                'name' => 'Marketing Executive',
+            'Bronze Member' => [
+                'name' => 'Silver Member',
                 'target_cbv' => 10000,
                 'methods' => [
                     ['cbv' => 5000, 'links' => 0, 'assistants' => 0],
@@ -154,14 +156,32 @@ class DealerController extends Controller
                     ['cbv' => 6000, 'links' => 3, 'assistants' => 3],
                 ]
             ],
-            'Marketing Executive' => [
-                'name' => 'Senior Marketing Executive',
+            'Silver Member' => [
+                'name' => 'Gold Member',
                 'target_cbv' => 15000,
                 'methods' => [
                     ['cbv' => 15000, 'links' => 0, 'assistants' => 0],
                     ['cbv' => 40000, 'links' => 2, 'assistants' => 2],
                     ['cbv' => 26000, 'links' => 3, 'assistants' => 3],
                 ]
+            ],
+            'Gold Member' => [
+                'name' => 'Platinum Member',
+                'target_cbv' => 45000,
+                'methods' => [
+                    ['cbv' => 45000, 'links' => 0, 'assistants' => 0],
+                    ['cbv' => 120000, 'links' => 2, 'assistants' => 2],
+                    ['cbv' => 85000, 'links' => 3, 'assistants' => 3],
+                ],
+            ],
+            'Platinum Member' => [
+                'name' => 'Diamond Member',
+                'target_cbv' => 135000,
+                'methods' => [
+                    ['cbv' => 135000, 'links' => 0, 'assistants' => 0],
+                    ['cbv' => 300000, 'links' => 2, 'assistants' => 2],
+                    ['cbv' => 270000, 'links' => 3, 'assistants' => 3],
+                ],
             ],
             // Add more ranks here as needed...
         ];

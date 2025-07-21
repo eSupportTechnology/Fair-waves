@@ -102,6 +102,24 @@
                         </div>
                     </li>-->
 
+                    <li class="menu-item has-submenu <?php echo e(request()->is('admin/withdrawals/pending*') || request()->is('admin/withdrawals/approved*') || request()->is('admin/withdrawals/rejected*') ? 'active' : ''); ?>">
+                        <a class="menu-link" href="#">
+                            <i class="icon material-icons md-money"></i>
+                            <span class="text">Withdrawal</span>
+                        </a>
+                        <div class="submenu <?php echo e(request()->is('admin/withdrawals/pending*') || request()->is('admin/withdrawals/approved*') || request()->is('admin/withdrawals/rejected*') ? 'admin.withdrawals.pending' : ''); ?>">
+                            <a href="<?php echo e(route('admin.withdrawals.pending')); ?>" class="<?php echo e(request()->is('admin/withdrawals/pending') ? 'active' : ''); ?>">
+                                Pending
+                            </a>
+                            <a href="<?php echo e(route('admin.withdrawals.approved')); ?>" class="<?php echo e(request()->is('admin/withdrawals/approved') ? 'active' : ''); ?>">
+                                Approved
+                            </a>
+                            <a href="<?php echo e(route('admin.withdrawals.rejected')); ?>" class="<?php echo e(request()->is('admin/withdrawals/rejected') ? 'active' : ''); ?>">
+                                Rejected
+                            </a>
+                        </div>
+                    </li>
+
                     <li class="menu-item <?php echo e(request()->routeIs('adminReviews') ? 'active' : ''); ?>">
                         <a class="menu-link" href="<?php echo e(route('adminReviews')); ?>">
 

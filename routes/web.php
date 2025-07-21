@@ -64,12 +64,12 @@ Route::prefix('showroom/cart')->group(function () {
     // Cart checkout routes
     Route::get('/cart-checkout', [CartCheckoutController::class, 'cartCheckout'])->name('cart.checkout');
     Route::post('/cart-checkout/process', [CartCheckoutController::class, 'processCartCheckout'])->name('cart.checkout.process');
-    
+
     // Cart payment routes
     Route::get('/payment/{order_code}', [CartCheckoutController::class, 'showPayment'])->name('cart.payment');
     Route::post('/payment/card/{order_code}', [CartCheckoutController::class, 'confirmCardPayment'])->name('cart.payment.card');
     Route::post('/payment/cod/{order_code}', [CartCheckoutController::class, 'confirmCODPayment'])->name('cart.payment.cod');
-    
+
     // Buy now checkout routes
     Route::get('/checkout', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.cart.checkout');
     Route::post('/place-order', [ShowroomCartController::class, 'placeOrder'])->name('dealer.cart.placeOrder');
@@ -231,7 +231,7 @@ Route::prefix('showroom/cart')->group(function () {
     // Checkout routes
     Route::get('/cart-checkout', [CartCheckoutController::class, 'cartCheckout'])->name('cart.checkout');
     Route::post('/cart-checkout/process', [CartCheckoutController::class, 'processCartCheckout'])->name('cart.checkout.process');
-    
+
     // Payment routes
     Route::get('/payment/{order_code}', [CartCheckoutController::class, 'showPayment'])->name('cart.payment');
     Route::post('/payment/cod/{order_code}', [CartCheckoutController::class, 'confirmCODPayment'])->name('cart.payment.cod');
@@ -250,6 +250,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\ShowRoomController;
 use App\Http\Controllers\SliderController;
+use App\Http\Controllers\WithdrawRequestController;
 use App\Http\Middleware\AdminAuth;
 
 
@@ -335,6 +336,17 @@ Route::get('/admin/orders', [OrderController::class, 'index'])->name('orders');
 Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('order.delete');
 Route::get('/admin/order-details/{orderCode}', [OrderController::class, 'showOrderDetails'])->name('order-details');
 Route::patch('/order/update-status/{order_code}', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
+
+// dealer Admin Actions
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/withdrawals/pending', [WithdrawRequestController::class, 'pendingWithdrawals'])->name('withdrawals.pending');
+    Route::get('/withdrawals/approved', [WithdrawRequestController::class, 'approvedWithdrawals'])->name('withdrawals.approved');
+    Route::get('/withdrawals/rejected', [WithdrawRequestController::class, 'rejectedWithdrawals'])->name('withdrawals.rejected');
+    Route::post('/withdrawals/{id}/approve', [WithdrawRequestController::class, 'approve'])->name('withdrawals.approve');
+    Route::post('/withdrawals/{id}/reject', [WithdrawRequestController::class, 'reject'])->name('withdrawals.reject');
+    // Route::get('/withdrawals/{id}', [WithdrawRequestController::class, 'show'])->name('withdrawals.show');
+});
 
 
 
@@ -481,13 +493,13 @@ Route::get('/test-profile-upload', function() {
     return view('test-profile-upload');
 })->middleware('auth')->name('test.profile.upload');
 Route::post('/test-profile-upload', function(Request $request) {
-    \Log::info('Test profile upload request received');
-    \Log::info('Request data:', $request->all());
-    \Log::info('Has file:', [$request->hasFile('profile_image')]);
+    Log::info('Test profile upload request received');
+    Log::info('Request data:', $request->all());
+    Log::info('Has file:', [$request->hasFile('profile_image')]);
 
     if ($request->hasFile('profile_image')) {
         $file = $request->file('profile_image');
-        \Log::info('File details:', [
+        Log::info('File details:', [
             'name' => $file->getClientOriginalName(),
             'size' => $file->getSize(),
             'type' => $file->getMimeType(),

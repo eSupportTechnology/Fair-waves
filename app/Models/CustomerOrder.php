@@ -30,6 +30,7 @@ class CustomerOrder extends Model
         'order_type',
         'tracking_number', // New field for tracking number
         'tracking_link',   // New field for tracking link
+        'transaction_id'
     ];
 
     // Cast activity_logs as an array to handle JSON data

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('customer_orders', function (Blueprint $table) {
             $table->string('tracking_number')->nullable()->after('order_type');
-            $table->string('tracking_link')->nullable()->after('order_type');
+            $table->string('tracking_link')->nullable()->after('tracking_number');
+            $table->string('transaction_id')->nullable()->after('tracking_link');
         });
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('customer_orders', function (Blueprint $table) {
             $table->dropColumn('tracking_number');
             $table->dropColumn('tracking_link');
+            $table->dropColumn('transaction_id');
         });
     }
 };

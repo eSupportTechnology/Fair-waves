@@ -203,6 +203,7 @@ Route::get('/payment/{order_code}', [PaymentController::class, 'showPaymentPage'
 Route::post('/confirm-cod-order/{order_code}', [PaymentController::class, 'confirmCODOrder'])->name('confirm.cod.order');
 Route::post('/confirm-card-order/{order_code}', [PaymentController::class, 'confirmcardOrder'])->name('confirm.card.order');
 Route::get('/order/order_received/{order_code}', [PaymentController::class, 'getOrderDetails'])->name('order.thankyou');
+Route::get('/payment-fail', [PaymentController::class, 'paymentFail'])->name('order.payment-fail');
 
 Route::post('/buy_now_place-order', [CustomerOrderController::class, 'buynow_placeOrder'])->name('buynow_placeOrder');
 Route::post('/place-order', [CustomerOrderController::class, 'placeOrder'])->name('placeOrder');

@@ -1,6 +1,4 @@
-@extends ('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <style>
         .payment-page { padding: 40px 0; background: #f8f9fa; }
         .card { border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
@@ -58,13 +56,13 @@
                             <div class="row mb-4">
                                 <div class="col-6">
                                     <div class="payment-option active p-3 rounded text-center" onclick="showPayment('card')">
-                                        <img src="{{ asset('frontend/assets/images/imgs/card.png') }}" width="40" class="mb-2">
+                                        <img src="<?php echo e(asset('frontend/assets/images/imgs/card.png')); ?>" width="40" class="mb-2">
                                         <div class="fw-500">Credit/Debit Card</div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="payment-option p-3 rounded text-center" onclick="showPayment('cod')">
-                                        <img src="{{ asset('frontend/assets/images/imgs/cod.png') }}" width="40" class="mb-2">
+                                        <img src="<?php echo e(asset('frontend/assets/images/imgs/cod.png')); ?>" width="40" class="mb-2">
                                         <div class="fw-500">Cash on Delivery</div>
                                     </div>
                                 </div>
@@ -73,10 +71,10 @@
                             <!-- Card Payment -->
                             <div id="card-payment" class="payment-content p-4 rounded">
                                 <div class="text-center">
-                                    <img src="{{ asset('frontend/assets/images/imgs/card.png') }}" width="50" class="mb-3">
+                                    <img src="<?php echo e(asset('frontend/assets/images/imgs/card.png')); ?>" width="50" class="mb-3">
                                     <p class="text-muted mb-4">You will be redirected to OnePay for secure payment. Your information is encrypted and protected.</p>
-                                    <form action="{{ route('confirm.card.order', $order->order_code) }}" method="POST">
-                                        @csrf
+                                    <form action="<?php echo e(route('confirm.card.order', $order->order_code)); ?>" method="POST">
+                                        <?php echo csrf_field(); ?>
                                         <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">Pay with OnePay</button>
                                     </form>
                                     <div class="alert alert-success py-2 mb-0">
@@ -88,7 +86,7 @@
                             <!-- COD Payment -->
                             <div id="cod-payment" class="payment-content p-4 rounded d-none">
                                 <div class="text-center">
-                                    <img src="{{ asset('frontend/assets/images/imgs/cod.png') }}" width="50" class="mb-3">
+                                    <img src="<?php echo e(asset('frontend/assets/images/imgs/cod.png')); ?>" width="50" class="mb-3">
                                     <div class="cod-alert alert mb-4">
                                         <strong>Instructions:</strong>
                                         <ul class="mb-0 mt-2 text-start">
@@ -97,8 +95,8 @@
                                             <li>Inspect items before payment</li>
                                         </ul>
                                     </div>
-                                    <form action="{{ route('confirm.cod.order', $order->order_code) }}" method="POST">
-                                        @csrf
+                                    <form action="<?php echo e(route('confirm.cod.order', $order->order_code)); ?>" method="POST">
+                                        <?php echo csrf_field(); ?>
                                         <button type="submit" class="btn btn-warning btn-lg w-100">Confirm COD Order</button>
                                     </form>
                                 </div>
@@ -116,7 +114,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Subtotal</span>
-                                <span>Rs. {{ number_format($order->total_cost - 300, 2) }}</span>
+                                <span>Rs. <?php echo e(number_format($order->total_cost - 300, 2)); ?></span>
                             </div>
                             <div class="d-flex justify-content-between mb-3">
                                 <span>Delivery Fee</span>
@@ -124,7 +122,7 @@
                             </div>
                             <div class="d-flex justify-content-between summary-total pt-3">
                                 <span>Total</span>
-                                <span>Rs. {{ number_format($order->total_cost, 2) }}</span>
+                                <span>Rs. <?php echo e(number_format($order->total_cost, 2)); ?></span>
                             </div>
                         </div>
                     </div>
@@ -144,4 +142,6 @@
             document.getElementById('cod-payment').classList.toggle('d-none', type !== 'cod');
         }
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/payment.blade.php ENDPATH**/ ?>

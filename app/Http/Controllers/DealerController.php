@@ -731,7 +731,8 @@ class DealerController extends Controller
     {
         $search = $request->get('search');
 
-        $dealers = User::where('role', 'dealer')
+        $dealers = User::with('bankDetail')->with('kycDetail')
+            ->where('role', 'dealer')
             ->where('dealer_status', 1) // Only show active dealers
             ->when($search, function($query) use ($search) {
                 return $query->where(function($q) use ($search) {
@@ -750,7 +751,7 @@ class DealerController extends Controller
 
     public function showDealerDetails($user_id)
     {
-        $dealer = User::with('dealerProfile')->findOrFail($user_id);
+        $dealer = User::with('dealerProfile')->with('bankDetail')->with('kycDetail')->findOrFail($user_id);
 
         $orders = CustomerOrder::where('user_id', $user_id)
             ->with('items.product')
@@ -764,7 +765,7 @@ class DealerController extends Controller
 
         // Get referrals if any
         $referrals = DealerReferral::where('dealer_id', $user_id)
-            ->with('referredUser')
+            ->with('referred')
             ->get();
 
         return view('AdminDashboard.dealer-details', compact('dealer', 'orders', 'totalCost', 'totalOrders', 'totalProducts', 'referrals'));

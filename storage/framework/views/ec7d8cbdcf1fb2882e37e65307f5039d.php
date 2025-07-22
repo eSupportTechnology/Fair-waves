@@ -1,6 +1,4 @@
-@extends ('AdminDashboard.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <style>
         .card {
@@ -127,10 +125,10 @@
             <p>Complete dealer information</p>
         </div>
         <div>
-            <a href="{{ route('dealers') }}" class="btn btn-light rounded font-md">
+            <a href="<?php echo e(route('dealers')); ?>" class="btn btn-light rounded font-md">
                 <i class="fas fa-arrow-left"></i> Back to Dealers
             </a>
-            <a href="{{ route('dealer.edit', $dealer->id) }}" class="btn btn-primary rounded font-md">
+            <a href="<?php echo e(route('dealer.edit', $dealer->id)); ?>" class="btn btn-primary rounded font-md">
                 <i class="fas fa-edit"></i> Edit Dealer
             </a>
         </div>
@@ -142,13 +140,14 @@
             <div class="card profile-card">
                 <div class="profile-header text-center">
                     <div class="profile-image-container">
-                        <img src="{{ $dealer->profile_image_url }}" alt="Profile Image" class="profile-image">
+                        <img src="<?php echo e($dealer->profile_image_url); ?>" alt="Profile Image" class="profile-image">
                     </div>
-                    <h4 class="mt-3">{{ $dealer->name }}</h4>
-                    <p class="text-muted mb-0">{{ $dealer->email }}</p>
+                    <h4 class="mt-3"><?php echo e($dealer->name); ?></h4>
+                    <p class="text-muted mb-0"><?php echo e($dealer->email); ?></p>
                     <span
-                        class="badge {{ $dealer->dealer_status == 1 ? 'badge-soft-success' : 'badge-soft-danger' }} px-3 py-2 mt-2">
-                        {{ $dealer->dealer_status == 1 ? 'Active' : 'Inactive' }}
+                        class="badge <?php echo e($dealer->dealer_status == 1 ? 'badge-soft-success' : 'badge-soft-danger'); ?> px-3 py-2 mt-2">
+                        <?php echo e($dealer->dealer_status == 1 ? 'Active' : 'Inactive'); ?>
+
                     </span>
                 </div>
                 <div class="profile-body">
@@ -156,26 +155,27 @@
                         <div class="col-md-12">
                             <div class="profile-info-item">
                                 <div class="profile-info-label">Phone</div>
-                                <div class="profile-info-value">{{ $dealer->phone ?? 'N/A' }}</div>
+                                <div class="profile-info-value"><?php echo e($dealer->phone ?? 'N/A'); ?></div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="profile-info-item">
                                 <div class="profile-info-label">Address</div>
-                                <div class="profile-info-value">{{ $dealer->address ?? 'N/A' }}</div>
+                                <div class="profile-info-value"><?php echo e($dealer->address ?? 'N/A'); ?></div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="profile-info-item">
                                 <div class="profile-info-label">Gender</div>
-                                <div class="profile-info-value">{{ $dealer->gender ?? 'N/A' }}</div>
+                                <div class="profile-info-value"><?php echo e($dealer->gender ?? 'N/A'); ?></div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="profile-info-item">
                                 <div class="profile-info-label">Date of Birth</div>
                                 <div class="profile-info-value">
-                                    {{ $dealer->dob ? \Carbon\Carbon::parse($dealer->dob)->format('F d, Y') : 'N/A' }}
+                                    <?php echo e($dealer->dob ? \Carbon\Carbon::parse($dealer->dob)->format('F d, Y') : 'N/A'); ?>
+
                                 </div>
                             </div>
                         </div>
@@ -183,20 +183,22 @@
                             <div class="profile-info-item">
                                 <div class="profile-info-label">Registered On</div>
                                 <div class="profile-info-value">
-                                    {{ $dealer->created_at->format('F d, Y') }}
+                                    <?php echo e($dealer->created_at->format('F d, Y')); ?>
+
                                 </div>
                             </div>
                         </div>
-                        @if ($dealer->dealerProfile)
+                        <?php if($dealer->dealerProfile): ?>
                             <div class="col-md-12">
                                 <div class="profile-info-item">
                                     <div class="profile-info-label">Dealer Code</div>
                                     <div class="profile-info-value fw-bold">
-                                        {{ $dealer->dealerProfile->dealer_code }}
+                                        <?php echo e($dealer->dealerProfile->dealer_code); ?>
+
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -218,7 +220,7 @@
                             </div>
                             <div>
                                 <h6 class="card-name">Total Orders</h6>
-                                <h3 class="mb-0">{{ $totalOrders }}</h3>
+                                <h3 class="mb-0"><?php echo e($totalOrders); ?></h3>
                             </div>
                         </div>
                     </div>
@@ -231,7 +233,7 @@
                             </div>
                             <div>
                                 <h6 class="card-name">Total Spent</h6>
-                                <h3 class="mb-0">${{ number_format($totalCost, 2) }}</h3>
+                                <h3 class="mb-0">$<?php echo e(number_format($totalCost, 2)); ?></h3>
                             </div>
                         </div>
                     </div>
@@ -244,7 +246,7 @@
                             </div>
                             <div>
                                 <h6 class="card-name">Total Products</h6>
-                                <h3 class="mb-0">{{ $totalProducts }}</h3>
+                                <h3 class="mb-0"><?php echo e($totalProducts); ?></h3>
                             </div>
                         </div>
                     </div>
@@ -252,7 +254,7 @@
             </div>
 
             <!-- Referrals Section -->
-            @if (count($referrals) > 0)
+            <?php if(count($referrals) > 0): ?>
                 <div class="card">
                     <div class="card-header bg-light">
                         <h5 class="mb-0">Referrals</h5>
@@ -271,27 +273,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($referrals as $index => $referral)
+                                    <?php $__currentLoopData = $referrals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $referral): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $referral->referred->name ?? 'N/A' }}</td>
-                                            <td>{{ $referral->referred->email ?? 'N/A' }}</td>
-                                            <td>{{ $referral->created_at->format('Y-m-d') }}</td>
+                                            <td><?php echo e($index + 1); ?></td>
+                                            <td><?php echo e($referral->referred->name ?? 'N/A'); ?></td>
+                                            <td><?php echo e($referral->referred->email ?? 'N/A'); ?></td>
+                                            <td><?php echo e($referral->created_at->format('Y-m-d')); ?></td>
                                             <td>
-                                                @if ($referral->referred && $referral->referred->role == 'customer')
+                                                <?php if($referral->referred && $referral->referred->role == 'customer'): ?>
                                                     <span class="badge badge-soft-info">Customer</span>
-                                                @else
+                                                <?php else: ?>
                                                     <span class="badge badge-soft-primary">Dealer</span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <!-- Orders Section -->
             <div class="card">
@@ -311,13 +313,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($orders as $order)
+                                <?php $__empty_1 = true; $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr>
-                                        <td>{{ $order->order_code }}</td>
-                                        <td>{{ $order->created_at->format('Y-m-d') }}</td>
-                                        <td>${{ number_format($order->total_cost, 2) }}</td>
+                                        <td><?php echo e($order->order_code); ?></td>
+                                        <td><?php echo e($order->created_at->format('Y-m-d')); ?></td>
+                                        <td>$<?php echo e(number_format($order->total_cost, 2)); ?></td>
                                         <td>
-                                            @php
+                                            <?php
                                                 $statusClass = 'badge-soft-info';
                                                 if ($order->status == 'completed') {
                                                     $statusClass = 'badge-soft-success';
@@ -328,23 +330,24 @@
                                                 if ($order->status == 'cancelled') {
                                                     $statusClass = 'badge-soft-danger';
                                                 }
-                                            @endphp
-                                            <span class="badge {{ $statusClass }}">
-                                                {{ ucfirst($order->status) }}
+                                            ?>
+                                            <span class="badge <?php echo e($statusClass); ?>">
+                                                <?php echo e(ucfirst($order->status)); ?>
+
                                             </span>
                                         </td>
                                         <td>
-                                            <a href="{{ route('order-details', $order->order_code) }}"
+                                            <a href="<?php echo e(route('order-details', $order->order_code)); ?>"
                                                 class="btn btn-sm btn-view">
                                                 <i class="fas fa-eye"></i> View
                                             </a>
                                         </td>
                                     </tr>
-                                @empty
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <tr>
                                         <td colspan="5" class="text-center">No orders found</td>
                                     </tr>
-                                @endforelse
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -356,131 +359,132 @@
     <div class="row">
         <div class="col-md-6">
             <!-- Bank Details Section -->
-            @if ($dealer->bankDetail)
+            <?php if($dealer->bankDetail): ?>
                 <div class="card mt-3">
                     <div class="card-header bg-light">
                         <h5 class="mb-0">Bank Details</h5>
                     </div>
                     <div class="card-body">
-                        <p><strong>Bank Name:</strong> {{ $dealer->bankDetail->bank_name ?? 'N/A' }}</p>
-                        <p><strong>Branch:</strong> {{ $dealer->bankDetail->bank_branch ?? 'N/A' }}</p>
-                        <p><strong>Account Name:</strong> {{ $dealer->bankDetail->account_name ?? 'N/A' }}</p>
-                        <p><strong>Account Number:</strong> {{ $dealer->bankDetail->account_number ?? 'N/A' }}</p>
-                        <p><strong>Account Type:</strong> {{ $dealer->bankDetail->account_type ?? 'N/A' }}</p>
+                        <p><strong>Bank Name:</strong> <?php echo e($dealer->bankDetail->bank_name ?? 'N/A'); ?></p>
+                        <p><strong>Branch:</strong> <?php echo e($dealer->bankDetail->bank_branch ?? 'N/A'); ?></p>
+                        <p><strong>Account Name:</strong> <?php echo e($dealer->bankDetail->account_name ?? 'N/A'); ?></p>
+                        <p><strong>Account Number:</strong> <?php echo e($dealer->bankDetail->account_number ?? 'N/A'); ?></p>
+                        <p><strong>Account Type:</strong> <?php echo e($dealer->bankDetail->account_type ?? 'N/A'); ?></p>
                         <p>
                             <strong>Status:</strong>
                             <span
                                 class="badge
-                        @if ($dealer->bankDetail->bank_status == 'approved') badge-soft-success
-                        @elseif($dealer->bankDetail->bank_status == 'rejected') badge-soft-danger
-                        @else badge-soft-primary @endif">
-                                {{ ucfirst($dealer->bankDetail->bank_status ?? 'pending') }}
+                        <?php if($dealer->bankDetail->bank_status == 'approved'): ?> badge-soft-success
+                        <?php elseif($dealer->bankDetail->bank_status == 'rejected'): ?> badge-soft-danger
+                        <?php else: ?> badge-soft-primary <?php endif; ?>">
+                                <?php echo e(ucfirst($dealer->bankDetail->bank_status ?? 'pending')); ?>
+
                             </span>
                         </p>
-                        @if ($dealer->bankDetail->bank_front_image || $dealer->bankDetail->bank_back_image)
+                        <?php if($dealer->bankDetail->bank_front_image || $dealer->bankDetail->bank_back_image): ?>
                             <div class="d-flex gap-3 mt-3">
-                                @if ($dealer->bankDetail->bank_front_image)
+                                <?php if($dealer->bankDetail->bank_front_image): ?>
                                     <div>
                                         <p class="mb-1">Front Image</p>
-                                        <img src="{{ asset('storage/' . $dealer->bankDetail->bank_front_image) }}"
+                                        <img src="<?php echo e(asset('storage/' . $dealer->bankDetail->bank_front_image)); ?>"
                                             alt="Front" width="100">
                                     </div>
-                                @endif
-                                @if ($dealer->bankDetail->bank_back_image)
+                                <?php endif; ?>
+                                <?php if($dealer->bankDetail->bank_back_image): ?>
                                     <div>
                                         <p class="mb-1">Back Image</p>
-                                        <img src="{{ asset('storage/' . $dealer->bankDetail->bank_back_image) }}"
+                                        <img src="<?php echo e(asset('storage/' . $dealer->bankDetail->bank_back_image)); ?>"
                                             alt="Back" width="100">
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
-                        @endif
+                        <?php endif; ?>
                         <!-- Actions -->
-                        @if ($dealer->bankDetail->bank_status !== 'approved')
-                            <form action="{{ route('admin.bank.approve', $dealer->bankDetail->id) }}" method="POST"
+                        <?php if($dealer->bankDetail->bank_status !== 'approved'): ?>
+                            <form action="<?php echo e(route('admin.bank.approve', $dealer->bankDetail->id)); ?>" method="POST"
                                 class="d-inline-block">
-                                @csrf
+                                <?php echo csrf_field(); ?>
                                 <button type="submit" class="btn btn-success btn-sm"
                                     onclick="return confirm('Approve this bank detail?')">
                                     <i class="fas fa-check"></i> Approve
                                 </button>
                             </form>
-                        @endif
+                        <?php endif; ?>
 
-                        @if ($dealer->bankDetail->bank_status !== 'rejected')
-                            <form action="{{ route('admin.bank.reject', $dealer->bankDetail->id) }}" method="POST"
+                        <?php if($dealer->bankDetail->bank_status !== 'rejected'): ?>
+                            <form action="<?php echo e(route('admin.bank.reject', $dealer->bankDetail->id)); ?>" method="POST"
                                 class="d-inline-block ms-2">
-                                @csrf
+                                <?php echo csrf_field(); ?>
                                 <button type="submit" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Reject this bank detail?')">
                                     <i class="fas fa-times"></i> Reject
                                 </button>
                             </form>
-                        @endif
+                        <?php endif; ?>
 
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
         <div class="col-md-6">
             <!-- KYC Details Section -->
             <!-- KYC Details -->
-@if ($dealer->kycDetail)
+<?php if($dealer->kycDetail): ?>
     <div class="card mb-4">
         <div class="card-header">
             <h5 class="mb-0">KYC Details</h5>
         </div>
         <div class="card-body">
-            <p><strong>Document Type:</strong> {{ $dealer->kycDetail->kyc_doc_type }}</p>
-            <p><strong>Document Number:</strong> {{ $dealer->kycDetail->kyc_doc_number }}</p>
+            <p><strong>Document Type:</strong> <?php echo e($dealer->kycDetail->kyc_doc_type); ?></p>
+            <p><strong>Document Number:</strong> <?php echo e($dealer->kycDetail->kyc_doc_number); ?></p>
             <p><strong>Status:</strong>
-                @if ($dealer->kycDetail->kyc_status === 'approved')
+                <?php if($dealer->kycDetail->kyc_status === 'approved'): ?>
                     <span class="badge bg-success">Approved</span>
-                @elseif ($dealer->kycDetail->kyc_status === 'pending')
+                <?php elseif($dealer->kycDetail->kyc_status === 'pending'): ?>
                     <span class="badge bg-warning text-dark">Pending</span>
-                @else
+                <?php else: ?>
                     <span class="badge bg-danger">Rejected</span>
-                @endif
+                <?php endif; ?>
             </p>
 
-            @if ($dealer->kycDetail->kyc_status === 'rejected' && $dealer->kycDetail->kyc_reject_reason)
-                <p><strong>Reject Reason:</strong> {{ $dealer->kycDetail->kyc_reject_reason }}</p>
-            @endif
+            <?php if($dealer->kycDetail->kyc_status === 'rejected' && $dealer->kycDetail->kyc_reject_reason): ?>
+                <p><strong>Reject Reason:</strong> <?php echo e($dealer->kycDetail->kyc_reject_reason); ?></p>
+            <?php endif; ?>
 
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label>Front of Document</label>
-                    <img src="{{ asset('storage/' . $dealer->kycDetail->kyc_doc_front) }}" class="img-fluid rounded border" alt="Front Document">
+                    <img src="<?php echo e(asset('storage/' . $dealer->kycDetail->kyc_doc_front)); ?>" class="img-fluid rounded border" alt="Front Document">
                 </div>
                 <div class="col-md-4 mb-3">
                     <label>Back of Document</label>
-                    <img src="{{ asset('storage/' . $dealer->kycDetail->kyc_doc_back) }}" class="img-fluid rounded border" alt="Back Document">
+                    <img src="<?php echo e(asset('storage/' . $dealer->kycDetail->kyc_doc_back)); ?>" class="img-fluid rounded border" alt="Back Document">
                 </div>
                 <div class="col-md-4 mb-3">
                     <label>Selfie with Document</label>
-                    <img src="{{ asset('storage/' . $dealer->kycDetail->selfie) }}" class="img-fluid rounded border" alt="Selfie">
+                    <img src="<?php echo e(asset('storage/' . $dealer->kycDetail->selfie)); ?>" class="img-fluid rounded border" alt="Selfie">
                 </div>
             </div>
 
             <!-- Actions -->
-            @if ($dealer->kycDetail->kyc_status !== 'approved')
-                <form action="{{ route('admin.kyc.approve', $dealer->kycDetail->id) }}" method="POST" class="d-inline-block">
-                    @csrf
+            <?php if($dealer->kycDetail->kyc_status !== 'approved'): ?>
+                <form action="<?php echo e(route('admin.kyc.approve', $dealer->kycDetail->id)); ?>" method="POST" class="d-inline-block">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Approve KYC?')">
                         <i class="fas fa-check"></i> Approve
                     </button>
                 </form>
-            @endif
+            <?php endif; ?>
 
-            @if ($dealer->kycDetail->kyc_status !== 'rejected')
+            <?php if($dealer->kycDetail->kyc_status !== 'rejected'): ?>
                 <!-- Trigger reject modal -->
                 <button type="button" class="btn btn-danger btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#rejectKycModal">
                     <i class="fas fa-times"></i> Reject
                 </button>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
-@endif
+<?php endif; ?>
 
         </div>
     </div>
@@ -488,8 +492,8 @@
     <!-- Reject KYC Modal -->
 <div class="modal fade" id="rejectKycModal" tabindex="-1" aria-labelledby="rejectKycModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="{{ route('admin.kyc.reject', $dealer->kycDetail->id) }}" method="POST">
-            @csrf
+        <form action="<?php echo e(route('admin.kyc.reject', $dealer->kycDetail->id)); ?>" method="POST">
+            <?php echo csrf_field(); ?>
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="rejectKycModalLabel">Reject KYC</h5>
@@ -510,4 +514,6 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('AdminDashboard.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/AdminDashboard/dealer-details.blade.php ENDPATH**/ ?>

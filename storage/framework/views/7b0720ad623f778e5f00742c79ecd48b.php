@@ -1,6 +1,4 @@
-@extends('AdminDashboard.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <style>
         .btn-view {
             background-color: #17a2b8;
@@ -55,26 +53,28 @@
         }
     </style>
 
-    @if (session('success'))
+    <?php if(session('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+            <?php echo e(session('success')); ?>
 
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    @endif
+    <?php endif; ?>
+
+    <?php if(session('error')): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo e(session('error')); ?>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
 
     <div class="content-header">
         <div>
             <h2 class="content-title card-title">Dealers</h2>
         </div>
         <div class="d-flex align-items-center">
-            <a href="{{ route('dealers.export', request()->query()) }}" class="btn btn-primary rounded font-md">
+            <a href="<?php echo e(route('dealers.export', request()->query())); ?>" class="btn btn-primary rounded font-md">
                 <i class="fas fa-file-excel me-2"></i>Export to Excel
             </a>
         </div>
@@ -82,25 +82,25 @@
 
     <div class="row mb-4">
         <div class="col-md-12">
-            <form method="GET" action="{{ route('dealers') }}">
+            <form method="GET" action="<?php echo e(route('dealers')); ?>">
                 <div class="search-container" style="max-width: 800px; margin: 0 auto;">
                     <div class="input-group">
                         <input type="text" name="search" class="form-control form-control-lg"
-                            placeholder="Search dealers by name, email, or phone..." value="{{ $search ?? '' }}"
+                            placeholder="Search dealers by name, email, or phone..." value="<?php echo e($search ?? ''); ?>"
                             style="border-radius: 30px 0 0 30px; padding-left: 20px;">
                         <button class="btn btn-primary btn-lg" type="submit"
                             style="border-radius: 0 30px 30px 0; padding: 0 25px;">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
-                    @if ($search)
+                    <?php if($search): ?>
                         <div class="mt-2">
-                            <a href="{{ route('dealers') }}" class="btn btn-sm btn-outline-secondary">
+                            <a href="<?php echo e(route('dealers')); ?>" class="btn btn-sm btn-outline-secondary">
                                 <i class="fas fa-times"></i> Clear search
                             </a>
-                            <span class="ms-2 text-muted">Search results for: <strong>"{{ $search }}"</strong></span>
+                            <span class="ms-2 text-muted">Search results for: <strong>"<?php echo e($search); ?>"</strong></span>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </form>
         </div>
@@ -132,56 +132,58 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($dealers as $index => $dealer)
+                                <?php $__currentLoopData = $dealers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $dealer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td>{{ $dealers->firstItem() + $index }}</td>
-                                        <td>{{ $dealer->name }}</td>
-                                        <td>{{ $dealer->email }}</td>
-                                        <td>{{ $dealer->phone }}</td>
-                                        <td>{{ $dealer->dealerProfile->dealer_code ?? 'N/A' }}</td>
-                                        <td>{{ $dealer->created_at->format('Y-m-d') }}</td>
+                                        <td><?php echo e($dealers->firstItem() + $index); ?></td>
+                                        <td><?php echo e($dealer->name); ?></td>
+                                        <td><?php echo e($dealer->email); ?></td>
+                                        <td><?php echo e($dealer->phone); ?></td>
+                                        <td><?php echo e($dealer->dealerProfile->dealer_code ?? 'N/A'); ?></td>
+                                        <td><?php echo e($dealer->created_at->format('Y-m-d')); ?></td>
                                         <td>
-                                            {{-- TODO: Uncomment for future development - Total Orders functionality --}}
-                                            {{-- {{ $dealer->customer_orders_count }} --}}
+                                            
+                                            
                                         </td>
                                         <td>
-                                            @if ($dealer->kycDetail)
+                                            <?php if($dealer->kycDetail): ?>
                                                 <span
-                                                    class="badge bg-{{ $dealer->kycDetail->kyc_status === 'approved' ? 'success' : ($dealer->kycDetail->kyc_status === 'pending' ? 'warning' : 'danger') }}">
-                                                    {{ ucfirst($dealer->kycDetail->kyc_status) }}
+                                                    class="badge bg-<?php echo e($dealer->kycDetail->kyc_status === 'approved' ? 'success' : ($dealer->kycDetail->kyc_status === 'pending' ? 'warning' : 'danger')); ?>">
+                                                    <?php echo e(ucfirst($dealer->kycDetail->kyc_status)); ?>
+
                                                 </span>
-                                            @else
+                                            <?php else: ?>
                                                 <span class="badge bg-secondary">Not Submitted</span>
-                                            @endif
+                                            <?php endif; ?>
                                         </td>
 
                                         <td>
-                                            @if ($dealer->bankDetail)
+                                            <?php if($dealer->bankDetail): ?>
                                                 <span
-                                                    class="badge bg-{{ $dealer->bankDetail->bank_status === 'approved' ? 'success' : ($dealer->bankDetail->bank_status === 'pending' ? 'warning' : 'danger') }}">
-                                                    {{ ucfirst($dealer->bankDetail->bank_status) }}
+                                                    class="badge bg-<?php echo e($dealer->bankDetail->bank_status === 'approved' ? 'success' : ($dealer->bankDetail->bank_status === 'pending' ? 'warning' : 'danger')); ?>">
+                                                    <?php echo e(ucfirst($dealer->bankDetail->bank_status)); ?>
+
                                                 </span>
-                                            @else
+                                            <?php else: ?>
                                                 <span class="badge bg-secondary">Not Submitted</span>
-                                            @endif
+                                            <?php endif; ?>
                                         </td>
                                         <td class="text-end">
-                                            <a href="{{ route('dealer-details', $dealer->id) }}"
+                                            <a href="<?php echo e(route('dealer-details', $dealer->id)); ?>"
                                                 class="btn btn-view btn-sm me-2" data-bs-toggle="tooltip"
                                                 title="View Details">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('dealer.edit', $dealer->id) }}"
+                                            <a href="<?php echo e(route('dealer.edit', $dealer->id)); ?>"
                                                 class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip"
                                                 title="Edit Dealer">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ route('dealer.delete', $dealer->id) }}" method="POST"
-                                                class="d-inline" id="delete-form-{{ $dealer->id }}">
-                                                @csrf
-                                                @method('DELETE')
+                                            <form action="<?php echo e(route('dealer.delete', $dealer->id)); ?>" method="POST"
+                                                class="d-inline" id="delete-form-<?php echo e($dealer->id); ?>">
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('DELETE'); ?>
                                                 <button type="button"
-                                                    onclick="confirmDelete('delete-form-{{ $dealer->id }}', 'Are you sure you want to deactivate this dealer?')"
+                                                    onclick="confirmDelete('delete-form-<?php echo e($dealer->id); ?>', 'Are you sure you want to deactivate this dealer?')"
                                                     class="btn btn-danger btn-sm" data-bs-toggle="tooltip"
                                                     title="Deactivate Dealer">
                                                     <i class="fas fa-trash"></i>
@@ -189,7 +191,7 @@
                                             </form>
                                         </td>
                                     </tr>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
                         </table>
                     </div>
@@ -206,7 +208,8 @@
     <div class="pagination-area mt-30 mb-50">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-start">
-                {{ $dealers->appends(request()->input())->links() }}
+                <?php echo e($dealers->appends(request()->input())->links()); ?>
+
             </ul>
         </nav>
     </div>
@@ -233,4 +236,6 @@
             });
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('AdminDashboard.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/AdminDashboard/dealers.blade.php ENDPATH**/ ?>

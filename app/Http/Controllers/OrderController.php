@@ -46,6 +46,7 @@ class OrderController extends Controller
     {
         // Fetch the order
         $order = CustomerOrder::where('order_code', $orderCode)->firstOrFail();
+        $oldStatus = $order->status; // 👈 Track old status
 
         // Define valid transitions for the admin
         $validTransitions = [
@@ -119,6 +120,11 @@ class OrderController extends Controller
 
         if($request->status == 'Delivered' && $order->order_type == 'annonymous'){
             $this->dealerPointAdd($order);
+        }
+
+        // 🟥 If status changed *from* Delivered to Returned/Cancelled → reverse commissions
+        if (in_array($request->status, ['Returned', 'Cancelled']) && $oldStatus == 'Delivered') {
+            $this->reverseDealerPointsAndCommissions($order);
         }
 
         // Return success message
@@ -331,5 +337,27 @@ class OrderController extends Controller
             'Royal Diamond' => 'Royal Diamond',
             default => 'Loyalty', // fallback
         };
+    }
+
+    protected function reverseDealerPointsAndCommissions(CustomerOrder $order)
+    {
+        // Find all related commissions
+        $commissions = Commission::where('customer_order_id', $order->id)->get();
+
+        foreach ($commissions as $commission) {
+            $dealerProfile = DealerProfile::where('user_id', $commission->dealer_id)->first();
+            if (!$dealerProfile) continue;
+
+            // Revert points (BV & CBV) if previously added
+            $dealerProfile->bv = max(0, $dealerProfile->bv - $commission->bv);
+            $dealerProfile->cbv = max(0, $dealerProfile->cbv - $commission->bv);
+            $dealerProfile->save();
+
+            // Delete the commission entry
+            $commission->delete();
+        }
+
+        // Optional: Log this reversal
+        $order->addActivityLog('Dealer commissions and BV reversed due to cancellation/return.');
     }
 }

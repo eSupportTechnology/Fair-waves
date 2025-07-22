@@ -91,8 +91,9 @@ class ProfileController extends Controller
 
     public function editProfile()
     {
-        // Get the authenticated user
+        // Get the authenticated user with bank details
         $user = Auth::user();
+        $user->load('bankDetail');
 
         // Pass the user data to the view
         return view('user_dashboard.edit-profile', compact('user'));
@@ -190,10 +191,99 @@ class ProfileController extends Controller
         return redirect()->route('dashboard-main')->with('success', 'Password updated successfully.');
     }
 
+    public function storeBankDetails(Request $request)
+    {
+        $request->validate([
+            'bank_name' => 'required|string|max:255',
+            'bank_branch' => 'required|string|max:255',
+            'account_name' => 'required|string|max:255',
+            'account_number' => 'required|numeric',
+            'account_type' => 'required|string|in:savings,current,business',
+            'bank_front_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
 
+        $user = Auth::user();
 
+        // Check if user is a dealer
+        if ($user->role !== 'dealer') {
+            return redirect()->back()->with('error', 'Only dealers can add bank details.');
+        }
 
+        // Check if bank details already exist
+        if ($user->bankDetail) {
+            return redirect()->back()->with('error', 'Bank details already exist. You cannot add new details.');
+        }
 
+        // Handle file upload
+        $bankFrontImagePath = null;
+        if ($request->hasFile('bank_front_image')) {
+            $file = $request->file('bank_front_image');
+            $filename = time() . '_front_' . $file->getClientOriginalName();
+            $bankFrontImagePath = $file->storeAs('bank_documents', $filename, 'public');
+        }
 
+        // Create bank details
+        $user->bankDetail()->create([
+            'bank_name' => $request->bank_name,
+            'bank_branch' => $request->bank_branch,
+            'account_name' => $request->account_name,
+            'account_number' => $request->account_number,
+            'account_type' => $request->account_type,
+            'bank_front_image' => $bankFrontImagePath,
+            'bank_status' => 'pending', // Default status
+        ]);
 
+        return redirect()->route('edit-profile')->with('success', 'Bank details submitted successfully! Status: Pending approval.');
+    }
+
+    public function updateBankDetails(Request $request)
+    {
+        $request->validate([
+            'bank_name' => 'required|string|max:255',
+            'bank_branch' => 'required|string|max:255',
+            'account_name' => 'required|string|max:255',
+            'account_number' => 'required|numeric',
+            'account_type' => 'required|string|in:savings,current,business',
+            'bank_front_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $user = Auth::user();
+        $bankDetail = $user->bankDetail;
+
+        // Check if user is a dealer and has bank details
+        if ($user->role !== 'dealer' || !$bankDetail) {
+            return redirect()->back()->with('error', 'Invalid request.');
+        }
+
+        // Only allow updates if status is rejected
+        if ($bankDetail->bank_status !== 'rejected') {
+            return redirect()->back()->with('error', 'You can only update bank details when status is rejected.');
+        }
+
+        // Handle file upload if provided
+        $bankFrontImagePath = $bankDetail->bank_front_image;
+        if ($request->hasFile('bank_front_image')) {
+            // Delete old image
+            if ($bankDetail->bank_front_image) {
+                Storage::delete('public/' . $bankDetail->bank_front_image);
+            }
+            
+            $file = $request->file('bank_front_image');
+            $filename = time() . '_front_' . $file->getClientOriginalName();
+            $bankFrontImagePath = $file->storeAs('bank_documents', $filename, 'public');
+        }
+
+        // Update bank details
+        $bankDetail->update([
+            'bank_name' => $request->bank_name,
+            'bank_branch' => $request->bank_branch,
+            'account_name' => $request->account_name,
+            'account_number' => $request->account_number,
+            'account_type' => $request->account_type,
+            'bank_front_image' => $bankFrontImagePath,
+            'bank_status' => 'pending', // Reset to pending
+        ]);
+
+        return redirect()->route('edit-profile')->with('success', 'Bank details updated successfully! Status: Pending approval.');
+    }
 }

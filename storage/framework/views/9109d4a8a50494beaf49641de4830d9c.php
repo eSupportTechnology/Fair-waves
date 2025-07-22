@@ -490,7 +490,7 @@
         <?php endif; ?>
 
         <a class="nav-link <?php echo e(request()->routeIs('edit-profile') ? 'active' : ''); ?>" href="<?php echo e(route('edit-profile')); ?>">
-            <i class="fas fa-user-edit"></i> Edit Profile
+            <i class="fas fa-user-edit"></i> Edit Profile & Bank Details
         </a>
         <a class="nav-link <?php echo e(request()->routeIs('my-orders') ? 'active' : ''); ?>" href="<?php echo e(route('my-orders')); ?>">
             <i class="fas fa-box"></i> My Orders

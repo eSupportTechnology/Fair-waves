@@ -492,7 +492,7 @@
         @endif
 
         <a class="nav-link {{ request()->routeIs('edit-profile') ? 'active' : '' }}" href="{{ route('edit-profile') }}">
-            <i class="fas fa-user-edit"></i> Edit Profile
+            <i class="fas fa-user-edit"></i> Edit Profile & Bank Details
         </a>
         <a class="nav-link {{ request()->routeIs('my-orders') ? 'active' : '' }}" href="{{ route('my-orders') }}">
             <i class="fas fa-box"></i> My Orders

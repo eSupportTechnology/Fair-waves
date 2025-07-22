@@ -1,12 +1,10 @@
-@extends('layouts.user_sidebar')
-
-@section('dashboard-content')
-@if (!Auth::check())
+<?php $__env->startSection('dashboard-content'); ?>
+<?php if(!Auth::check()): ?>
     <script>
-        window.location.href = "{{ route('login') }}";
+        window.location.href = "<?php echo e(route('login')); ?>";
     </script>
-    @php exit; @endphp
-@endif
+    <?php exit; ?>
+<?php endif; ?>
 <style>
     .btn-primary {
         background-color: #ff3c00 !important;
@@ -88,46 +86,47 @@
 
 <h4 class="px-2 py-2 edit-profile-header">Edit Profile</h4>
 <div class="container p-4">
-    @if(session('success'))
+    <?php if(session('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+            <i class="fas fa-check-circle me-2"></i><?php echo e(session('success')); ?>
+
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-    @endif
+    <?php endif; ?>
 
-    @if ($errors->any())
+    <?php if($errors->any()): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="fas fa-exclamation-circle me-2"></i>
             <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li><?php echo e($error); ?></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-    @endif
+    <?php endif; ?>
 
-    <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" id="profileForm">
-        @csrf
-        @method('PUT')
+    <form action="<?php echo e(route('user.profile.update')); ?>" method="POST" enctype="multipart/form-data" id="profileForm">
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('PUT'); ?>
 
         <div class="mb-3 text-center">
             <!-- Profile image preview -->
             <div class="profile-image-container mb-3">
                 <div class="profile-image-wrapper" onclick="document.getElementById('profileImageInput').click();">
-                    @if($user->profile_image)
-                        <img src="{{ $user->profile_image_url }}" 
+                    <?php if($user->profile_image): ?>
+                        <img src="<?php echo e($user->profile_image_url); ?>" 
                              alt="Profile Image" 
                              class="profile-image-preview" 
                              id="profileImagePreview"
                              style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #ff3c00; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 60, 0, 0.3);">
-                    @else
+                    <?php else: ?>
                         <div class="profile-image-placeholder" 
                              id="profileImagePreview"
                              style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #ff3c00, #ff6b3d); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 60, 0, 0.3); color: white; font-size: 60px;">
                             <i class="fas fa-user"></i>
                         </div>
-                    @endif
+                    <?php endif; ?>
                     <div class="profile-image-overlay">
                         <i class="fas fa-camera"></i>
                         <span>Click to upload</span>
@@ -155,7 +154,7 @@
                 class="form-control"
                 id="fullName"
                 name="full_name"
-                value="{{ old('full_name', $user->name) }}"
+                value="<?php echo e(old('full_name', $user->name)); ?>"
                 placeholder="Enter your full name"
             >
         </div>
@@ -168,7 +167,7 @@
                     class="form-control"
                     id="email"
                     name="email"
-                    value="{{ old('email', $user->email) }}"
+                    value="<?php echo e(old('email', $user->email)); ?>"
                     placeholder="Enter your email"
                 >
             </div>
@@ -179,7 +178,7 @@
                     class="form-control"
                     id="mobile"
                     name="phone_num"
-                    value="{{ old('phone_num', $user->phone) }}"
+                    value="<?php echo e(old('phone_num', $user->phone)); ?>"
                     placeholder="Enter your mobile number"
                 >
             </div>
@@ -193,7 +192,7 @@
                     class="form-control"
                     id="birthday"
                     name="date_of_birth"
-                    value="{{ old('date_of_birth', $user->dob) }}"
+                    value="<?php echo e(old('date_of_birth', $user->dob)); ?>"
                 >
             </div>
             <div class="mb-3 col-md-6">
@@ -203,7 +202,7 @@
                 class="form-control"
                 id="address"
                 name="address"
-                value="{{ old('address', $user->address) }}"
+                value="<?php echo e(old('address', $user->address)); ?>"
                 placeholder="Enter your address"
             >
         </div>
@@ -213,54 +212,54 @@
     </form>
 
     <!-- Bank Details Section (Only for Dealers) -->
-    @if(Auth::user()->role === 'dealer')
+    <?php if(Auth::user()->role === 'dealer'): ?>
     <div class="card mt-4">
         <div class="card-header bg-light">
             <h5 class="mb-0"><i class="fas fa-university me-2"></i>Bank Details</h5>
         </div>
         <div class="card-body">
-            @if(Auth::user()->bankDetail)
+            <?php if(Auth::user()->bankDetail): ?>
                 <!-- Show existing bank details with status -->
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle me-2"></i>
                     Bank Details Status: 
                     <strong>
-                        @if(Auth::user()->bankDetail->bank_status === 'approved')
+                        <?php if(Auth::user()->bankDetail->bank_status === 'approved'): ?>
                             <span class="text-success">Approved</span>
-                        @elseif(Auth::user()->bankDetail->bank_status === 'rejected')
+                        <?php elseif(Auth::user()->bankDetail->bank_status === 'rejected'): ?>
                             <span class="text-danger">Rejected</span>
-                        @else
+                        <?php else: ?>
                             <span class="text-warning">Pending</span>
-                        @endif
+                        <?php endif; ?>
                     </strong>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Bank Name:</strong> {{ Auth::user()->bankDetail->bank_name }}</p>
-                        <p><strong>Account Name:</strong> {{ Auth::user()->bankDetail->account_name }}</p>
-                        <p><strong>Account Number:</strong> {{ Auth::user()->bankDetail->account_number }}</p>
+                        <p><strong>Bank Name:</strong> <?php echo e(Auth::user()->bankDetail->bank_name); ?></p>
+                        <p><strong>Account Name:</strong> <?php echo e(Auth::user()->bankDetail->account_name); ?></p>
+                        <p><strong>Account Number:</strong> <?php echo e(Auth::user()->bankDetail->account_number); ?></p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>Bank Branch:</strong> {{ Auth::user()->bankDetail->bank_branch }}</p>
-                        <p><strong>Account Type:</strong> {{ Auth::user()->bankDetail->account_type }}</p>
+                        <p><strong>Bank Branch:</strong> <?php echo e(Auth::user()->bankDetail->bank_branch); ?></p>
+                        <p><strong>Account Type:</strong> <?php echo e(Auth::user()->bankDetail->account_type); ?></p>
                     </div>
                 </div>
 
-                @if(Auth::user()->bankDetail->bank_status === 'pending')
+                <?php if(Auth::user()->bankDetail->bank_status === 'pending'): ?>
                     <button class="btn btn-warning" disabled>
                         <i class="fas fa-clock me-2"></i>Status: Approval Pending
                     </button>
-                @elseif(Auth::user()->bankDetail->bank_status === 'rejected')
+                <?php elseif(Auth::user()->bankDetail->bank_status === 'rejected'): ?>
                     <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#updateBankDetails">
                         <i class="fas fa-edit me-2"></i>Update Bank Details
                     </button>
-                @endif
+                <?php endif; ?>
                 
-            @else
+            <?php else: ?>
                 <!-- Show bank details form if no details exist -->
-                <form action="{{ route('dealer.bank.store') }}" method="POST" enctype="multipart/form-data" id="bankDetailsForm">
-                    @csrf
+                <form action="<?php echo e(route('dealer.bank.store')); ?>" method="POST" enctype="multipart/form-data" id="bankDetailsForm">
+                    <?php echo csrf_field(); ?>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -308,28 +307,28 @@
                         <i class="fas fa-save me-2"></i>Submit Bank Details
                     </button>
                 </form>
-            @endif
+            <?php endif; ?>
 
             <!-- Collapsible Update Form for Rejected Status -->
-            @if(Auth::user()->bankDetail && Auth::user()->bankDetail->bank_status === 'rejected')
+            <?php if(Auth::user()->bankDetail && Auth::user()->bankDetail->bank_status === 'rejected'): ?>
             <div class="collapse mt-3" id="updateBankDetails">
                 <div class="card card-body">
                     <h6>Update Bank Details</h6>
-                    <form action="{{ route('dealer.bank.update') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
+                    <form action="<?php echo e(route('dealer.bank.update')); ?>" method="POST" enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('PUT'); ?>
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="update_bank_name" class="form-label">Bank Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="update_bank_name" name="bank_name" 
-                                       value="{{ Auth::user()->bankDetail->bank_name }}" required>
+                                       value="<?php echo e(Auth::user()->bankDetail->bank_name); ?>" required>
                             </div>
                             
                             <div class="col-md-6 mb-3">
                                 <label for="update_bank_branch" class="form-label">Bank Branch <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="update_bank_branch" name="bank_branch" 
-                                       value="{{ Auth::user()->bankDetail->bank_branch }}" required>
+                                       value="<?php echo e(Auth::user()->bankDetail->bank_branch); ?>" required>
                             </div>
                         </div>
                         
@@ -337,13 +336,13 @@
                             <div class="col-md-6 mb-3">
                                 <label for="update_account_name" class="form-label">Account Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="update_account_name" name="account_name" 
-                                       value="{{ Auth::user()->bankDetail->account_name }}" required>
+                                       value="<?php echo e(Auth::user()->bankDetail->account_name); ?>" required>
                             </div>
                             
                             <div class="col-md-6 mb-3">
                                 <label for="update_account_number" class="form-label">Account Number <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" id="update_account_number" name="account_number" 
-                                       value="{{ Auth::user()->bankDetail->account_number }}" required>
+                                       value="<?php echo e(Auth::user()->bankDetail->account_number); ?>" required>
                             </div>
                         </div>
                         
@@ -352,9 +351,9 @@
                                 <label for="update_account_type" class="form-label">Account Type <span class="text-danger">*</span></label>
                                 <select class="form-control" id="update_account_type" name="account_type" required>
                                     <option value="">Select Account Type</option>
-                                    <option value="savings" {{ Auth::user()->bankDetail->account_type === 'savings' ? 'selected' : '' }}>Savings</option>
-                                    <option value="current" {{ Auth::user()->bankDetail->account_type === 'current' ? 'selected' : '' }}>Current</option>
-                                    <option value="business" {{ Auth::user()->bankDetail->account_type === 'business' ? 'selected' : '' }}>Business</option>
+                                    <option value="savings" <?php echo e(Auth::user()->bankDetail->account_type === 'savings' ? 'selected' : ''); ?>>Savings</option>
+                                    <option value="current" <?php echo e(Auth::user()->bankDetail->account_type === 'current' ? 'selected' : ''); ?>>Current</option>
+                                    <option value="business" <?php echo e(Auth::user()->bankDetail->account_type === 'business' ? 'selected' : ''); ?>>Business</option>
                                 </select>
                             </div>
                             
@@ -371,10 +370,10 @@
                     </form>
                 </div>
             </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 <script>
@@ -468,4 +467,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/user_dashboard/edit-profile.blade.php ENDPATH**/ ?>

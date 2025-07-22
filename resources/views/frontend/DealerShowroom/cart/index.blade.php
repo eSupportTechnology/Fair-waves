@@ -1,6 +1,25 @@
 @extends('frontend.DealerShowroom.master')
 
 @section('content')
+@php
+// Extract dealer information from cart session
+$dealer = null;
+$cart = session('showroom_cart', []);
+if (!empty($cart)) {
+    // Get the first product from cart to find dealer information
+    $firstItem = reset($cart);
+    if (isset($firstItem['product_id']) && $firstItem['product_id']) {
+        // Find dealer through DealerProductLink
+        $dealerProductLink = App\Models\DealerProductLink::where('product_id', $firstItem['product_id'])
+            ->with(['dealer.dealerProfile'])
+            ->first();
+        
+        if ($dealerProductLink && $dealerProductLink->dealer) {
+            $dealer = $dealerProductLink->dealer;
+        }
+    }
+}
+@endphp
 <style>
     .cart-table {
         background: #fff;
@@ -377,6 +396,58 @@ function showMessage(message, type = 'success') {
             toast.remove();
         }, 3000);
     }
+
+    // Handle contact navigation to about page with scroll
+    document.querySelectorAll('a[href*="#contact-section"]').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#contact-section')) {
+                // Let the browser handle navigation to the about page
+                // The hash will be handled by the about page's JavaScript
+                window.location.href = href;
+            }
+        });
+    });
 });
 </script>
+
+@if(isset($dealer) && $dealer && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update desktop navigation links
+    const desktopNav = document.querySelector('.header-navigation');
+    if (desktopNav) {
+        desktopNav.innerHTML = `
+            <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="nav-link text-dark me-3 hover-orange">Home</a>
+            <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
+            <a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}" class="nav-link text-dark me-3 hover-orange">About</a>
+            <a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
+
+    // Update mobile navigation links
+    const mobileNav = document.querySelector('.mobile-nav-menu');
+    if (mobileNav) {
+        mobileNav.innerHTML = `
+            <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+            <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+            <a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+            <a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
+
+    // Handle contact navigation to about page with scrolling
+    document.querySelectorAll('.contact-about-scroll').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#contact-section')) {
+                // Let the browser handle navigation to the about page
+                // The hash will be handled by the about page's JavaScript
+                window.location.href = href;
+            }
+        });
+    });
+});
+</script>
+@endif
 @endsection

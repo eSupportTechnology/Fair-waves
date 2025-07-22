@@ -43,10 +43,17 @@
             <h6 class="mb-0">Payment</h6>
             <ul class="flex-align gap-8 flex-wrap">
                 <li class="text-sm">
-                    <a href="index.html" class="text-gray-900 flex-align gap-8 hover-text-main-600">
-                        <i class="ph ph-house"></i>
-                        Home
-                    </a>
+                    <?php if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name): ?>
+                        <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                            <i class="ph ph-house"></i>
+                            Home
+                        </a>
+                    <?php else: ?>
+                        <a href="<?php echo e(url('/')); ?>" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                            <i class="ph ph-house"></i>
+                            Home
+                        </a>
+                    <?php endif; ?>
                 </li>
                 <li class="flex-align">
                     <i class="ph ph-caret-right"></i>

@@ -12,6 +12,7 @@ use App\Exports\DealersExport;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\WithdrawalRequest;
+use App\Models\BankDetail;
 use App\Models\CustomerOrder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -400,34 +401,80 @@ class DealerController extends Controller
 
     public function requestWithdrawal()
     {
-        $user = $this->getDealer();
-
-        $profile = $user->dealerProfile;
-
-        // Only allow on Thu, Fri, Sat
-        $today = Carbon::now()->format('D');
-        if (!in_array($today, ['Thu', 'Fri', 'Sat'])) {
-            return back()->with('error', 'Withdrawals only allowed on Thu, Fri, Sat.');
+        \Log::info('=== WITHDRAWAL REQUEST INITIATED ===', [
+            'user_id' => Auth::id(),
+            'timestamp' => now(),
+            'user_authenticated' => Auth::check(),
+            'user_role' => Auth::check() ? Auth::user()->role : 'not_authenticated'
+        ]);
+        
+        // Check if user is logged in
+        if (!Auth::check()) {
+            \Log::warning('Withdrawal request failed: User not authenticated');
+            return redirect()->route('login')->with('error', 'You must be logged in to request withdrawal.');
         }
 
-        if ($profile->bv <= 0) {
-            return back()->with('error', 'You have no available BV to withdraw.');
+        $userId = Auth::id();
+        $dealer = User::where('id', $userId)->where('role', 'dealer')->first();
+        
+        if (!$dealer) {
+            \Log::warning('Withdrawal request failed: User is not a dealer', ['user_id' => $userId]);
+            return redirect()->back()->with('error', 'You are not authorized to make withdrawal requests.');
         }
 
-        // Save withdrawal request
+        // Check if dealer has bank details and if they are approved
+        $bankDetail = BankDetail::where('user_id', $userId)->first();
+        
+        if (!$bankDetail || $bankDetail->bank_status !== 'approved') {
+            \Log::warning('Withdrawal request failed: Bank details not approved', [
+                'user_id' => $userId, 
+                'has_bank_detail' => !is_null($bankDetail),
+                'bank_status' => $bankDetail->bank_status ?? 'no_bank_detail'
+            ]);
+            return redirect()->back()->with('error', 'Please add bank details and get approval before requesting withdrawal.');
+        }
+
+        // Get dealer profile to retrieve BV
+        $dealerProfile = DealerProfile::where('user_id', $userId)->first();
+        
+        if (!$dealerProfile) {
+            \Log::warning('Withdrawal request failed: Dealer profile not found', ['user_id' => $userId]);
+            return redirect()->back()->with('error', 'Dealer profile not found.');
+        }
+
+        // Check if dealer has available BV for withdrawal
+        if ($dealerProfile->bv <= 0) {
+            \Log::warning('Withdrawal request failed: No available BV', [
+                'user_id' => $userId,
+                'bv' => $dealerProfile->bv
+            ]);
+            return redirect()->back()->with('error', 'You have no available BV to withdraw.');
+        }
+
+        // Calculate amount (BV * 100)
+        $amount = $dealerProfile->bv * 100;
+
+        \Log::info('Creating withdrawal request', [
+            'user_id' => $userId,
+            'amount' => $amount,
+            'bv' => $dealerProfile->bv,
+            'bank_name' => $bankDetail->bank_name
+        ]);
+
+        // Create withdrawal request
         WithdrawalRequest::create([
-            'dealer_id' => $user->id,
-            'amount' => $profile->bv * 100, // in LKR
+            'dealer_id' => $userId,
+            'amount' => $amount,
+            'bv' => $dealerProfile->bv,
+            'bank_name' => $bankDetail->bank_name,
+            'bank_branch' => $bankDetail->bank_branch,
+            'account_name' => $bankDetail->account_name,
+            'account_number' => $bankDetail->account_number,
             'status' => 'pending',
         ]);
 
-        // Reset BV after request (optional - or wait until approved)
-        if ($profile instanceof \Illuminate\Database\Eloquent\Model) {
-            $profile->bv = 0;
-            $profile->save();
-        }
-
-        return back()->with('success', 'Withdrawal request submitted successfully.');
+        \Log::info('Withdrawal request created successfully', ['user_id' => $userId]);
+        return redirect()->back()->with('success', 'Withdrawal request submitted successfully. Your request is now pending approval.');
     }
 
 

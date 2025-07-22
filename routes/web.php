@@ -535,6 +535,10 @@ Route::post('/test-profile-upload', function(Request $request) {
 Route::get('home/My-Account/edit-password', [ProfileController::class, 'editPassword'])->name('edit-password');
 Route::post('/user/change-password', [ProfileController::class, 'changePassword'])->name('user.change_password');
 
+// Dealer Bank Details Routes
+Route::post('/dealer/bank/store', [ProfileController::class, 'storeBankDetails'])->name('dealer.bank.store');
+Route::put('/dealer/bank/update', [ProfileController::class, 'updateBankDetails'])->name('dealer.bank.update');
+
 
 
 
@@ -642,7 +646,7 @@ Route::prefix('showroom')->group(function () {
     Route::get('/{dealer_shop_name}/about', [ShowRoomController::class, 'about'])->name('showroom.about');
     Route::get('/{dealer_shop_name}/product/{unique_code}', [ShowRoomController::class, 'productView'])->name('showroom.productView');
     Route::post('/cart/add/{id}', [ShowRoomController::class, 'dealerAdd'])->name('dealer.cart.add');
-    Route::post('/buy-now/{id}/{dpid}', [ShowRoomController::class, 'dealerbuyNow'])->name('dealer.buy.now');
+    Route::post('/buy-now/{id}/{dpid}', [ShowRoomController::class, 'dealerBuyNow'])->name('dealer.buy.now');
 
 
     // Route::post('/withdraw', [DealerController::class, 'requestWithdrawal'])->name('dealer.withdraw.request');

@@ -120,11 +120,6 @@ class User extends Authenticatable
 
     public function bankDetail()
     {
-        return $this->belongsTo(BankDetail::class, 'id', 'user_id');
-    }
-
-    public function kycDetail()
-    {
-        return $this->hasOne(KYCDetail::class);
+        return $this->hasOne(BankDetail::class);
     }
 }

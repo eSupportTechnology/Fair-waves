@@ -117,4 +117,14 @@ class User extends Authenticatable
             'referred_id'    // Foreign key on users
         );
     }
+
+    public function bankDetail()
+    {
+        return $this->belongsTo(BankDetail::class, 'id', 'user_id');
+    }
+
+    public function kycDetail()
+    {
+        return $this->hasOne(KYCDetail::class);
+    }
 }

@@ -703,7 +703,7 @@ class DealerController extends Controller
 
     public function showDealerDetails($user_id)
     {
-        $dealer = User::with('dealerProfile')->findOrFail($user_id);
+        $dealer = User::with('dealerProfile')->with('bankDetail')->with('kycDetail')->findOrFail($user_id);
 
         $orders = CustomerOrder::where('user_id', $user_id)
             ->with('items.product')
@@ -717,7 +717,7 @@ class DealerController extends Controller
 
         // Get referrals if any
         $referrals = DealerReferral::where('dealer_id', $user_id)
-            ->with('referredUser')
+            ->with('referred')
             ->get();
 
         return view('AdminDashboard.dealer-details', compact('dealer', 'orders', 'totalCost', 'totalOrders', 'totalProducts', 'referrals'));

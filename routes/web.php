@@ -246,8 +246,10 @@ Route::middleware(['auth'])->group(function () {
 //admin dashboard
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\BankDetailController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DealerController;
+use App\Http\Controllers\KYCDetailController;
 use App\Http\Controllers\ShowRoomController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\WithdrawRequestController;
@@ -330,7 +332,14 @@ Route::get('/admin/dealers/{user_id}/edit', [DealerController::class, 'edit'])->
 Route::put('/admin/dealers/{user_id}', [DealerController::class, 'update'])->name('dealer.update');
 Route::delete('/admin/dealers/{user_id}', [DealerController::class, 'delete'])->name('dealer.delete');
 
-Route::get('/admin/genealogy', [DealerController::class, 'adminGenealogy'])->name('admin.genealogy');
+Route::post('/admin/bank/{id}/approve', [BankDetailController::class, 'approve'])->name('admin.bank.approve');
+Route::post('/admin/bank/{id}/reject', [BankDetailController::class, 'reject'])->name('admin.bank.reject');
+
+Route::post('/admin/kyc/{id}/approve', [KYCDetailController::class, 'approve'])->name('admin.kyc.approve');
+Route::post('/admin/kyc/{id}/reject', [KYCDetailController::class, 'reject'])->name('admin.kyc.reject');
+
+
+    Route::get('/admin/genealogy', [DealerController::class, 'adminGenealogy'])->name('admin.genealogy');
 
 Route::get('/admin/orders', [OrderController::class, 'index'])->name('orders');
 Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('order.delete');

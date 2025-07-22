@@ -117,4 +117,9 @@ class User extends Authenticatable
             'referred_id'    // Foreign key on users
         );
     }
+
+    public function bankDetail()
+    {
+        return $this->hasOne(BankDetail::class);
+    }
 }

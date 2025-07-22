@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\DealerProductOrder;
+use App\Models\DealerProductLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -46,6 +47,23 @@ class ShowroomCartController extends Controller
         $cart = Session::get('showroom_cart', []);
         $total = 0;
 
+        // Extract dealer information from cart session (like cart view does)
+        $dealer = null;
+        if (!empty($cart)) {
+            // Get the first product from cart to find dealer information
+            $firstItem = reset($cart);
+            if (isset($firstItem['product_id']) && $firstItem['product_id']) {
+                // Find dealer through DealerProductLink
+                $dealerProductLink = \App\Models\DealerProductLink::where('product_id', $firstItem['product_id'])
+                    ->with(['dealer.dealerProfile'])
+                    ->first();
+                
+                if ($dealerProductLink && $dealerProductLink->dealer) {
+                    $dealer = $dealerProductLink->dealer;
+                }
+            }
+        }
+
         // Load product images for each cart item
         foreach ($cart as $productId => $item) {
             $total += $item['price'] * $item['quantity'];
@@ -59,7 +77,7 @@ class ShowroomCartController extends Controller
         $deliveryFee = 300; // Fixed delivery fee
         $total = $subtotal + $deliveryFee;
 
-        return view('frontend.DealerShowroom.cart.index', compact('cart', 'subtotal', 'deliveryFee', 'total'));
+        return view('frontend.DealerShowroom.cart.index', compact('cart', 'subtotal', 'deliveryFee', 'total', 'dealer'));
     }
 
     public function removeFromCart($productId)

@@ -1,6 +1,32 @@
 <?php $__env->startSection('dashboard-content'); ?>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Flash Messages -->
+    <?php if(session('success')): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?php echo e(session('success')); ?>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if(session('error')): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i><?php echo e(session('error')); ?>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if(session('warning')): ?>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i><?php echo e(session('warning')); ?>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+    
     <style>
         :root {
             --primary-color: #ff5800;
@@ -432,7 +458,7 @@
 
             .dashboard-header {
                 margin-bottom: 1rem;
-              
+
 
             }
 
@@ -778,7 +804,7 @@
                 width: 50px;
                 height: 50px;
             }
-            
+
             .profile-placeholder-dashboard {
                 font-size: 20px;
             }
@@ -792,8 +818,8 @@
                 <div class="col-md-1 col-2 text-center">
                     <!-- Profile Image -->
                     <div class="profile-image-container">
-                        <img src="<?php echo e($dealerProfile->user->profile_image_url); ?>" 
-                             alt="Profile Image" 
+                        <img src="<?php echo e($dealerProfile->user->profile_image_url); ?>"
+                             alt="Profile Image"
                              class="profile-image-dashboard">
                     </div>
                 </div>
@@ -828,7 +854,7 @@
                     <i class="fas fa-coins"></i>
                 </div>
                 <h3 class="h4 mb-1"><?php echo e($dealerProfile->bv); ?></h3>
-                <p class="text-muted mb-0">Current BV</p>
+                <p class="text-muted mb-0">Current IV</p>
             </div>
         </div>
         <div class="col-6 col-lg-3 mb-3">
@@ -837,7 +863,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <h3 class="h4 mb-1"><?php echo e($dealerProfile->cbv); ?></h3>
-                <p class="text-muted mb-0">Total CBV</p>
+                <p class="text-muted mb-0">Total CIV</p>
             </div>
         </div>
         <div class="col-6 col-lg-3 mb-3">
@@ -863,9 +889,12 @@
                             </span>
                             <span class="fw-bold"><?php echo e($currentCBV); ?> / <?php echo e($nextRankData['target_cbv'] ?? '-'); ?> CBV</span>
                         </div>
-                        <div class="progress-custom">
-                            <div class="progress-bar-custom" style="width: <?php echo e(number_format($progressPercent, 2)); ?>%;"></div>
-                        </div>
+                        <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: <?php echo e($progressPercent); ?>%;" aria-valuenow="<?php echo e($progressPercent); ?>" aria-valuemin="0" aria-valuemax="100">
+        <?php echo e(number_format($progressPercent, 2)); ?>%
+    </div>
+</div>
+
                     </div>
 
                     <?php if($nextRankData && count($nextRankData['methods']) > 0): ?>
@@ -1087,9 +1116,9 @@
                         <div class="day-badge unavailable">Other Days</div>
                     </div>
 
-                    <form method="POST" action="<?php echo e(route('dealer.withdraw.request')); ?>">
+                    <form method="POST" action="<?php echo e(route('dealer.withdraw.request')); ?>" id="withdrawalForm" onsubmit="handleWithdrawalSubmit(event)">
                         <?php echo csrf_field(); ?>
-                        <button type="submit" class="btn btn-success w-100 mb-2" <?php echo e(!$isWithdrawalDay ? 'disabled' : ''); ?>>
+                        <button type="submit" class="btn btn-success w-100 mb-2" <?php echo e(!$isWithdrawalDay ? 'disabled' : ''); ?> id="withdrawalBtn">
                             <i class="fas fa-download me-2"></i>Request Withdrawal
                         </button>
                     </form>
@@ -1132,7 +1161,7 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <p class="text-muted ms-3">No team members yet.</p>
         <?php endif; ?>
-        
+
         <?php if($directReferrals->count() > 3): ?>
             <div class="text-center mt-2">
                 <small class="text-muted">+<?php echo e($directReferrals->count() - 3); ?> more members</small>
@@ -1281,6 +1310,35 @@
             `;
             document.head.appendChild(style);
         }
+
+        // Withdrawal form debugging
+        function handleWithdrawalSubmit(event) {
+            console.log('Withdrawal form submitted!');
+            const form = event.target;
+            const action = form.action;
+            console.log('Form action:', action);
+            
+            // Show loading state
+            const btn = document.getElementById('withdrawalBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            btn.disabled = true;
+            
+            // Let the form submit normally
+            return true;
+        }
+
+        // Check if withdrawal button is enabled/disabled on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const withdrawalBtn = document.getElementById('withdrawalBtn');
+            if (withdrawalBtn) {
+                console.log('Withdrawal button status:', {
+                    disabled: withdrawalBtn.disabled,
+                    today: '<?php echo e(Carbon\Carbon::now()->format('D')); ?>',
+                    isWithdrawalDay: <?php echo e($isWithdrawalDay ? 'true' : 'false'); ?>
+
+                });
+            }
+        });
     </script>
 <?php $__env->stopSection(); ?>
 

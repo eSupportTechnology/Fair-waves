@@ -122,4 +122,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(BankDetail::class);
     }
+
+    public function kycDetail()
+    {
+        return $this->hasOne(KYCDetail::class);
+    }
 }

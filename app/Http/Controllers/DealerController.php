@@ -684,7 +684,8 @@ class DealerController extends Controller
     {
         $search = $request->get('search');
 
-        $dealers = User::where('role', 'dealer')
+        $dealers = User::with('bankDetail')->with('kycDetail')
+            ->where('role', 'dealer')
             ->where('dealer_status', 1) // Only show active dealers
             ->when($search, function($query) use ($search) {
                 return $query->where(function($q) use ($search) {

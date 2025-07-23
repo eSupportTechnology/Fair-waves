@@ -157,7 +157,7 @@
 
                                 <ol>
                                     <li class="title-other">Do I need to create a user account to buy products on
-                                        BuyAbans.com?
+                                        FairWaves.lk?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>No. You can browse and purchase what you want as a guest. However, by
                                                 registering as a user, you can make your online shopping experience even
@@ -171,7 +171,7 @@
                                             <li>Yes. We utilize the latest in digital encryption &amp; web technology to
                                                 ensure that your transactions are secure and your personal details are
                                                 safe when
-                                                you shop at BuyAbans.com. You can read our <a href="policy.html">Privacy
+                                                you shop at FairWaves.lk. You can read our <a href="policy.html">Privacy
                                                     Policy</a> here for more details on how we keep your personal
                                                 details
                                                 safe.</li>
@@ -291,7 +291,7 @@
                                                     href="tel:+94772222888">+94 772 222 888</a>.</li>
                                         </ol>
                                     </li>
-                                    <li class="title-other">What is the BuyAbans.com return/refund policy?
+                                    <li class="title-other">What is the FairWaves.lk return/refund policy?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>You can read our <a href="refundpolicy.html">Return and Refund
                                                     Policy</a> here.
@@ -359,7 +359,7 @@
                         <h3 class="title-terms mb-4">Shipping &amp; Delivery</h3>
 
                         <ol>
-                            <li class="monial-graph">Items ordered online on BuyAbans.com will be delivered in within 3
+                            <li class="monial-graph">Items ordered online on FairWaves.lk will be delivered in within 3
                                 to 5 working days anywhere in Sri Lanka.</li>
                             <li class="monial-graph">Estimated delivery time may vary based on the availability of
                                 items
@@ -415,7 +415,7 @@
                         <h3 class="title-terms mb-4">Warranty</h3>
                         <ol style=" list-style-type: circle">
                             <li>
-                                <p class="monial-graph">The warranty provided through the crown.esupportsystem.shop website is the same as
+                                <p class="monial-graph">The warranty provided through the fairwaves.lk website is the same as
                                     the
                                     common warranty provided to all Abans PLC showrooms. For any warranty-related issues, please
                                     contact the Service Centre via the contact details on the warranty card.</p>
@@ -437,7 +437,7 @@
                                 <p class="monial-graph">The warranty will not be effective for <strong
                                         class="warrenty-second-strong">repairs/installations/services done by any 03rd party
                                         other
-                                        than Crown Electronics or its authorized service agents, damage caused by
+                                        than Fair Waves or its authorized service agents, damage caused by
                                         ancillary equipment and non-recommended accessories, normal wear, tear and corrosion,
                                         corrosion of copper tanks, promotional Items given free of charge with the main product,
                                         damages due to split and liquid, drop damages, seepage, secretion from insects, rodents

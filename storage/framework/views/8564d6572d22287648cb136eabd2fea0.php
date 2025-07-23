@@ -4,7 +4,7 @@
 
 <style>
     .dashboard-container {
-        margin-left: 280px;
+        margin-left: 80px; /* Collapsed sidebar width */
         padding: 20px 30px;
         min-height: calc(100vh - 250px);
         background-color: #f8f9fa;
@@ -12,24 +12,17 @@
         margin-bottom: 20px;
         position: relative;
         z-index: 15;
+        width: calc(100% - 80px); /* Adjust for collapsed sidebar */
+    }
+
+    .dashboard-container.expanded {
+        margin-left: 280px; /* Expanded sidebar width */
         width: calc(100% - 280px);
     }
-    
+
     /* Dashboard header adjustments */
-    .dashboard-header    /* Fix sidebar and footer overlap issue by creating a more robust solution */
-    function adjustSidebarPosition() {
-        const footer = document.querySelector('footer');
-        if (!footer) return;
-        
-        // Set sidebar to have overflow-y auto to enable scrolling within the sidebar
-        sidebar.style.overflowY = 'auto';
-        
-        // Set the sidebar to take up the full height of the viewport
-        sidebar.style.height = '100%';
-        
-        // Make sure the footer is always positioned after the main content
-        footer.style.position = 'relative';
-        footer.style.zIndex = '20';gin-top: 40px !important;
+    .dashboard-header {
+        margin-top: 40px !important;
         margin-bottom: 15px !important;
         padding-top: 5px !important;
         padding-bottom: 10px !important;
@@ -38,14 +31,19 @@
 
     /* Footer adjustments for sidebar layout */
     .footer-with-sidebar {
-        margin-left: 280px;
+        margin-left: 80px; /* Collapsed sidebar width */
         transition: margin-left 0.3s ease;
         position: relative;
         z-index: 20;
-        width: calc(100% - 280px);
+        width: calc(100% - 80px);
         background-color: #fff;
         margin-top: auto;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+
+    .footer-with-sidebar.expanded {
+        margin-left: 280px; /* Expanded sidebar width */
+        width: calc(100% - 280px);
     }
 
     /* Ensure footer content is properly spaced */
@@ -54,14 +52,19 @@
         padding-left: 15px;
         padding-right: 15px;
     }
-    
+
     /* Special handling for dealer dashboard pages to prevent overlap */
     body.dealer-dashboard-page .footer-with-sidebar {
         position: relative;
-        width: calc(100% - 280px);
-        margin-left: 280px;
+        width: calc(100% - 80px);
+        margin-left: 80px;
         clear: both;
         float: right;
+    }
+
+    body.dealer-dashboard-page .footer-with-sidebar.expanded {
+        width: calc(100% - 280px);
+        margin-left: 280px;
     }
 
     /* Make sure footer content is readable */
@@ -106,7 +109,7 @@
         padding-bottom: 0;
         margin-bottom: 0;
     }
-    
+
     /* Special handling for dealer dashboard body */
     body.dealer-dashboard-page {
         overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -122,18 +125,29 @@
         z-index: 1;
     }
 
-    /* Sidebar styling */
+    /* Sidebar styling - Collapsed by default */
     .sidebar {
         position: fixed;
         top: 0;
         left: 0;
         bottom: 0;
-        width: 280px;
+        width: 80px; /* Collapsed width */
         background: #fff;
         box-shadow: 0 0 15px rgba(0,0,0,0.05);
         z-index: 100;
-        padding: 20px;
+        padding: 20px 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border-right: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Expanded sidebar */
+    .sidebar.expanded {
+        width: 280px; /* Expanded width */
         overflow-y: auto;
+        padding: 20px 0;
     }
 
     .breadcrumb {
@@ -176,24 +190,6 @@
         color: #ff3c00;
     }
 
-    .sidebar {
-        background-color: #ffffff;
-        color: #1a1a1a;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100%;
-        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
-        border-right: 1px solid #e5e7eb;
-        padding: 20px 0;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        z-index: 10;
-    }
-
     .sidebar .nav {
         display: flex;
         flex-direction: column;
@@ -208,6 +204,13 @@
         border-bottom: 1px solid #e5e7eb;
         margin-bottom: 20px;
         text-align: center;
+        min-height: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
     }
 
     .sidebar-brand h5 {
@@ -215,11 +218,40 @@
         font-weight: 700;
         margin: 0;
         font-size: 18px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease 0.1s;
+    }
+
+    .sidebar.expanded .sidebar-brand h5 {
+        opacity: 1;
     }
 
     .sidebar-brand small {
         color: #6b7280;
         font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease 0.15s;
+    }
+
+    .sidebar.expanded .sidebar-brand small {
+        opacity: 1;
+    }
+
+    /* Brand icon for collapsed state */
+    .sidebar-brand::before {
+        content: "FW";
+        position: absolute;
+        color: #ff3c00;
+        font-weight: 700;
+        font-size: 20px;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar.expanded .sidebar-brand::before {
+        opacity: 0;
     }
 
     .sidebar a {
@@ -235,6 +267,9 @@
         border-bottom: none;
         text-align: left;
         text-decoration: none;
+        white-space: nowrap;
+        position: relative;
+        overflow: hidden;
     }
 
     .sidebar a i {
@@ -242,6 +277,17 @@
         font-size: 18px;
         width: 24px;
         text-align: center;
+        flex-shrink: 0;
+    }
+
+    /* Hide text in collapsed state */
+    .sidebar a .nav-text {
+        opacity: 0;
+        transition: opacity 0.3s ease 0.1s;
+    }
+
+    .sidebar.expanded a .nav-text {
+        opacity: 1;
     }
 
     .sidebar a:hover {
@@ -309,6 +355,17 @@
         z-index: 200;
     }
 
+    /* Hover zone for auto-expand */
+    .sidebar-hover-zone {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100px; /* Slightly wider than collapsed sidebar */
+        height: 100vh;
+        z-index: 99;
+        pointer-events: none;
+    }
+
     /* Responsive Enhancements */
     @media (max-width: 991.98px) {
         .sidebar {
@@ -318,15 +375,17 @@
             top: 0;
             left: 0;
             bottom: 0;
+            width: 280px; /* Full width on mobile */
         }
-        
+
         .sidebar.show {
             transform: translateX(0);
         }
-        
+
         .dashboard-container {
             margin-left: 0;
             padding: 16px 12px;
+            width: 100%;
         }
 
         /* Footer adjustments for mobile */
@@ -339,7 +398,7 @@
             padding-left: 12px;
             padding-right: 12px;
         }
-        
+
         /* Dealer dashboard footer adjustments for mobile */
         body.dealer-dashboard-page .footer-with-sidebar {
             margin-left: 0;
@@ -357,11 +416,10 @@
             align-items: flex-start;
             gap: 8px;
         }
-        
-        /* Ensure sidebar responsiveness with footer interaction */
-        .sidebar {
-            height: 100vh !important; /* Always full height on mobile */
-            bottom: 0 !important; /* Don't adjust position on mobile */
+
+        /* Disable hover zone on mobile */
+        .sidebar-hover-zone {
+            display: none;
         }
     }
 
@@ -397,7 +455,7 @@
     }
 
     /* Mobile menu toggle */
-    .mobile-menu-toggle {
+    .mobile-menu-toggle-2 {
         position: fixed;
         top: 15px;
         left: 15px;
@@ -412,8 +470,46 @@
     }
 
     @media (max-width: 991.98px) {
-        .mobile-menu-toggle {
+        .mobile-menu-toggle-2 {
             display: block;
+        }
+    }
+
+    /* Tooltip for collapsed state */
+    .nav-tooltip {
+        position: absolute;
+        left: 90px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        z-index: 1000;
+    }
+
+    .nav-tooltip::before {
+        content: '';
+        position: absolute;
+        left: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 5px solid transparent;
+        border-right-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .sidebar:not(.expanded) a:hover .nav-tooltip {
+        opacity: 1;
+    }
+
+    @media (max-width: 991.98px) {
+        .nav-tooltip {
+            display: none;
         }
     }
 </style>
@@ -422,8 +518,9 @@
     <script>
         window.location.href = "<?php echo e(route('login')); ?>";
     </script>
-    <?php exit; ?>
+    <?php exit; ?>
 <?php endif; ?>
+
 <!-- ========================= Breadcrumb Start =============================== -->
 <div class="mb-0 breadcrumb py-26 bg-main-two-50">
     <div class="container container-lg">
@@ -431,7 +528,7 @@
             <h6 class="mb-0">My Account</h6>
             <ul class="flex-wrap gap-8 flex-align">
                 <li class="text-sm">
-                    <a href="index.html" class="gap-8 text-gray-900 flex-align hover-text-main-600">
+                    <a href="/" class="gap-8 text-gray-900 flex-align hover-text-main-600">
                         <i class="ph ph-house"></i>
                         Home
                     </a>
@@ -447,12 +544,15 @@
 <!-- ========================= Breadcrumb End =============================== -->
 
 <!-- Mobile Menu Toggle -->
-<button class="mobile-menu-toggle" id="mobileMenuToggle">
-    <i class="fas fa-bars fa-lg"></i>
+<button class="mobile-menu-toggle-2" id="mobileMenuToggle" style="right: 15px; left: auto; top: 70px; padding: 6px 8px; font-size: 18px;">
+    <i class="fas fa-bars fa-sm"></i>
 </button>
 
 <!-- Sidebar Overlay -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Hover Zone for Auto-Expand -->
+<div class="sidebar-hover-zone" id="sidebarHoverZone"></div>
 
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
@@ -461,50 +561,74 @@
         <h5>Fair Waves</h5>
         <small>Dashboard</small>
     </div>
-    
+
     <!-- Navigation -->
     <div class="nav flex-column">
         <a class="nav-link <?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dashboard')); ?>">
-            <i class="fas fa-tachometer-alt"></i> Dashboard
+            <i class="fas fa-tachometer-alt"></i>
+            <span class="nav-text">Dashboard</span>
+            <div class="nav-tooltip">Dashboard</div>
         </a>
-        
+
         <?php if(Auth::user()->role == 'dealer'): ?>
         <a class="nav-link <?php echo e(request()->routeIs('dealer.dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.dashboard')); ?>">
-            <i class="fas fa-crown"></i> Dealer Dashboard
+            <i class="fas fa-crown"></i>
+            <span class="nav-text">Dealer Dashboard</span>
+            <div class="nav-tooltip">Dealer Dashboard</div>
         </a>
         <a class="nav-link <?php echo e(request()->routeIs('dealer.analytics') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.analytics')); ?>">
-            <i class="fas fa-chart-bar"></i> Analytics
+            <i class="fas fa-chart-bar"></i>
+            <span class="nav-text">Analytics</span>
+            <div class="nav-tooltip">Analytics</div>
         </a>
         <a class="nav-link <?php echo e(request()->routeIs('dealer.team.full') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.team.full')); ?>">
-            <i class="fas fa-sitemap"></i> Team Hierarchy
+            <i class="fas fa-sitemap"></i>
+            <span class="nav-text">Team Hierarchy</span>
+            <div class="nav-tooltip">Team Hierarchy</div>
         </a>
         <a class="nav-link <?php echo e(request()->routeIs('dealer.referrals.pending') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.referrals.pending')); ?>">
-            <i class="fas fa-user-plus"></i> Pending Referrals
+            <i class="fas fa-user-plus"></i>
+            <span class="nav-text">Pending Referrals</span>
+            <div class="nav-tooltip">Pending Referrals</div>
         </a>
         <a class="nav-link <?php echo e(request()->routeIs('dealer.products.dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.products.dashboard')); ?>">
-            <i class="fas fa-box"></i> Products
+            <i class="fas fa-box"></i>
+            <span class="nav-text">Products</span>
+            <div class="nav-tooltip">Products</div>
         </a>
         <a class="nav-link <?php echo e(request()->routeIs('dealer.notifications') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.notifications')); ?>">
-            <i class="fas fa-bell"></i> Notifications
+            <i class="fas fa-bell"></i>
+            <span class="nav-text">Notifications</span>
+            <div class="nav-tooltip">Notifications</div>
         </a>
         <?php endif; ?>
 
         <a class="nav-link <?php echo e(request()->routeIs('edit-profile') ? 'active' : ''); ?>" href="<?php echo e(route('edit-profile')); ?>">
-            <i class="fas fa-user-edit"></i> Edit Profile & Bank Details
+            <i class="fas fa-user-edit"></i>
+            <span class="nav-text">Edit Profile & Bank Details</span>
+            <div class="nav-tooltip">Edit Profile & Bank Details</div>
         </a>
         <a class="nav-link <?php echo e(request()->routeIs('my-orders') ? 'active' : ''); ?>" href="<?php echo e(route('my-orders')); ?>">
-            <i class="fas fa-box"></i> My Orders
+            <i class="fas fa-box"></i>
+            <span class="nav-text">My Orders</span>
+            <div class="nav-tooltip">My Orders</div>
         </a>
         <a class="nav-link <?php echo e(request()->routeIs('My-Reviews') ? 'active' : ''); ?>" href="<?php echo e(route('My-Reviews')); ?>">
-            <i class="fas fa-star"></i> My Reviews
+            <i class="fas fa-star"></i>
+            <span class="nav-text">My Reviews</span>
+            <div class="nav-tooltip">My Reviews</div>
         </a>
         <a class="nav-link <?php echo e(request()->routeIs('edit-password') ? 'active' : ''); ?>" href="<?php echo e(route('edit-password')); ?>">
-            <i class="fas fa-key"></i> Password
+            <i class="fas fa-key"></i>
+            <span class="nav-text">Password</span>
+            <div class="nav-tooltip">Password</div>
         </a>
 
         <!-- Logout -->
         <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="margin-top: auto;">
-            <i class="fas fa-sign-out-alt"></i> Log Out
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="nav-text">Log Out</span>
+            <div class="nav-tooltip">Log Out</div>
         </a>
 
         <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" class="d-none">
@@ -513,23 +637,69 @@
     </div>
 </div>
 
-<div class="dashboard-container">
+<div class="dashboard-container" id="dashboardContainer">
     <?php echo $__env->yieldContent('dashboard-content'); ?>
 </div>
-<!-- Ensure footer appears after content -->
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
-    
+    const sidebarHoverZone = document.getElementById('sidebarHoverZone');
+    const dashboardContainer = document.getElementById('dashboardContainer');
+
+    let expandTimeout;
+    let collapseTimeout;
+
     // Apply footer styling to accommodate sidebar
-    const footerElements = document.querySelectorAll('footer');
-    footerElements.forEach(footer => {
-        footer.classList.add('footer-with-sidebar');
-    });
-    
+    function updateFooterPosition(expanded = false) {
+        const footerElements = document.querySelectorAll('footer');
+        footerElements.forEach(footer => {
+            footer.classList.add('footer-with-sidebar');
+            if (expanded) {
+                footer.classList.add('expanded');
+            } else {
+                footer.classList.remove('expanded');
+            }
+        });
+    }
+
+    // Function to expand sidebar
+    function expandSidebar() {
+        clearTimeout(collapseTimeout);
+        expandTimeout = setTimeout(() => {
+            if (window.innerWidth > 991.98) { // Only on desktop
+                sidebar.classList.add('expanded');
+                dashboardContainer.classList.add('expanded');
+                updateFooterPosition(true);
+            }
+        }, 100); // Small delay to prevent flickering if moving cursor quickly
+    }
+
+    // Function to collapse sidebar
+    function collapseSidebar() {
+        clearTimeout(expandTimeout);
+        collapseTimeout = setTimeout(() => {
+            if (window.innerWidth > 991.98) { // Only on desktop
+                sidebar.classList.remove('expanded');
+                dashboardContainer.classList.remove('expanded');
+                updateFooterPosition(false);
+            }
+        }, 300); // Delay before collapsing
+    }
+
+    // Auto-expand/collapse functionality for desktop
+    sidebar.addEventListener('mouseenter', expandSidebar);
+    sidebar.addEventListener('mouseleave', collapseSidebar);
+
+    // Also listen to the hover zone
+    sidebarHoverZone.addEventListener('mouseenter', expandSidebar);
+    sidebarHoverZone.addEventListener('mouseleave', collapseSidebar);
+
+    // Initial footer setup
+    updateFooterPosition(false);
+
     // Also check for any footer that might be loaded later
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
@@ -537,99 +707,95 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (node.nodeType === 1) { // Element node
                     if (node.tagName === 'FOOTER') {
                         node.classList.add('footer-with-sidebar');
+                        if (sidebar.classList.contains('expanded')) {
+                            node.classList.add('expanded');
+                        }
                     }
                     // Also check children
                     const footers = node.querySelectorAll && node.querySelectorAll('footer');
                     if (footers) {
-                        footers.forEach(footer => footer.classList.add('footer-with-sidebar'));
+                        footers.forEach(footer => {
+                            footer.classList.add('footer-with-sidebar');
+                            if (sidebar.classList.contains('expanded')) {
+                                footer.classList.add('expanded');
+                            }
+                        });
                     }
                 }
             });
         });
     });
-    
+
     observer.observe(document.body, {
         childList: true,
         subtree: true
     });
-    
-    // Toggle mobile menu
-    mobileMenuToggle.addEventListener('click', function() {
+
+    // Mobile menu functionality
+    if (!window.sidebarToggleInitialized) {
+    window.sidebarToggleInitialized = true;
+
+
+    mobileMenuToggle.addEventListener('click', function () {
         sidebar.classList.toggle('show');
         sidebarOverlay.classList.toggle('show');
     });
-    
+}
+
+
     // Close sidebar when clicking overlay
     sidebarOverlay.addEventListener('click', function() {
         sidebar.classList.remove('show');
         sidebarOverlay.classList.remove('show');
     });
-    
+
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', function(event) {
-        if (window.innerWidth <= 991.98 && 
-            !sidebar.contains(event.target) && 
+        if (window.innerWidth <= 991.98 &&
+            !sidebar.contains(event.target) &&
             !mobileMenuToggle.contains(event.target)) {
             sidebar.classList.remove('show');
             sidebarOverlay.classList.remove('show');
         }
     });
-    
+
     // Handle window resize
     window.addEventListener('resize', function() {
         if (window.innerWidth > 991.98) {
             sidebar.classList.remove('show');
             sidebarOverlay.classList.remove('show');
+            // Reset to collapsed state on desktop
+            sidebar.classList.remove('expanded');
+            dashboardContainer.classList.remove('expanded');
+            updateFooterPosition(false);
+        } else {
+            // On mobile, ensure sidebar is properly positioned
+            sidebar.classList.remove('expanded');
+            dashboardContainer.classList.remove('expanded');
         }
     });
-    
-    // Fix sidebar and footer overlap issue by creating a more robust solution
-    function adjustSidebarPosition() {
-        const footer = document.querySelector('footer');
-        if (!footer) return;
-        
-        // Set sidebar to have overflow-y auto to enable scrolling within the sidebar
-        sidebar.style.overflowY = 'auto';
-        
-        // Set the sidebar to take up the full height of the viewport
-        sidebar.style.height = '100vh';
-        
-        // Make sure the footer is always positioned after the main content
-        footer.style.position = 'relative';
-        footer.style.zIndex = '999';
-        
-        // Check if we're on a dealer dashboard page
+
+    // Check if we're on a dealer dashboard page
+    function checkDealerDashboard() {
         const isDealerDashboard = window.location.href.includes('dealer');
         if (isDealerDashboard) {
-            // Add dealer dashboard class to body
             document.body.classList.add('dealer-dashboard-page');
         } else {
             document.body.classList.remove('dealer-dashboard-page');
         }
-        
-        // Ensure the content container has enough space for content
-        const dashboardContainer = document.querySelector('.dashboard-container');
-        if (dashboardContainer) {
-            dashboardContainer.style.minHeight = 'calc(100vh - 250px)';
-        }
     }
-    
-    // Initial adjustment and listen for events
-    adjustSidebarPosition();
-    window.addEventListener('resize', adjustSidebarPosition);
-    window.addEventListener('load', adjustSidebarPosition);
-    
-    // Check for path changes (for SPA-like behavior if any)
+
+    // Initial check and path monitoring
+    checkDealerDashboard();
     let lastPath = window.location.pathname;
     setInterval(() => {
         if (window.location.pathname !== lastPath) {
             lastPath = window.location.pathname;
-            adjustSidebarPosition();
+            checkDealerDashboard();
         }
     }, 500);
 });
 </script>
-
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </div><!-- End of main-wrapper -->

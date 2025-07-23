@@ -608,6 +608,11 @@
             <span class="nav-text">Edit Profile & Bank Details</span>
             <div class="nav-tooltip">Edit Profile & Bank Details</div>
         </a>
+        <a class="nav-link <?php echo e(request()->routeIs('cart') ? 'active' : ''); ?>" href="<?php echo e(route('cart')); ?>">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="nav-text">My Cart</span>
+            <div class="nav-tooltip">My Cart</div>
+        </a>
         <a class="nav-link <?php echo e(request()->routeIs('my-orders') ? 'active' : ''); ?>" href="<?php echo e(route('my-orders')); ?>">
             <i class="fas fa-box"></i>
             <span class="nav-text">My Orders</span>

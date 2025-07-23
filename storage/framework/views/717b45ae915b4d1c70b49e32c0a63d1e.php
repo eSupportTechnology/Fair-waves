@@ -78,9 +78,13 @@
         color: #ef4444;
         font-weight: 500;
     }
+
+    .edit-profile-header {
+        margin-top: 50px;
+    }
 </style>
 
-<h4 class="px-2 py-2">Edit Profile</h4>
+<h4 class="px-2 py-2 edit-profile-header">Edit Profile</h4>
 <div class="container p-4">
     <?php if(session('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -206,6 +210,170 @@
 
         <button type="submit" class="mt-3 btn btn-primary">Save Changes</button>
     </form>
+
+    <!-- Bank Details Section (Only for Dealers) -->
+    <?php if(Auth::user()->role === 'dealer'): ?>
+    <div class="card mt-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fas fa-university me-2"></i>Bank Details</h5>
+        </div>
+        <div class="card-body">
+            <?php if(Auth::user()->bankDetail): ?>
+                <!-- Show existing bank details with status -->
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Bank Details Status: 
+                    <strong>
+                        <?php if(Auth::user()->bankDetail->bank_status === 'approved'): ?>
+                            <span class="text-success">Approved</span>
+                        <?php elseif(Auth::user()->bankDetail->bank_status === 'rejected'): ?>
+                            <span class="text-danger">Rejected</span>
+                        <?php else: ?>
+                            <span class="text-warning">Pending</span>
+                        <?php endif; ?>
+                    </strong>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Bank Name:</strong> <?php echo e(Auth::user()->bankDetail->bank_name); ?></p>
+                        <p><strong>Account Name:</strong> <?php echo e(Auth::user()->bankDetail->account_name); ?></p>
+                        <p><strong>Account Number:</strong> <?php echo e(Auth::user()->bankDetail->account_number); ?></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Bank Branch:</strong> <?php echo e(Auth::user()->bankDetail->bank_branch); ?></p>
+                        <p><strong>Account Type:</strong> <?php echo e(Auth::user()->bankDetail->account_type); ?></p>
+                    </div>
+                </div>
+
+                <?php if(Auth::user()->bankDetail->bank_status === 'pending'): ?>
+                    <button class="btn btn-warning" disabled>
+                        <i class="fas fa-clock me-2"></i>Status: Approval Pending
+                    </button>
+                <?php elseif(Auth::user()->bankDetail->bank_status === 'rejected'): ?>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#updateBankDetails">
+                        <i class="fas fa-edit me-2"></i>Update Bank Details
+                    </button>
+                <?php endif; ?>
+                
+            <?php else: ?>
+                <!-- Show bank details form if no details exist -->
+                <form action="<?php echo e(route('dealer.bank.store')); ?>" method="POST" enctype="multipart/form-data" id="bankDetailsForm">
+                    <?php echo csrf_field(); ?>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bank_name" class="form-label">Bank Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="bank_name" name="bank_name" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="bank_branch" class="form-label">Bank Branch <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="bank_branch" name="bank_branch" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="account_name" class="form-label">Account Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="account_name" name="account_name" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="account_number" class="form-label">Account Number <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="account_number" name="account_number" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="account_type" class="form-label">Account Type <span class="text-danger">*</span></label>
+                            <select class="form-control" id="account_type" name="account_type" required>
+                                <option value="">Select Account Type</option>
+                                <option value="savings">Savings</option>
+                                <option value="current">Current</option>
+                                <option value="business">Business</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="bank_front_image" class="form-label">Bank Front Image <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="bank_front_image" name="bank_front_image" accept="image/*" required>
+                            <small class="text-muted">Upload bank document front image (Max: 2MB)</small>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save me-2"></i>Submit Bank Details
+                    </button>
+                </form>
+            <?php endif; ?>
+
+            <!-- Collapsible Update Form for Rejected Status -->
+            <?php if(Auth::user()->bankDetail && Auth::user()->bankDetail->bank_status === 'rejected'): ?>
+            <div class="collapse mt-3" id="updateBankDetails">
+                <div class="card card-body">
+                    <h6>Update Bank Details</h6>
+                    <form action="<?php echo e(route('dealer.bank.update')); ?>" method="POST" enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('PUT'); ?>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="update_bank_name" class="form-label">Bank Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="update_bank_name" name="bank_name" 
+                                       value="<?php echo e(Auth::user()->bankDetail->bank_name); ?>" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="update_bank_branch" class="form-label">Bank Branch <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="update_bank_branch" name="bank_branch" 
+                                       value="<?php echo e(Auth::user()->bankDetail->bank_branch); ?>" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="update_account_name" class="form-label">Account Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="update_account_name" name="account_name" 
+                                       value="<?php echo e(Auth::user()->bankDetail->account_name); ?>" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="update_account_number" class="form-label">Account Number <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="update_account_number" name="account_number" 
+                                       value="<?php echo e(Auth::user()->bankDetail->account_number); ?>" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="update_account_type" class="form-label">Account Type <span class="text-danger">*</span></label>
+                                <select class="form-control" id="update_account_type" name="account_type" required>
+                                    <option value="">Select Account Type</option>
+                                    <option value="savings" <?php echo e(Auth::user()->bankDetail->account_type === 'savings' ? 'selected' : ''); ?>>Savings</option>
+                                    <option value="current" <?php echo e(Auth::user()->bankDetail->account_type === 'current' ? 'selected' : ''); ?>>Current</option>
+                                    <option value="business" <?php echo e(Auth::user()->bankDetail->account_type === 'business' ? 'selected' : ''); ?>>Business</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="update_bank_front_image" class="form-label">Bank Front Image</label>
+                                <input type="file" class="form-control" id="update_bank_front_image" name="bank_front_image" accept="image/*">
+                                <small class="text-muted">Leave empty to keep current image</small>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Update Bank Details
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php endif; ?>
 </div>
 
 <script>

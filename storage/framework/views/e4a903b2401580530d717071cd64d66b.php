@@ -1,6 +1,32 @@
 <?php $__env->startSection('dashboard-content'); ?>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Flash Messages -->
+    <?php if(session('success')): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?php echo e(session('success')); ?>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if(session('error')): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i><?php echo e(session('error')); ?>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if(session('warning')): ?>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i><?php echo e(session('warning')); ?>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+    
     <style>
         :root {
             --primary-color: #ff5800;
@@ -1090,9 +1116,9 @@
                         <div class="day-badge unavailable">Other Days</div>
                     </div>
 
-                    <form method="POST" action="<?php echo e(route('dealer.withdraw.request')); ?>">
+                    <form method="POST" action="<?php echo e(route('dealer.withdraw.request')); ?>" id="withdrawalForm" onsubmit="handleWithdrawalSubmit(event)">
                         <?php echo csrf_field(); ?>
-                        <button type="submit" class="btn btn-success w-100 mb-2" <?php echo e(!$isWithdrawalDay ? 'disabled' : ''); ?>>
+                        <button type="submit" class="btn btn-success w-100 mb-2" <?php echo e(!$isWithdrawalDay ? 'disabled' : ''); ?> id="withdrawalBtn">
                             <i class="fas fa-download me-2"></i>Request Withdrawal
                         </button>
                     </form>
@@ -1284,6 +1310,35 @@
             `;
             document.head.appendChild(style);
         }
+
+        // Withdrawal form debugging
+        function handleWithdrawalSubmit(event) {
+            console.log('Withdrawal form submitted!');
+            const form = event.target;
+            const action = form.action;
+            console.log('Form action:', action);
+            
+            // Show loading state
+            const btn = document.getElementById('withdrawalBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            btn.disabled = true;
+            
+            // Let the form submit normally
+            return true;
+        }
+
+        // Check if withdrawal button is enabled/disabled on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const withdrawalBtn = document.getElementById('withdrawalBtn');
+            if (withdrawalBtn) {
+                console.log('Withdrawal button status:', {
+                    disabled: withdrawalBtn.disabled,
+                    today: '<?php echo e(Carbon\Carbon::now()->format('D')); ?>',
+                    isWithdrawalDay: <?php echo e($isWithdrawalDay ? 'true' : 'false'); ?>
+
+                });
+            }
+        });
     </script>
 <?php $__env->stopSection(); ?>
 

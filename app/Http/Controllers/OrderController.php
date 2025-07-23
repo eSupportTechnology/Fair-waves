@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderStatusUpdatedMail;
 use App\Models\Commission;
 use App\Models\User;
 use App\Models\CustomerOrder;
@@ -9,6 +10,7 @@ use App\Models\CustomerOrderItems;
 use App\Models\DealerProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -117,6 +119,11 @@ class OrderController extends Controller
         }
 
         $order->update($updateData);
+
+        // Send email to customer
+        if ($order->email) {
+            Mail::to($order->email)->send(new OrderStatusUpdatedMail($order, $request->status));
+        }
 
         if($request->status == 'Delivered' && $order->order_type == 'annonymous'){
             $this->dealerPointAdd($order);

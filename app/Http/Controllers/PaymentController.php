@@ -204,6 +204,7 @@ class PaymentController extends Controller
 
                 return response()->json(['message' => 'Payment confirmed and order updated.']);
             } else {
+                $order->update(['payment_status' => 'Not Paid']);
                 Log::warning('Payment failed or not successful', ['status_message' => $statusMessage]);
                 return redirect()->route('order.payment-fail')->with('error', 'Payment was not successful.');
             }

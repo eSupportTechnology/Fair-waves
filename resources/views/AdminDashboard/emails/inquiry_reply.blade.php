@@ -60,7 +60,7 @@
         <div class="email-content">
             <h2>Dear {{ $inquiry->full_name }},</h2>
             <p>Thank you for reaching out to us. We have received your inquiry regarding the subject <strong>"{{ $inquiry->subject }}"</strong>.</p>
-            
+
             <p>We value your input and appreciate the time you took to get in touch with us. Below is our response to your inquiry:</p>
 
             <blockquote>
@@ -73,11 +73,11 @@
 
             <p>Best regards,</p>
             <p><strong>The Customer Support Team</strong></p>
-            <p><em>DK Mart</em></p>
+            <p><em>Fair Waves</em></p>
 
             <div class="footer">
-                <p>&copy; {{ date('Y') }} DK Mart. All rights reserved.</p>
-                <p>Visit our website: <a href="https://dkmart.lk">dkmart.lk</a></p>
+                <p>&copy; {{ date('Y') }} Fair Waves. All rights reserved.</p>
+                <p>Visit our website: <a href="https://fairwaves.lk">fairwaves.lk</a></p>
             </div>
         </div>
     </div>

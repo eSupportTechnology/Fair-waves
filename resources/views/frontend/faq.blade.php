@@ -66,7 +66,7 @@
 
                                 <ol>
                                     <li class="title-other">Do I need to create a user account to buy products on
-                                        Crown Electronics?
+                                        Fair Waves?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>No. You can browse and purchase what you want as a guest. However, by
                                                 registering as a user, you can make your online shopping experience even
@@ -78,7 +78,7 @@
                                     <li class="title-other">Are my online transactions safe?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>
-                                                Yes. We utilize the latest in digital encryption &amp; web technology to ensure that your transactions are secure and your personal details are safe when you shop at Crown Electronics. You can read our
+                                                Yes. We utilize the latest in digital encryption &amp; web technology to ensure that your transactions are secure and your personal details are safe when you shop at Fair Waves. You can read our
                                                 <a href="{{ url('privacy-policy') }}">Privacy Policy</a> here for more details on how we keep your personal details safe.
                                             </li>
 
@@ -197,7 +197,7 @@
                                                     href="tel:+94772222888">+94 772 222 888</a>.</li>
                                         </ol>
                                     </li>
-                                    <li class="title-other">What is the Crown Electronics return/refund policy?
+                                    <li class="title-other">What is the Fair Waves return/refund policy?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>You can read our <a href="refundpolicy.html">Return and Refund
                                                     Policy</a> here.
@@ -265,7 +265,7 @@
                         <h3 class="title-terms mb-4">Shipping &amp; Delivery</h3>
 
                         <ol>
-                            <li class="monial-graph">Items ordered online on Crown Electronics will be delivered in within 3
+                            <li class="monial-graph">Items ordered online on Fair Waves will be delivered in within 3
                                 to 5 working days anywhere in Sri Lanka.</li>
                             <li class="monial-graph">Estimated delivery time may vary based on the availability of
                                 items
@@ -319,7 +319,7 @@
                         aria-labelledby="v-pills-four-tab">
 
                         <h3 class="title-terms mb-4">Warranty</h3>
-                        <p class="monial-graph">The warranty provided through the Crown Electronics website is the same as
+                        <p class="monial-graph">The warranty provided through the Fair Waves website is the same as
                             the
                             common warranty provided to all Abans PLC showrooms. For any warranty-related issues, please
                             contact the Service Centre via the contact details on the warranty card.</p>

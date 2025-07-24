@@ -1,6 +1,4 @@
-@extends('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="main-wrapper">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
@@ -516,12 +514,12 @@
     }
 </style>
 
-@if (!Auth::check())
+<?php if(!Auth::check()): ?>
     <script>
-        window.location.href = "{{ route('login') }}";
+        window.location.href = "<?php echo e(route('login')); ?>";
     </script>
-    @php exit; @endphp
-@endif
+    <?php exit; ?>
+<?php endif; ?>
 
 <!-- ========================= Breadcrumb Start =============================== -->
 <div class="mb-0 breadcrumb py-26 bg-main-two-50">
@@ -566,71 +564,71 @@
 
     <!-- Navigation -->
     <div class="nav flex-column">
-        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dashboard')); ?>">
             <i class="fas fa-tachometer-alt"></i>
             <span class="nav-text">Dashboard</span>
             <div class="nav-tooltip">Dashboard</div>
         </a>
 
-        @if(Auth::user()->role == 'dealer')
-        <a class="nav-link {{ request()->routeIs('dealer.dashboard') ? 'active' : '' }}" href="{{ route('dealer.dashboard') }}">
+        <?php if(Auth::user()->role == 'dealer'): ?>
+        <a class="nav-link <?php echo e(request()->routeIs('dealer.dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.dashboard')); ?>">
             <i class="fas fa-crown"></i>
             <span class="nav-text">Dealer Dashboard</span>
             <div class="nav-tooltip">Dealer Dashboard</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('dealer.analytics') ? 'active' : '' }}" href="{{ route('dealer.analytics') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('dealer.analytics') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.analytics')); ?>">
             <i class="fas fa-chart-bar"></i>
             <span class="nav-text">Analytics</span>
             <div class="nav-tooltip">Analytics</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('dealer.team.full') ? 'active' : '' }}" href="{{ route('dealer.team.full') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('dealer.team.full') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.team.full')); ?>">
             <i class="fas fa-sitemap"></i>
             <span class="nav-text">Team Hierarchy</span>
             <div class="nav-tooltip">Team Hierarchy</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('dealer.referrals.pending') ? 'active' : '' }}" href="{{ route('dealer.referrals.pending') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('dealer.referrals.pending') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.referrals.pending')); ?>">
             <i class="fas fa-user-plus"></i>
             <span class="nav-text">Pending Referrals</span>
             <div class="nav-tooltip">Pending Referrals</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('dealer.products.dashboard') ? 'active' : '' }}" href="{{ route('dealer.products.dashboard') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('dealer.products.dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.products.dashboard')); ?>">
             <i class="fas fa-box"></i>
             <span class="nav-text">Products</span>
             <div class="nav-tooltip">Products</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('dealer.notifications') ? 'active' : '' }}" href="{{ route('dealer.notifications') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('dealer.notifications') ? 'active' : ''); ?>" href="<?php echo e(route('dealer.notifications')); ?>">
             <i class="fas fa-bell"></i>
             <span class="nav-text">Notifications</span>
             <div class="nav-tooltip">Notifications</div>
         </a>
-        @endif
+        <?php endif; ?>
 
-        <a class="nav-link {{ request()->routeIs('edit-profile') ? 'active' : '' }}" href="{{ route('edit-profile') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('edit-profile') ? 'active' : ''); ?>" href="<?php echo e(route('edit-profile')); ?>">
             <i class="fas fa-user-edit"></i>
             <span class="nav-text">Edit Profile & Bank Details</span>
             <div class="nav-tooltip">Edit Profile & Bank Details</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('cart') ? 'active' : '' }}" href="{{ route('cart') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('cart') ? 'active' : ''); ?>" href="<?php echo e(route('cart')); ?>">
             <i class="fas fa-shopping-cart"></i>
             <span class="nav-text">My Cart</span>
             <div class="nav-tooltip">My Cart</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('my-orders') ? 'active' : '' }}" href="{{ route('my-orders') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('my-orders') ? 'active' : ''); ?>" href="<?php echo e(route('my-orders')); ?>">
             <i class="fas fa-box"></i>
             <span class="nav-text">My Orders</span>
             <div class="nav-tooltip">My Orders</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('My-Reviews') ? 'active' : '' }}" href="{{ route('My-Reviews') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('My-Reviews') ? 'active' : ''); ?>" href="<?php echo e(route('My-Reviews')); ?>">
             <i class="fas fa-star"></i>
             <span class="nav-text">My Reviews</span>
             <div class="nav-tooltip">My Reviews</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('addresses') ? 'active' : '' }}" href="{{ route('addresses') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('addresses') ? 'active' : ''); ?>" href="<?php echo e(route('addresses')); ?>">
             <i class="fas fa-map-marker-alt"></i>
             <span class="nav-text">My Addresses</span>
             <div class="nav-tooltip">My Addresses</div>
         </a>
-        <a class="nav-link {{ request()->routeIs('edit-password') ? 'active' : '' }}" href="{{ route('edit-password') }}">
+        <a class="nav-link <?php echo e(request()->routeIs('edit-password') ? 'active' : ''); ?>" href="<?php echo e(route('edit-password')); ?>">
             <i class="fas fa-key"></i>
             <span class="nav-text">Password</span>
             <div class="nav-tooltip">Password</div>
@@ -643,14 +641,14 @@
             <div class="nav-tooltip">Log Out</div>
         </a>
 
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
+        <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" class="d-none">
+            <?php echo csrf_field(); ?>
         </form>
     </div>
 </div>
 
 <div class="dashboard-container" id="dashboardContainer">
-    @yield('dashboard-content')
+    <?php echo $__env->yieldContent('dashboard-content'); ?>
 </div>
 
 <script>
@@ -811,4 +809,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </div><!-- End of main-wrapper -->
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/layouts/user_sidebar.blade.php ENDPATH**/ ?>

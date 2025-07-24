@@ -165,7 +165,7 @@
 
                                 <ol>
                                     <li class="title-other">Do I need to create a user account to buy products on
-                                        BuyAbans.com?
+                                        fairwaves.lk?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>No. You can browse and purchase what you want as a guest. However, by
                                                 registering as a user, you can make your online shopping experience even
@@ -179,7 +179,7 @@
                                             <li>Yes. We utilize the latest in digital encryption &amp; web technology to
                                                 ensure that your transactions are secure and your personal details are
                                                 safe when
-                                                you shop at BuyAbans.com. You can read our <a href="policy.html">Privacy
+                                                you shop at fairwaves.lk. You can read our <a href="policy.html">Privacy
                                                     Policy</a> here for more details on how we keep your personal
                                                 details
                                                 safe.</li>
@@ -299,7 +299,7 @@
                                                     href="tel:+94772222888">+94 772 222 888</a>.</li>
                                         </ol>
                                     </li>
-                                    <li class="title-other">What is the BuyAbans.com return/refund policy?
+                                    <li class="title-other">What is the fairwaves.lk return/refund policy?
                                         <ol style="list-style-type: lower-alpha;">
                                             <li>You can read our <a href="refundpolicy.html">Return and Refund
                                                     Policy</a> here.
@@ -368,7 +368,7 @@
 
                         <div class="list-container">
                             <ol class="styled-list">
-                                <li class="monial-graph">Items ordered online on crown.esupportsystem.shop will be delivered within 3 to 5 working days anywhere in Sri Lanka.</li>
+                                <li class="monial-graph">Items ordered online on fairwaves.lk will be delivered within 3 to 5 working days anywhere in Sri Lanka.</li>
                                 <li class="monial-graph">Estimated delivery time may vary based on the availability of items ordered and the delivery address.</li>
                                 <li class="monial-graph">The following delivery charges will apply based on the total value of your order.</li>
                             </ol>
@@ -418,7 +418,7 @@
                         aria-labelledby="v-pills-four-tab">
 
                         <h3 class="title-terms mb-4">Warranty</h3>
-                        <p class="monial-graph">The warranty provided through the BuyAbans.com website is the same as
+                        <p class="monial-graph">The warranty provided through the fairwaves.lk website is the same as
                             the
                             common warranty provided to all Abans PLC showrooms. For any warranty-related issues, please
                             contact the Service Centre via the contact details on the warranty card.</p>

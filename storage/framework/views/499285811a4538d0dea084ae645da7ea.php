@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password - Fair Waves</title>
-    <link rel="icon" sizes="16x16" href="{{ asset('frontend\newstyle\assets\images\Fire Waves LOGO.png') }}" />
+    <link rel="icon" sizes="16x16" href="<?php echo e(asset('frontend\newstyle\assets\images\Fire Waves LOGO.png')); ?>" />
     <style>
         * {
             margin: 0;
@@ -275,7 +275,7 @@
         <div class="wave-decoration"></div>
 
         <div class="logo-section">
-            <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}"
+            <img src="<?php echo e(asset('frontend/newstyle/assets/images/logo.png')); ?>"
                                              alt="logo" class ="logo" />
         </div>
 
@@ -285,11 +285,12 @@
             </p>
 
             <!-- Status Messages -->
-            @if (session('status'))
+            <?php if(session('status')): ?>
                 <div class="status-message">
-                    {{ session('status') }}
+                    <?php echo e(session('status')); ?>
+
                 </div>
-            @endif
+            <?php endif; ?>
 
             <div class="password-requirements">
                 <h4>Password Requirements:</h4>
@@ -301,11 +302,11 @@
                 </ul>
             </div>
 
-            <form id="resetForm" action="{{ route('password.store') }}" method="POST">
-                @csrf
+            <form id="resetForm" action="<?php echo e(route('password.store')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
 
                 <!-- Password Reset Token -->
-                <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                <input type="hidden" name="token" value="<?php echo e($request->route('token')); ?>">
 
                 <div class="form-group">
                     <label for="email" class="form-label">Email Address</label>
@@ -315,16 +316,24 @@
                         name="email"
                         class="form-input"
                         placeholder="Enter your email address"
-                        value="{{ old('email', $request->email) }}"
+                        value="<?php echo e(old('email', $request->email)); ?>"
                         required
                         autofocus
                         autocomplete="username"
                     />
-                    @error('email')
+                    <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                         <div class="error-message">
-                            {{ $message }}
+                            <?php echo e($message); ?>
+
                         </div>
-                    @enderror
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="form-group">
@@ -341,11 +350,19 @@
                     <div class="password-strength">
                         <div class="password-strength-bar" id="strengthBar"></div>
                     </div>
-                    @error('password')
+                    <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                         <div class="error-message">
-                            {{ $message }}
+                            <?php echo e($message); ?>
+
                         </div>
-                    @enderror
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="form-group">
@@ -360,11 +377,19 @@
                         autocomplete="new-password"
                     />
                     <div class="password-match" id="passwordMatch"></div>
-                    @error('password_confirmation')
+                    <?php $__errorArgs = ['password_confirmation'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                         <div class="error-message">
-                            {{ $message }}
+                            <?php echo e($message); ?>
+
                         </div>
-                    @enderror
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <button type="submit" class="submit-btn" id="submitBtn">
@@ -477,7 +502,7 @@
 
         // Back button functionality
         function goBack() {
-            window.location.href = "{{ route('login') }}";
+            window.location.href = "<?php echo e(route('login')); ?>";
         }
 
         // Add hover effects
@@ -495,3 +520,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/auth/reset-password.blade.php ENDPATH**/ ?>

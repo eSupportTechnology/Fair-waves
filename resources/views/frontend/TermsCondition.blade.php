@@ -149,16 +149,16 @@
                         <div id="accordion" role="tablist">
                             <h3 class="title-terms pt-0">Terms and Conditions</h3>
 
-                            <p>Welcome to crown.esupportsystem.shop, the online purchasing platform for Abans PLC (Sri Lanka).
-                                The crown.esupportsystem.shop website provides services to its valued customers under the following
+                            <p>Welcome to fairwaves.lk, the online purchasing platform for Abans PLC (Sri Lanka).
+                                The fairwaves.lk website provides services to its valued customers under the following
                                 conditions. Please read and accept the under-mentioned conditions and guidelines
                                 carefully before using the services of this website.</p>
 
-                            <h3 class="title-terms">Product information at crown.esupportsystem.shop website</h3>
-                            <p>The crown.esupportsystem.shop website attempts to be as accurate as possible with the information
-                                displayed on the site. However, crown.esupportsystem.shop does not guarantee that product
+                            <h3 class="title-terms">Product information at fairwaves.lk website</h3>
+                            <p>The fairwaves.lk website attempts to be as accurate as possible with the information
+                                displayed on the site. However, fairwaves.lk does not guarantee that product
                                 descriptions or other content on this site are 100% accurate, complete, reliable or
-                                completely free of errors. If a product offered by crown.esupportsystem.shop is not as described on
+                                completely free of errors. If a product offered by fairwaves.lk is not as described on
                                 the website, a customer’s sole remedy is to return it in an unused condition within two
                                 days of delivery. If there is any external damage to the package, a customer is
                                 responsible for checking the item when it is handed over. An item will not be exchanged
@@ -167,10 +167,10 @@
                                 faults and are subjected to a fine or penalty for the cost. </p>
 
                             <p>In case the item received is found defective, customers should immediately inform
-                                crown.esupportsystem.shop within 24 hours to arrange a replacement with a brand-new unit or a full
+                                fairwaves.lk within 24 hours to arrange a replacement with a brand-new unit or a full
                                 refund will be provided if the stock is unavailable. </p>
 
-                            <p>Regarding the items sold through crown.esupportsystem.shop, the price of an item cannot be confirmed
+                            <p>Regarding the items sold through fairwaves.lk, the price of an item cannot be confirmed
                                 until the customer orders the item. Even though every effort is made to provide accurate
                                 pricing, there may be a negligible probability that some items can be mispriced. If the
                                 new price is higher than the mentioned price, we will not cancel or deliver the item
@@ -179,14 +179,14 @@
                                 the additional amount but if you decide to cancel, we will issue a refund. </p>
 
                             <p>Due to current international exchange laws and conventions, even if delivery of the
-                                selected item is canceled, crown.esupportsystem.shop cannot refund your money. You will, however, be
+                                selected item is canceled, fairwaves.lk cannot refund your money. You will, however, be
                                 provided with credit on the website to purchase another available product up to the
                                 value of the previous item.</p>
 
                             <div class="content-section">
                                 <h3 class="title-terms">Return and Refund Policy</h3>
                                 <ul>
-                                    <li><strong>Period :</strong> BuyAbans must be informed within 3 days for
+                                    <li><strong>Period :</strong> Fair Waves must be informed within 3 days for
                                         Electronics &
                                         7
                                         days for Lifestyle brands (Skechers, Under Armour, Hugo Boss) of receiving the
@@ -208,7 +208,7 @@
                                         route to us. Items damaged en route will not be accepted.</li>
                                     <li>It is the customer’s responsibility to ensure proof of postage for parcels that
                                         contain items to be returned.</li>
-                                    <li>BuyAbans will require minimum 05-07 business days to process your return request
+                                    <li>Fair Waves will require minimum 05-07 business days to process your return request
                                         and
                                         prepare the replacement unit. </li>
                                 </ul>
@@ -224,11 +224,11 @@
                                         to
                                         your credit card/ bank account may require additional time depending on the bank
                                         due
-                                        to its own operational time for which BuyAbans will not be responsible.</li>
+                                        to its own operational time for which Fair Waves will not be responsible.</li>
                                     <li>In the event of purchasing an AC unit with low capacity, the consumer is only
                                         eligible for a credit note for the amount of their purchase or they can switch
                                         to a
-                                        unit with a higher capacity. crown.esupportsystem.shop will not be issuing refunds for these
+                                        unit with a higher capacity. fairwaves.lk will not be issuing refunds for these
                                         cases.</li>
                                     <li>Customers can use the BTU calculator when purchasing AC to calculate the exact
                                         capacity that best suits
@@ -237,32 +237,32 @@
                                     <li>The total warranty and the comprehensive warranty will not apply if an
                                         under-capacity air conditioner is purchased.</li>
                                     <li>All manufacturing and material defects that require repair or return must be
-                                        informed and returned to BuyAbans within the warranty period of 30 days. Any
+                                        informed and returned to Fair Waves within the warranty period of 30 days. Any
                                         repair or return that failed to be reported or returned within the specified
                                         time frame will not be accepted or refunded.</li>
                                     <li>• Refunds will not be provided for change of mind. All sales are final. Refunds
                                         will only be issued under specific circumstances as outlined in our policy.</li>
                                 </ul>
 
-                                <p class="pt-2 pb-2">The prices for all the items mentioned on crown.esupportsystem.shop are the
+                                <p class="pt-2 pb-2">The prices for all the items mentioned on fairwaves.lk are the
                                     final
                                     and last prices of
                                     sale via online means.</p>
                             </div>
 
                             <div class="content-section">
-                                <h3 class="title-terms">Using crown.esupportsystem.shop accounts</h3>
+                                <h3 class="title-terms">Using fairwaves.lk accounts</h3>
                                 <p>It is the responsibility of the users of this site to keep their passwords, other
                                     account
                                     information, and the computer used to log on to the site, secure. Website account
                                     holders are solely responsible for all activities conducted via through their
-                                    crown.esupportsystem.shop account or their passwords and BuyAbans shall be indemnified from any
+                                    fairwaves.lk account or their passwords and Fair Waves shall be indemnified from any
                                     such
                                     liability.</p>
                             </div>
 
                             <div class="content-section">
-                                <h3 class="title-terms">Abans Duty Free purchase via www.crown.esupportsystem.shop</h3>
+                                <h3 class="title-terms">Abans Duty Free purchase via www.fairwaves.lk</h3>
                                 <p>The payment will be considered as conditional purchase as the transaction will
                                     complete
                                     once the passenger physically arrives to the BIA and fulfil the requirements of the
@@ -275,7 +275,7 @@
                                     goods
                                     from the duty-free shop will only be processed upon the exchange of the items
                                     physically
-                                    at our Duty-free shop. BuyAbans website has the legal right to process a refund in
+                                    at our Duty-free shop. Fair Waves website has the legal right to process a refund in
                                     any
                                     case upon the approval of the Sri Lanka Customs officers based at Bandaranayake
                                     International Airport (BIA).</p>
@@ -287,7 +287,7 @@
 
                             <div class="content-section">
                                 <h3 class="title-terms">Warranty:</h3>
-                                <p>The warranty provided through the crown.esupportsystem.shop website is the same as the common
+                                <p>The warranty provided through the fairwaves.lk website is the same as the common
                                     warranty
                                     provided to all Abans PLC showrooms. For any warranty-related issues, please contact
                                     the
@@ -521,15 +521,15 @@
 
                             <div class="content-section">
                                 <h3 class="title-terms">Exchange of Goods: </h3>
-                                <p>crown.esupportsystem.shop may exchange the purchased item on valid for another item requested by
+                                <p>fairwaves.lk may exchange the purchased item on valid for another item requested by
                                     the
                                     customer. The said customer will have to pay for any difference in the price and
                                     that
                                     payment will also need to be completed within 48 hours from the time of purchase.
                                 </p>
-                                <p>crown.esupportsystem.shop is not allowed to exchange any goods purchased at the BIA Duty Free
+                                <p>fairwaves.lk is not allowed to exchange any goods purchased at the BIA Duty Free
                                     unless
-                                    the products sold contain internal technical faults.crown.esupportsystem.shop can only provide
+                                    the products sold contain internal technical faults.fairwaves.lk can only provide
                                     like-for-like exchanges when stock is available at our showrooms outside the
                                     Duty-Free zones. </p>
 
@@ -537,34 +537,34 @@
 
 
                             <div class="content-section">
-                                <h3 class="title-terms">Policy for information gathered by crown.esupportsystem.shop</h3>
+                                <h3 class="title-terms">Policy for information gathered by fairwaves.lk</h3>
                                 <p>
 
-                                    All information entered in to crown.esupportsystem.shop by site visitors will be collected and
+                                    All information entered in to fairwaves.lk by site visitors will be collected and
                                     stored. If certain visitors decide not to provide certain information, they will not
                                     be
                                     able to acquire the valuable advantages and features of this website. This vital
                                     information is used for quick and fruitful responses to your requests, and for
                                     communicating with you in present and future instances. Information about customers
                                     is
-                                    important to BuyAbans and will be treated with utmost confidentiality and will not
+                                    important to Fair Waves and will be treated with utmost confidentiality and will not
                                     be
                                     divulged to 03rd parties. Customer information is used only as described below and
                                     with
-                                    affiliates of crown.esupportsystem.shop.</p>
+                                    affiliates of fairwaves.lk.</p>
 
 
                                 <p><i>Note: Customer is responsible for informing the change of his/her phone no. and/or
                                         email address to
-                                        Buyabans.</i></p>
+                                        Fair Waves.</i></p>
                             </div>
 
                             <div class="content-section">
                                 <h3 class="title-terms">Copyrights</h3>
                                 <p>
 
-                                    The content of the crown.esupportsystem.shop site is the property of Abans PLC (Sri Lanka) and is
-                                    protected under international copyright laws. The trademark of www.crown.esupportsystem.shop is a
+                                    The content of the fairwaves.lk site is the property of Abans PLC (Sri Lanka) and is
+                                    protected under international copyright laws. The trademark of www.fairwaves.lk is a
                                     registered trademark and the sole rights of changing, modifying, assigning, or using
                                     this trademark is solely with Abans PLC (Sri Lanka). Anyone other than Abans PLC who
                                     is
@@ -575,12 +575,12 @@
                             </div>
 
                             <div class="content-section">
-                                <h3 class="title-terms">Communication between you and crown.esupportsystem.shop</h3>
+                                <h3 class="title-terms">Communication between you and fairwaves.lk</h3>
                                 <p>
 
-                                    When you visit the crown.esupportsystem.shop website or communicate with crown.esupportsystem.shop via
+                                    When you visit the fairwaves.lk website or communicate with fairwaves.lk via
                                     e-mails,
-                                    you are considered as communicating with crown.esupportsystem.shop. This permits crown.esupportsystem.shop to
+                                    you are considered as communicating with fairwaves.lk. This permits fairwaves.lk to
                                     send
                                     e-mails and to communicate with you and you are deemed as agreeing to all terms and
                                     conditions, notices and other means of communications that we provide to you
@@ -592,7 +592,7 @@
                                 <h3 class="title-terms">Contact Details:</h3>
 
                                 <div class="border-box-table">
-                                    <p><strong>www.crown.esupportsystem.shop</strong></p>
+                                    <p><strong>www.fairwaves.lk</strong></p>
                                     <p>No. 498,<br>
                                         Galle Road, Colombo 03.<br>
                                         Sri Lanka.</p>
@@ -604,7 +604,7 @@
 
                                         <tr>
                                             <td>Web </td>
-                                            <td> : www.crown.esupportsystem.shop</td>
+                                            <td> : www.fairwaves.lk</td>
                                         </tr>
 
 
@@ -630,7 +630,7 @@
 
                                         <tr>
                                             <td>Web </td>
-                                            <td> : www.crown.esupportsystem.shop</td>
+                                            <td> : www.fairwaves.lk</td>
                                         </tr>
 
 
@@ -648,12 +648,12 @@
                         <h3 class="title-terms" style="padding-top: 0px;">Privacy Policy</h3>
                         <p class="monial-graph">We, Abans PLC (PV 5301 PB/PQ), having its registered office at No. 498,
                             Galle Road, Colombo 03 are pleased to provide our policy on privacy for the users of our
-                            website <a href="www.buyabans.html">www.crown.esupportsystem.shop</a>. We collect, use, maintain and
+                            website <a href="www.fairwaves.lk">www.fairwaves.lk</a>. We collect, use, maintain and
                             disclose
                             information collected from users of our website. We assure you that, we use our best and
                             reasonable
                             effort to protect the privacy of users of our website, <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a>.</p>
+                                href="www.fairwaves.lk">www.fairwaves.lk</a>.</p>
                         <p class="monial-graph">We receive your personal information such as Name, Address, E-mail
                             address,
                             National Identity Card Number, Mobile Number, Credit Card details &amp; Transaction
@@ -661,7 +661,7 @@
                             usage &amp; preference information, Log and device information, etc., and we only collect
                             and
                             store the information you submit voluntarily when you use our website, <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a>. You can always refuse to provide personal
+                                href="www.fairwaves.lk">www.fairwaves.lk</a>. You can always refuse to provide personal
                             information, except that it may prevent you from engaging in certain site-related
                             activities.
                         </p>
@@ -707,18 +707,18 @@
                             sites
                             that are subject to their privacy policies.</p>
                         <p class="monial-graph">The information contained on <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a>
+                                href="www.fairwaves.lk">www.fairwaves.lk</a>
                             website is for general information purposes only. The <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a> website assumes no responsibility for
+                                href="www.fairwaves.lk">www.fairwaves.lk</a> website assumes no responsibility for
                             errors or
                             omissions in the content of the services. In no event shall <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a> website be liable for any special, direct,
+                                href="www.fairwaves.lk">www.fairwaves.lk</a> website be liable for any special, direct,
                             indirect, consequential, or incidental damages or any damages whatsoever, whether in an
                             action
                             of contract, negligence or other tort, arising out of or in connection with the use of the
                             services or the content of the service. We reserve the right to make additions, deletions or
                             modifications to the content on the services at any time without prior notice. The <a
-                                href="www.buyabans.html">www.crown.esupportsystem.shop</a> website does not warrant that the website
+                                href="www.fairwaves.lk">www.fairwaves.lk</a> website does not warrant that the website
                             is
                             free from viruses or other harmful components.</p>
                         <p class="monial-graph">We may change this privacy policy from time to time, as necessary. When
@@ -788,7 +788,7 @@
                         <div class="content-section">
                             <h3 class="title-terms">Return and Refund Policy</h3>
                             <ul>
-                                <li><strong>Period :</strong> BuyAbans must be informed within 3 days for Electronics &
+                                <li><strong>Period :</strong> Fair Waves must be informed within 3 days for Electronics &
                                     7
                                     days for Lifestyle brands (Skechers, Under Armour, Hugo Boss) of receiving the item
                                     to be eligible for return.</li>
@@ -803,7 +803,7 @@
                                     route to us. Items damaged en route will not be accepted.</li>
                                 <li>It is the customer’s responsibility to ensure proof of postage for parcels that
                                     contain items to be returned.</li>
-                                <li>BuyAbans will require minimum 05-07 business days to process your return request and
+                                <li>Fair Waves will require minimum 05-07 business days to process your return request and
                                     prepare the replacement unit. </li>
                             </ul>
                         </div>
@@ -816,10 +816,10 @@
                                     charges borne by the customer for return of item. </li>
                                 <li>All refunds will be processed within 3-5 working days. Processing refunds back to
                                     your credit card/ bank account may require additional time depending on the bank due
-                                    to its own operational time for which BuyAbans will not be responsible.</li>
+                                    to its own operational time for which Fair Waves will not be responsible.</li>
                                 <li>In the event of purchasing an AC unit with low capacity, the consumer is only
                                     eligible for a credit note for the amount of their purchase or they can switch to a
-                                    unit with a higher capacity. crown.esupportsystem.shop will not be issuing refunds for these
+                                    unit with a higher capacity. fairwaves.lk will not be issuing refunds for these
                                     cases.</li>
                                 <li>Customers can use the BTU calculator when purchasing AC to calculate the exact
                                     capacity that best suits
@@ -828,14 +828,14 @@
                                 <li>The total warranty and the comprehensive warranty will not apply if an
                                     under-capacity air conditioner is purchased.</li>
                                 <li>All manufacturing and material defects that require repair or return must be
-                                    informed and returned to BuyAbans within the warranty period of 30 days. Any repair
+                                    informed and returned to Fair Waves within the warranty period of 30 days. Any repair
                                     or return that failed to be reported or returned within the specified time frame
                                     will not be accepted or refunded.</li>
                                 <li>• Refunds will not be provided for change of mind. All sales are final. Refunds will
                                     only be issued under specific circumstances as outlined in our policy.</li>
                             </ul>
 
-                            <p class="pt-2 pb-2">The prices for all the items mentioned on crown.esupportsystem.shop are the final
+                            <p class="pt-2 pb-2">The prices for all the items mentioned on fairwaves.lk are the final
                                 and last prices of
                                 sale via online means.</p>
                         </div>

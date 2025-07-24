@@ -28,9 +28,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\AddressBookController;
-
-
-
+use App\Http\Controllers\AddressController;
 //Affiliate_Dashboard Links
 use App\Http\Controllers\AffiliateProductController;
 use App\Http\Controllers\AffiliateCustomerController;
@@ -598,6 +596,12 @@ Route::get('home/My-Account/My-Reviews',[ReviewsController::class,'myReviews'])-
 Route::get('home/My-Account/Write-Reviews/{id}',[ReviewsController::class,'writeReviews'])->name('write-review');
 Route::post('/reviews/{id}', [ReviewsController::class, 'store'])->name('reviews.store');
 Route::delete('/home/reviews/{review}', [ReviewsController::class, 'customerDestroy'])->name('customer.reviews.destroy');
+
+Route::get('home/My-Account/addresses', [AddressController::class, 'showAddresses'])->name('addresses');
+Route::post('home/My-Account/addresses/update', [AddressController::class, 'updateAddress'])->name('updateAddress');
+Route::delete('/addresses/{id}', [AddressController::class, 'destroy'])->name('address.delete');
+Route::post('home/My-Account/addresses/store', [AddressController::class, 'storeAddress'])->name('storeAddress');
+
 
 
 //Vendor dashboard

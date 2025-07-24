@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\OnepayHelper;
+use App\Mail\OrderStatusUpdatedMail;
 use App\Models\CustomerOrder;
 use App\Models\CustomerOrderItems;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
@@ -39,6 +41,12 @@ class PaymentController extends Controller
                 'payment_method' => 'COD',
                 'payment_status' => 'Not Paid',
             ]);
+
+            // Send email to customer
+            if ($order->email) {
+                Mail::to($order->email)->send(new OrderStatusUpdatedMail($order, $order->status));
+            }
+
 
             return redirect()->route('order.thankyou', ['order_code' => $order_code])
                             ->with('success', 'Order confirmed successfully!');
@@ -161,6 +169,12 @@ class PaymentController extends Controller
             return redirect()->route('order.payment-fail')->with('error', 'Order not found.');
         }
 
+        // Send email to customer
+        if ($order->email) {
+            Mail::to($order->email)->send(new OrderStatusUpdatedMail($order, $order->status));
+        }
+
+
         $orderItems = CustomerOrderItems::where('order_code', $order_code)->get();
         return view('frontend.order_received', compact('order', 'orderItems'));
     }
@@ -204,6 +218,7 @@ class PaymentController extends Controller
 
                 return response()->json(['message' => 'Payment confirmed and order updated.']);
             } else {
+                $order->update(['payment_status' => 'Not Paid']);
                 Log::warning('Payment failed or not successful', ['status_message' => $statusMessage]);
                 return redirect()->route('order.payment-fail')->with('error', 'Payment was not successful.');
             }

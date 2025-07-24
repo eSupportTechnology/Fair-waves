@@ -38,15 +38,16 @@
                                         {{ $dealer->name }}
                                     @endif
                                 </h3>
-                                <div class="dealer-details">
+                                <!--div class="dealer-details">
                                     <small class="text-muted me-3 dealer-owner">
-                                        {{ $dealer->name }}
+                                        {
+                                        { $dealer->name }}
                                     </small>
                                     <span class="dealer-badge">
                                         <i class="fas fa-certificate me-1"></i>
                                         Verified Seller
                                     </span>
-                                </div>
+                                </div-->
                             </div>
                         </div>
                     @else
@@ -72,21 +73,32 @@
                             </div>
                             
                             <!-- User Name and Info -->
-                            <div class="dealer-content">
-                                @if(auth()->check())
-                                    <h3 class="dealer-name mb-1 text-dark fw-bold">
-                                        {{ auth()->user()->name }}
-                                    </h3>
-                                    <div class="dealer-details">
-                                        <small class="text-muted me-3 dealer-owner">
-                                            User
-                                        </small>
-                                    </div>
+                        <div class="dealer-content">
+                            <h3 class="dealer-name mb-1 text-dark fw-bold">
+                                @if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
+                                    <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="text-dark text-decoration-none">
+                                        {{ $dealer->dealerProfile->dealer_shop_name }}
+                                    </a>
+                                @elseif(isset($dealer))
+                                    {{ $dealer->name }}
+                                @elseif(auth()->check())
+                                    {{ auth()->user()->name }}
                                 @else
-                                    <h4 class="dealer-name mb-0 text-dark fw-bold">Guest User</h4>
-                                    <small class="text-muted">Welcome</small>
+                                    Guest User
                                 @endif
+                            </h3>
+                            <div class="dealer-details">
+                                <small class="text-muted me-3 dealer-owner">
+                                    @if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
+                                        Dealer
+                                    @elseif(auth()->check())
+                                        User
+                                    @else
+                                        Welcome
+                                    @endif
+                                </small>
                             </div>
+                        </div>
                         </div>
                     @endif
                 </div>
@@ -112,7 +124,13 @@
 
                     <!-- Cart Icon with Count - Always Visible -->
                     <div class="cart-section position-relative d-flex align-items-center">
-                        <a href="{{ route('showroom.cart') }}" class="btn btn-cart-custom position-relative">
+                        @if(isset($dealer) && $dealer && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
+                            <a href="{{ route('showroom.cart', $dealer->dealerProfile->dealer_shop_name) }}" class="btn btn-cart-custom position-relative">
+                        @elseif(isset($dealer_shop_name))
+                            <a href="{{ route('showroom.cart', $dealer_shop_name) }}" class="btn btn-cart-custom position-relative">
+                        @else
+                            <a href="{{ route('home') }}" class="btn btn-cart-custom position-relative">
+                        @endif
                             <i class="fas fa-shopping-cart"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge"
                                   id="cart-count">

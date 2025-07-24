@@ -106,11 +106,16 @@ class CartCheckoutController extends Controller
             return redirect()->route('showroom.cart')->with('error', 'Invalid order. Please try again.');
         }
 
+        if (!$checkoutInfo) {
+            return redirect()->route('cart.checkout')->with('error', 'Please complete checkout information first.');
+        }
+
         // Create an order object with the necessary data
         $order = (object)[
             'order_code' => $order_code,
             'total_cost' => $cartSummary['total'],
             'subtotal' => $cartSummary['subtotal'],
+            'delivery_fee' => $cartSummary['delivery_fee'],
             'items' => $cartSummary['items'],
             'first_name' => $checkoutInfo['first_name'],
             'last_name' => $checkoutInfo['last_name'],
@@ -134,10 +139,23 @@ class CartCheckoutController extends Controller
     public function confirmCODPayment($order_code)
     {
         try {
+            \Log::info('COD Payment attempt started', ['order_code' => $order_code]);
+            
             $cartSummary = session()->get('cart_summary');
             $checkoutInfo = session()->get('checkout_info');
             
+            \Log::info('Session data check', [
+                'cart_summary_exists' => !is_null($cartSummary),
+                'checkout_info_exists' => !is_null($checkoutInfo),
+                'order_code_match' => $cartSummary ? ($cartSummary['order_code'] === $order_code) : false
+            ]);
+            
             if (!$cartSummary || !$checkoutInfo || $cartSummary['order_code'] !== $order_code) {
+                \Log::error('Invalid order information for COD payment', [
+                    'cart_summary' => $cartSummary,
+                    'checkout_info' => $checkoutInfo,
+                    'order_code' => $order_code
+                ]);
                 throw new \Exception('Invalid order information');
             }
 
@@ -156,8 +174,13 @@ class CartCheckoutController extends Controller
                 'total_cost' => $cartSummary['total'],
                 'status' => 'Pending',
                 'payment_method' => 'COD',
-                'payment_status' => 'Pending',
+                'payment_status' => 'Not Paid', // Changed from 'Pending' to 'Not Paid'
                 'order_type' => \Illuminate\Support\Facades\Auth::check() ? 'customer' : 'annonymous'
+            ]);
+
+            \Log::info('COD Order created successfully', [
+                'order_code' => $order_code,
+                'payment_status' => 'Not Paid'
             ]);
 
             // Create order items in customer_order_items table
@@ -174,14 +197,21 @@ class CartCheckoutController extends Controller
                 ]);
             }
 
+            \Log::info('Order items created successfully');
+
             // Clear cart and checkout data
             session()->forget(['showroom_cart', 'cart_summary', 'checkout_info']);
 
-            return redirect()->route('order.thankyou', ['order_code' => $order_code])
+            \Log::info('Session data cleared, redirecting to thank you page');
+
+            return redirect()->route('cart.thankyou', ['order_code' => $order_code])
                         ->with('success', 'Order placed successfully!');
 
         } catch (\Exception $e) {
-            \Log::error('COD payment error: ' . $e->getMessage());
+            \Log::error('COD payment error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'order_code' => $order_code
+            ]);
             return redirect()->back()->with('error', 'Failed to place order. Please try again.');
         }
     }
@@ -189,10 +219,23 @@ class CartCheckoutController extends Controller
     public function confirmCardPayment($order_code)
     {
         try {
+            \Log::info('Card Payment attempt started', ['order_code' => $order_code]);
+            
             $cartSummary = session()->get('cart_summary');
             $checkoutInfo = session()->get('checkout_info');
             
+            \Log::info('Session data check for card payment', [
+                'cart_summary_exists' => !is_null($cartSummary),
+                'checkout_info_exists' => !is_null($checkoutInfo),
+                'order_code_match' => $cartSummary ? ($cartSummary['order_code'] === $order_code) : false
+            ]);
+            
             if (!$cartSummary || !$checkoutInfo || $cartSummary['order_code'] !== $order_code) {
+                \Log::error('Invalid order information for card payment', [
+                    'cart_summary' => $cartSummary,
+                    'checkout_info' => $checkoutInfo,
+                    'order_code' => $order_code
+                ]);
                 throw new \Exception('Invalid order information');
             }
 
@@ -215,6 +258,11 @@ class CartCheckoutController extends Controller
                 'order_type' => \Illuminate\Support\Facades\Auth::check() ? 'customer' : 'annonymous'
             ]);
 
+            \Log::info('Card payment order created successfully', [
+                'order_code' => $order_code,
+                'payment_status' => 'Paid'
+            ]);
+
             // Create order items in customer_order_items table
             foreach ($cartSummary['items'] as $item) {
                 \App\Models\CustomerOrderItems::create([
@@ -229,15 +277,39 @@ class CartCheckoutController extends Controller
                 ]);
             }
 
+            \Log::info('Card payment order items created successfully');
+
             // Clear cart and checkout data
             session()->forget(['showroom_cart', 'cart_summary', 'checkout_info']);
 
-            return redirect()->route('order.thankyou', ['order_code' => $order_code])
+            \Log::info('Card payment session data cleared, redirecting to thank you page');
+
+            return redirect()->route('cart.thankyou', ['order_code' => $order_code])
                         ->with('success', 'Order placed successfully!');
 
         } catch (\Exception $e) {
-            \Log::error('Card payment error: ' . $e->getMessage());
+            \Log::error('Card payment error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'order_code' => $order_code
+            ]);
             return redirect()->back()->with('error', 'Failed to place order. Please try again.');
+        }
+    }
+
+    public function showThankYou($order_code)
+    {
+        try {
+            // Find the order
+            $order = \App\Models\CustomerOrder::where('order_code', $order_code)
+                ->with(['items.product'])
+                ->firstOrFail();
+
+            // Get order items
+            $orderItems = \App\Models\CustomerOrderItems::where('order_code', $order_code)->get();
+
+            return view('frontend.order_received', compact('order', 'orderItems'));
+        } catch (\Exception $e) {
+            return redirect()->route('showroom.cart')->with('error', 'Order not found.');
         }
     }
 }

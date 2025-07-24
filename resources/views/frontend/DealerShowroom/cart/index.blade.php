@@ -2,23 +2,9 @@
 
 @section('content')
 @php
-// Extract dealer information from cart session
-$dealer = null;
 $cart = session('showroom_cart', []);
-if (!empty($cart)) {
-    // Get the first product from cart to find dealer information
-    $firstItem = reset($cart);
-    if (isset($firstItem['product_id']) && $firstItem['product_id']) {
-        // Find dealer through DealerProductLink
-        $dealerProductLink = App\Models\DealerProductLink::where('product_id', $firstItem['product_id'])
-            ->with(['dealer.dealerProfile'])
-            ->first();
-        
-        if ($dealerProductLink && $dealerProductLink->dealer) {
-            $dealer = $dealerProductLink->dealer;
-        }
-    }
-}
+// Get dealer shop name from URL segment or session cart
+$dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop_name'] ?? 'default';
 @endphp
 <style>
     .cart-table {
@@ -134,7 +120,12 @@ if (!empty($cart)) {
 </style>
 
 <div class="container py-5">
-    <h2 class="mb-4">Shopping Cart</h2>
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            
+            <h2 class="mb-0">Shopping Cart</h2>
+        </div>
+    </div>
 
     @if(empty($cart))
         <div class="alert alert-info">
@@ -148,6 +139,12 @@ if (!empty($cart)) {
                         <div class="cart-item" data-product-id="{{ $productId }}">
                             <div class="row align-items-center">
                                 <div class="col-md-2">
+                                    @php
+                                        // Get product with images if not already loaded
+                                        if (!isset($item['product']) || !$item['product']) {
+                                            $item['product'] = App\Models\Product::with('images')->find($item['id']);
+                                        }
+                                    @endphp
                                     @if(isset($item['product']) && $item['product'] && $item['product']->images->isNotEmpty())
                                         <img src="{{ asset('storage/' . $item['product']->images->first()->image_path) }}" alt="{{ $item['name'] }}" class="product-image">
                                     @elseif(isset($item['image']) && $item['image'])
@@ -183,7 +180,7 @@ if (!empty($cart)) {
                                     </div>
                                 </div>
                                 <div class="col-md-1">
-                                    <form action="{{ route('showroom.cart.remove', $productId) }}" method="POST">
+                                    <form action="{{ route('showroom.cart.remove', [$dealer_shop_name ?? 'default', $productId]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="remove-item" onclick="return confirm('Are you sure you want to remove this item?')" title="Remove item">
@@ -213,7 +210,11 @@ if (!empty($cart)) {
                         <strong id="cart-total">Rs. {{ number_format($total, 2) }}</strong>
                     </div>
                 
-                        <a href="{{ route('cart.checkout') }}" class="btn btn-primary checkout-btn">Proceed to Checkout</a>
+                        @if(isset($dealer_shop_name))
+                            <a href="{{ route('dealer.cart.checkout', $dealer_shop_name) }}" class="btn btn-primary checkout-btn">Proceed to Checkout</a>
+                        @else
+                            <a href="{{ route('cart.checkout') }}" class="btn btn-primary checkout-btn">Proceed to Checkout</a>
+                        @endif
                 </div>
             </div>
         </div>
@@ -221,42 +222,28 @@ if (!empty($cart)) {
 </div>
 
 <script>
-function showMessage(message, type = 'success') {
-        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
-        alertDiv.role = 'alert';
-        alertDiv.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
-        
-        const container = document.querySelector('.container');
-        container.insertBefore(alertDiv, container.firstChild);
-        
-        // Auto-dismiss after 3 seconds
-        setTimeout(() => {
-            alertDiv.remove();
-        }, 3000);
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
-    // Handle quantity updates
+    // Handle quantity updates - Single implementation only
     document.querySelectorAll('.quantity-btn').forEach(button => {
         button.addEventListener('click', function() {
             const productId = this.dataset.productId;
             const action = this.dataset.action;
-            const inputElement = this.parentElement.querySelector('.quantity-input');
+            const cartItem = this.closest('.cart-item');
+            const inputElement = cartItem.querySelector('.quantity-input');
             let currentQty = parseInt(inputElement.value);
             
             let newQty = action === 'increase' ? currentQty + 1 : currentQty - 1;
             if (newQty < 1) newQty = 1;
             
             // Show loading state
-            button.disabled = true;
+            cartItem.classList.add('loading');
+            this.disabled = true;
             
             // Send AJAX request to update cart
-            fetch(`/showroom/cart/update/${productId}`, {
+            const dealerShopName = '{{ $dealer_shop_name ?? ($dealer->dealerProfile->dealer_shop_name ?? 'default') }}';
+            const updateUrl = `/showroom/${dealerShopName}/cart/update/${productId}`;
+            
+            fetch(updateUrl, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -266,23 +253,36 @@ function showMessage(message, type = 'success') {
                     quantity: newQty
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     // Update quantity input
                     inputElement.value = newQty;
                     
                     // Update item subtotal
-                    const cartItem = button.closest('.cart-item');
                     const subtotalElement = cartItem.querySelector('.item-subtotal');
                     const priceElement = cartItem.querySelector('.price');
                     const price = parseFloat(priceElement.textContent.replace('Rs. ', '').replace(',', ''));
                     const newSubtotal = price * newQty;
-                    subtotalElement.textContent = 'Rs. ' + newSubtotal.toFixed(2);
+                    subtotalElement.textContent = `Rs. ${newSubtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
                     
-                    // Update cart total
-                    document.getElementById('cart-subtotal').textContent = 'Rs. ' + data.subtotal.toFixed(2);
-                    document.getElementById('cart-total').textContent = 'Rs. ' + data.total.toFixed(2);
+                    // Update cart totals
+                    if (data.subtotal !== undefined) {
+                        document.getElementById('cart-subtotal').textContent = `Rs. ${data.subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    }
+                    if (data.total !== undefined) {
+                        document.getElementById('cart-total').textContent = `Rs. ${data.total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    }
+                    
+                    // Show success message
+                    showMessage('Cart updated successfully!', 'success');
+                } else {
+                    showMessage(data.message || 'Failed to update cart', 'error');
                 }
             })
             .catch(error => {
@@ -290,97 +290,14 @@ function showMessage(message, type = 'success') {
                 showMessage('An error occurred while updating the cart.', 'error');
             })
             .finally(() => {
-                button.disabled = false;
+                // Remove loading state
                 cartItem.classList.remove('loading');
+                cartItem.querySelectorAll('.quantity-btn').forEach(btn => {
+                    btn.disabled = false;
+                });
             });
         });
     });
-    // Add event listeners to all quantity buttons
-    document.querySelectorAll('.quantity-btn').forEach(button => {
-        button.addEventListener('click', handleQuantityChange);
-    });
-
-    function handleQuantityChange(event) {
-        const button = event.target;
-        const productId = button.dataset.productId;
-        const action = button.dataset.action;
-        const cartItem = button.closest('.cart-item');
-        const quantityInput = cartItem.querySelector('.quantity-input');
-        const currentQuantity = parseInt(quantityInput.value);
-        
-        let newQuantity = currentQuantity;
-        
-        if (action === 'increase') {
-            newQuantity = currentQuantity + 1;
-        } else if (action === 'decrease' && currentQuantity > 1) {
-            newQuantity = currentQuantity - 1;
-        } else if (action === 'decrease' && currentQuantity === 1) {
-            // Don't allow quantity to go below 1
-            return;
-        }
-
-        // Show loading state
-        cartItem.classList.add('loading');
-        button.disabled = true;
-
-        // Update quantity via AJAX
-        updateQuantity(productId, newQuantity, cartItem);
-    }
-
-    function updateQuantity(productId, newQuantity, cartItem) {
-        fetch(`/showroom/cart/update/${productId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({
-                quantity: newQuantity
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                showMessage('Cart updated successfully!', 'success');
-                // Update quantity input
-                const quantityInput = cartItem.querySelector('.quantity-input');
-                quantityInput.value = newQuantity;
-                
-                // Update item subtotal
-                const itemPrice = parseFloat(cartItem.querySelector('.price').textContent.replace('Rs. ', '').replace(',', ''));
-                const newSubtotal = (itemPrice * newQuantity).toFixed(2);
-                const subtotalElement = cartItem.querySelector('.item-subtotal');
-                subtotalElement.textContent = `Rs. ${parseFloat(newSubtotal).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-
-                // Update cart summary
-                const formattedSubtotal = parseFloat(data.subtotal).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                const formattedTotal = parseFloat(data.total).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                document.getElementById('cart-subtotal').textContent = `Rs. ${formattedSubtotal}`;
-                document.getElementById('cart-total').textContent = `Rs. ${formattedTotal}`;
-
-                // Show success message (optional)
-                showMessage('Cart updated successfully!', 'success');
-            } else {
-                showMessage('Failed to update cart: ' + data.message, 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showMessage('An error occurred while updating the cart.', 'error');
-        })
-        .finally(() => {
-            // Remove loading state
-            cartItem.classList.remove('loading');
-            cartItem.querySelectorAll('.quantity-btn').forEach(btn => {
-                btn.disabled = false;
-            });
-        });
-    }
 
     function showMessage(message, type) {
         // Create a simple toast notification
@@ -411,28 +328,30 @@ function showMessage(message, type = 'success') {
 });
 </script>
 
-@if(isset($dealer) && $dealer && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
+@if(isset($dealer_shop_name))
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Update desktop navigation links
     const desktopNav = document.querySelector('.header-navigation');
-    if (desktopNav) {
+    const shopName = '{{ $dealer_shop_name }}';
+    
+    if (desktopNav && shopName) {
         desktopNav.innerHTML = `
-            <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="nav-link text-dark me-3 hover-orange">Home</a>
-            <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
-            <a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}" class="nav-link text-dark me-3 hover-orange">About</a>
-            <a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
+            <a href="/showroom/${shopName}" class="nav-link text-dark me-3 hover-orange">Home</a>
+            <a href="/showroom/${shopName}#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
+            <a href="/showroom/${shopName}/about" class="nav-link text-dark me-3 hover-orange">About</a>
+            <a href="/showroom/${shopName}/about#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
         `;
     }
 
     // Update mobile navigation links
     const mobileNav = document.querySelector('.mobile-nav-menu');
-    if (mobileNav) {
+    if (mobileNav && shopName) {
         mobileNav.innerHTML = `
-            <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
-            <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
-            <a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
-            <a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
+            <a href="/showroom/${shopName}" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+            <a href="/showroom/${shopName}#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+            <a href="/showroom/${shopName}/about" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+            <a href="/showroom/${shopName}/about#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
         `;
     }
 

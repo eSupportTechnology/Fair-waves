@@ -374,6 +374,242 @@
         </div>
     </div>
     <?php endif; ?>
+
+    <!-- KYC Section (Only for Dealers) -->
+    <?php if(Auth::user()->role == 'dealer'): ?>
+    <div class="card mt-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fas fa-id-card me-2"></i>KYC (Know Your Customer)</h5>
+        </div>
+    <div class="card-body">
+        <?php if(Auth::user()->kycDetail): ?>
+            <?php if(Auth::user()->kycDetail->kyc_status == 'approved'): ?>
+                <!-- KYC Approved - Show details only -->
+                <div class="alert alert-success" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <strong>KYC Approved!</strong> Your KYC verification has been approved.
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Document Type:</strong> <?php echo e(Auth::user()->kycDetail->kyc_doc_type); ?></p>
+                        <p><strong>Document Number:</strong> <?php echo e(Auth::user()->kycDetail->kyc_doc_number); ?></p>
+                        <p><strong>Status:</strong> <span class="badge bg-success">Approved</span></p>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Front of Document</label>
+                        <img src="<?php echo e(asset('storage/' . Auth::user()->kycDetail->kyc_doc_front)); ?>" class="img-fluid rounded border" alt="Front Document" style="max-height: 150px;">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Back of Document</label>
+                        <img src="<?php echo e(asset('storage/' . Auth::user()->kycDetail->kyc_doc_back)); ?>" class="img-fluid rounded border" alt="Back Document" style="max-height: 150px;">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Selfie with Document</label>
+                        <img src="<?php echo e(asset('storage/' . Auth::user()->kycDetail->selfie)); ?>" class="img-fluid rounded border" alt="Selfie" style="max-height: 150px;">
+                    </div>
+                </div>
+                
+            <?php elseif(Auth::user()->kycDetail->kyc_status == 'pending'): ?>
+                <!-- KYC Pending -->
+                <div class="alert alert-warning" role="alert">
+                    <i class="fas fa-clock me-2"></i>
+                    <strong>KYC Under Review!</strong> Your KYC submission is currently being reviewed. Please wait for approval.
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Document Type:</strong> <?php echo e(Auth::user()->kycDetail->kyc_doc_type); ?></p>
+                        <p><strong>Document Number:</strong> <?php echo e(Auth::user()->kycDetail->kyc_doc_number); ?></p>
+                        <p><strong>Status:</strong> <span class="badge bg-warning text-dark">Pending</span></p>
+                        <p><strong>Submitted:</strong> <?php echo e(Auth::user()->kycDetail->created_at->format('M d, Y h:i A')); ?></p>
+                    </div>
+                </div>
+                
+            <?php else: ?>
+                <!-- KYC Rejected - Show form for resubmission -->
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>KYC Rejected!</strong> Please review the reason below and resubmit your documents.
+                </div>
+                
+                <?php if(Auth::user()->kycDetail->kyc_reject_reason): ?>
+                    <div class="alert alert-info">
+                        <strong>Rejection Reason:</strong> <?php echo e(Auth::user()->kycDetail->kyc_reject_reason); ?>
+
+                    </div>
+                <?php endif; ?>
+                
+                <!-- KYC Form for resubmission -->
+                <form action="<?php echo e(route('user.kyc.submit')); ?>" method="POST" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="kyc_doc_type" class="form-label">Document Type <span class="text-danger">*</span></label>
+                            <select class="form-select" id="kyc_doc_type" name="kyc_doc_type" required>
+                                <option value="">Select Document Type</option>
+                                <option value="NIC" <?php echo e(old('kyc_doc_type', Auth::user()->kycDetail->kyc_doc_type) == 'NIC' ? 'selected' : ''); ?>>National Identity Card (NIC)</option>
+                                <option value="DL" <?php echo e(old('kyc_doc_type', Auth::user()->kycDetail->kyc_doc_type) == 'DL' ? 'selected' : ''); ?>>Driving License (DL)</option>
+                                <option value="Passport" <?php echo e(old('kyc_doc_type', Auth::user()->kycDetail->kyc_doc_type) == 'Passport' ? 'selected' : ''); ?>>Passport</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="kyc_doc_number" class="form-label">Document Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="kyc_doc_number" name="kyc_doc_number" value="<?php echo e(old('kyc_doc_number', Auth::user()->kycDetail->kyc_doc_number)); ?>" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="kyc_doc_front" class="form-label">Front of Document <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="kyc_doc_front" name="kyc_doc_front" accept="image/*" required>
+                            <small class="text-muted">Upload clear image of document front (Max: 2MB)</small>
+                            <?php if(Auth::user()->kycDetail->kyc_doc_front): ?>
+                                <div class="mt-2">
+                                    <small class="text-success">Current: Document uploaded</small>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="kyc_doc_back" class="form-label">Back of Document <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="kyc_doc_back" name="kyc_doc_back" accept="image/*" required>
+                            <small class="text-muted">Upload clear image of document back (Max: 2MB)</small>
+                            <?php if(Auth::user()->kycDetail->kyc_doc_back): ?>
+                                <div class="mt-2">
+                                    <small class="text-success">Current: Document uploaded</small>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="selfie" class="form-label">Selfie with Document <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="selfie" name="selfie" accept="image/*" required>
+                            <small class="text-muted">Take a selfie holding the document (Max: 2MB)</small>
+                            <?php if(Auth::user()->kycDetail->selfie): ?>
+                                <div class="mt-2">
+                                    <small class="text-success">Current: Selfie uploaded</small>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload me-2"></i>Resubmit KYC Documents
+                        </button>
+                    </div>
+                </form>
+            <?php endif; ?>
+        <?php else: ?>
+            <!-- No KYC submitted yet - Show form -->
+            <div class="alert alert-info" role="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                Please submit your KYC documents for verification. This is required for dealer account activation.
+            </div>
+            
+            <form action="<?php echo e(route('user.kyc.submit')); ?>" method="POST" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="kyc_doc_type" class="form-label">Document Type <span class="text-danger">*</span></label>
+                        <select class="form-select" id="kyc_doc_type" name="kyc_doc_type" required>
+                            <option value="">Select Document Type</option>
+                            <option value="NIC" <?php echo e(old('kyc_doc_type') == 'NIC' ? 'selected' : ''); ?>>National Identity Card (NIC)</option>
+                            <option value="DL" <?php echo e(old('kyc_doc_type') == 'DL' ? 'selected' : ''); ?>>Driving License (DL)</option>
+                            <option value="Passport" <?php echo e(old('kyc_doc_type') == 'Passport' ? 'selected' : ''); ?>>Passport</option>
+                        </select>
+                        <?php $__errorArgs = ['kyc_doc_type'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="text-danger small"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="kyc_doc_number" class="form-label">Document Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="kyc_doc_number" name="kyc_doc_number" value="<?php echo e(old('kyc_doc_number')); ?>" required>
+                        <?php $__errorArgs = ['kyc_doc_number'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="text-danger small"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="kyc_doc_front" class="form-label">Front of Document <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id="kyc_doc_front" name="kyc_doc_front" accept="image/*" required>
+                        <small class="text-muted">Upload clear image of document front (Max: 2MB)</small>
+                        <?php $__errorArgs = ['kyc_doc_front'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="text-danger small"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="kyc_doc_back" class="form-label">Back of Document <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id="kyc_doc_back" name="kyc_doc_back" accept="image/*" required>
+                        <small class="text-muted">Upload clear image of document back (Max: 2MB)</small>
+                        <?php $__errorArgs = ['kyc_doc_back'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="text-danger small"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="selfie" class="form-label">Selfie with Document <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id="selfie" name="selfie" accept="image/*" required>
+                        <small class="text-muted">Take a selfie holding the document (Max: 2MB)</small>
+                        <?php $__errorArgs = ['selfie'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="text-danger small"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Important:</strong> Please ensure all images are clear and readable. Documents with poor quality may be rejected.
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload me-2"></i>Submit KYC Documents
+                    </button>
+                </div>
+            </form>
+        <?php endif; ?>
+    </div>
+</div>
+<?php endif; ?>
 </div>
 
 <script>
@@ -465,6 +701,64 @@ document.addEventListener('DOMContentLoaded', function() {
             showStatus('Uploading profile image...', 'info');
         }
     });
+
+    // KYC file validation
+    const kycFileInputs = ['kyc_doc_front', 'kyc_doc_back', 'selfie'];
+    
+    kycFileInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    validateKycFile(file, this);
+                }
+            });
+        }
+    });
+    
+    function validateKycFile(file, inputElement) {
+        // Check file size (2MB limit)
+        if (file.size > 2 * 1024 * 1024) {
+            showKycError(inputElement, 'File size must be less than 2MB');
+            inputElement.value = '';
+            return false;
+        }
+        
+        // Check file type
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (!allowedTypes.includes(file.type)) {
+            showKycError(inputElement, 'Please select a valid image file (JPG, PNG, JPEG)');
+            inputElement.value = '';
+            return false;
+        }
+        
+        // Clear any previous error
+        clearKycError(inputElement);
+        showKycSuccess(inputElement, 'File selected successfully');
+        return true;
+    }
+    
+    function showKycError(inputElement, message) {
+        clearKycError(inputElement);
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'text-danger small mt-1 kyc-error';
+        errorDiv.textContent = message;
+        inputElement.parentNode.appendChild(errorDiv);
+    }
+    
+    function showKycSuccess(inputElement, message) {
+        clearKycError(inputElement);
+        const successDiv = document.createElement('div');
+        successDiv.className = 'text-success small mt-1 kyc-error';
+        successDiv.innerHTML = '<i class="fas fa-check me-1"></i>' + message;
+        inputElement.parentNode.appendChild(successDiv);
+    }
+    
+    function clearKycError(inputElement) {
+        const existingErrors = inputElement.parentNode.querySelectorAll('.kyc-error');
+        existingErrors.forEach(error => error.remove());
+    }
 });
 </script>
 <?php $__env->stopSection(); ?>

@@ -200,7 +200,7 @@ if (!empty($cart)) {
                             <!-- Credit Card Section -->
                             <div class="tab-pane fade show active" id="credit-card" role="tabpanel" aria-labelledby="credit-card-tab">
                                 <div class="payment-form p-4">
-                                    <form action="<?php echo e(route('cart.payment.card', $order_code)); ?>" method="POST" id="card-payment-form">
+                                    <form action="<?php echo e(route('dealer.cart.payment.card', ['dealer_shop_name' => $dealer_shop_name, 'order_code' => $order_code])); ?>" method="POST" id="card-payment-form">
                                         <?php echo csrf_field(); ?>
                                         <div class="row">
                                             <div class="col-12 mb-4">
@@ -246,7 +246,7 @@ if (!empty($cart)) {
                                         <li><i class="fas fa-shield-alt text-primary me-2"></i>100% Safe and Secure Delivery</li>
                                     </ul>
                                 </div>
-                                <form action="<?php echo e(route('cart.payment.cod', $order_code)); ?>" method="POST">
+                                <form action="<?php echo e(route('dealer.cart.payment.cod', ['dealer_shop_name' => $dealer_shop_name, 'order_code' => $order_code])); ?>" method="POST">
                                     <?php echo csrf_field(); ?>
                                     <button type="submit" class="btn btn-pay text-white w-100">
                                         <i class="fas fa-handshake me-2"></i>Confirm Cash on Delivery
@@ -264,15 +264,56 @@ if (!empty($cart)) {
                     <div class="card-body p-4">
                         <h5 class="card-title mb-4">Order Summary</h5>
                         
+                        <!-- Cart Items -->
+                        <?php if(isset($order->items) && !empty($order->items)): ?>
+                        <div class="mb-4">
+                            <h6 class="mb-3 text-muted">Items in your order:</h6>
+                            <?php $__currentLoopData = $order->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                                <div class="me-3">
+                                    <?php if(isset($item['image']) && $item['image']): ?>
+                                    <img src="<?php echo e(asset($item['image'])); ?>" alt="<?php echo e($item['name']); ?>" 
+                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                    <?php else: ?>
+                                    <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-image text-muted"></i>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1" style="font-size: 14px;"><?php echo e($item['name']); ?></h6>
+                                    <div class="text-muted" style="font-size: 12px;">
+                                        <?php if(isset($item['size']) && $item['size']): ?>
+                                        <span>Size: <?php echo e($item['size']); ?></span>
+                                        <?php endif; ?>
+                                        <?php if(isset($item['color']) && $item['color']): ?>
+                                        <span class="ms-2">Color: <?php echo e($item['color']); ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="text-muted" style="font-size: 12px;">
+                                        Qty: <?php echo e($item['quantity']); ?> × Rs. <?php echo e(number_format($item['price'], 2)); ?>
+
+                                    </div>
+                                    <div class="fw-semibold" style="font-size: 14px;">
+                                        Rs. <?php echo e(number_format($item['subtotal'], 2)); ?>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
+                        <?php endif; ?>
+                        
+                        <!-- Price Summary -->
                         <div class="summary-details">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <span style="color: #666; font-size: 16px;">Subtotal</span>
-                                <span style="color: #333; font-size: 16px; font-weight: 500;">Rs. <?php echo e(number_format($order->total_cost - 300, 2)); ?></span>
+                                <span style="color: #333; font-size: 16px; font-weight: 500;">Rs. <?php echo e(number_format($order->subtotal, 2)); ?></span>
                             </div>
                             
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <span style="color: #666; font-size: 16px;">Delivery Fee</span>
-                                <span style="color: #333; font-size: 16px; font-weight: 500;">Rs. 300.00</span>
+                                <span style="color: #333; font-size: 16px; font-weight: 500;">Rs. <?php echo e(number_format($order->delivery_fee, 2)); ?></span>
                             </div>
                             
                             <hr style="margin: 20px 0; opacity: 0.1;">
@@ -301,10 +342,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const desktopNav = document.querySelector('.header-navigation');
     if (desktopNav) {
         desktopNav.innerHTML = `
-            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="nav-link text-dark me-3 hover-orange">Home</a>
-            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
-            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>" class="nav-link text-dark me-3 hover-orange">About</a>
-            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
+            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name ?? $dealer_shop_name)); ?>" class="nav-link text-dark me-3 hover-orange">Home</a>
+            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name ?? $dealer_shop_name)); ?>#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
+            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name ?? $dealer_shop_name)); ?>" class="nav-link text-dark me-3 hover-orange">About</a>
+            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name ?? $dealer_shop_name)); ?>#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
         `;
     }
 
@@ -312,10 +353,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileNav = document.querySelector('.mobile-nav-menu');
     if (mobileNav) {
         mobileNav.innerHTML = `
-            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
-            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
-            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
-            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name)); ?>#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
+            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name ?? $dealer_shop_name)); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name ?? $dealer_shop_name)); ?>#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name ?? $dealer_shop_name)); ?>" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+            <a href="<?php echo e(route('showroom.about', $dealer->dealerProfile->dealer_shop_name ?? $dealer_shop_name)); ?>#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
         `;
     }
 

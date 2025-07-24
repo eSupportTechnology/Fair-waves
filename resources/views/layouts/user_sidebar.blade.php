@@ -625,6 +625,11 @@
             <span class="nav-text">My Reviews</span>
             <div class="nav-tooltip">My Reviews</div>
         </a>
+        <a class="nav-link {{ request()->routeIs('addresses') ? 'active' : '' }}" href="{{ route('addresses') }}">
+            <i class="fas fa-map-marker-alt"></i>
+            <span class="nav-text">My Addresses</span>
+            <div class="nav-tooltip">My Addresses</div>
+        </a>
         <a class="nav-link {{ request()->routeIs('edit-password') ? 'active' : '' }}" href="{{ route('edit-password') }}">
             <i class="fas fa-key"></i>
             <span class="nav-text">Password</span>

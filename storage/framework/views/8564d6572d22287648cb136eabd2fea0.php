@@ -623,6 +623,11 @@
             <span class="nav-text">My Reviews</span>
             <div class="nav-tooltip">My Reviews</div>
         </a>
+        <a class="nav-link <?php echo e(request()->routeIs('addresses') ? 'active' : ''); ?>" href="<?php echo e(route('addresses')); ?>">
+            <i class="fas fa-map-marker-alt"></i>
+            <span class="nav-text">My Addresses</span>
+            <div class="nav-tooltip">My Addresses</div>
+        </a>
         <a class="nav-link <?php echo e(request()->routeIs('edit-password') ? 'active' : ''); ?>" href="<?php echo e(route('edit-password')); ?>">
             <i class="fas fa-key"></i>
             <span class="nav-text">Password</span>

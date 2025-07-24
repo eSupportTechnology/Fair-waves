@@ -53,14 +53,8 @@ use App\Http\Controllers\VendorOrderController;
 use App\Http\Controllers\VendorAccountController;
 use App\Http\Controllers\ShowroomCartController;
 
-// Showroom Cart Routes
+// Legacy Showroom Cart Routes (keep for backward compatibility)
 Route::prefix('showroom/cart')->group(function () {
-    Route::post('/add/{productId}', [ShowroomCartController::class, 'addToCart'])->name('showroom.cart.add');
-    Route::get('/', [ShowroomCartController::class, 'showCart'])->name('showroom.cart');
-    Route::delete('/remove/{productId}', [ShowroomCartController::class, 'removeFromCart'])->name('showroom.cart.remove');
-    Route::patch('/update/{productId}', [ShowroomCartController::class, 'updateCart'])->name('showroom.cart.update');
-    Route::post('/clear', [ShowroomCartController::class, 'clearCart'])->name('showroom.cart.clear');
-    Route::get('/count', [ShowroomCartController::class, 'getCartCount'])->name('showroom.cart.count');
     // Cart checkout routes
     Route::get('/cart-checkout', [CartCheckoutController::class, 'cartCheckout'])->name('cart.checkout');
     Route::post('/cart-checkout/process', [CartCheckoutController::class, 'processCartCheckout'])->name('cart.checkout.process');
@@ -69,7 +63,30 @@ Route::prefix('showroom/cart')->group(function () {
     Route::get('/payment/{order_code}', [CartCheckoutController::class, 'showPayment'])->name('cart.payment');
     Route::post('/payment/card/{order_code}', [CartCheckoutController::class, 'confirmCardPayment'])->name('cart.payment.card');
     Route::post('/payment/cod/{order_code}', [CartCheckoutController::class, 'confirmCODPayment'])->name('cart.payment.cod');
+    
+    // Cart thank you route
+    Route::get('/cart/thankyou/{order_code}', [CartCheckoutController::class, 'showThankYou'])->name('cart.thankyou');
 
+    // Legacy routes - redirect to new structure
+    Route::get('/', function () {
+        return redirect()->route('home')->with('error', 'Please access cart through dealer showroom.');
+    });
+    Route::post('/add/{productId}', function () {
+        return redirect()->route('home')->with('error', 'Please access cart through dealer showroom.');
+    });
+    Route::delete('/remove/{productId}', function () {
+        return redirect()->route('home')->with('error', 'Please access cart through dealer showroom.');
+    });
+    Route::patch('/update/{productId}', function () {
+        return redirect()->route('home')->with('error', 'Please access cart through dealer showroom.');
+    });
+    Route::post('/clear', function () {
+        return redirect()->route('home')->with('error', 'Please access cart through dealer showroom.');
+    });
+    Route::get('/count', function () {
+        return response()->json(['count' => 0]);
+    });
+    
     // Buy now checkout routes
     Route::get('/checkout', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.cart.checkout');
     Route::post('/place-order', [ShowroomCartController::class, 'placeOrder'])->name('dealer.cart.placeOrder');
@@ -113,7 +130,7 @@ Route::get('/contact', function () {
 
 Route::get('/faq', function () {
     return view('frontend.faq');
-})->name('buy');
+})->name('faq');
 
 Route::get('/buy', function () {
     return view('frontend.how-to-buy');
@@ -238,6 +255,19 @@ Route::prefix('showroom/cart')->group(function () {
     Route::post('/payment/cod/{order_code}', [CartCheckoutController::class, 'confirmCODPayment'])->name('cart.payment.cod');
     Route::post('/payment/card/{order_code}', [CartCheckoutController::class, 'confirmCardPayment'])->name('cart.payment.card');
 });
+
+// Redirect old cart URL to dealer-specific cart
+Route::get('showroom/cart', function () {
+    $cart = session('showroom_cart', []);
+    if (!empty($cart)) {
+        // Get dealer shop name from cart
+        $firstItem = reset($cart);
+        if (isset($firstItem['dealer_shop_name'])) {
+            return redirect()->route('showroom.cart', $firstItem['dealer_shop_name']);
+        }
+    }
+    return redirect()->route('home')->with('error', 'Please access cart through dealer showroom.');
+})->name('showroom.cart.legacy');
 
 // User dashboard routes
 Route::middleware(['auth'])->group(function () {
@@ -404,7 +434,6 @@ Route::post('/admin/manage_company/update', [CompanySettingsController::class, '
 
 Route::resource('system_users', UserController::class);
 Route::get('/admins/userss', [UserController::class, 'show'])->name('users');
-Route::post('/admin/users', [UserController::class, 'store'])->name('system_users.store');
 Route::get('/admin/edit_users/{id}', [UserController::class, 'edit'])->name('edit_users');
 Route::post('/admin/edit_users/{id}', [UserController::class, 'update'])->name('update_users');
 Route::delete('/admin/edit_users/{id}', [UserController::class, 'destroy'])->name('delete_users');
@@ -497,6 +526,9 @@ Route::get('home/My-Account', [ProfileController::class, 'dashboard'])->name('da
 Route::get('home/My-Account/my-orders', [ProfileController::class, 'myOrders'])->name('my-orders');
 Route::get('/track-order/{orderCode}', [ProfileController::class, 'trackOrder'])->name('user.track-order');
 Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('user.profile.update');
+
+// KYC routes for user
+Route::post('/kyc/submit', [KYCDetailController::class, 'store'])->name('user.kyc.submit');
 
 // Test route for profile image upload debugging
 Route::get('/test-profile-upload', function() {
@@ -645,6 +677,27 @@ Route::prefix('showroom')->group(function () {
     Route::get('/{dealer_shop_name}', [ShowRoomController::class, 'index'])->name('showroom.index');
     Route::get('/{dealer_shop_name}/about', [ShowRoomController::class, 'about'])->name('showroom.about');
     Route::get('/{dealer_shop_name}/product/{unique_code}', [ShowRoomController::class, 'productView'])->name('showroom.productView');
+    
+    // Showroom Cart Routes with dealer shop name
+    Route::prefix('/{dealer_shop_name}/cart')->group(function () {
+        Route::post('/add/{productId}', [ShowroomCartController::class, 'addToCart'])->name('showroom.cart.add');
+        Route::get('/', [ShowroomCartController::class, 'showCart'])->name('showroom.cart');
+        Route::delete('/remove/{productId}', [ShowroomCartController::class, 'removeFromCart'])->name('showroom.cart.remove');
+        Route::patch('/update/{productId}', [ShowroomCartController::class, 'updateCart'])->name('showroom.cart.update');
+        Route::post('/clear', [ShowroomCartController::class, 'clearCart'])->name('showroom.cart.clear');
+        Route::get('/count', [ShowroomCartController::class, 'getCartCount'])->name('showroom.cart.count');
+        
+        // Cart checkout routes
+        Route::get('/checkout', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.cart.checkout');
+        Route::post('/place-order', [ShowroomCartController::class, 'placeOrder'])->name('dealer.cart.placeOrder');
+        
+        // Payment routes
+        Route::get('/payment/{order_code}', [ShowroomCartController::class, 'showPayment'])->name('dealer.cart.payment');
+        Route::post('/payment/cod/{order_code}', [ShowroomCartController::class, 'confirmCODPayment'])->name('dealer.cart.payment.cod');
+        Route::post('/payment/card/{order_code}', [ShowroomCartController::class, 'confirmCardPayment'])->name('dealer.cart.payment.card');
+        Route::get('/order-success/{order_code}', [ShowroomCartController::class, 'orderSuccess'])->name('dealer.order.success');
+    });
+    
     Route::post('/cart/add/{id}', [ShowRoomController::class, 'dealerAdd'])->name('dealer.cart.add');
     Route::post('/buy-now/{id}/{dpid}', [ShowRoomController::class, 'dealerBuyNow'])->name('dealer.buy.now');
 
@@ -652,7 +705,7 @@ Route::prefix('showroom')->group(function () {
     // Route::post('/withdraw', [DealerController::class, 'requestWithdrawal'])->name('dealer.withdraw.request');
 });
 
-Route::get('/product/checkout', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.checkout.page');
+Route::get('/product/checkout/{dealer_shop_name}', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.checkout.page');
 Route::post('/product/buy_now_place-order', [ShowRoomController::class, 'dealer_buynow_placeOrder'])->name('dealer_buynow_placeOrder');
 Route::get('/product/payment/{order_code}', [ShowRoomController::class, 'showPaymentPage'])->name('dealerPayment');
 Route::post('/product/confirm-cod-order/{order_code}', [ShowRoomController::class, 'confirmCODOrder'])->name('dealer.confirm.cod.order');

@@ -34,51 +34,85 @@
     }
 
     .products-section {
-        padding: 60px 0;
-        background: #f8f9fa;
+        padding: 40px 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
+        position: relative;
+    }
+
+    .products-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
     }
 
     .section-title {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         font-weight: 700;
         color: #2d3748;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         text-align: center;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, #ff5800, #ff7a3d);
+        border-radius: 2px;
     }
 
     .section-subtitle {
-        font-size: 1.1rem;
-        color: #6c757d;
+        font-size: 1rem;
+        color: #64748b;
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .product-card {
         background: white;
-        border-radius: 15px;
+        border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        margin-bottom: 40px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 25px;
         height: 100%;
         display: flex;
         flex-direction: column;
+        border: 1px solid #e2e8f0;
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .product-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        border-color: #ff5800;
     }
 
     .product-image {
         position: relative;
         overflow: hidden;
-        height: 280px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f8f9fa;
+        height: 220px;
+        width: 100%;
+        display: block;
+        background: #ffffff;
         padding: 0;
+        border-bottom: 1px solid #f1f5f9;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
     }
 
     .product-image img {
@@ -87,26 +121,89 @@
         object-fit: cover;
         object-position: center;
         transition: transform 0.3s ease;
-        margin: 0;
-        padding: 0;
+        border-radius: 0;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        display: block;
     }
 
     .product-card:hover .product-image img {
-        transform: scale(1.05);
+        transform: scale(1.03);
     }
 
     /* Additional spacing for card rows */
     .row > [class*="col-"] {
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
     
-    .mb-5 {
-        margin-bottom: 3rem !important;
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    /* Card hover effects */
+    .product-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 88, 0, 0.05), rgba(255, 122, 61, 0.05));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .product-card:hover::before {
+        opacity: 1;
+    }
+
+    .product-card > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .product-card {
+            max-width: 280px;
+        }
+        
+        .product-image {
+            height: 180px;
+            padding: 0;
+        }
+        
+        .product-content {
+            padding: 15px;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .product-card {
+            max-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+        
+        .product-image {
+            height: 160px;
+        }
+        
+        .row > [class*="col-"] {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
     }
 
     .product-content {
-        padding: 25px;
+        padding: 18px;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -117,16 +214,16 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 15px;
-        gap: 15px;
+        margin-bottom: 12px;
+        gap: 10px;
     }
 
     .product-title {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 600;
         color: #2d3748;
         margin-bottom: 0;
-        line-height: 1.4;
+        line-height: 1.3;
         flex: 1;
         overflow: hidden;
         display: -webkit-box;
@@ -135,9 +232,9 @@
     }
 
     .product-availability {
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 8px;
+        font-size: 10px;
         font-weight: 600;
         text-transform: uppercase;
         white-space: nowrap;
@@ -157,45 +254,81 @@
     }
 
     .product-price {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         font-weight: 700;
-        color: #28a745;
-        margin-bottom: 15px;
+        color: #ff5800;
+        margin-bottom: 12px;
     }
 
     .product-meta {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
-        font-size: 14px;
+        margin-bottom: 15px;
+        font-size: 12px;
         color: #6c757d;
+        gap: 8px;
     }
 
     .product-category {
-        background: #e9ecef;
-        color: #495057;
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 12px;
+        background: #f1f5f9;
+        color: #475569;
+        padding: 3px 8px;
+        border-radius: 8px;
+        font-size: 11px;
         font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 50%;
     }
 
     .stock-status {
         font-weight: 600;
+        font-size: 11px;
+        white-space: nowrap;
     }
 
-    .stock
-        color: #28a745;
+    .stock-available {
+        color: #059669;
     }
 
     .stock-out {
-        color: #dc3545;
+        color: #dc2626;
     }
 
     .product-actions {
         display: flex;
-        gap: 10px;
+        gap: 8px;
+    }
+
+    .btn-view-product {
+        background: linear-gradient(135deg, #ff5800, #ff7a3d);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        flex: 1;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(255, 88, 0, 0.2);
+    }
+
+    .btn-view-product:hover {
+        background: linear-gradient(135deg, #e64a00, #ff5800);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(255, 88, 0, 0.3);
+        text-decoration: none;
+    }
+
+    .btn-view-product i {
+        margin-right: 6px;
+        font-size: 12px;
     }
 
     .btn-view-product {
@@ -379,9 +512,9 @@
             <h2 class="section-title">Product Collection</h2>
             <p class="section-subtitle">Explore our wide range of quality products available at competitive prices</p>
             
-            <div class="row">
+            <div class="row justify-content-center">
                 @foreach($dealerProducts as $productLink)
-                <div class="col-lg-4 col-md-6 col-sm-12 mb-5">
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
                     <div class="product-card">
                         <div class="product-image">
                             @if($productLink->product->images->count() > 0)

@@ -9,6 +9,7 @@ use App\Models\DealerProductLink;
 use App\Models\DealerProductOrder;
 use App\Models\Product;
 use App\Models\RaffleTicket;
+use App\Models\Review;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -64,7 +65,30 @@ class ShowRoomController extends Controller
         // Get the dealer for header display
         $dealer = $productLink->dealer;
 
-        return view('frontend.DealerShowroom.product.productView', compact('productLink', 'dealer'));
+        // Get reviews for this product
+        $reviews = Review::where('product_id', $productLink->product->id)
+            ->where('status', 'Published')
+            ->with('reviewer')
+            ->latest()
+            ->get();
+
+        // Calculate average rating
+        $averageRating = $reviews->avg('rating') ?? 0;
+
+        // Calculate rating counts
+        $ratingCounts = $reviews->groupBy('rating')->map(function ($group) {
+            return $group->count();
+        });
+
+        // Total reviews
+        $totalReviews = $reviews->count();
+
+        // Ensure all rating levels (1-5) exist
+        $ratingCounts = collect([1, 2, 3, 4, 5])->mapWithKeys(function ($rating) use ($ratingCounts) {
+            return [$rating => $ratingCounts->get($rating, 0)];
+        });
+
+        return view('frontend.DealerShowroom.product.productView', compact('productLink', 'dealer', 'reviews', 'averageRating', 'ratingCounts', 'totalReviews'));
     }
 
     public function about($dealer_shop_name)
@@ -84,6 +108,13 @@ class ShowRoomController extends Controller
     public function dealerAdd($id, Request $request)
     {
         $product = Product::findOrFail($id);
+        
+        // Get the dealer_product_link_id from the URL parameters
+        $dealerProductLinkId = $request->route('dpid') ?? $request->input('dealer_product_link_id');
+        
+        if (!$dealerProductLinkId) {
+            return redirect()->back()->with('error', 'Invalid dealer product link.');
+        }
 
         $cart = session()->get('cart', []);
         $cart[] = [
@@ -93,6 +124,7 @@ class ShowRoomController extends Controller
             'quantity' => 1,
             'size' => $request->input('size'), // optional
             'color' => $request->input('color'), // optional
+            'dealer_product_link_id' => $dealerProductLinkId,
         ];
         session()->put('cart', $cart);
 
@@ -101,23 +133,40 @@ class ShowRoomController extends Controller
 
     public function dealerBuyNow($id,$dpid, Request $request)
     {
-        // dd($request->all());
+        try {
+            $product = Product::findOrFail($id);
+            
+            // Get dealer shop name from dealer product link
+            $dealerProductLink = DealerProductLink::with(['dealer.dealerProfile'])->findOrFail($dpid);
+            
+            // Ensure dealer and dealerProfile exist
+            if (!$dealerProductLink->dealer || !$dealerProductLink->dealer->dealerProfile) {
+                return redirect()->back()->with('error', 'Dealer information not found.');
+            }
+            
+            $dealerShopName = $dealerProductLink->dealer->dealerProfile->dealer_shop_name;
+            
+            if (!$dealerShopName) {
+                return redirect()->back()->with('error', 'Dealer shop name not found.');
+            }
 
-        $product = Product::findOrFail($id);
+            // Store only the current product in session for buy-now
+            session()->put('buy_now', [
+                "id" => $product->id,
+                "name" => $product->product_name,
+                "price" => $product->normal_price,
+                "quantity" => 1,
+                "size" => $request->input('size'), // can be null
+                "color" => $request->input('color'), // can be null
+                "dealerProductLink"=> $dpid,
+                "bv" => $product->bv,
+            ]);
 
-        // Store only the current product in session for buy-now
-        session()->put('buy_now', [
-            "id" => $product->id,
-            "name" => $product->product_name,
-            "price" => $product->normal_price,
-            "quantity" => 1,
-            "size" => $request->input('size'), // can be null
-            "color" => $request->input('color'), // can be null
-            "dealerProductLink"=> $dpid,
-            "bv" => $product->bv,
-        ]);
-
-        return redirect()->route('dealer.checkout.page');
+            return redirect()->route('dealer.checkout.page', $dealerShopName);
+        } catch (\Exception $e) {
+            \Log::error('Error in dealerBuyNow: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred. Please try again.');
+        }
     }
 
     public function dealer_buynow_placeOrder(Request $request)
@@ -276,12 +325,24 @@ class ShowRoomController extends Controller
             // Update the payment method and payment status
             $order->update([
                 'payment_method' => 'COD',
+                'payment_status' => 'Not Paid', // Set payment status for COD orders
             ]);
 
             // Clear the buy_now session after successful order
             session()->forget('buy_now');
 
-            return redirect()->route('dealer.order.thankyou', ['order_code' => $order_code])
+            // Get dealer shop name for redirect
+            $dealer_shop_name = '';
+            $firstItem = null;
+            if ($order->items && $order->items->count() > 0) {
+                $firstItem = $order->items->first();
+            }
+            $dealerProductLink = $firstItem ? $firstItem->dealerProductLink : null;
+            $dealer = $dealerProductLink ? $dealerProductLink->dealer : null;
+            if ($dealer && $dealer->dealerProfile) {
+                $dealer_shop_name = $dealer->dealerProfile->dealer_shop_name ?? '';
+            }
+            return redirect()->route('dealer.order.thankyou', ['order_code' => $order_code, 'dealer_shop_name' => $dealer_shop_name])
                 ->with('success', 'Order confirmed successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to confirm order. Please try again.');
@@ -310,7 +371,18 @@ class ShowRoomController extends Controller
             // Clear the buy_now session after successful order
             session()->forget('buy_now');
 
-            return redirect()->route('dealer.order.thankyou', ['order_code' => $order_code])
+            // Get dealer shop name for redirect
+            $dealer_shop_name = '';
+            $firstItem = null;
+            if ($order->items && $order->items->count() > 0) {
+                $firstItem = $order->items->first();
+            }
+            $dealerProductLink = $firstItem ? $firstItem->dealerProductLink : null;
+            $dealer = $dealerProductLink ? $dealerProductLink->dealer : null;
+            if ($dealer && $dealer->dealerProfile) {
+                $dealer_shop_name = $dealer->dealerProfile->dealer_shop_name ?? '';
+            }
+            return redirect()->route('dealer.order.thankyou', ['order_code' => $order_code, 'dealer_shop_name' => $dealer_shop_name])
                 ->with('success', 'Order confirmed successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to confirm order. Please try again.');
@@ -331,7 +403,17 @@ class ShowRoomController extends Controller
             $order = $orderQuery->firstOrFail();
         }
 
-        $orderItems = CustomerOrderItems::where('order_code', $order_code)->get();
-        return view('frontend.order_received', compact('order', 'orderItems'));
+        // Get dealer shop name from order or session (adjust as needed)
+        $dealer_shop_name = '';
+        $firstItem = null;
+        if ($order->items && $order->items->count() > 0) {
+            $firstItem = $order->items->first();
+        }
+        $dealerProductLink = $firstItem ? $firstItem->dealerProductLink : null;
+        $dealer = $dealerProductLink ? $dealerProductLink->dealer : null;
+        if ($dealer && $dealer->dealerProfile) {
+            $dealer_shop_name = $dealer->dealerProfile->dealer_shop_name ?? '';
+        }
+        return view('frontend.DealerShowroom.success_buy_now', compact('order', 'dealer_shop_name'));
     }
 }

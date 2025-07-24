@@ -643,6 +643,245 @@
         display: flex;
         flex-direction: column;
     }
+
+    /* Review Section Styles */
+    .review-section-card {
+        background: var(--white);
+        border-radius: var(--border-radius);
+        padding: 30px;
+        box-shadow: var(--box-shadow);
+        border: 1px solid #e9ecef;
+        margin-top: 20px;
+    }
+
+    .reviews-container {
+        max-height: 600px;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    .review-item {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #e9ecef;
+        transition: var(--transition);
+    }
+
+    .review-item:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary-color);
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .reviewer-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .reviewer-avatar {
+        width: 45px;
+        height: 45px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .reviewer-name {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .review-rating-stars {
+        display: flex;
+        gap: 2px;
+    }
+
+    .review-rating-stars i {
+        font-size: 14px;
+        color: #ffd700;
+    }
+
+    .review-rating-stars i.far {
+        color: #ddd;
+    }
+
+    .review-content {
+        margin: 15px 0;
+        line-height: 1.6;
+        color: #4a5568;
+    }
+
+    .review-media {
+        margin-top: 15px;
+    }
+
+    .media-gallery {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .review-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: var(--transition);
+        border: 2px solid #e9ecef;
+    }
+
+    .review-image:hover {
+        transform: scale(1.05);
+        border-color: var(--primary-color);
+    }
+
+    .review-video {
+        width: 120px;
+        height: 80px;
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+    }
+
+    .rating-summary {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 25px;
+        height: fit-content;
+        border: 1px solid #e9ecef;
+    }
+
+    .average-rating {
+        text-align: center;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .rating-score {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .rating-score .score {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        line-height: 1;
+    }
+
+    .rating-stars {
+        display: flex;
+        gap: 3px;
+        font-size: 18px;
+    }
+
+    .rating-stars i {
+        color: #ffd700;
+    }
+
+    .rating-breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .rating-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+    }
+
+    .rating-label {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        min-width: 35px;
+        font-weight: 600;
+        color: #4a5568;
+    }
+
+    .rating-label i {
+        color: #ffd700;
+        font-size: 12px;
+    }
+
+    .progress-container {
+        flex: 1;
+    }
+
+    .progress {
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        border-radius: 4px;
+        transition: width 0.3s ease;
+    }
+
+    .rating-count {
+        min-width: 25px;
+        text-align: right;
+        font-weight: 600;
+        color: #4a5568;
+    }
+
+    .no-reviews {
+        background: #f8f9fa;
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+    }
+
+    .no-reviews i {
+        color: #cbd5e0;
+    }
+
+    /* Responsive design for reviews */
+    @media (max-width: 768px) {
+        .review-header {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .reviewer-info {
+            width: 100%;
+        }
+
+        .review-date {
+            align-self: flex-start;
+        }
+
+        .media-gallery {
+            justify-content: center;
+        }
+
+        .rating-summary {
+            margin-top: 20px;
+        }
+    }
 </style>
 
 <!-- Breadcrumb -->
@@ -822,7 +1061,7 @@
                         <div class="action-buttons">
 @if($productLink->product->quantity > 0)
     <!-- Add to Cart Form -->
-    <form action="{{ route('showroom.cart.add', $productLink->product->id) }}" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
+    <form action="{{ route('showroom.cart.add', [$productLink->dealer->dealerProfile->dealer_shop_name, $productLink->product->id]) }}" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
         @csrf
         <input type="hidden" name="size">
         <input type="hidden" name="color">
@@ -1079,6 +1318,141 @@
             </div>
         </div>
     </div>
+
+    <!-- Product Reviews Section -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="review-section-card fade-in">
+                <h6 class="section-title mb-4">
+                    <i class="fas fa-star me-2"></i>
+                    Product Reviews & Ratings
+                </h6>
+                
+                @if($totalReviews > 0)
+                    <div class="row mb-4">
+                        <!-- Reviews List -->
+                        <div class="col-lg-8">
+                            <h6 class="mb-3">Customer Reviews ({{ $totalReviews }})</h6>
+                            <div class="reviews-container">
+                                @foreach($reviews as $review)
+                                    <div class="review-item">
+                                        <div class="review-header">
+                                            <div class="reviewer-info">
+                                                <div class="reviewer-avatar">
+                                                    <i class="fas fa-user-circle"></i>
+                                                </div>
+                                                <div class="reviewer-details">
+                                                    <h6 class="reviewer-name">
+                                                        {{ $review->is_anonymous ? 'Anonymous Customer' : $review->reviewer->name }}
+                                                    </h6>
+                                                    <div class="review-rating-stars">
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            <i class="{{ $review->rating >= $i ? 'fas fa-star filled' : 'far fa-star' }}"></i>
+                                                        @endfor
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="review-date">
+                                                <small class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
+                                            </div>
+                                        </div>
+                                        
+                                        @if($review->review)
+                                            <div class="review-content">
+                                                <p>{{ $review->review }}</p>
+                                            </div>
+                                        @endif
+                                        
+                                        @if($review->media)
+                                            <div class="review-media">
+                                                @php
+                                                    $mediaFiles = is_string($review->media) ? json_decode($review->media, true) : $review->media;
+                                                @endphp
+                                                @if(!empty($mediaFiles))
+                                                    <div class="media-gallery">
+                                                        @foreach($mediaFiles as $media)
+                                                            @if(in_array(pathinfo($media, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
+                                                                <img src="{{ asset('storage/' . $media) }}" 
+                                                                     alt="Review Image" 
+                                                                     class="review-image"
+                                                                     onclick="openImageModal('{{ asset('storage/' . $media) }}')">
+                                                            @elseif(in_array(pathinfo($media, PATHINFO_EXTENSION), ['mp4', 'avi', 'mov', 'webm']))
+                                                                <video controls class="review-video">
+                                                                    <source src="{{ asset('storage/' . $media) }}" 
+                                                                            type="video/{{ pathinfo($media, PATHINFO_EXTENSION) }}">
+                                                                    Your browser does not support the video tag.
+                                                                </video>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        
+                        <!-- Rating Summary -->
+                        <div class="col-lg-4">
+                            <div class="rating-summary">
+                                <h6 class="mb-3">Overall Rating</h6>
+                                <div class="average-rating">
+                                    <div class="rating-score">
+                                        <span class="score">{{ number_format($averageRating, 1) }}</span>
+                                        <div class="rating-stars">
+                                            @php
+                                                $fullStars = floor($averageRating);
+                                                $hasHalfStar = ($averageRating - $fullStars) >= 0.5;
+                                            @endphp
+                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                <i class="fas fa-star"></i>
+                                            @endfor
+                                            @if ($hasHalfStar)
+                                                <i class="fas fa-star-half-alt"></i>
+                                            @endif
+                                            @for ($i = 0; $i < (5 - $fullStars - ($hasHalfStar ? 1 : 0)); $i++)
+                                                <i class="far fa-star"></i>
+                                            @endfor
+                                        </div>
+                                        <small class="text-muted">Based on {{ $totalReviews }} {{ $totalReviews == 1 ? 'review' : 'reviews' }}</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="rating-breakdown">
+                                    @foreach(array_reverse($ratingCounts->toArray(), true) as $rating => $count)
+                                        @php
+                                            $percentage = $totalReviews > 0 ? ($count / $totalReviews) * 100 : 0;
+                                        @endphp
+                                        <div class="rating-bar">
+                                            <div class="rating-label">
+                                                <span>{{ $rating }}</span>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <div class="progress-container">
+                                                <div class="progress">
+                                                    <div class="progress-bar" style="width: {{ $percentage }}%"></div>
+                                                </div>
+                                            </div>
+                                            <span class="rating-count">{{ $count }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="no-reviews">
+                        <div class="text-center py-5">
+                            <i class="fas fa-star-o fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No Reviews Yet</h5>
+                            <p class="text-muted">Be the first to review this product!</p>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -1321,6 +1695,39 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Image modal functionality for review images
+function openImageModal(imageSrc) {
+    // Create modal HTML
+    const modal = document.createElement('div');
+    modal.innerHTML = `
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Review Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="${imageSrc}" class="img-fluid" alt="Review Image" style="max-height: 70vh; object-fit: contain;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add modal to body
+    document.body.appendChild(modal);
+    
+    // Initialize and show modal
+    const bsModal = new bootstrap.Modal(modal.querySelector('#imageModal'));
+    bsModal.show();
+    
+    // Remove modal from DOM when hidden
+    modal.querySelector('#imageModal').addEventListener('hidden.bs.modal', function() {
+        document.body.removeChild(modal);
+    });
+}
 </script>
 
 @endsection

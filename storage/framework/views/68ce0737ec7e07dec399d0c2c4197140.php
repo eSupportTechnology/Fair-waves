@@ -1,4 +1,9 @@
 <?php $__env->startSection('content'); ?>
+<?php
+$cart = session('showroom_cart', []);
+// Get dealer shop name from URL segment or session cart
+$dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop_name'] ?? 'default';
+?>
 
 <!-- Breadcrumb -->
 <div class="breadcrumb mb-0 py-26 bg-main-two-50">
@@ -28,7 +33,7 @@
 
 <!-- Checkout -->
 <section class="checkout py-80">
-<form action="<?php echo e(route('cart.checkout.process')); ?>" method="POST">
+<form action="<?php echo e(route('dealer.cart.placeOrder', $dealer_shop_name ?? 'default')); ?>" method="POST">
 <?php echo csrf_field(); ?>
 
 <div class="container container-lg">
@@ -79,51 +84,91 @@
                     </div>
 
                     <?php
-                        $cart = session('showroom_cart', []);
-                        $subtotal = 0;
-                        $deliveryFee = 300;
+                        // Use cart data passed from controller, fallback to session if not available
+                        $sessionCart = $cart ?? session('showroom_cart', []);
+                        // Use subtotal and deliveryFee passed from controller, with fallbacks
+                        $checkoutSubtotal = $subtotal ?? 0;
+                        $checkoutDeliveryFee = $deliveryFee ?? 300;
+                        $checkoutTotal = $total ?? ($checkoutSubtotal + $checkoutDeliveryFee);
+                        
+                        // Debug output (remove this after testing)
+                        // dd($sessionCart, $checkoutSubtotal, $checkoutDeliveryFee, $checkoutTotal);
                     ?>
 
-                    <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(empty($sessionCart)): ?>
+                        <div class="text-center py-4">
+                            <p class="text-gray-500">Your cart is empty</p>
+                            <a href="<?php echo e(route('showroom.cart', $dealer_shop_name ?? 'default')); ?>" class="btn btn-primary mt-3">Back to Cart</a>
+                        </div>
+                    <?php else: ?>
+                        <!-- Cart items display -->
+                        <?php $__empty_1 = true; $__currentLoopData = $sessionCart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <div class="flex-between gap-24 mb-32">
                             <div class="flex-align gap-12">
-                                <span class="text-gray-900 fw-normal text-sm font-heading-two w-144"><?php echo e($item['name']); ?></span>
+                                <!-- Product Image -->
+                                <div class="product-item-image">
+                                    <?php if(isset($item['product']) && $item['product'] && $item['product']->images->isNotEmpty()): ?>
+                                        <img src="<?php echo e(asset('storage/' . $item['product']->images->first()->image_path)); ?>" 
+                                             alt="<?php echo e($item['name']); ?>" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                    <?php elseif(isset($item['image']) && $item['image']): ?>
+                                        <img src="<?php echo e(asset('storage/' . $item['image'])); ?>" 
+                                             alt="<?php echo e($item['name']); ?>" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                    <?php else: ?>
+                                        <img src="<?php echo e(asset('images/default-product.jpg')); ?>" 
+                                             alt="<?php echo e($item['name']); ?>" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                    <?php endif; ?>
+                                </div>
+                                
+                                <!-- Product Details -->
+                                <div class="product-details">
+                                    <span class="text-gray-900 fw-normal text-sm font-heading-two w-144"><?php echo e($item['name'] ?? 'Unknown Product'); ?></span>
+                                    <?php if(isset($item['size']) && $item['size']): ?>
+                                        <small class="d-block text-gray-600">Size: <?php echo e($item['size']); ?></small>
+                                    <?php endif; ?>
+                                    <?php if(isset($item['color']) && $item['color']): ?>
+                                        <small class="d-block text-gray-600">Color: <?php echo e($item['color']); ?></small>
+                                    <?php endif; ?>
+                                </div>
+                                
                                 <span class="text-gray-900 fw-normal text-sm font-heading-two"><i class="ph-bold ph-x"></i></span>
-                                <span class="text-gray-900 fw-semibold text-sm font-heading-two"><?php echo e($item['quantity']); ?></span>
+                                <span class="text-gray-900 fw-semibold text-sm font-heading-two"><?php echo e($item['quantity'] ?? 0); ?></span>
                             </div>
                             <?php
-                                $itemSubtotal = $item['price'] * $item['quantity'];
-                                $subtotal += $itemSubtotal;
+                                $itemSubtotal = ($item['price'] ?? 0) * ($item['quantity'] ?? 0);
                             ?>
                             <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs <?php echo e(number_format($itemSubtotal, 2)); ?></span>
 
                             <!-- Hidden Fields -->
-                            <input type="hidden" name="products[<?php echo e($index); ?>][product_id]" value="<?php echo e($item['id']); ?>">
-                            <input type="hidden" name="products[<?php echo e($index); ?>][quantity]" value="<?php echo e($item['quantity']); ?>">
+                            <input type="hidden" name="products[<?php echo e($index); ?>][product_id]" value="<?php echo e($item['id'] ?? $item['product_id'] ?? ''); ?>">
+                            <input type="hidden" name="products[<?php echo e($index); ?>][quantity]" value="<?php echo e($item['quantity'] ?? 0); ?>">
                             <input type="hidden" name="products[<?php echo e($index); ?>][size]" value="<?php echo e($item['size'] ?? ''); ?>">
                             <input type="hidden" name="products[<?php echo e($index); ?>][color]" value="<?php echo e($item['color'] ?? ''); ?>">
-                            <input type="hidden" name="products[<?php echo e($index); ?>][cost]" value="<?php echo e($item['price']); ?>">
+                            <input type="hidden" name="products[<?php echo e($index); ?>][cost]" value="<?php echo e($item['price'] ?? 0); ?>">
                         </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-                    <?php
-                        $total = $subtotal + $deliveryFee;
-                    ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        <div class="text-center py-4">
+                            <p class="text-gray-500">No items found in cart</p>
+                        </div>
+                        <?php endif; ?>
 
                     <div class="border-top border-gray-100 pt-30 mt-30">
                         <div class="mb-0 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two text-md fw-semibold">Subtotal</span>
-                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs <?php echo e(number_format($subtotal, 2)); ?></span>
+                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs <?php echo e(number_format($checkoutSubtotal, 2)); ?></span>
                         </div>
                         <div class="mb-32 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two text-md fw-semibold">Delivery Fee</span>
-                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs <?php echo e(number_format($deliveryFee, 2)); ?></span>
+                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs <?php echo e(number_format($checkoutDeliveryFee, 2)); ?></span>
                         </div>
                         <div class="mb-0 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two text-xl fw-bold">Total</span>
-                            <span class="text-gray-900 font-heading-two text-xl fw-bold">Rs <?php echo e(number_format($total, 2)); ?></span>
+                            <span class="text-gray-900 font-heading-two text-xl fw-bold">Rs <?php echo e(number_format($checkoutTotal, 2)); ?></span>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="mt-32 pt-32 border-top border-gray-100">
@@ -149,6 +194,51 @@
 </form>
 </section>
 
-<?php $__env->stopSection(); ?>
+<?php if(isset($dealer_shop_name)): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update desktop navigation links
+    const desktopNav = document.querySelector('.header-navigation');
+    const shopName = '<?php echo e($dealer_shop_name); ?>';
+    
+    if (desktopNav && shopName) {
+        desktopNav.innerHTML = `
+            <a href="/showroom/${shopName}" class="nav-link text-dark me-3 hover-orange">Home</a>
+            <a href="/showroom/${shopName}#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
+            <a href="/showroom/${shopName}/about" class="nav-link text-dark me-3 hover-orange">About</a>
+            <a href="/showroom/${shopName}/about#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
 
+    // Update mobile navigation links
+    const mobileNav = document.querySelector('.mobile-nav-menu');
+    if (mobileNav && shopName) {
+        mobileNav.innerHTML = `
+            <a href="/showroom/${shopName}" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+            <a href="/showroom/${shopName}#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+            <a href="/showroom/${shopName}/about" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+            <a href="/showroom/${shopName}/about#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
+
+    // Update dealer shop name in header - replace dealer name with shop name
+    const dealerNameElement = document.querySelector('.dealer-name');
+    if (dealerNameElement && shopName && shopName !== 'default') {
+        dealerNameElement.innerHTML = `<a href="/showroom/${shopName}" class="text-dark text-decoration-none">${shopName}</a>`;
+    }
+
+    // Handle contact navigation to about page with scrolling
+    document.querySelectorAll('.contact-about-scroll').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#contact-section')) {
+                window.location.href = href;
+            }
+        });
+    });
+});
+</script>
+<?php endif; ?>
+
+<?php $__env->stopSection(); ?>
 <?php echo $__env->make('frontend.DealerShowroom.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/DealerShowroom/cart/checkout.blade.php ENDPATH**/ ?>

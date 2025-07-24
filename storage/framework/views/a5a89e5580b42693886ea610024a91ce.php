@@ -41,16 +41,16 @@
 
                                     <?php endif; ?>
                                 </h3>
-                                <div class="dealer-details">
+                                <!--div class="dealer-details">
                                     <small class="text-muted me-3 dealer-owner">
-                                        <?php echo e($dealer->name); ?>
-
+                                        {
+                                        { $dealer->name }}
                                     </small>
                                     <span class="dealer-badge">
                                         <i class="fas fa-certificate me-1"></i>
                                         Verified Seller
                                     </span>
-                                </div>
+                                </div-->
                             </div>
                         </div>
                     <?php else: ?>
@@ -77,22 +77,35 @@
                             </div>
                             
                             <!-- User Name and Info -->
-                            <div class="dealer-content">
-                                <?php if(auth()->check()): ?>
-                                    <h3 class="dealer-name mb-1 text-dark fw-bold">
-                                        <?php echo e(auth()->user()->name); ?>
+                        <div class="dealer-content">
+                            <h3 class="dealer-name mb-1 text-dark fw-bold">
+                                <?php if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name): ?>
+                                    <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="text-dark text-decoration-none">
+                                        <?php echo e($dealer->dealerProfile->dealer_shop_name); ?>
 
-                                    </h3>
-                                    <div class="dealer-details">
-                                        <small class="text-muted me-3 dealer-owner">
-                                            User
-                                        </small>
-                                    </div>
+                                    </a>
+                                <?php elseif(isset($dealer)): ?>
+                                    <?php echo e($dealer->name); ?>
+
+                                <?php elseif(auth()->check()): ?>
+                                    <?php echo e(auth()->user()->name); ?>
+
                                 <?php else: ?>
-                                    <h4 class="dealer-name mb-0 text-dark fw-bold">Guest User</h4>
-                                    <small class="text-muted">Welcome</small>
+                                    Guest User
                                 <?php endif; ?>
+                            </h3>
+                            <div class="dealer-details">
+                                <small class="text-muted me-3 dealer-owner">
+                                    <?php if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name): ?>
+                                        Dealer
+                                    <?php elseif(auth()->check()): ?>
+                                        User
+                                    <?php else: ?>
+                                        Welcome
+                                    <?php endif; ?>
+                                </small>
                             </div>
+                        </div>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -118,7 +131,13 @@
 
                     <!-- Cart Icon with Count - Always Visible -->
                     <div class="cart-section position-relative d-flex align-items-center">
-                        <a href="<?php echo e(route('showroom.cart')); ?>" class="btn btn-cart-custom position-relative">
+                        <?php if(isset($dealer) && $dealer && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name): ?>
+                            <a href="<?php echo e(route('showroom.cart', $dealer->dealerProfile->dealer_shop_name)); ?>" class="btn btn-cart-custom position-relative">
+                        <?php elseif(isset($dealer_shop_name)): ?>
+                            <a href="<?php echo e(route('showroom.cart', $dealer_shop_name)); ?>" class="btn btn-cart-custom position-relative">
+                        <?php else: ?>
+                            <a href="<?php echo e(route('home')); ?>" class="btn btn-cart-custom position-relative">
+                        <?php endif; ?>
                             <i class="fas fa-shopping-cart"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge"
                                   id="cart-count">

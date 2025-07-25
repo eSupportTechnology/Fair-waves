@@ -2,7 +2,15 @@
 
 use App\Http\Controllers\CartCheckoutController;
 use App\Http\Controllers\AdminReportController;
+use App\Http\Controllers\DealerProductOrderController;
 use App\Http\Controllers\ProfileController;
+
+// Dealer Order Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dealer/customer-orders', [DealerProductOrderController::class, 'index'])->name('dealer.customer.orders');
+    Route::get('/dealer/customer-orders/{orderCode}', [DealerProductOrderController::class, 'show'])->name('dealer.customer.orders.show');
+    Route::get('/dealer/track-order/{orderCode}', [DealerProductOrderController::class, 'track'])->name('dealer.track-order');
+});
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\VendorReportController;
 use Illuminate\Support\Facades\Route;
@@ -522,7 +530,7 @@ require __DIR__.'/auth.php';
 Route::get('home/My-Account/edit-profile', [ProfileController::class, 'editProfile'])->name('edit-profile');
 Route::get('home/My-Account', [ProfileController::class, 'dashboard'])->name('dashboard');
 Route::get('home/My-Account/my-orders', [ProfileController::class, 'myOrders'])->name('my-orders');
-Route::get('/track-order/{orderCode}', [ProfileController::class, 'trackOrder'])->name('user.track-order');
+Route::get('/track-order/{orderCode}', [OrderController::class, 'trackOrder'])->name('user.track-order');
 Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('user.profile.update');
 
 // KYC routes for user
@@ -657,6 +665,7 @@ Route::post('/become-a-dealer', [DealerController::class, 'store'])->name('deale
 
 Route::prefix('dealer')->group(function () {
     Route::get('/dashboard', [DealerController::class, 'dashboard'])->name('dealer.dashboard');
+    Route::get('/customer-orders', [DealerProductOrderController::class, 'index'])->name('dealer.customer.orders');
     Route::get('/register', [DealerController::class, 'showRegisterForm'])->name('dealer.register');
     Route::post('/register', [DealerController::class, 'register'])->name('dealer.register.submit');
     Route::post('/check-shop-name', [DealerController::class, 'checkShopName'])->name('dealer.check.shop.name');

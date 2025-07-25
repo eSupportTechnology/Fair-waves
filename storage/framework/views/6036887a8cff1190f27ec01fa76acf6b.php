@@ -1196,7 +1196,23 @@
                             <i class="fas fa-box me-2"></i>
                             Dealer's Products
                         </a>
+                        <a href="<?php echo e(route('dealer.customer.orders')); ?>" class="btn btn-purple btn-sm w-100 quick-action-btn">
+                            <i class="fas fa-shopping-bag me-2"></i>
+                            Dealer's Orders
+                        </a>
                     </div>
+                    <style>
+                        .btn-purple {
+                            background-color: #6f42c1;
+                            border-color: #6f42c1;
+                            color: #fff;
+                        }
+                        .btn-purple:hover {
+                            background-color: #5a32a3;
+                            border-color: #5a32a3;
+                            color: #fff;
+                        }
+                    </style>
                 </div>
 
 

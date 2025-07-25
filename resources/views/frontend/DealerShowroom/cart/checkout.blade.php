@@ -108,21 +108,7 @@ $dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop
                         <div class="flex-between gap-24 mb-32">
                             <div class="flex-align gap-12">
                                 <!-- Product Image -->
-                                <div class="product-item-image">
-                                    @if(isset($item['product']) && $item['product'] && $item['product']->images->isNotEmpty())
-                                        <img src="{{ asset('storage/' . $item['product']->images->first()->image_path) }}" 
-                                             alt="{{ $item['name'] }}" 
-                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
-                                    @elseif(isset($item['image']) && $item['image'])
-                                        <img src="{{ asset('storage/' . $item['image']) }}" 
-                                             alt="{{ $item['name'] }}" 
-                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
-                                    @else
-                                        <img src="{{ asset('images/default-product.jpg') }}" 
-                                             alt="{{ $item['name'] }}" 
-                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
-                                    @endif
-                                </div>
+                        
                                 
                                 <!-- Product Details -->
                                 <div class="product-details">

@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+    public function trackOrder($orderCode)
+    {
+        $order = CustomerOrder::where('order_code', $orderCode)
+            ->with(['items.product.images'])
+            ->firstOrFail();
+            
+        return view('user_dashboard.tracking-page', compact('order'));
+    }
     public function index(Request $request)
     {
         $query = CustomerOrder::query();

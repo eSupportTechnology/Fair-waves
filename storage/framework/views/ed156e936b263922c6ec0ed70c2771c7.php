@@ -1,6 +1,4 @@
-@extends ('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- ========================= Breadcrumb Start =============================== -->
     <div class="breadcrumb mb-0 py-26 bg-main-two-50">
         <div class="container container-lg">
@@ -25,14 +23,14 @@
 
     <!-- ================================= Checkout Page Start ===================================== -->
     <section class="checkout py-80">
-        @if (!$defaultAddress)
+        <?php if(!$defaultAddress): ?>
             <div class="alert alert-warning mb-3">
                 You don't have a default address. Please fill in your billing details below.
             </div>
-        @endif
+        <?php endif; ?>
 
-        <form action="{{ route('buynow_placeOrder') }}" method="POST">
-            @csrf
+        <form action="<?php echo e(route('buynow_placeOrder')); ?>" method="POST">
+            <?php echo csrf_field(); ?>
 
             <div class="container container-lg">
                 <div class="row">
@@ -43,35 +41,35 @@
                             <div class="row gy-3">
                                 <div class="col-sm-6 col-xs-6">
                                     <input type="text" name="first_name" class="common-input border-gray-100"
-                                        placeholder="First Name" value="{{ old('first_name', $defaultAddress->fname ?? '') }}" required>
+                                        placeholder="First Name" value="<?php echo e(old('first_name', $defaultAddress->fname ?? '')); ?>" required>
                                 </div>
                                 <div class="col-sm-6 col-xs-6">
                                     <input type="text" name="last_name" class="common-input border-gray-100"
-                                        placeholder="Last Name" value="{{ old('last_name', $defaultAddress->lname ?? '') }}" required>
+                                        placeholder="Last Name" value="<?php echo e(old('last_name', $defaultAddress->lname ?? '')); ?>" required>
                                 </div>
                                 <div class="col-12">
                                     <input type="text" name="house_no" class="common-input border-gray-100"
-                                        placeholder="House number and street name" value="{{ old('house_no', $defaultAddress->address ?? '') }}" required>
+                                        placeholder="House number and street name" value="<?php echo e(old('house_no', $defaultAddress->address ?? '')); ?>" required>
                                 </div>
                                 <div class="col-12">
                                     <input type="text" name="apartment" class="common-input border-gray-100"
-                                        placeholder="Apartment, suite, unit, etc. (Optional)" value="{{ old('apartment', $defaultAddress->apartment ?? '') }}">
+                                        placeholder="Apartment, suite, unit, etc. (Optional)" value="<?php echo e(old('apartment', $defaultAddress->apartment ?? '')); ?>">
                                 </div>
                                 <div class="col-sm-6 col-xs-6">
                                     <input type="text" name="city" class="common-input border-gray-100"
-                                        placeholder="City" required value="{{ old('city', $defaultAddress->city ?? '') }}">
+                                        placeholder="City" required value="<?php echo e(old('city', $defaultAddress->city ?? '')); ?>">
                                 </div>
                                 <div class="col-sm-6 col-xs-6">
                                     <input type="text" name="postal_code" class="common-input border-gray-100"
-                                        placeholder="Postal Code" value="{{ old('postal_code', $defaultAddress->postal_code ?? '') }}" required >
+                                        placeholder="Postal Code" value="<?php echo e(old('postal_code', $defaultAddress->postal_code ?? '')); ?>" required >
                                 </div>
                                 <div class="col-12">
                                     <input type="number" name="phone" class="common-input border-gray-100"
-                                        placeholder="Phone"  value="{{ old('phone', $defaultAddress->phone_num ?? '') }}" required>
+                                        placeholder="Phone"  value="<?php echo e(old('phone', $defaultAddress->phone_num ?? '')); ?>" required>
                                 </div>
                                 <div class="col-12">
                                     <input type="email" name="email" class="common-input border-gray-100"
-                                        placeholder="Email Address" value="{{ old('email', $defaultAddress->email ?? '') }}"  required>
+                                        placeholder="Email Address" value="<?php echo e(old('email', $defaultAddress->email ?? '')); ?>"  required>
                                 </div>
                             </div>
                         </div>
@@ -89,42 +87,42 @@
                                     <span class="text-gray-900 fw-medium text-xl font-heading-two">Subtotal</span>
                                 </div>
 
-                                @foreach ($products as $index => $product)
+                                <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <div class="flex-between gap-24 mb-32">
                                         <div class="flex-align gap-12">
                                             <span
-                                                class="text-gray-900 fw-normal text-sm font-heading-two w-144">{{ $product->product_name }}</span>
+                                                class="text-gray-900 fw-normal text-sm font-heading-two w-144"><?php echo e($product->product_name); ?></span>
                                             <span class="text-gray-900 fw-normal text-sm font-heading-two"><i
                                                     class="ph-bold ph-x"></i></span>
                                             <span
-                                                class="text-gray-900 fw-semibold text-sm font-heading-two">{{ $quantity }}</span>
+                                                class="text-gray-900 fw-semibold text-sm font-heading-two"><?php echo e($quantity); ?></span>
                                         </div>
                                         <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs
-                                            {{ number_format($subtotal, 2) }}</span>
+                                            <?php echo e(number_format($subtotal, 2)); ?></span>
                                     </div>
                                     <!-- Hidden fields for the product details -->
-                                    <input type="hidden" name="products[0][product_id]" value="{{ $product->id }}">
-                                    <input type="hidden" name="products[0][quantity]" value="{{ $quantity }}">
-                                    <input type="hidden" name="products[0][size]" value="{{ $selectedSize }}">
-                                    <input type="hidden" name="products[0][color]" value="{{ $selectedColor }}">
-                                    <input type="hidden" name="products[0][cost]" value="{{ $product->normal_price }}">
-                                @endforeach
+                                    <input type="hidden" name="products[0][product_id]" value="<?php echo e($product->id); ?>">
+                                    <input type="hidden" name="products[0][quantity]" value="<?php echo e($quantity); ?>">
+                                    <input type="hidden" name="products[0][size]" value="<?php echo e($selectedSize); ?>">
+                                    <input type="hidden" name="products[0][color]" value="<?php echo e($selectedColor); ?>">
+                                    <input type="hidden" name="products[0][cost]" value="<?php echo e($product->normal_price); ?>">
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                 <div class="border-top border-gray-100 pt-30 mt-30">
                                     <div class="mb-0 flex-between gap-8">
                                         <span class="text-gray-900 font-heading-two text-md fw-semibold">Subtotal</span>
                                         <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs
-                                            {{ number_format($subtotal, 2) }}</span>
+                                            <?php echo e(number_format($subtotal, 2)); ?></span>
                                     </div>
                                     <div class="mb-32 flex-between gap-8">
                                         <span class="text-gray-900 font-heading-two text-md fw-semibold">Delivery Fee</span>
                                         <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs
-                                            {{ number_format(300, 2) }}</span>
+                                            <?php echo e(number_format(300, 2)); ?></span>
                                     </div>
                                     <div class="mb-0 flex-between gap-8">
                                         <span class="text-gray-900 font-heading-two text-xl fw-bold">Total</span>
                                         <span class="text-gray-900 font-heading-two text-xl fw-bold">Rs
-                                            {{ number_format($total, 2) }}</span>
+                                            <?php echo e(number_format($total, 2)); ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -144,4 +142,6 @@
     </section>
 
     <!-- ================================= Checkout Page End ===================================== -->
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/buy_now_checkout.blade.php ENDPATH**/ ?>

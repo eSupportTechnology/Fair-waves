@@ -78,10 +78,10 @@
         <form method="GET" action="<?php echo e(route('customers')); ?>">
             <div class="search-container" style="max-width: 800px; margin: 0 auto;">
                 <div class="input-group">
-                    <input type="text" 
-                           name="search" 
-                           class="form-control form-control-lg" 
-                           placeholder="Search customers by name, email, or phone..." 
+                    <input type="text"
+                           name="search"
+                           class="form-control form-control-lg"
+                           placeholder="Search customers by name, email, or phone..."
                            value="<?php echo e($search ?? ''); ?>"
                            style="border-radius: 30px 0 0 30px; padding-left: 20px;">
                     <button class="btn btn-primary btn-lg" type="submit" style="border-radius: 0 30px 30px 0; padding: 0 25px;">
@@ -127,13 +127,12 @@
                         <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td><?php echo e($customers->firstItem() + $index); ?></td> <!-- Display correct customer number -->
-                                <td><?php echo e($customer->name); ?></td> 
-                                <td><?php echo e($customer->email); ?></td> 
-                                <td><?php echo e($customer->phone); ?></td> 
-                                <td><?php echo e($customer->created_at->format('Y-m-d')); ?></td> 
+                                <td><?php echo e($customer->name); ?></td>
+                                <td><?php echo e($customer->email); ?></td>
+                                <td><?php echo e($customer->phone); ?></td>
+                                <td><?php echo e($customer->created_at->format('Y-m-d')); ?></td>
                                 
-                                
-                                <td>-</td> <!-- Placeholder for future Total Orders column -->
+                                <td><?php echo e($customer->customer_orders_count); ?></td>
                                 <td class="text-end">
                                     <a href="<?php echo e(route('customer-details', $customer->id)); ?>" class="btn btn-view btn-sm me-2" title="View Details">
                                         <i class="fas fa-eye"></i>
@@ -144,11 +143,11 @@
                                     <button type="button" class="btn btn-danger btn-sm delete-btn" title="Delete Customer"
                                             data-id="<?php echo e($customer->id); ?>"
                                             data-name="<?php echo e($customer->name); ?>"
-                                            data-bs-toggle="modal" 
+                                            data-bs-toggle="modal"
                                             data-bs-target="#deleteCustomerModal">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
-                                </td>                                  
+                                </td>
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
@@ -167,7 +166,8 @@
 <div class="pagination-area mt-30 mb-50">
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-start">
-            <?php echo e($customers->appends(request()->input())->links()); ?>  
+            <?php echo e($customers->appends(request()->input())->links()); ?>
+
         </ul>
     </nav>
 </div>
@@ -190,7 +190,7 @@
         $('.delete-btn').on('click', function() {
             const customerId = $(this).data('id');
             const customerName = $(this).data('name');
-            
+
             $('#deleteCustomerName').text(customerName);
             $('#deleteCustomerForm').attr('action', '<?php echo e(route("customer.delete", "")); ?>/' + customerId);
         });

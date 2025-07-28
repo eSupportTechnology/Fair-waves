@@ -142,7 +142,8 @@
                                         <td><?php echo e($dealer->created_at->format('Y-m-d')); ?></td>
                                         <td>
                                             
-                                            
+                                            <?php echo e($dealer->dealer_product_orders_count); ?>
+
                                         </td>
                                         <td>
                                             <?php if($dealer->kycDetail): ?>

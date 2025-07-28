@@ -142,7 +142,7 @@
                                         <td>{{ $dealer->created_at->format('Y-m-d') }}</td>
                                         <td>
                                             {{-- TODO: Uncomment for future development - Total Orders functionality --}}
-                                            {{ $dealer->customer_orders_count }}
+                                            {{ $dealer->dealer_product_orders_count }}
                                         </td>
                                         <td>
                                             @if ($dealer->kycDetail)

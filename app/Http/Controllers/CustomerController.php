@@ -14,8 +14,9 @@ class CustomerController extends Controller
     public function show(Request $request)
     {
         $search = $request->get('search');
-        
-        $customers = User::where('role', 'customer')
+
+        $customers = User::withCount('customerOrders')
+            ->where('role', 'customer')
             ->where('customer_status', 1) // Only show active customers
             ->when($search, function($query) use ($search) {
                 return $query->where(function($q) use ($search) {
@@ -27,20 +28,20 @@ class CustomerController extends Controller
             // TODO: Uncomment for future development - Total Orders functionality
             // ->withCount('customerOrders')
             ->paginate(10)
-            ->appends(request()->query()); 
+            ->appends(request()->query());
 
         return view('AdminDashboard.customer', compact('customers', 'search'));
     }
-    
-    
+
+
     public function showCustomerDetails($user_id)
     {
         $customer = User::findOrFail($user_id);
-        
+
         $orders = CustomerOrder::where('user_id', $user_id)
             ->with('items.product')
             ->get();
-        
+
         $totalCost = $orders->sum('total_cost');
         $totalOrders = $orders->count();
         $totalProducts = $orders->sum(function ($order) {
@@ -72,22 +73,22 @@ class CustomerController extends Controller
         ]);
 
         $customer->update($validatedData);
-        
+
         return redirect()->route('customers')->with('success', 'Customer updated successfully!');
     }
-    
+
     public function delete($user_id)
     {
         $customer = User::findOrFail($user_id);
-        
+
         // Check if this is a customer
         if ($customer->role !== 'customer') {
             return redirect()->back()->with('error', 'Only customers can be deleted.');
         }
-        
+
         // Soft delete by setting customer_status = 0
         $customer->update(['customer_status' => 0]);
-        
+
         return redirect()->route('customers')->with('success', 'Customer has been successfully deleted.');
     }
 
@@ -95,7 +96,7 @@ class CustomerController extends Controller
     {
         $search = $request->get('search');
         $filename = 'customers_' . date('Y-m-d_H-i-s') . '.xlsx';
-        
+
         return Excel::download(new CustomersExport($search), $filename);
     }
 }

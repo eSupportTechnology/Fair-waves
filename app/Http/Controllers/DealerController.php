@@ -50,6 +50,7 @@ class DealerController extends Controller
     {
         $request->validate([
             'dealer_code' => 'required|string|max:255|exists:dealer_profiles,dealer_code',
+            'dealer_shop_name' => 'required|string|max:255',
             // 'agreement' => 'accepted',
         ]);
         if (!Auth::check()) {
@@ -78,6 +79,7 @@ class DealerController extends Controller
             'bv' => 0,
             'tier' => 'silver',
             'dealer_code' => $dealer_code_generated,
+            'dealer_shop_name' => $request->dealer_shop_name,
         ]);
 
         // Step 4: Add to Referral Table

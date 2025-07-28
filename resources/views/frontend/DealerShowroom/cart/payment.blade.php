@@ -125,15 +125,31 @@ $dealer_shop_name = request()->segment(2) ?? 'default';
 
 .summary-card {
     background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border: 1px solid #f0f0f0;
+    position: sticky;
+    top: 20px;
 }
 
 .summary-card .card-title {
     color: #333;
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 25px;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    position: relative;
+}
+
+.summary-card .card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: #ee520a;
 }
 
 .summary-details {
@@ -145,6 +161,44 @@ $dealer_shop_name = request()->segment(2) ?? 'default';
     font-size: 20px;
     font-weight: 600;
 }
+
+/* Enhanced Order Summary Card Layout */
+.checkout-summary-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Responsive improvements for payment page */
+@media (max-width: 768px) {
+    .checkout-summary-container {
+        margin: 0 10px;
+    }
+    
+    .payment-card, .summary-card {
+        margin-bottom: 20px;
+    }
+    
+    .summary-card {
+        position: static;
+    }
+    
+    .payment-tabs .nav-link {
+        min-width: 150px;
+        padding: 15px 20px;
+        margin: 0 8px;
+    }
+    
+    .col-lg-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 992px) {
+    .container-fluid {
+        padding: 0 40px;
+    }
+}
 </style>
 
 <!-- ========================= Breadcrumb Start =============================== -->
@@ -154,11 +208,31 @@ $dealer_shop_name = request()->segment(2) ?? 'default';
             <h6 class="mb-0">Payment</h6>
             <ul class="flex-align gap-8 flex-wrap">
                 <li class="text-sm">
-                    <a href="{{ url('/') }}" class="text-gray-900 flex-align gap-8 hover-text-main-600">
-                        <i class="ph ph-house"></i>
-                        Home
-                    </a>
+                    @if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
+                        <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="text-gray-900 flex-align gap-8 home-link">
+                            <i class="ph ph-house"></i>
+                            Home
+                        </a>
+                    @else
+                        <a href="{{ route('showroom.index', $dealer_shop_name) }}" class="text-gray-900 flex-align gap-8 home-link">
+                            <i class="ph ph-house"></i>
+                            Home
+                        </a>
+                    @endif
                 </li>
+                <style>
+                    .home-link {
+                        transition: color 0.3s ease;
+                        text-decoration: none;
+                    }
+                    .home-link:hover {
+                        color: #ffffff !important;
+                        text-decoration: none;
+                    }
+                    .home-link:hover i {
+                        color: #ffffff !important;
+                    }
+                </style>
                 <li class="flex-align">
                     <i class="ph ph-caret-right"></i>
                 </li>
@@ -170,10 +244,10 @@ $dealer_shop_name = request()->segment(2) ?? 'default';
 <!-- ========================= Breadcrumb End =============================== -->
 
 <section class="payment-section">
-    <div class="container">
-        <div class="row checkout-summary-container">
+    <div class="container-fluid">
+        <div class="row checkout-summary-container justify-content-center">
             <!-- Payment -->
-            <div class="col-md-8 mb-4">
+            <div class="col-lg-6 col-md-7 mb-4">
                 <div class="payment-card">
                     <div class="p-4">
                         <h5 class="payment-title">Select Payment Method</h5>
@@ -261,7 +335,7 @@ $dealer_shop_name = request()->segment(2) ?? 'default';
             </div>
 
             <!-- Summary -->
-            <div class="col-md-4">
+            <div class="col-lg-6 col-md-5">
                 <div class="card border-0 summary-card">
                     <div class="card-body p-4">
                         <h5 class="card-title mb-4">Order Summary</h5>

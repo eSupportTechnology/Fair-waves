@@ -1,5 +1,3 @@
-
-
 <?php
 // Get dealer shop name from URL segment - THIS IS THE KEY FIX
 $dealer_shop_name = request()->segment(2) ?? 'default';

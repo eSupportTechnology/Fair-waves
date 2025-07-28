@@ -96,6 +96,12 @@ class CartController extends Controller
                 return redirect()->route('login')->with('error', 'Please log in to add items to the cart.');
             }
 
+            // Clear buy_now session when user adds items to cart
+            // This prevents conflicts between buy now and cart checkout flows
+            if (session()->has('buy_now')) {
+                session()->forget('buy_now');
+            }
+
             $product = Product::findOrFail($productId);
             $price = $product->normal_price;
 

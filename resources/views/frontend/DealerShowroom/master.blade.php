@@ -46,6 +46,24 @@
 <link rel="stylesheet" href="{{ asset('frontend/newstyle/mainmin.css') }}">
 <link rel="stylesheet" href="{{ asset('frontend/newstyle/responsivemin.css') }}">
 
+<style>
+    /* Cart count animation */
+    .cart-count-updated {
+        animation: cartCountPulse 0.6s ease-in-out;
+        background-color: #28a745 !important;
+    }
+    
+    @keyframes cartCountPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+    }
+    
+    .cart-badge {
+        transition: all 0.3s ease;
+    }
+</style>
+
 
 
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
@@ -196,6 +214,11 @@
                                     toast.addEventListener('mouseleave', Swal.resumeTimer);
                                 }
                             });
+                            
+                            // Update cart count when product is added successfully
+                            @if(str_contains(session('success'), 'cart'))
+                                updateCartCount();
+                            @endif
                         @endif
 
                         @if (session('error'))
@@ -268,13 +291,56 @@
     });
     </script>
     <script>
+        // Global function to update cart count - can be called from anywhere
+        window.updateCartCount = function() {
+            @if(isset($dealer) && $dealer && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
+                // Use showroom cart count for dealer showroom
+                $.get("{{ route('showroom.cart.count', $dealer->dealerProfile->dealer_shop_name) }}", function(data) {
+                    if (data.total_items !== undefined) {
+                        $('#cart-count').text(data.total_items);
+                        // Add animation to highlight the update
+                        $('#cart-count').addClass('cart-count-updated');
+                        setTimeout(() => {
+                            $('#cart-count').removeClass('cart-count-updated');
+                        }, 1000);
+                    }
+                }).fail(function() {
+                    console.error('Failed to update cart count');
+                });
+            @elseif(isset($dealer_shop_name))
+                // Use showroom cart count if dealer_shop_name is available
+                $.get("{{ route('showroom.cart.count', $dealer_shop_name) }}", function(data) {
+                    if (data.total_items !== undefined) {
+                        $('#cart-count').text(data.total_items);
+                        // Add animation to highlight the update
+                        $('#cart-count').addClass('cart-count-updated');
+                        setTimeout(() => {
+                            $('#cart-count').removeClass('cart-count-updated');
+                        }, 1000);
+                    }
+                }).fail(function() {
+                    console.error('Failed to update cart count');
+                });
+            @else
+                // Fallback to regular cart count
+                $.get("{{ route('cart.count') }}", function(data) {
+                    if (data.cart_count !== undefined) {
+                        $('#cart-count').text(data.cart_count);
+                        // Add animation to highlight the update
+                        $('#cart-count').addClass('cart-count-updated');
+                        setTimeout(() => {
+                            $('#cart-count').removeClass('cart-count-updated');
+                        }, 1000);
+                    }
+                }).fail(function() {
+                    console.error('Failed to update cart count');
+                });
+            @endif
+        }
+        
         $(document).ready(function() {
-            $.get("{{ route('cart.count') }}", function(data) {
-                if (data.cart_count !== undefined) {
-                    $('#cart-count').text(data.cart_count);
-                }
-            });
-
+            // Load cart count on page load
+            updateCartCount();
         });
     </script>
     <script>

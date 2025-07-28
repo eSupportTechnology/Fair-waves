@@ -150,6 +150,12 @@ class ShowRoomController extends Controller
                 return redirect()->back()->with('error', 'Dealer shop name not found.');
             }
 
+            // Clear showroom_cart session when user clicks buy now
+            // This prevents conflicts between buy now and cart checkout flows
+            if (session()->has('showroom_cart')) {
+                session()->forget('showroom_cart');
+            }
+
             // Store only the current product in session for buy-now
             session()->put('buy_now', [
                 "id" => $product->id,
@@ -403,17 +409,28 @@ class ShowRoomController extends Controller
             $order = $orderQuery->firstOrFail();
         }
 
-        // Get dealer shop name from order or session (adjust as needed)
-        $dealer_shop_name = '';
-        $firstItem = null;
-        if ($order->items && $order->items->count() > 0) {
-            $firstItem = $order->items->first();
+        // Get dealer shop name from URL query parameter first (if redirected with shop name)
+        $dealer_shop_name = request()->get('dealer_shop_name') ?? '';
+        $dealer = null;
+        
+        // If no dealer shop name in query, try to get it from order items
+        if (empty($dealer_shop_name)) {
+            $firstItem = null;
+            if ($order->items && $order->items->count() > 0) {
+                $firstItem = $order->items->first();
+            }
+            $dealerProductLink = $firstItem ? $firstItem->dealerProductLink : null;
+            $dealer = $dealerProductLink ? $dealerProductLink->dealer : null;
+            if ($dealer && $dealer->dealerProfile) {
+                $dealer_shop_name = $dealer->dealerProfile->dealer_shop_name ?? '';
+            }
+        } else {
+            // If we have dealer shop name from query, find the dealer object
+            $dealer = User::whereHas('dealerProfile', function($query) use ($dealer_shop_name) {
+                $query->where('dealer_shop_name', $dealer_shop_name);
+            })->where('role', 'dealer')->with('dealerProfile')->first();
         }
-        $dealerProductLink = $firstItem ? $firstItem->dealerProductLink : null;
-        $dealer = $dealerProductLink ? $dealerProductLink->dealer : null;
-        if ($dealer && $dealer->dealerProfile) {
-            $dealer_shop_name = $dealer->dealerProfile->dealer_shop_name ?? '';
-        }
-        return view('frontend.DealerShowroom.success_buy_now', compact('order', 'dealer_shop_name'));
+        
+        return view('frontend.DealerShowroom.success_buy_now', compact('order', 'dealer_shop_name', 'dealer'));
     }
 }

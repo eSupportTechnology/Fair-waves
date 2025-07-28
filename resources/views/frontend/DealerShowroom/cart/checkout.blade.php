@@ -3,8 +3,8 @@
 @section('content')
 @php
 $cart = session('showroom_cart', []);
-// Get dealer shop name from URL segment or session cart
-$dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop_name'] ?? 'default';
+// Use the dealer_shop_name passed from controller, don't override it from URL segments
+// The controller already extracts it correctly from the route parameter
 @endphp
 
 <!-- Breadcrumb -->
@@ -14,15 +14,34 @@ $dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop
             <h6 class="mb-0">Checkout</h6>
             <ul class="flex-align gap-8 flex-wrap">
                 <li class="text-sm">
-                    <a href="{{ url('/') }}" class="text-gray-900 flex-align gap-8 home-link">
-                        <i class="ph ph-house"></i> Home
-                    </a>
+                    @if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
+                        <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="text-gray-900 flex-align gap-8 home-link">
+                            <i class="ph ph-house"></i> Home
+                        </a>
+                    @else
+                        <a href="{{ route('showroom.index', $dealer_shop_name) }}" class="text-gray-900 flex-align gap-8 home-link">
+                            <i class="ph ph-house"></i> Home
+                        </a>
+                    @endif
                 </li>
                 <style>
-                    .home-link {
-                        transition: color 0.3s ease;
+                    .breadcrumb .home-link {
+                        transition: all 0.3s ease !important;
+                        text-decoration: none !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 8px !important;
                     }
-                    .home-link:hover {
+                    .breadcrumb .home-link:hover,
+                    .breadcrumb .home-link:hover * {
+                        color: #ffffff !important;
+                        text-decoration: none !important;
+                    }
+                    .breadcrumb .home-link:hover i {
+                        color: #ffffff !important;
+                    }
+                    /* Override all global hover styles for this specific element */
+                    .breadcrumb li .home-link:hover {
                         color: #ffffff !important;
                     }
                 </style>
@@ -35,7 +54,7 @@ $dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop
 
 <!-- Checkout -->
 <section class="checkout py-80">
-<form action="{{ route('dealer.cart.placeOrder', $dealer_shop_name ?? 'default') }}" method="POST">
+<form action="{{ route('dealer.cart.placeOrder', isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name ? $dealer->dealerProfile->dealer_shop_name : ($dealer_shop_name ?? 'default')) }}" method="POST">
 @csrf
 
 <div class="container container-lg">

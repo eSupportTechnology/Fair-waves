@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Address;
 use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -181,14 +183,18 @@ class CartController extends Controller
             return redirect()->back()->with('error', 'This product is out of stock.');
         }
 
-        $selectedSize = $request->get('selectedSize');
-        $selectedColor = $request->get('selectedColor');
+        $selectedSize = $request->get('size');
+        $selectedColor = $request->get('color');
         $quantity = (int)$request->get('quantity', 1);
 
         $subtotal = $product->normal_price * $quantity;
         $total = $subtotal + 300;
 
-        return view('frontend.buy_now_checkout', compact('products', 'quantity', 'subtotal', 'total', 'selectedSize', 'selectedColor'));
+        // ✅ Fetch default address if exists
+        $defaultAddress = Address::where('user_id', $userId)->where('default', 1)->first();
+
+
+        return view('frontend.buy_now_checkout', compact('products', 'quantity', 'subtotal', 'total', 'selectedSize', 'selectedColor','defaultAddress'));
     }
 
 

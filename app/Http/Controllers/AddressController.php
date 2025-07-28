@@ -41,7 +41,8 @@ class AddressController extends Controller
             $address->default = 0;
         }
 
-        $address->full_name = $validatedData['first_name'];
+        $address->fname = $validatedData['fname'];
+        $address->lname = $validatedData['lname'];
         $address->phone_num = $validatedData['phone'];
         $address->email = $validatedData['email'];
         $address->address = $validatedData['address'];
@@ -60,7 +61,8 @@ class AddressController extends Controller
     {
         // Validate the request data
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
             'email' => 'required|string|email|max:255',
             'address' => 'required|string|max:255',
@@ -80,7 +82,8 @@ class AddressController extends Controller
 
         $address = new Address();
         $address->user_id = $user->id;
-        $address->full_name = $validatedData['first_name'];
+        $address->fname = $validatedData['fname'];
+        $address->lname = $validatedData['lname'];
         $address->phone_num = $validatedData['phone'];
         $address->email = $validatedData['email'];
         $address->address = $validatedData['address'];

@@ -1,6 +1,4 @@
-@extends('layouts.user_sidebar')
-
-@section('dashboard-content')
+<?php $__env->startSection('dashboard-content'); ?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -544,62 +542,65 @@
 </div>
 
 <!-- Success Alert -->
-@if (session('success'))
+<?php if(session('success')): ?>
     <div class="alert alert-success">
-        {{ session('success') }}
+        <?php echo e(session('success')); ?>
+
     </div>
-@endif
+<?php endif; ?>
 
 <!-- Address Cards -->
 <div class="address-cards-container">
     <div class="row">
-        @forelse($addresses as $address)
+        <?php $__empty_1 = true; $__currentLoopData = $addresses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $address): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
                 <div class="address-card">
                     <div class="address-card-header">
                         <h6 class="address-card-title">
                             <i class="fas fa-user-circle"></i>
-                            {{ $address->full_name ?? ($address->fname . ' ' . $address->lname) }}
+                            <?php echo e($address->full_name ?? ($address->fname . ' ' . $address->lname)); ?>
+
                         </h6>
-                        @if($address->default)
+                        <?php if($address->default): ?>
                             <span class="default-badge">
                                 <i class="fas fa-star"></i>
                                 Default
                             </span>
-                        @endif
+                        <?php endif; ?>
                     </div>
 
                     <div class="address-card-content">
                         <div class="address-info-row">
                             <i class="fas fa-phone"></i>
-                            <span>{{ $address->phone_num ?? $address->phone }}</span>
+                            <span><?php echo e($address->phone_num ?? $address->phone); ?></span>
                         </div>
                         <div class="address-info-row">
                             <i class="fas fa-envelope"></i>
-                            <span>{{ $address->email }}</span>
+                            <span><?php echo e($address->email); ?></span>
                         </div>
                         <div class="address-info-row">
                             <i class="fas fa-map-marker-alt"></i>
                             <span>
-                                {{ $address->address }}{{ $address->apartment ? ', ' . $address->apartment : '' }}<br>
-                                {{ $address->city }}, {{ $address->postal_code }}
+                                <?php echo e($address->address); ?><?php echo e($address->apartment ? ', ' . $address->apartment : ''); ?><br>
+                                <?php echo e($address->city); ?>, <?php echo e($address->postal_code); ?>
+
                             </span>
                         </div>
                     </div>
 
                     <div class="address-card-actions">
-                        <button class="btn btn-info" onclick="openEditModal({{ json_encode($address) }})">
+                        <button class="btn btn-info" onclick="openEditModal(<?php echo e(json_encode($address)); ?>)">
                             <i class="fas fa-edit"></i>
                             Edit
                         </button>
-                        <button class="btn btn-danger" onclick="confirmDelete({{ $address->id }})">
+                        <button class="btn btn-danger" onclick="confirmDelete(<?php echo e($address->id); ?>)">
                             <i class="fas fa-trash"></i>
                             Delete
                         </button>
                     </div>
                 </div>
             </div>
-        @empty
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <div class="col-12">
                 <div class="no-addresses">
                     <i class="fas fa-address-book"></i>
@@ -607,7 +608,7 @@
                     <p>You haven't added any addresses yet. Click "Add New Address" to create your first address.</p>
                 </div>
             </div>
-        @endforelse
+        <?php endif; ?>
     </div>
 </div>
 
@@ -621,15 +622,15 @@
             </button>
         </div>
         <div class="modal-body">
-            <form action="{{ route('storeAddress') }}" method="POST" id="addAddressForm">
-                @csrf
+            <form action="<?php echo e(route('storeAddress')); ?>" method="POST" id="addAddressForm">
+                <?php echo csrf_field(); ?>
                 <div class="form-grid">
                     <div class="form-field">
                         <label for="add_fname">First Name</label>
                         <div class="input-wrapper">
                             <i class="fas fa-user"></i>
                             <input type="text" name="fname" id="add_fname" placeholder="Enter first name"
-                                   value="{{ old('fname', auth()->user()->fname ?? '') }}" required>
+                                   value="<?php echo e(old('fname', auth()->user()->fname ?? '')); ?>" required>
                         </div>
                     </div>
                     <div class="form-field">
@@ -637,7 +638,7 @@
                         <div class="input-wrapper">
                             <i class="fas fa-user"></i>
                             <input type="text" name="lname" id="add_lname" placeholder="Enter last name"
-                                   value="{{ old('lname', auth()->user()->lname ?? '') }}" required>
+                                   value="<?php echo e(old('lname', auth()->user()->lname ?? '')); ?>" required>
                         </div>
                     </div>
                     <div class="form-field">
@@ -645,7 +646,7 @@
                         <div class="input-wrapper">
                             <i class="fas fa-phone"></i>
                             <input type="tel" name="phone" id="add_phone" placeholder="Enter phone number"
-                                   value="{{ old('phone', auth()->user()->phone ?? auth()->user()->phone_num ?? '') }}" required>
+                                   value="<?php echo e(old('phone', auth()->user()->phone ?? auth()->user()->phone_num ?? '')); ?>" required>
                         </div>
                     </div>
                     <div class="form-field">
@@ -653,7 +654,7 @@
                         <div class="input-wrapper">
                             <i class="fas fa-envelope"></i>
                             <input type="email" name="email" id="add_email" placeholder="Enter email address"
-                                   value="{{ old('email', auth()->user()->email ?? '') }}" required>
+                                   value="<?php echo e(old('email', auth()->user()->email ?? '')); ?>" required>
                         </div>
                     </div>
                     <div class="form-field full-width">
@@ -661,7 +662,7 @@
                         <div class="input-wrapper">
                             <i class="fas fa-home"></i>
                             <input type="text" name="address" id="add_address" placeholder="Enter street address"
-                                   value="{{ old('address', auth()->user()->address ?? '') }}" required>
+                                   value="<?php echo e(old('address', auth()->user()->address ?? '')); ?>" required>
                         </div>
                     </div>
                     <div class="form-field">
@@ -669,7 +670,7 @@
                         <div class="input-wrapper">
                             <i class="fas fa-building"></i>
                             <input type="text" name="apartment" id="add_apartment" placeholder="Apt, Suite, Unit"
-                                   value="{{ old('apartment') }}">
+                                   value="<?php echo e(old('apartment')); ?>">
                         </div>
                     </div>
                     <div class="form-field">
@@ -677,7 +678,7 @@
                         <div class="input-wrapper">
                             <i class="fas fa-city"></i>
                             <input type="text" name="city" id="add_city" placeholder="Enter city"
-                                   value="{{ old('city') }}" required>
+                                   value="<?php echo e(old('city')); ?>" required>
                         </div>
                     </div>
                     <div class="form-field">
@@ -685,7 +686,7 @@
                         <div class="input-wrapper">
                             <i class="fas fa-mail-bulk"></i>
                             <input type="text" name="postal_code" id="add_postal_code" placeholder="Enter postal code"
-                                   value="{{ old('postal_code') }}" required>
+                                   value="<?php echo e(old('postal_code')); ?>" required>
                         </div>
                     </div>
                     <div class="form-field full-width">
@@ -720,8 +721,8 @@
             </button>
         </div>
         <div class="modal-body">
-            <form action="{{ route('updateAddress') }}" method="POST" id="editAddressForm">
-                @csrf
+            <form action="<?php echo e(route('updateAddress')); ?>" method="POST" id="editAddressForm">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="address_id" id="edit_address_id">
                 <div class="form-grid">
                     <div class="form-field">
@@ -819,8 +820,8 @@
                 </p>
             </div>
             <form id="deleteAddressForm" method="POST">
-                @csrf
-                @method('DELETE')
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('DELETE'); ?>
                 <div class="btn-group" style="border-top: none; margin-top: 0; padding-top: 0;">
                     <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">
                         <i class="fas fa-times"></i>
@@ -878,7 +879,7 @@
 
     function confirmDelete(addressId) {
         const form = document.getElementById('deleteAddressForm');
-        const action = '{{ route("address.delete", ":id") }}';
+        const action = '<?php echo e(route("address.delete", ":id")); ?>';
         form.action = action.replace(':id', addressId);
 
         document.getElementById('deleteModal').classList.add('active');
@@ -988,4 +989,6 @@
     });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/user_dashboard/addresses.blade.php ENDPATH**/ ?>

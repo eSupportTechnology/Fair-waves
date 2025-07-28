@@ -409,7 +409,7 @@ class DealerController extends Controller
             'user_authenticated' => Auth::check(),
             'user_role' => Auth::check() ? Auth::user()->role : 'not_authenticated'
         ]);
-        
+
         // Check if user is logged in
         if (!Auth::check()) {
             \Log::warning('Withdrawal request failed: User not authenticated');
@@ -418,7 +418,7 @@ class DealerController extends Controller
 
         $userId = Auth::id();
         $dealer = User::where('id', $userId)->where('role', 'dealer')->first();
-        
+
         if (!$dealer) {
             \Log::warning('Withdrawal request failed: User is not a dealer', ['user_id' => $userId]);
             return redirect()->back()->with('error', 'You are not authorized to make withdrawal requests.');
@@ -426,10 +426,10 @@ class DealerController extends Controller
 
         // Check if dealer has bank details and if they are approved
         $bankDetail = BankDetail::where('user_id', $userId)->first();
-        
+
         if (!$bankDetail || $bankDetail->bank_status !== 'approved') {
             \Log::warning('Withdrawal request failed: Bank details not approved', [
-                'user_id' => $userId, 
+                'user_id' => $userId,
                 'has_bank_detail' => !is_null($bankDetail),
                 'bank_status' => $bankDetail->bank_status ?? 'no_bank_detail'
             ]);
@@ -438,7 +438,7 @@ class DealerController extends Controller
 
         // Get dealer profile to retrieve BV
         $dealerProfile = DealerProfile::where('user_id', $userId)->first();
-        
+
         if (!$dealerProfile) {
             \Log::warning('Withdrawal request failed: Dealer profile not found', ['user_id' => $userId]);
             return redirect()->back()->with('error', 'Dealer profile not found.');
@@ -733,7 +733,7 @@ class DealerController extends Controller
     {
         $search = $request->get('search');
 
-        $dealers = User::with('bankDetail')->with('kycDetail')
+        $dealers = User::with('bankDetail')->with(relations: 'kycDetail')
             ->where('role', 'dealer')
             ->where('dealer_status', 1) // Only show active dealers
             ->when($search, function($query) use ($search) {
@@ -743,8 +743,7 @@ class DealerController extends Controller
                       ->orWhere('phone', 'LIKE', '%' . $search . '%');
                 });
             })
-            // TODO: Uncomment for future development - Total Orders functionality
-            // ->withCount('customerOrders')
+            ->withCount('dealerProductOrders')
             ->paginate(10)
             ->appends(request()->query());
 

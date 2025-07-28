@@ -127,4 +127,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(KYCDetail::class);
     }
+
+    public function dealerProductOrders()
+    {
+        return $this->hasMany(DealerProductOrder::class, 'user_id', 'id');
+    }
 }

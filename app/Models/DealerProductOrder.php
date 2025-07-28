@@ -12,6 +12,11 @@ class DealerProductOrder extends Model
     {
         return $this->belongsTo(DealerProductLink::class, 'dealer_product_link_id');
     }
+    public function customer_order_items()
+    {
+        return $this->belongsTo(CustomerOrderItems::class, 'customer_order_item_id');
+    }
+
     public function order()
     {
         return $this->belongsTo(CustomerOrderItems::class, 'customer_order_item_id');

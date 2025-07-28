@@ -1,5 +1,10 @@
 @extends('frontend.DealerShowroom.master')
 
+@php
+// Get dealer shop name from URL segment - THIS IS THE KEY FIX
+$dealer_shop_name = request()->segment(2) ?? 'default';
+@endphp
+
 @section('content')
 
 <style>
@@ -186,5 +191,57 @@
         </div>
     </div>
 </section>
+
+@if(isset($dealer_shop_name) && $dealer_shop_name && $dealer_shop_name !== 'default')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update desktop navigation links
+    const desktopNav = document.querySelector('.header-navigation');
+    const shopName = '{{ $dealer_shop_name }}';
+    
+    if (desktopNav && shopName) {
+        desktopNav.innerHTML = `
+            <a href="/showroom/${shopName}" class="nav-link text-dark me-3 hover-orange">Home</a>
+            <a href="/showroom/${shopName}#products-section" class="nav-link text-dark me-3 hover-orange">Products</a>
+            <a href="/showroom/${shopName}/about" class="nav-link text-dark me-3 hover-orange">About</a>
+            <a href="/showroom/${shopName}/about#contact-section" class="nav-link text-dark hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
+
+    // Update mobile navigation links
+    const mobileNav = document.querySelector('.mobile-nav-menu');
+    if (mobileNav && shopName) {
+        mobileNav.innerHTML = `
+            <a href="/showroom/${shopName}" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
+            <a href="/showroom/${shopName}#products-section" class="d-block py-2 text-dark text-decoration-none hover-orange">Products</a>
+            <a href="/showroom/${shopName}/about" class="d-block py-2 text-dark text-decoration-none hover-orange">About</a>
+            <a href="/showroom/${shopName}/about#contact-section" class="d-block py-2 text-dark text-decoration-none hover-orange contact-about-scroll">Contact</a>
+        `;
+    }
+
+    // Update dealer shop name in header - replace dealer name with shop name
+    const dealerNameElement = document.querySelector('.dealer-name');
+    if (dealerNameElement && shopName && shopName !== 'default') {
+        dealerNameElement.innerHTML = `<a href="/showroom/${shopName}" class="text-dark text-decoration-none">${shopName}</a>`;
+    }
+
+    // Update cart link to use correct dealer shop name
+    const cartLink = document.querySelector('.btn-cart-custom');
+    if (cartLink && shopName) {
+        cartLink.setAttribute('href', `/showroom/${shopName}/cart`);
+    }
+
+    // Handle contact navigation to about page with scrolling
+    document.querySelectorAll('.contact-about-scroll').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#contact-section')) {
+                window.location.href = href;
+            }
+        });
+    });
+});
+</script>
+@endif
 
 @endsection

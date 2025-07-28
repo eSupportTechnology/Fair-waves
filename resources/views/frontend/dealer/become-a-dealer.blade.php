@@ -485,6 +485,17 @@
 
                             <div class="form-group">
                                 <label class="form-label">
+                                    <i class="fas fa-store"></i>
+                                    Dealer Showroom Name
+                                </label>
+                                <input type="text" class="form-control" name="dealer_shop_name" placeholder="Enter your showroom/shop name" value="{{ old('dealer_shop_name') }}" required>
+                                @error('dealer_shop_name')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
                                     <i class="fas fa-code"></i>
                                     Sponsered Dealer Code
                                 </label>

@@ -3,29 +3,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <!-- Flash Messages -->
-    <?php if(session('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle me-2"></i><?php echo e(session('success')); ?>
+    <div class="flash-messages-container" style="margin-top: 40px;">
+        <?php if(session('success')): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i><?php echo e(session('success')); ?>
 
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
 
-    <?php if(session('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-circle me-2"></i><?php echo e(session('error')); ?>
+        <?php if(session('error')): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><?php echo e(session('error')); ?>
 
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
 
-    <?php if(session('warning')): ?>
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-triangle me-2"></i><?php echo e(session('warning')); ?>
+        <?php if(session('warning')): ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i><?php echo e(session('warning')); ?>
 
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+    </div>
     
     <style>
         :root {
@@ -1196,7 +1198,23 @@
                             <i class="fas fa-box me-2"></i>
                             Dealer's Products
                         </a>
+                        <a href="<?php echo e(route('dealer.customer.orders')); ?>" class="btn btn-purple btn-sm w-100 quick-action-btn">
+                            <i class="fas fa-shopping-bag me-2"></i>
+                            Dealer's Orders
+                        </a>
                     </div>
+                    <style>
+                        .btn-purple {
+                            background-color: #6f42c1;
+                            border-color: #6f42c1;
+                            color: #fff;
+                        }
+                        .btn-purple:hover {
+                            background-color: #5a32a3;
+                            border-color: #5a32a3;
+                            color: #fff;
+                        }
+                    </style>
                 </div>
 
 

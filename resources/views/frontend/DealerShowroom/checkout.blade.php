@@ -3,8 +3,24 @@
 @php
     // Get dealer information from session data
     $dealer = null;
-    if (session('buy_now')) {
-        // Handle Buy Now checkout
+    
+    // Check if we have cart items first (prioritize cart over buy_now)
+    $cart = session('showroom_cart', []);
+    $isCartCheckout = !empty($cart);
+    
+    if ($isCartCheckout) {
+        // For cart checkout, try to get dealer from cart items or passed variable
+        if (isset($dealer_shop_name)) {
+            $dealerProfile = \App\Models\DealerProfile::where('dealer_shop_name', $dealer_shop_name)
+                ->with('user')
+                ->first();
+            if ($dealerProfile && $dealerProfile->user) {
+                $dealer = $dealerProfile->user;
+                $dealer->setRelation('dealerProfile', $dealerProfile);
+            }
+        }
+    } elseif (session('buy_now')) {
+        // Handle Buy Now checkout only if no cart items
         $buyNowItem = session('buy_now');
         if (isset($buyNowItem['dealerProductLink'])) {
             $dealerProductLink = \App\Models\DealerProductLink::find($buyNowItem['dealerProductLink']);
@@ -13,7 +29,6 @@
             }
         }
     }
-    // Note: Cart checkout may not have dealer context - navigation will show empty links in that case
 @endphp
 
 @section('content')
@@ -25,9 +40,15 @@
             <h6 class="mb-0">Checkout</h6>
             <ul class="flex-align gap-8 flex-wrap">
                 <li class="text-sm">
-                    <a href="{{ url('/') }}" class="text-gray-900 flex-align gap-8 hover-text-main-600">
-                        <i class="ph ph-house"></i> Home
-                    </a>
+                    @if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
+                        <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                            <i class="ph ph-house"></i> Home
+                        </a>
+                    @else
+                        <a href="{{ route('showroom.index', $dealer_shop_name) }}" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                            <i class="ph ph-house"></i> Home
+                        </a>
+                    @endif
                 </li>
                 
                 <li class="flex-align"><i class="ph ph-caret-right"></i></li>
@@ -39,10 +60,15 @@
 
 <!-- Checkout -->
 <section class="checkout py-80">
-@if(session('buy_now'))
+@if(isset($cart) && !empty($cart))
+    {{-- Cart checkout - prioritize cart over buy_now --}}
+    <form action="{{ route('dealer.cart.placeOrder', $dealer_shop_name) }}" method="POST">
+@elseif(session('buy_now') && empty(session('showroom_cart', [])))
+    {{-- Buy now checkout - only when no cart items --}}
     <form action="{{ route('dealer_buynow_placeOrder') }}" method="POST">
 @else
-    <form action="{{ route('dealer.cart.placeOrder') }}" method="POST">
+    {{-- Default to cart checkout with dealer shop name --}}
+    <form action="{{ route('dealer.cart.placeOrder', $dealer_shop_name) }}" method="POST">
 @endif
 @csrf
 
@@ -93,36 +119,65 @@
                         <span class="text-gray-900 fw-medium text-xl font-heading-two">Subtotal</span>
                     </div>
 
-                    @php
-                        $item = session('buy_now');
-                        $product = \App\Models\Product::find($item['id']);
-                        $subtotal = $item['price'] * $item['quantity'];
-                        $deliveryFee = 300;
-                        $total = $subtotal + $deliveryFee;
-                    @endphp
+                    @if(isset($cart) && !empty($cart))
+                        {{-- Cart Checkout Display --}}
+                        @php
+                            $cartSubtotal = 0;
+                        @endphp
+                        
+                        @foreach($cart as $productId => $cartItem)
+                            @php
+                                $itemSubtotal = $cartItem['price'] * $cartItem['quantity'];
+                                $cartSubtotal += $itemSubtotal;
+                            @endphp
+                            <div class="flex-between gap-24 mb-32">
+                                <div class="flex-align gap-12">
+                                    <span class="text-gray-900 fw-normal text-sm font-heading-two w-144">{{ $cartItem['name'] }}</span>
+                                    <span class="text-gray-900 fw-normal text-sm font-heading-two"><i class="ph-bold ph-x"></i></span>
+                                    <span class="text-gray-900 fw-semibold text-sm font-heading-two">{{ $cartItem['quantity'] }}</span>
+                                </div>
+                                <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs {{ number_format($itemSubtotal, 2) }}</span>
+                            </div>
+                        @endforeach
 
-                    <div class="flex-between gap-24 mb-32">
-                        <div class="flex-align gap-12">
-                            <span class="text-gray-900 fw-normal text-sm font-heading-two w-144">{{ $item['name'] }}</span>
-                            <span class="text-gray-900 fw-normal text-sm font-heading-two"><i class="ph-bold ph-x"></i></span>
-                            <span class="text-gray-900 fw-semibold text-sm font-heading-two">{{ $item['quantity'] }}</span>
+                        @php
+                            $deliveryFee = 300;
+                            $total = $cartSubtotal + $deliveryFee;
+                        @endphp
+
+                    @elseif(session('buy_now') && empty(session('showroom_cart', [])))
+                        {{-- Buy Now Checkout Display --}}
+                        @php
+                            $item = session('buy_now');
+                            $product = \App\Models\Product::find($item['id']);
+                            $subtotal = $item['price'] * $item['quantity'];
+                            $deliveryFee = 300;
+                            $total = $subtotal + $deliveryFee;
+                        @endphp
+
+                        <div class="flex-between gap-24 mb-32">
+                            <div class="flex-align gap-12">
+                                <span class="text-gray-900 fw-normal text-sm font-heading-two w-144">{{ $item['name'] }}</span>
+                                <span class="text-gray-900 fw-normal text-sm font-heading-two"><i class="ph-bold ph-x"></i></span>
+                                <span class="text-gray-900 fw-semibold text-sm font-heading-two">{{ $item['quantity'] }}</span>
+                            </div>
+                            <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs {{ number_format($subtotal, 2) }}</span>
                         </div>
-                        <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs {{ number_format($subtotal, 2) }}</span>
-                    </div>
 
-                    <!-- Hidden Fields -->
-                    <input type="hidden" name="products[0][product_id]" value="{{ $item['id'] }}">
-                    <input type="hidden" name="products[0][quantity]" value="{{ $item['quantity'] }}">
-                    <input type="hidden" name="products[0][size]" value="{{ $item['size'] ?? '' }}">
-                    <input type="hidden" name="products[0][color]" value="{{ $item['color'] ?? '' }}">
-                    <input type="hidden" name="products[0][cost]" value="{{ $item['price'] }}">
-                    <input type="hidden" name="products[0][dealerProductLink]" value="{{ $item['dealerProductLink'] }}">
-                    <input type="hidden" name="products[0][bv]" value="{{ $item['bv'] }}">
+                        <!-- Hidden Fields for Buy Now -->
+                        <input type="hidden" name="products[0][product_id]" value="{{ $item['id'] }}">
+                        <input type="hidden" name="products[0][quantity]" value="{{ $item['quantity'] }}">
+                        <input type="hidden" name="products[0][size]" value="{{ $item['size'] ?? '' }}">
+                        <input type="hidden" name="products[0][color]" value="{{ $item['color'] ?? '' }}">
+                        <input type="hidden" name="products[0][cost]" value="{{ $item['price'] }}">
+                        <input type="hidden" name="products[0][dealerProductLink]" value="{{ $item['dealerProductLink'] }}">
+                        <input type="hidden" name="products[0][bv]" value="{{ $item['bv'] }}">
+                    @endif
 
                     <div class="border-top border-gray-100 pt-30 mt-30">
                         <div class="mb-0 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two text-md fw-semibold">Subtotal</span>
-                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs {{ number_format($subtotal, 2) }}</span>
+                            <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs {{ number_format(isset($cartSubtotal) ? $cartSubtotal : $subtotal, 2) }}</span>
                         </div>
                         <div class="mb-32 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two text-md fw-semibold">Delivery Fee</span>

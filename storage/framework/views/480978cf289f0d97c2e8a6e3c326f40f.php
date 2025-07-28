@@ -1,12 +1,10 @@
-@extends('layouts.user_sidebar')
-
-@section('dashboard-content')
-@if (!Auth::check())
+<?php $__env->startSection('dashboard-content'); ?>
+<?php if(!Auth::check()): ?>
     <script>
-        window.location.href = "{{ route('login') }}";
+        window.location.href = "<?php echo e(route('login')); ?>";
     </script>
-    @php exit; @endphp
-@endif
+    <?php exit; ?>
+<?php endif; ?>
 
 <div class="tracking-header-card">
     <h4 class="tracking-header-title">Tracking Details</h4>
@@ -26,26 +24,26 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($order->items as $item)
+                <?php $__currentLoopData = $order->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
                     <td class="product-info">
                         <div class="d-flex align-items-center">
-                            @if($item->product && $item->product->images->first())
+                            <?php if($item->product && $item->product->images->first()): ?>
                             <div class="product-image">
-                                <img src="{{ asset('storage/' . $item->product->images->first()->image_path) }}" 
+                                <img src="<?php echo e(asset('storage/' . $item->product->images->first()->image_path)); ?>" 
                                     alt="Product Image">
                             </div>
-                            @endif
-                            <span class="product-name">{{ $item->product->name }}</span>
+                            <?php endif; ?>
+                            <span class="product-name"><?php echo e($item->product->name); ?></span>
                         </div>
                     </td>
-                    <td class="text-end">Rs {{ number_format($item->cost / $item->quantity, 2) }}</td>
+                    <td class="text-end">Rs <?php echo e(number_format($item->cost / $item->quantity, 2)); ?></td>
                     <td class="text-center">
-                        <span class="quantity-badge">{{ $item->quantity }}</span>
+                        <span class="quantity-badge"><?php echo e($item->quantity); ?></span>
                     </td>
-                    <td class="text-end price-column">Rs {{ number_format($item->cost, 2) }}</td>
+                    <td class="text-end price-column">Rs <?php echo e(number_format($item->cost, 2)); ?></td>
                 </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
         </table>
     </div>
@@ -54,25 +52,25 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="tracking-info">
-                    @if($order->tracking_number)
+                    <?php if($order->tracking_number): ?>
                     <div class="tracking-detail">
                         <strong>Tracking Number:</strong> 
-                        <span class="tracking-number">{{ $order->tracking_number }}</span>
+                        <span class="tracking-number"><?php echo e($order->tracking_number); ?></span>
                     </div>
-                    @endif
-                    @if($order->tracking_link)
+                    <?php endif; ?>
+                    <?php if($order->tracking_link): ?>
                     <div class="tracking-detail mt-2">
                         <strong>Tracking Link:</strong> 
-                        <a href="{{ $order->tracking_link }}" target="_blank" class="tracking-link">Track with Courier <i class="fas fa-external-link-alt"></i></a>
+                        <a href="<?php echo e($order->tracking_link); ?>" target="_blank" class="tracking-link">Track with Courier <i class="fas fa-external-link-alt"></i></a>
                     </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="col-md-4">
                 <table class="table table-borderless">
                     <tr>
                         <td>Subtotal:</td>
-                        <td class="text-end">Rs {{ number_format($order->total_cost - 300, 2) }}</td>
+                        <td class="text-end">Rs <?php echo e(number_format($order->total_cost - 300, 2)); ?></td>
                     </tr>
                     <tr>
                         <td>Delivery Fee:</td>
@@ -80,7 +78,7 @@
                     </tr>
                     <tr class="fw-bold">
                         <td>Total:</td>
-                        <td class="text-end">Rs {{ number_format($order->total_cost, 2) }}</td>
+                        <td class="text-end">Rs <?php echo e(number_format($order->total_cost, 2)); ?></td>
                     </tr>
                 </table>
             </div>
@@ -94,7 +92,7 @@
     <div class="progress-container mt-4">
     <h5>Order Progress</h5>
     <div class="progress-wrapper">
-        @php
+        <?php
             $statuses = [
                 'Pending' => 'Order Placed',
                 'Accepted' => 'Order Accepted',
@@ -109,15 +107,15 @@
             ];
 
             $currentStatusIndex = array_search($order->status, array_keys($statuses));
-        @endphp
+        ?>
 
         <ul class="progress-timeline">
-            @foreach ($statuses as $key => $label)
-                <li class="{{ $currentStatusIndex >= array_search($key, array_keys($statuses)) ? 'completed' : '' }}">
-                    <div class="step-circle">{{ $loop->index + 1 }}</div>
-                    <span class="step-label">{{ $label }}</span>
+            <?php $__currentLoopData = $statuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li class="<?php echo e($currentStatusIndex >= array_search($key, array_keys($statuses)) ? 'completed' : ''); ?>">
+                    <div class="step-circle"><?php echo e($loop->index + 1); ?></div>
+                    <span class="step-label"><?php echo e($label); ?></span>
                 </li>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </ul>
     </div>
 
@@ -126,29 +124,29 @@
     <h5>Activity Logs</h5>
     <div class="activity-log-container">
         <ul class="activity-log-timeline">
-            @php
+            <?php
                 $activityLogs = collect($order->activity_logs ?? []);
-            @endphp
+            ?>
 
-            @if ($activityLogs->isEmpty())
+            <?php if($activityLogs->isEmpty()): ?>
                 <li class="activity-log-entry">
                     <p class="log-message">No activity logs available for this order.</p>
                 </li>
-            @else
-                @foreach ($activityLogs as $log)
+            <?php else: ?>
+                <?php $__currentLoopData = $activityLogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <li class="activity-log-step">
                         <div class="log-content">
                             <div class="log-icon">
                                 <i class="fas fa-check"></i>
                             </div>
                             <div class="log-details">
-                                <p class="log-message">{{ $log['message'] }}</p>
-                                <span class="log-date">{{ \Carbon\Carbon::parse($log['timestamp'])->format('d M Y h:i A') }}</span>
+                                <p class="log-message"><?php echo e($log['message']); ?></p>
+                                <span class="log-date"><?php echo e(\Carbon\Carbon::parse($log['timestamp'])->format('d M Y h:i A')); ?></span>
                             </div>
                         </div>
                     </li>
-                @endforeach
-            @endif
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endif; ?>
         </ul>
     </div>
 
@@ -464,4 +462,6 @@
 
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/user_dashboard/tracking-page.blade.php ENDPATH**/ ?>

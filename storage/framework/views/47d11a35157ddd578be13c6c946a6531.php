@@ -3,6 +3,11 @@
 $cart = session('showroom_cart', []);
 // Get dealer shop name from URL segment or session cart
 $dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop_name'] ?? 'default';
+
+// Clear buy_now session if we have cart items to prevent conflicts
+if (!empty($cart) && session()->has('buy_now')) {
+    session()->forget('buy_now');
+}
 ?>
 <style>
     .cart-table {
@@ -127,7 +132,7 @@ $dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop
 
     <?php if(empty($cart)): ?>
         <div class="alert alert-info">
-            Your cart is empty. <a href="<?php echo e(url()->previous()); ?>">Continue shopping</a>
+            Your cart is empty. <a href="<?php echo e(route('showroom.index', $dealer_shop_name)); ?>">Continue shopping</a>
         </div>
     <?php else: ?>
         <div class="row">
@@ -178,10 +183,10 @@ $dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop
                                     </div>
                                 </div>
                                 <div class="col-md-1">
-                                    <form action="<?php echo e(route('showroom.cart.remove', [$dealer_shop_name ?? 'default', $productId])); ?>" method="POST">
+                                    <form action="<?php echo e(route('showroom.cart.remove', [$dealer_shop_name ?? 'default', $productId])); ?>" method="POST" class="remove-item-form" onsubmit="return handleRemoveItem(event, this, '<?php echo e($productId); ?>')">
                                         <?php echo csrf_field(); ?>
                                         <?php echo method_field('DELETE'); ?>
-                                        <button type="submit" class="remove-item" onclick="return confirm('Are you sure you want to remove this item?')" title="Remove item">
+                                        <button type="submit" class="remove-item" title="Remove item">
                                             ×
                                         </button>
                                     </form>
@@ -277,6 +282,11 @@ $dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop
                         document.getElementById('cart-total').textContent = `Rs. ${data.total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
                     }
                     
+                    // Update cart count in header - this is the key fix!
+                    if (typeof window.updateCartCount === 'function') {
+                        window.updateCartCount();
+                    }
+                    
                     // Show success message
                     showMessage('Cart updated successfully!', 'success');
                 } else {
@@ -296,6 +306,75 @@ $dealer_shop_name = request()->segment(2) ?? optional(reset($cart))['dealer_shop
             });
         });
     });
+
+    // Handle remove item functionality with AJAX
+    function handleRemoveItem(event, form, productId) {
+        event.preventDefault();
+        
+        // Show confirmation dialog
+        if (!confirm('Are you sure you want to remove this item?')) {
+            return false;
+        }
+        
+        const cartItem = form.closest('.cart-item');
+        const removeButton = form.querySelector('.remove-item');
+        
+        // Show loading state
+        cartItem.classList.add('loading');
+        removeButton.disabled = true;
+        removeButton.textContent = '⏳';
+        
+        // Send AJAX request to remove item
+        fetch(form.action, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text(); // Laravel may return redirect HTML
+        })
+        .then(data => {
+            // Remove the cart item with animation
+            cartItem.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            cartItem.style.opacity = '0';
+            cartItem.style.transform = 'translateX(-100%)';
+            
+            setTimeout(() => {
+                cartItem.remove();
+                
+                // Check if cart is now empty
+                const remainingItems = document.querySelectorAll('.cart-item');
+                if (remainingItems.length === 0) {
+                    // Reload page to show empty cart message
+                    window.location.reload();
+                }
+            }, 300);
+            
+            // Update cart count in header - this is the key fix!
+            if (typeof window.updateCartCount === 'function') {
+                window.updateCartCount();
+            }
+            
+            // Show success message
+            showMessage('Item removed from cart successfully!', 'success');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Failed to remove item. Please try again.', 'error');
+            
+            // Reset button state
+            cartItem.classList.remove('loading');
+            removeButton.disabled = false;
+            removeButton.textContent = '×';
+        });
+        
+        return false;
+    }
 
     function showMessage(message, type) {
         // Create a simple toast notification

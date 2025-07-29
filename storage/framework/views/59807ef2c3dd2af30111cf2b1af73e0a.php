@@ -378,21 +378,21 @@
     <body>
         <div class="email-container">
             <div class="header">
-                <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}" alt="Fair Waves Logo" class="logo">
+                <img src="<?php echo e(asset('frontend/newstyle/assets/images/logo.png')); ?>" alt="Fair Waves Logo" class="logo">
                 <h1>Order Update</h1>
                 <div class="company-tagline">Enjoy Life with the Waves</div>
             </div>
 
             <div class="content">
                 <div class="greeting">
-                    Hi {{ $order->customer_name }},
+                    Hi <?php echo e($order->customer_name); ?>,
                 </div>
 
                 <div class="order-info">
                     <div class="order-details">
-                        <p>Your order <span class="order-code">#{{ $order->order_code }}</span> has been updated!</p>
+                        <p>Your order <span class="order-code">#<?php echo e($order->order_code); ?></span> has been updated!</p>
                     </div>
-                    <div class="status-badge">{{ $newStatus }}</div>
+                    <div class="status-badge"><?php echo e($newStatus); ?></div>
                 </div>
 
                 <div class="summary-title">
@@ -403,22 +403,22 @@
                     <ul class="summary-list">
                         <li class="summary-item">
                             <span class="summary-label">💰 Total Cost:</span>
-                            <span class="summary-value total-cost">Rs. {{ number_format($order->total_cost, 2) }}</span>
+                            <span class="summary-value total-cost">Rs. <?php echo e(number_format($order->total_cost, 2)); ?></span>
                         </li>
                         <li class="summary-item">
                             <span class="summary-label">📊 Status:</span>
-                            <span class="summary-value">{{ $newStatus }}</span>
+                            <span class="summary-value"><?php echo e($newStatus); ?></span>
                         </li>
                         <li class="summary-item">
                             <span class="summary-label">📅 Placed On:</span>
                             <span
-                                class="summary-value">{{ \Carbon\Carbon::parse($order->date)->toFormattedDateString() }}</span>
+                                class="summary-value"><?php echo e(\Carbon\Carbon::parse($order->date)->toFormattedDateString()); ?></span>
                         </li>
                     </ul>
 
                 </div>
 
-                @if ($order->tracking_number || $order->tracking_link)
+                <?php if($order->tracking_number || $order->tracking_link): ?>
                     <div class="tracking-section">
                         <div class="tracking-header">
                             🚚 Tracking Information
@@ -426,28 +426,28 @@
 
                         <div class="tracking-grid">
                             <div class="tracking-info">
-                                @if ($order->tracking_number)
+                                <?php if($order->tracking_number): ?>
                                     <div class="tracking-item-row">
                                         <span class="summary-label">📋 Tracking Number:</span>
-                                        <span class="tracking-number">{{ $order->tracking_number }}</span>
+                                        <span class="tracking-number"><?php echo e($order->tracking_number); ?></span>
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
 
-                            @if ($order->tracking_link)
+                            <?php if($order->tracking_link): ?>
                                 <div>
-                                    <a href="{{ $order->tracking_link }}" target="_blank" class="tracking-link">
+                                    <a href="<?php echo e($order->tracking_link); ?>" target="_blank" class="tracking-link">
                                         Track Package
                                     </a>
                                 </div>
-                            @endif
+                            <?php endif; ?>
 
 
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @php
+                <?php
                     // Get the dealer shop name from the first order item's dealer product link
                     $dealerShopName = null;
                     if ($order->items && $order->items->count() > 0) {
@@ -461,18 +461,20 @@
                                 $firstItem->dealerProductLink->dealer->dealerProfile->dealer_shop_name ?? null;
                         }
                     }
-                    // Log::info('Dealer Shop Name: ' . $dealerShopName);
-                @endphp
+                    Log::info('Dealer Shop Name: ' . $dealerShopName);
+                ?>
 
-                @if ($dealerShopName)
+                <h1>in here <?php echo e($dealerShopName); ?> and here. this is shop name</h1>
+
+                <?php if($dealerShopName): ?>
                     <div style="text-align:center; margin: 30px 0;">
-                        <a href="{{ route('showroom.productTrackingView', ['dealer_shop_name' => $dealerShopName, 'order_code' => $order->order_code]) }}"
+                        <a href="<?php echo e(route('showroom.productTrackingView', ['dealer_shop_name' => $dealerShopName, 'order_code' => $order->order_code])); ?>"
                             target="_blank"
                             style="background: linear-gradient(135deg, #FF5722, #E64A19); color: #fff; text-decoration: none; padding: 16px 32px; border-radius: 30px; font-weight: 600; font-size: 18px; display: inline-block; margin-top: 10px;">
                             View Tracking Page
                         </a>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
 
             <div class="footer">
@@ -488,3 +490,4 @@
     </body>
 
 </html>
+<?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/emails/order-status-updated.blade.php ENDPATH**/ ?>

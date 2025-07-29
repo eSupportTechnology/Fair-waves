@@ -108,10 +108,10 @@ class ShowRoomController extends Controller
     public function dealerAdd($id, Request $request)
     {
         $product = Product::findOrFail($id);
-        
+
         // Get the dealer_product_link_id from the URL parameters
         $dealerProductLinkId = $request->route('dpid') ?? $request->input('dealer_product_link_id');
-        
+
         if (!$dealerProductLinkId) {
             return redirect()->back()->with('error', 'Invalid dealer product link.');
         }
@@ -135,17 +135,17 @@ class ShowRoomController extends Controller
     {
         try {
             $product = Product::findOrFail($id);
-            
+
             // Get dealer shop name from dealer product link
             $dealerProductLink = DealerProductLink::with(['dealer.dealerProfile'])->findOrFail($dpid);
-            
+
             // Ensure dealer and dealerProfile exist
             if (!$dealerProductLink->dealer || !$dealerProductLink->dealer->dealerProfile) {
                 return redirect()->back()->with('error', 'Dealer information not found.');
             }
-            
+
             $dealerShopName = $dealerProductLink->dealer->dealerProfile->dealer_shop_name;
-            
+
             if (!$dealerShopName) {
                 return redirect()->back()->with('error', 'Dealer shop name not found.');
             }
@@ -170,7 +170,7 @@ class ShowRoomController extends Controller
 
             return redirect()->route('dealer.checkout.page', $dealerShopName);
         } catch (\Exception $e) {
-            \Log::error('Error in dealerBuyNow: ' . $e->getMessage());
+            Log::error('Error in dealerBuyNow: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An error occurred. Please try again.');
         }
     }
@@ -296,9 +296,9 @@ class ShowRoomController extends Controller
             }
 
             return redirect()->route('dealerPayment', ['order_code' => $orderCode]);
-            
+
         } catch (\Exception $e) {
-            \Log::error('Error in dealer_buynow_placeOrder: ' . $e->getMessage());
+            Log::error('Error in dealer_buynow_placeOrder: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to place order. Please try again. Error: ' . $e->getMessage());
         }
     }
@@ -308,10 +308,10 @@ class ShowRoomController extends Controller
         $order = CustomerOrder::where('order_code', $order_code)
                               ->with(['items.product', 'items.dealerProductLink.dealer.dealerProfile'])
                               ->firstOrFail();
-        
+
         // Get dealer from the first order item's dealer product link
         $dealer = $order->items->first()?->dealerProductLink?->dealer;
-        
+
         return view('frontend.DealerShowroom.payment', compact('order', 'dealer'));
     }
 
@@ -320,7 +320,7 @@ class ShowRoomController extends Controller
         try {
             // For showroom orders, allow both authenticated and anonymous users
             $orderQuery = CustomerOrder::where('order_code', $order_code);
-            
+
             // If user is logged in, check their orders, otherwise allow any order with this code
             if (Auth::check()) {
                 $order = $orderQuery->where('user_id', Auth::id())->firstOrFail();
@@ -360,7 +360,7 @@ class ShowRoomController extends Controller
         try {
             // For showroom orders, allow both authenticated and anonymous users
             $orderQuery = CustomerOrder::where('order_code', $order_code);
-            
+
             // If user is logged in, check their orders, otherwise allow any order with this code
             if (Auth::check()) {
                 $order = $orderQuery->where('user_id', Auth::id())->firstOrFail();
@@ -401,7 +401,7 @@ class ShowRoomController extends Controller
     {
         // For showroom orders, allow both authenticated and anonymous users
         $orderQuery = CustomerOrder::where('order_code', $order_code);
-        
+
         // If user is logged in, check their orders, otherwise allow any order with this code
         if (Auth::check()) {
             $order = $orderQuery->where('user_id', Auth::id())->firstOrFail();
@@ -412,7 +412,7 @@ class ShowRoomController extends Controller
         // Get dealer shop name from URL query parameter first (if redirected with shop name)
         $dealer_shop_name = request()->get('dealer_shop_name') ?? '';
         $dealer = null;
-        
+
         // If no dealer shop name in query, try to get it from order items
         if (empty($dealer_shop_name)) {
             $firstItem = null;
@@ -430,7 +430,90 @@ class ShowRoomController extends Controller
                 $query->where('dealer_shop_name', $dealer_shop_name);
             })->where('role', 'dealer')->with('dealerProfile')->first();
         }
-        
+
         return view('frontend.DealerShowroom.success_buy_now', compact('order', 'dealer_shop_name', 'dealer'));
     }
+
+    public function productTrackingView($dealer_shop_name ,$order_code){
+
+        $order = CustomerOrder::where('order_code', $order_code)
+            ->firstOrFail();
+
+        // Get the dealer shop name from the first order item's dealer product link
+        $dealerShopName = null;
+        if ($order->items && $order->items->count() > 0) {
+            $firstItem = $order->items->first();
+            if ($firstItem->dealerProductLink && $firstItem->dealerProductLink->dealer && $firstItem->dealerProductLink->dealer->dealerProfile) {
+            $dealerShopName = $firstItem->dealerProductLink->dealer->dealerProfile->dealer_shop_name ?? null;
+            }
+        }
+        Log::info('Dealer Shop Name: ' . $dealerShopName);
+        Log::info('Order: ' . json_encode($order));
+
+        return view('frontend.DealerShowroom.track.product-track', compact('dealer_shop_name', 'order_code'));
+    }
+
+    // Add this method to your ShowRoomController
+    public function getOrderTrackingData($dealer_shop_name, $order_code)
+    {
+        try {
+            // Find the order with its items and related product data
+            $order = CustomerOrder::with(['items.product'])
+                ->where('order_code', $order_code)
+                ->first();
+
+            if (!$order) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Order not found with the provided order code.'
+                ], 404);
+            }
+
+            // Format the response data
+            $orderData = [
+                'order_code' => $order->order_code,
+                'customer_name' => $order->customer_name,
+                'phone' => $order->phone,
+                'email' => $order->email,
+                'date' => $order->date,
+                'total_cost' => $order->total_cost,
+                'status' => $order->status,
+                'payment_status' => $order->payment_status,
+                'payment_method' => $order->payment_method,
+                'tracking_number' => $order->tracking_number,
+                'tracking_link' => $order->tracking_link,
+                'activity_logs' => $order->activity_logs ?? [],
+                'items' => $order->items->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'quantity' => $item->quantity,
+                        'size' => $item->size,
+                        'color' => $item->color,
+                        'cost' => $item->cost,
+                        'product' => $item->product ? [
+                            'id' => $item->product->id,
+                            'name' => $item->product->product_name,
+                            // 'sku' => $item->product->sku ?? 'N/A',
+                            'image' => $item->product->images && count($item->product->images) > 0
+                                ? asset('storage/' . $item->product->images[0]['image_path'])
+                                : null,
+                        ] : null
+                    ];
+                })
+            ];
+
+            return response()->json([
+                'success' => true,
+                'order' => $orderData
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Order tracking error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while fetching order data. Please try again later.'
+            ], 500);
+        }
+    }
 }
+

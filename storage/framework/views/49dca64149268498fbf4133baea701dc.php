@@ -1063,7 +1063,7 @@
                         <div class="action-buttons">
 <?php if($productLink->product->quantity > 0): ?>
     <!-- Add to Cart Form -->
-    <form action="<?php echo e(route('showroom.cart.add', [$productLink->dealer->dealerProfile->dealer_shop_name, $productLink->product->id])); ?>" method="POST" class="d-inline" onsubmit="return copyOptionalSelections(this);">
+    <form action="<?php echo e(route('showroom.cart.add', [$productLink->dealer->dealerProfile->dealer_shop_name, $productLink->product->id])); ?>" method="POST" class="d-inline add-to-cart-form" onsubmit="return handleAddToCart(event, this);">
         <?php echo csrf_field(); ?>
         <input type="hidden" name="size">
         <input type="hidden" name="color">
@@ -1471,6 +1471,97 @@ function copyOptionalSelections(form) {
     form.querySelector('input[name="color"]').value = selectedColor ? selectedColor.value : '';
 
     return true; // Always allow submit
+}
+
+// AJAX Add to Cart function
+function handleAddToCart(event, form) {
+    event.preventDefault(); // Prevent normal form submission
+    
+    // Copy selections before submitting
+    copyOptionalSelections(form);
+    
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    
+    // Show loading state
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Adding...';
+    
+    // Create FormData from form
+    const formData = new FormData(form);
+    
+    // Submit via AJAX
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text(); // Laravel returns HTML for redirects
+    })
+    .then(data => {
+        // Show success message
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Product added to cart successfully!',
+                showConfirmButton: false,
+                timer: 2000,
+                toast: true,
+                position: 'top-end'
+            });
+        } else {
+            // Fallback notification
+            const notification = document.createElement('div');
+            notification.className = 'alert alert-success position-fixed';
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.textContent = 'Product added to cart successfully!';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+        
+        // Update cart count - this is the key fix!
+        if (typeof window.updateCartCount === 'function') {
+            window.updateCartCount();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        
+        // Show error message
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to add product to cart. Please try again.',
+                showConfirmButton: false,
+                timer: 3000,
+                toast: true,
+                position: 'top-end'
+            });
+        } else {
+            // Fallback notification
+            const notification = document.createElement('div');
+            notification.className = 'alert alert-danger position-fixed';
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.textContent = 'Failed to add product to cart. Please try again.';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+    })
+    .finally(() => {
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalText;
+    });
+    
+    return false; // Prevent form submission
 }
 </script>
 

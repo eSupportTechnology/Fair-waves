@@ -4,13 +4,6 @@ use App\Http\Controllers\CartCheckoutController;
 use App\Http\Controllers\AdminReportController;
 use App\Http\Controllers\DealerProductOrderController;
 use App\Http\Controllers\ProfileController;
-
-// Dealer Order Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dealer/customer-orders', [DealerProductOrderController::class, 'index'])->name('dealer.customer.orders');
-    Route::get('/dealer/customer-orders/{orderCode}', [DealerProductOrderController::class, 'show'])->name('dealer.customer.orders.show');
-    Route::get('/dealer/track-order/{orderCode}', [DealerProductOrderController::class, 'track'])->name('dealer.track-order');
-});
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\VendorReportController;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +52,13 @@ use App\Http\Controllers\VendorOrderController;
 use App\Http\Controllers\VendorAccountController;
 use App\Http\Controllers\ShowroomCartController;
 
+// Dealer Order Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dealer/customer-orders', [DealerProductOrderController::class, 'index'])->name('dealer.customer.orders');
+    Route::get('/dealer/customer-orders/{orderCode}', [DealerProductOrderController::class, 'show'])->name('dealer.customer.orders.show');
+    Route::get('/dealer/track-order/{orderCode}', [DealerProductOrderController::class, 'track'])->name('dealer.track-order');
+});
+
 // Legacy Showroom Cart Routes (keep for backward compatibility)
 Route::prefix('showroom/cart')->group(function () {
     // Cart checkout routes
@@ -69,7 +69,7 @@ Route::prefix('showroom/cart')->group(function () {
     Route::get('/payment/{order_code}', [CartCheckoutController::class, 'showPayment'])->name('cart.payment');
     Route::post('/payment/card/{order_code}', [CartCheckoutController::class, 'confirmCardPayment'])->name('cart.payment.card');
     Route::post('/payment/cod/{order_code}', [CartCheckoutController::class, 'confirmCODPayment'])->name('cart.payment.cod');
-    
+
     // Cart thank you route
     Route::get('/cart/thankyou/{order_code}', [CartCheckoutController::class, 'showThankYou'])->name('cart.thankyou');
 
@@ -92,7 +92,7 @@ Route::prefix('showroom/cart')->group(function () {
     Route::get('/count', function () {
         return response()->json(['count' => 0]);
     });
-    
+
     // Buy now checkout routes
     Route::get('/checkout', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.cart.checkout');
     Route::post('/place-order', [ShowroomCartController::class, 'placeOrder'])->name('dealer.cart.placeOrder');
@@ -690,7 +690,7 @@ Route::prefix('showroom')->group(function () {
     Route::get('/{dealer_shop_name}', [ShowRoomController::class, 'index'])->name('showroom.index');
     Route::get('/{dealer_shop_name}/about', [ShowRoomController::class, 'about'])->name('showroom.about');
     Route::get('/{dealer_shop_name}/product/{unique_code}', [ShowRoomController::class, 'productView'])->name('showroom.productView');
-    
+
     // Showroom Cart Routes with dealer shop name
     Route::prefix('/{dealer_shop_name}/cart')->group(function () {
         Route::post('/add/{productId}', [ShowroomCartController::class, 'addToCart'])->name('showroom.cart.add');
@@ -699,23 +699,27 @@ Route::prefix('showroom')->group(function () {
         Route::patch('/update/{productId}', [ShowroomCartController::class, 'updateCart'])->name('showroom.cart.update');
         Route::post('/clear', [ShowroomCartController::class, 'clearCart'])->name('showroom.cart.clear');
         Route::get('/count', [ShowroomCartController::class, 'getCartCount'])->name('showroom.cart.count');
-        
+
         // Cart checkout routes
         Route::get('/checkout', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.cart.checkout');
         Route::post('/place-order', [ShowroomCartController::class, 'placeOrder'])->name('dealer.cart.placeOrder');
-        
+
         // Payment routes
         Route::get('/payment/{order_code}', [ShowroomCartController::class, 'showPayment'])->name('dealer.cart.payment');
         Route::post('/payment/cod/{order_code}', [ShowroomCartController::class, 'confirmCODPayment'])->name('dealer.cart.payment.cod');
         Route::post('/payment/card/{order_code}', [ShowroomCartController::class, 'confirmCardPayment'])->name('dealer.cart.payment.card');
         Route::get('/order-success/{order_code}', [ShowroomCartController::class, 'orderSuccess'])->name('dealer.order.success');
     });
-    
+
     Route::post('/cart/add/{id}', [ShowRoomController::class, 'dealerAdd'])->name('dealer.cart.add');
     Route::post('/buy-now/{id}/{dpid}', [ShowRoomController::class, 'dealerBuyNow'])->name('dealer.buy.now');
 
 
     // Route::post('/withdraw', [DealerController::class, 'requestWithdrawal'])->name('dealer.withdraw.request');
+
+    Route::get('/{dealer_shop_name}/product-tracking/{order_code}', [ShowRoomController::class, 'productTrackingView'])->name('showroom.productTrackingView');
+    // Add this route to your web.php file
+    Route::get('/{dealer_shop_name}/product-tracking/{order_code}/data', [ShowRoomController::class, 'getOrderTrackingData'])->name('showroom.getOrderTrackingData');
 });
 
 Route::get('/product/checkout/{dealer_shop_name}', [ShowroomCartController::class, 'proceedToCheckout'])->name('dealer.checkout.page');
@@ -724,3 +728,6 @@ Route::get('/product/payment/{order_code}', [ShowRoomController::class, 'showPay
 Route::post('/product/confirm-cod-order/{order_code}', [ShowRoomController::class, 'confirmCODOrder'])->name('dealer.confirm.cod.order');
 Route::post('/product/confirm-card-order/{order_code}', [ShowRoomController::class, 'confirmcardOrder'])->name('dealer.confirm.card.order');
 Route::get('/product/order/order_received/{order_code}', [ShowRoomController::class, 'getOrderDetails'])->name('dealer.order.thankyou');
+
+// Route::get('/dealer/{dealer_shop_name}/track-order/{order_code}', [ShowRoomController::class, 'productTrackingView']);
+// Route::get('/dealer/{dealer_shop_name}/order-tracking/{order_code}/data', [ShowRoomController::class, 'getOrderTrackingData']);

@@ -1,6 +1,4 @@
-@extends('layouts.user_sidebar')
-
-@section('dashboard-content')
+<?php $__env->startSection('dashboard-content'); ?>
 <style>
 .orders-container {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -474,7 +472,7 @@
           
         </div>
 
-        @if($orders->count() > 0)
+        <?php if($orders->count() > 0): ?>
             <!-- Summary Cards -->
            
 
@@ -492,32 +490,36 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($orders as $order)
+                        <?php $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td>
                                     <div class="customer-info">
                                         <div class="customer-avatar">
-                                            {{ strtoupper(substr($order->order->order->customer_name ?? 'U', 0, 1)) }}
+                                            <?php echo e(strtoupper(substr($order->order->order->customer_name ?? 'U', 0, 1))); ?>
+
                                         </div>
                                         <div class="customer-name">
-                                            {{ $order->order->order->customer_name ?? 'Unknown Customer' }}
+                                            <?php echo e($order->order->order->customer_name ?? 'Unknown Customer'); ?>
+
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <span class="quantity-badge">
                                         <i class="fas fa-boxes"></i>
-                                        {{ $order->order->quantity ?? 0 }}
+                                        <?php echo e($order->order->quantity ?? 0); ?>
+
                                     </span>
                                 </td>
                                 <td>
                                     <div class="total-amount">
                                         <i class="fas fa-rupee-sign"></i>
-                                        {{ number_format(($order->order->cost ?? 0) * ($order->order->quantity ?? 0), 2) }}
+                                        <?php echo e(number_format(($order->order->cost ?? 0) * ($order->order->quantity ?? 0), 2)); ?>
+
                                     </div>
                                 </td>
                                 <td>
-                                    @php
+                                    <?php
                                         $status = strtolower($order->order->order->status ?? 'pending');
                                         $statusClass = 'status-' . $status;
                                         $statusIcon = match($status) {
@@ -528,32 +530,34 @@
                                             'cancelled' => 'fas fa-times-circle',
                                             default => 'fas fa-question-circle'
                                         };
-                                    @endphp
-                                    <span class="status-badge {{ $statusClass }}">
-                                        <i class="{{ $statusIcon }}"></i>
-                                        {{ ucfirst($order->order->order->status ?? 'Pending') }}
+                                    ?>
+                                    <span class="status-badge <?php echo e($statusClass); ?>">
+                                        <i class="<?php echo e($statusIcon); ?>"></i>
+                                        <?php echo e(ucfirst($order->order->order->status ?? 'Pending')); ?>
+
                                     </span>
                                 </td>
                                 <td>
                                     <div class="order-date">
                                         <i class="fas fa-calendar-alt"></i>
-                                        {{ $order->created_at->format('d M Y') }}
+                                        <?php echo e($order->created_at->format('d M Y')); ?>
+
                                     </div>
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="{{ route('dealer.track-order', $order->order->order->order_code) }}" 
+                                        <a href="<?php echo e(route('dealer.track-order', $order->order->order->order_code)); ?>" 
                                            class="action-btn action-btn-track"
                                            title="Track Order">
                                             <i class="fas fa-shipping-fast"></i>
                                             Track
                                         </a>
-                                        <form action="{{ route('dealer.products.orders.delete', $order->id) }}" 
+                                        <form action="<?php echo e(route('dealer.products.orders.delete', $order->id)); ?>" 
                                               method="POST" 
                                               class="d-inline"
-                                              onsubmit="return confirmDelete('{{ $order->order->order->customer_name ?? 'this order' }}')">
-                                            @csrf
-                                            @method('DELETE')
+                                              onsubmit="return confirmDelete('<?php echo e($order->order->order->customer_name ?? 'this order'); ?>')">
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
                                             <button type="submit" 
                                                     class="action-btn action-btn-delete"
                                                     title="Delete Order">
@@ -564,22 +568,22 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
             </div>
-        @else
+        <?php else: ?>
             <!-- Empty State -->
             <div class="empty-state">
                 <i class="fas fa-inbox"></i>
                 <h3>No Orders Found</h3>
                 <p>There are currently no orders for this product. Orders will appear here when customers make purchases through your affiliate link.</p>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Back Button -->
         <div class="mt-4">
-            <a href="{{ route('dealer.products.dashboard') }}" class="back-button">
+            <a href="<?php echo e(route('dealer.products.dashboard')); ?>" class="back-button">
                 <i class="fas fa-arrow-left"></i>
                 Back to Product Links
             </a>
@@ -622,4 +626,6 @@ window.addEventListener('resize', function() {
     }
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/dealer/dealer-product-orders.blade.php ENDPATH**/ ?>

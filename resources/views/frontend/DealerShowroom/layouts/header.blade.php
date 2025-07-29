@@ -147,18 +147,17 @@
                     </div>
 
                     <!-- Mobile Menu Toggle -->
-                    <button class="btn btn-outline-dark d-md-none ms-2"
+                    <button class="btn btn-outline-dark d-md-none ms-2 mobile-menu-toggle"
                             type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#mobileMenu">
-                        <i class="fas fa-bars"></i>
+                            id="mobileMenuToggle">
+                        <i class="fas fa-bars" id="mobileMenuIcon"></i>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Mobile Menu -->
-        <div class="collapse d-md-none" id="mobileMenu">
+        <div class="d-md-none mobile-nav-wrapper" id="mobileMenu" style="display: none;">
             <div class="mobile-nav-menu py-3 border-top">
                 @if(isset($dealer))
                     <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="d-block py-2 text-dark text-decoration-none hover-orange">Home</a>
@@ -542,10 +541,139 @@
         align-items: center;
     }
 }
+
+/* Mobile Menu Styling */
+.mobile-nav-wrapper {
+    background: #fff;
+    border-top: 1px solid #e9ecef;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.mobile-nav-menu {
+    padding: 15px 0;
+}
+
+.mobile-nav-menu a {
+    padding: 12px 20px;
+    margin: 2px 0;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.mobile-nav-menu a:hover {
+    background: rgba(255, 88, 0, 0.1);
+    border-left-color: #ff5800;
+    padding-left: 25px;
+}
+
+.mobile-menu-toggle {
+    position: relative;
+    border: 2px solid #ff5800 !important;
+    color: #ff5800 !important;
+    background: transparent !important;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 18px;
+    font-weight: 600;
+    min-width: 50px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-menu-toggle:hover {
+    background: #ff5800 !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 88, 0, 0.3);
+}
+
+.mobile-menu-toggle:focus {
+    box-shadow: 0 0 0 3px rgba(255, 88, 0, 0.2);
+    outline: none;
+}
+
+.mobile-menu-toggle i {
+    transition: transform 0.3s ease;
+    font-size: 18px;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+
+/* Mobile responsive adjustments for menu toggle */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        padding: 10px 14px;
+        min-width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+    
+    .mobile-menu-toggle i {
+        font-size: 16px;
+    }
+}
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu toggle functionality
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+    
+    if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Toggle menu visibility
+            if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
+                // Show menu
+                mobileMenu.style.display = 'block';
+                mobileMenuIcon.classList.remove('fa-bars');
+                mobileMenuIcon.classList.add('fa-times');
+                mobileMenuToggle.setAttribute('aria-expanded', 'true');
+            } else {
+                // Hide menu
+                mobileMenu.style.display = 'none';
+                mobileMenuIcon.classList.remove('fa-times');
+                mobileMenuIcon.classList.add('fa-bars');
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+        
+        // Close menu when clicking on a menu item
+        const mobileMenuItems = mobileMenu.querySelectorAll('a');
+        mobileMenuItems.forEach(function(item) {
+            item.addEventListener('click', function() {
+                // Close menu after clicking a link
+                mobileMenu.style.display = 'none';
+                mobileMenuIcon.classList.remove('fa-times');
+                mobileMenuIcon.classList.add('fa-bars');
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!mobileMenuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+                if (mobileMenu.style.display === 'block') {
+                    mobileMenu.style.display = 'none';
+                    mobileMenuIcon.classList.remove('fa-times');
+                    mobileMenuIcon.classList.add('fa-bars');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+    }
+
     // Smooth scrolling for contact links (for current page dealer info)
     document.querySelectorAll('.contact-scroll').forEach(function(link) {
         link.addEventListener('click', function(e) {

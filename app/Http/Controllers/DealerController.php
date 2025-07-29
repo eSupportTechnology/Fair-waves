@@ -646,9 +646,13 @@ class DealerController extends Controller
             ->where('dealer_id', $dealer->id)
             ->findOrFail($linkId);
 
-        // Get all related orders for the product link
-        $orderIds = $dealerProductLink->orders->pluck('customer_order_item_id');
-        $orders = DealerProductOrder::whereIn('customer_order_item_id', $orderIds)->get();
+        // Get all related orders for the product link with proper relationships
+        $orders = DealerProductOrder::with([
+            'order.order', // CustomerOrderItems -> CustomerOrder
+            'order.product' // CustomerOrderItems -> Product
+        ])
+        ->where('dealer_product_link_id', $linkId)
+        ->get();
 
         return view('frontend.dealer.dealer-product-orders', compact('dealerProductLink', 'orders'));
     }

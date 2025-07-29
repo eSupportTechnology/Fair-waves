@@ -7,6 +7,7 @@ use App\Models\ProductImage;
 use App\Models\DealerProductOrder;
 use App\Models\DealerProductLink;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -35,8 +36,15 @@ class ShowroomCartController extends Controller
         
         // Find the dealer product link
         $dealerProductLink = DealerProductLink::where('dealer_id', $dealer->id)
-            ->where('product_id', $product->product_id)
+            ->where('product_id', $product->id)  // Use product->id which is the primary key
             ->first();
+        
+        // If dealer product link is not found, log the issue for debugging
+        if (!$dealerProductLink) {
+            \Log::warning("DealerProductLink not found for dealer {$dealer->id} and product {$product->id}");
+            // Return error instead of continuing with null dealer_product_link_id
+            return redirect()->back()->with('error', 'This product is not available in this dealer showroom.');
+        }
         
         // Get the first image from product_images table using relationship
         $productImage = ProductImage::where('product_id', $product->product_id)->first();
@@ -52,7 +60,8 @@ class ShowroomCartController extends Controller
             'size' => $request->input('size'),
             'color' => $request->input('color'),
             'dealer_shop_name' => $dealer_shop_name,
-            'dealer_product_link_id' => $dealerProductLink ? $dealerProductLink->id : null
+            'dealer_product_link_id' => $dealerProductLink->id,  // Now we're guaranteed this is not null
+            'bv' => $product->bv ?? 0  // Add BV field like in ShowRoomController
         ];
 
         if (isset($cart[$productId])) {
@@ -407,7 +416,7 @@ class ShowroomCartController extends Controller
 
             // Create order items in customer_order_items table
             foreach ($checkoutData['cart'] as $item) {
-                \App\Models\CustomerOrderItems::create([
+                $customerOrderItem = \App\Models\CustomerOrderItems::create([
                     'order_code' => $order_code,
                     'product_id' => $item['id'],
                     'quantity' => $item['quantity'],
@@ -415,8 +424,23 @@ class ShowroomCartController extends Controller
                     'size' => $item['size'] ?? null,
                     'color' => $item['color'] ?? null,
                     'date' => \Carbon\Carbon::now(),
-                    'dealer_product_link_id' => $item['dealer_product_link_id'] ?? null
+                    'dealer_product_link_id' => $item['dealer_product_link_id'],  // Remove null check since we guarantee it exists
+                    'bv' => $item['bv'] ?? 0  // Add BV field like in ShowRoomController
                 ]);
+
+                // Create dealer product order entry - no need to check if empty since it will always exist
+                $dealerProductLink = DealerProductLink::where('id', $item['dealer_product_link_id'])->first();
+                DealerProductOrder::create([
+                    'dealer_product_link_id' => $item['dealer_product_link_id'],
+                    'customer_order_item_id' => $customerOrderItem->id,
+                    'user_id' => $dealerProductLink ? $dealerProductLink->dealer_id : null,
+                ]);
+
+                // Decrease product quantity like in ShowRoomController
+                $productModel = Product::find($item['id']);
+                if ($productModel) {
+                    $productModel->decrement('quantity', $item['quantity']);
+                }
             }
 
             // Clear sessions after successful order
@@ -462,7 +486,7 @@ class ShowroomCartController extends Controller
 
             // Create order items in customer_order_items table
             foreach ($checkoutData['cart'] as $item) {
-                \App\Models\CustomerOrderItems::create([
+                $customerOrderItem = \App\Models\CustomerOrderItems::create([
                     'order_code' => $order_code,
                     'product_id' => $item['id'],
                     'quantity' => $item['quantity'],
@@ -470,8 +494,23 @@ class ShowroomCartController extends Controller
                     'size' => $item['size'] ?? null,
                     'color' => $item['color'] ?? null,
                     'date' => \Carbon\Carbon::now(),
-                    'dealer_product_link_id' => $item['dealer_product_link_id'] ?? null
+                    'dealer_product_link_id' => $item['dealer_product_link_id'],  // Remove null check since we guarantee it exists
+                    'bv' => $item['bv'] ?? 0  // Add BV field like in ShowRoomController
                 ]);
+
+                // Create dealer product order entry - no need to check if empty since it will always exist
+                $dealerProductLink = DealerProductLink::where('id', $item['dealer_product_link_id'])->first();
+                DealerProductOrder::create([
+                    'dealer_product_link_id' => $item['dealer_product_link_id'],
+                    'customer_order_item_id' => $customerOrderItem->id,
+                    'user_id' => $dealerProductLink ? $dealerProductLink->dealer_id : null,
+                ]);
+
+                // Decrease product quantity like in ShowRoomController
+                $productModel = Product::find($item['id']);
+                if ($productModel) {
+                    $productModel->decrement('quantity', $item['quantity']);
+                }
             }
 
             // Clear sessions after successful order

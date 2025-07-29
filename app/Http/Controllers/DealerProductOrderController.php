@@ -31,7 +31,7 @@ class DealerProductOrderController extends Controller
             'items' => $orders
         ];
 
-        return view('dealer.orders.track', compact('orderData'));
+        return view('frontend.dealer.dealer-product-order-track', compact('orderData'));
     }
     public function index()
     {

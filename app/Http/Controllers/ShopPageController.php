@@ -130,8 +130,14 @@ class ShopPageController extends Controller
 
     // Check if logged in user is a dealer
     $isDealer = Auth::check() && Auth::user()->role === 'dealer';
+    
+    // Get selected brand if filtering by single brand
+    $selectedBrand = null;
+    if (!empty($brandSlugs) && count($brandSlugs) === 1) {
+        $selectedBrand = Brand::where('slug', $brandSlugs[0])->first();
+    }
 
-    return view('frontend.shop', compact('products', 'categories', 'brands', 'minPrice', 'maxPrice', 'categoryIds', 'brandSlugs', 'subcategoryId', 'subsubcategoryId', 'color', 'rating', 'searchQuery', 'allCategoriesSelected', 'allBrandsSelected', 'isDealer'));
+    return view('frontend.shop', compact('products', 'categories', 'brands', 'minPrice', 'maxPrice', 'categoryIds', 'brandSlugs', 'subcategoryId', 'subsubcategoryId', 'color', 'rating', 'searchQuery', 'allCategoriesSelected', 'allBrandsSelected', 'isDealer', 'selectedBrand'));
 }
 
 

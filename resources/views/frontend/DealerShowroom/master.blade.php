@@ -379,9 +379,15 @@
     }
 
     function openMenuMobi() {
-        //alert(1);
-        document.body.classList.add("mmenu-active");
-        document.querySelector(".mobile-menu-wrapper").style.visibility = "visible";
+        // Check if menu is already active
+        if (document.body.classList.contains("mmenu-active")) {
+            // Menu is open, so close it
+            closeMenuMobi();
+        } else {
+            // Menu is closed, so open it
+            document.body.classList.add("mmenu-active");
+            document.querySelector(".mobile-menu-wrapper").style.visibility = "visible";
+        }
     }
 
 

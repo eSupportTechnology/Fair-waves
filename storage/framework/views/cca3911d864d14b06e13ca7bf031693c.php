@@ -20,7 +20,13 @@
 <div class="mb-0 breadcrumb py-26 bg-main-two-50">
     <div class="container container-lg">
         <div class="flex-wrap gap-16 breadcrumb-wrapper flex-between">
-            <h6 class="mb-0">Shop</h6>
+            <h6 class="mb-0">
+                <?php if(isset($selectedBrand)): ?>
+                    <?php echo e($selectedBrand->name); ?> Products
+                <?php else: ?>
+                    Shop
+                <?php endif; ?>
+            </h6>
             <ul class="flex-wrap gap-8 flex-align">
                 <li class="text-sm">
                     <a href="/" class="gap-8 text-gray-900 flex-align hover-text-main-600">
@@ -31,7 +37,17 @@
                 <li class="flex-align">
                     <i class="ph ph-caret-right"></i>
                 </li>
-                <li class="text-sm text-main-600"> Product Shop </li>
+                <?php if(isset($selectedBrand)): ?>
+                    <li class="text-sm">
+                        <a href="<?php echo e(route('shop.index')); ?>" class="text-gray-500 hover-text-main-600">Shop</a>
+                    </li>
+                    <li class="flex-align">
+                        <i class="ph ph-caret-right"></i>
+                    </li>
+                    <li class="text-sm text-main-600"><?php echo e($selectedBrand->name); ?></li>
+                <?php else: ?>
+                    <li class="text-sm text-main-600"> Product Shop </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
@@ -41,6 +57,28 @@
 <!-- =============================== Shop Section Start ======================================== -->
 <section class="shop py-80">
     <div class="container container-lg">
+        <?php if(isset($selectedBrand)): ?>
+            <!-- Brand Selection Header -->
+            <div class="mb-32 alert alert-info d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h5 class="mb-2">
+                        <i class="ph ph-funnel me-2"></i>
+                        Showing products from: <strong><?php echo e($selectedBrand->name); ?></strong>
+                    </h5>
+                    <p class="mb-0 text-muted">
+                        Found <?php echo e($products->total()); ?> products from <?php echo e($selectedBrand->name); ?>
+
+                    </p>
+                </div>
+                <div>
+                    <a href="<?php echo e(route('shop.index')); ?>" class="btn btn-outline-primary btn-sm">
+                        <i class="ph ph-x me-1"></i>
+                        Clear Brand Filter
+                    </a>
+                </div>
+            </div>
+        <?php endif; ?>
+        
         <div class="row">
 
             <!-- Sidebar Start -->
@@ -104,6 +142,11 @@
                     <!-- Brands Filter Section -->
                     <div class="p-32 mb-32 border border-gray-100 shop-sidebar__box rounded-8">
                         <h6 class="pb-24 mb-24 text-xl border-gray-100 border-bottom">Brands</h6>
+                        <?php if(isset($selectedBrand)): ?>
+                            <div class="mb-3 alert alert-info">
+                                <small><i class="ph ph-info me-1"></i>Filtering by: <strong><?php echo e($selectedBrand->name); ?></strong></small>
+                            </div>
+                        <?php endif; ?>
                         <form id="brandFilterForm" action="<?php echo e(route('shop.index')); ?>" method="GET">
                             <!-- Preserve other filters -->
                             <?php if(request('min_price')): ?>

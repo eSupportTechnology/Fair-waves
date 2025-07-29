@@ -1,6 +1,4 @@
-@extends('layouts.user_sidebar')
-
-@section('dashboard-content')
+<?php $__env->startSection('dashboard-content'); ?>
 <style>
     :root {
         --primary-color: #ff5800;
@@ -373,7 +371,7 @@
             </div>
         </div>
 
-        @if($referrals->isEmpty())
+        <?php if($referrals->isEmpty()): ?>
             <div class="no-referrals">
                 <div class="no-referrals-icon">
                     <i class="fas fa-users"></i>
@@ -381,7 +379,7 @@
                 <h5>No Pending Referrals</h5>
                 <p>You currently have no pending referral approvals. New referrals will appear here for your review.</p>
             </div>
-        @else
+        <?php else: ?>
             <div class="referrals-card">
                 <div class="table-container">
                     <table class="referrals-table">
@@ -394,42 +392,45 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($referrals as $ref)
+                            <?php $__currentLoopData = $referrals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ref): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
                                     <td>
                                         <div class="user-info">
                                             <div class="user-avatar">
-                                                {{ strtoupper(substr($ref->referred->name, 0, 1)) }}
+                                                <?php echo e(strtoupper(substr($ref->referred->name, 0, 1))); ?>
+
                                             </div>
                                             <div class="user-details">
-                                                <h6>{{ $ref->referred->name }}</h6>
-                                                <small>ID: #{{ $ref->referred->id }}</small>
+                                                <h6><?php echo e($ref->referred->name); ?></h6>
+                                                <small>ID: #<?php echo e($ref->referred->id); ?></small>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <span class="email-badge">
                                             <i class="fas fa-at me-1"></i>
-                                            {{ $ref->referred->email }}
+                                            <?php echo e($ref->referred->email); ?>
+
                                         </span>
                                     </td>
                                     <td>
                                         <span class="time-badge">
                                             <i class="fas fa-calendar-alt"></i>
-                                            {{ $ref->referred->created_at->diffForHumans() }}
+                                            <?php echo e($ref->referred->created_at->diffForHumans()); ?>
+
                                         </span>
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <form method="POST" action="{{ route('dealer.referrals.approve', $ref->id) }}" class="d-inline">
-                                                @csrf
+                                            <form method="POST" action="<?php echo e(route('dealer.referrals.approve', $ref->id)); ?>" class="d-inline">
+                                                <?php echo csrf_field(); ?>
                                                 <button type="submit" class="btn-modern btn-approve">
                                                     <i class="fas fa-check"></i>
                                                     Approve
                                                 </button>
                                             </form>
-                                            <form method="POST" action="{{ route('dealer.referrals.reject', $ref->id) }}" class="d-inline">
-                                                @csrf
+                                            <form method="POST" action="<?php echo e(route('dealer.referrals.reject', $ref->id)); ?>" class="d-inline">
+                                                <?php echo csrf_field(); ?>
                                                 <button type="submit" class="btn-modern btn-reject">
                                                     <i class="fas fa-times"></i>
                                                     Reject
@@ -438,12 +439,14 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/dealer/pending-referrals.blade.php ENDPATH**/ ?>

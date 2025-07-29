@@ -598,6 +598,11 @@
             <span class="nav-text">Products</span>
             <div class="nav-tooltip">Products</div>
         </a>
+        <a class="nav-link {{ request()->routeIs('dealer.customer.orders') ? 'active' : '' }}" href="{{ route('dealer.customer.orders') }}">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="nav-text">Dealer's Orders</span>
+            <div class="nav-tooltip">Dealer's Orders</div>
+        </a>
         <a class="nav-link {{ request()->routeIs('dealer.notifications') ? 'active' : '' }}" href="{{ route('dealer.notifications') }}">
             <i class="fas fa-bell"></i>
             <span class="nav-text">Notifications</span>

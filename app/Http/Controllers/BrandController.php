@@ -94,35 +94,37 @@ class BrandController extends Controller
 
     public function showBrandProducts($slug, Request $request)
     {
-        // $brand = Brand::where('slug', $slug)->firstOrFail();
-        // $products = $brand->products()->paginate(20);
-
-        // $categories = Category::all();
-
-        // return view('frontend.brand-items', compact('brand', 'products', 'categories'));
-            $minPrice = $request->input('min_price', 0);
-    $maxPrice = $request->input('max_price', 2000000);
-    
-    // Support search functionality
-    $searchQuery = $request->input('search');
-    
-    // Support both single category_id and multiple category_ids
-    $categoryId = $request->input('category_id');
-    $categoryIds = $request->input('category_ids', []);
-    
-    // If single category_id is provided, add it to the array
-    if ($categoryId && !in_array($categoryId, $categoryIds)) {
-        $categoryIds[] = $categoryId;
-    }
-    
-    // Support both single brand_slug and multiple brand_slugs
-    $brandSlug = $request->input('brand_slug');
-    $brandSlugs = $request->input('brand_slugs', []);
-    
-    // If single brand_slug is provided, add it to the array
-    if ($brandSlug && !in_array($brandSlug, $brandSlugs)) {
-        $brandSlugs[] = $brandSlug;
-    }
+        // Verify the brand exists
+        $selectedBrand = Brand::where('slug', $slug)->firstOrFail();
+        
+        $minPrice = $request->input('min_price', 0);
+        $maxPrice = $request->input('max_price', 2000000);
+        
+        // Support search functionality
+        $searchQuery = $request->input('search');
+        
+        // Support both single category_id and multiple category_ids
+        $categoryId = $request->input('category_id');
+        $categoryIds = $request->input('category_ids', []);
+        
+        // If single category_id is provided, add it to the array
+        if ($categoryId && !in_array($categoryId, $categoryIds)) {
+            $categoryIds[] = $categoryId;
+        }
+        
+        // Force the selected brand to be included in brand filters
+        $brandSlug = $request->input('brand_slug');
+        $brandSlugs = $request->input('brand_slugs', []);
+        
+        // Always include the slug from URL as the primary brand filter
+        if (!in_array($slug, $brandSlugs)) {
+            $brandSlugs[] = $slug;
+        }
+        
+        // If additional brand_slug is provided, add it to the array
+        if ($brandSlug && !in_array($brandSlug, $brandSlugs)) {
+            $brandSlugs[] = $brandSlug;
+        }
     
     $subcategoryId = $request->input('subcategory_id');
     $subsubcategoryId = $request->input('subsubcategory_id');
@@ -217,7 +219,7 @@ class BrandController extends Controller
     // Check if logged in user is a dealer
     $isDealer = Auth::check() && Auth::user()->role === 'dealer';
 
-    return view('frontend.shop', compact('products', 'categories', 'brands', 'minPrice', 'maxPrice', 'categoryIds', 'brandSlugs', 'subcategoryId', 'subsubcategoryId', 'color', 'rating', 'searchQuery', 'allCategoriesSelected', 'allBrandsSelected', 'isDealer'));
+    return view('frontend.shop', compact('products', 'categories', 'brands', 'minPrice', 'maxPrice', 'categoryIds', 'brandSlugs', 'subcategoryId', 'subsubcategoryId', 'color', 'rating', 'searchQuery', 'allCategoriesSelected', 'allBrandsSelected', 'isDealer', 'selectedBrand'));
     }
 
     public function ajaxBrandProducts(Request $request, $slug)

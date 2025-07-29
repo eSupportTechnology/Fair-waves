@@ -505,7 +505,7 @@
                             </div>
                             <div class="flex-wrap gap-8 flex-between">
                                 <span class="text-gray-500">Shipping</span>
-                                <h6 class="mb-0 text-lg">Rs 300.00</h6>
+                                <h6 class="mb-0 text-lg">Rs {{ $product->fee ? $product->fee->fee : 300.00}}</h6>
                             </div>
                         </div>
 

@@ -68,7 +68,7 @@ class CustomerOrderController extends Controller
 
 
     public function placeOrder(Request $request)
-    { 
+    {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -78,31 +78,31 @@ class CustomerOrderController extends Controller
             'city' => 'required|string|max:255',
             'postal_code' => 'required|string|max:10',
         ]);
-        
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        
+
         try {
             $user = Auth::user();
-            
+
             $cartItems = \App\Models\CartItem::where('user_id', $user->id)->get();
-    
+
             // Check if cart is empty
             if ($cartItems->isEmpty()) {
                 Log::warning('Cart is empty for user', ['user_id' => $user->id]);
                 return redirect()->back()->with('error', 'Your cart is empty.');
             }
-    
+
             $orderCode = 'ORD-' . strtoupper(Str::random(8));
-    
+
             // Calculate order totals
             $subtotal = $cartItems->sum('subtotal');
             $deliveryFee = 300.00;
             $totalCost = $subtotal + $deliveryFee;
-    
+
             $customerName = $request->input('first_name') . ' ' . $request->input('last_name');
-    
+
             $order = CustomerOrder::create([
                 'order_code' => $orderCode,
                 'user_id' => $user->id,
@@ -119,24 +119,24 @@ class CustomerOrderController extends Controller
                 'payment_method' => $request->input('payment_method', null),
                 'payment_status' => 'Pending',
             ]);
-    
-            
-            
+
+
+
             foreach ($cartItems as $cartItem) {
                 if (!isset($cartItem->product_id, $cartItem->quantity, $cartItem->price)) {
                     continue;
                 }
-            
-                
-            
+
+
+
                 // Reduce the quantity of the product
                 $product = \App\Models\Product::find($cartItem->product_id);
                 if ($product) {
                     $product->quantity = max(0, $product->quantity - $cartItem->quantity);
                     $product->save();
-                   
+
                 }
-            
+
                 CustomerOrderItems::create([
                     'order_code' => $orderCode,
                     'product_id' => $cartItem->product_id,
@@ -147,7 +147,7 @@ class CustomerOrderController extends Controller
                     'color' => $cartItem->color ?? null,
                 ]);
             }
-    
+
             // Clear the cart items from the database after the order is placed
             \App\Models\CartItem::where('user_id', $user->id)->delete();
 
@@ -156,18 +156,29 @@ class CustomerOrderController extends Controller
             return redirect()->back()->with('error', 'An error occurred while placing the order. Please try again.');
         }
     }
-    
-    
-    
+
+
+
 
 
     public function buynow_placeOrder(Request $request)
     {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'email' => 'required|email',
+            'house_no' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:10',
+            'fee' => 'nullable|numeric|min:0',
+        ]);
+
         $userId = Auth::id();
         $orderCode = 'ORD-' . strtoupper(Str::random(8));
-        $deliveryFee = 300;
+        $deliveryFee = $request->fee;
         $subtotal = 0;
-    
+
         // Calculate subtotal based on the products in the request
         if ($request->has('products') && is_array($request->products)) {
             foreach ($request->products as $product) {
@@ -177,9 +188,9 @@ class CustomerOrderController extends Controller
         } else {
             return redirect()->back()->with('error', 'No products selected');
         }
-    
+
         $total = $subtotal + $deliveryFee;
-    
+
         // Create the customer order
         $order = CustomerOrder::create([
             'order_code' => $orderCode,
@@ -197,12 +208,12 @@ class CustomerOrderController extends Controller
             'payment_method' => $request->input('payment_method', null),
             'payment_status' => 'Pending',
         ]);
-    
+
         // Add products to the order
         if ($request->has('products') && is_array($request->products)) {
             foreach ($request->products as $product) {
                 $itemSubtotal = $product['cost'] * $product['quantity'];
-    
+
                 CustomerOrderItems::create([
                     'order_code' => $orderCode,
                     'product_id' => $product['product_id'],
@@ -216,35 +227,35 @@ class CustomerOrderController extends Controller
         } else {
             return redirect()->back()->with('error', 'No products selected');
         }
-    
+
         // Decrement the product quantities
         foreach ($request->products as $product) {
             $productRecord = Product::find($product['product_id']);
             $productRecord->decrement('quantity', $product['quantity']);
         }
-    
+
         // Check if a tracking ID exists in the session
         if (session()->has('tracking_id')) {
             $tracking_id = session('tracking_id');
-    
+
             // Find the raffle ticket using the tracking ID
             $raffleTicket = RaffleTicket::where('token', $tracking_id)->first();
-    
+
             if ($raffleTicket) {
                 foreach ($request->products as $product) {
                     // Find the product using the product_id from the request
                     $productRecord = Product::find($product['product_id']);
-                
+
                     if ($productRecord) {
                         // Example: Assuming product_name is part of the URL
                         $productUrlPart = $productRecord->product_id; // Adjust as needed if you store URLs differently
                         //dd($productUrlPart);
-                
+
                         // Check for affiliate referral using the raffle ticket and product details
                         $referral = AffiliateReferral::where('raffle_ticket_id', $raffleTicket->id)
                             ->where('product_url', 'like', '%' . $productUrlPart . '%') // Match product URL or relevant identifier
                             ->first();
-                
+
                         if ($referral) {
                             // Increment the referral count
                             $referral->increment('referral_count');
@@ -257,17 +268,17 @@ class CustomerOrderController extends Controller
                         \Log::warning('Product not found for ID: ' . $product['product_id']);
                     }
                 }
-                
+
             }
-    
+
             // Clear the tracking ID from the session
             session()->forget('tracking_id');
         }
-    
+
         // Redirect to payment page
         return redirect()->route('payment', ['order_code' => $orderCode]);
     }
-    
+
 
 
 

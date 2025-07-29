@@ -117,8 +117,10 @@
                                     <div class="mb-32 flex-between gap-8">
                                         <span class="text-gray-900 font-heading-two text-md fw-semibold">Delivery Fee</span>
                                         <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs
-                                            <?php echo e(number_format(300, 2)); ?></span>
+                                            <?php echo e(number_format(  $product->fee ? $product->fee->fee : 300.00, 2)); ?></span>
                                     </div>
+                                    <input type="hidden" name="fee" value="<?php echo e($product->fee ? $product->fee->fee : 300.00); ?>">
+
                                     <div class="mb-0 flex-between gap-8">
                                         <span class="text-gray-900 font-heading-two text-xl fw-bold">Total</span>
                                         <span class="text-gray-900 font-heading-two text-xl fw-bold">Rs

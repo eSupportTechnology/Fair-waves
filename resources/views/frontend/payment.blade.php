@@ -116,11 +116,11 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Subtotal</span>
-                                <span>Rs. {{ number_format($order->total_cost - 300, 2) }}</span>
+                                <span>Rs. {{ number_format($order->total_cost - $deliveryFee, 2) }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-3">
                                 <span>Delivery Fee</span>
-                                <span>Rs. 300.00</span>
+                                <span>Rs. {{ number_format($deliveryFee, 2) }}</span>
                             </div>
                             <div class="d-flex justify-content-between summary-total pt-3">
                                 <span>Total</span>

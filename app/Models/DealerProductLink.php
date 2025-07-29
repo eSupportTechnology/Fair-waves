@@ -22,4 +22,7 @@ class DealerProductLink extends Model
     {
         return $this->hasMany(DealerProductOrder::class);
     }
+    public function dealerProfile(){
+        return $this->belongsTo(DealerProfile::class, 'dealer_id');
+    }
 }

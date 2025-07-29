@@ -16,28 +16,28 @@ class ShopPageController extends Controller
 {
     $minPrice = $request->input('min_price', 0);
     $maxPrice = $request->input('max_price', 2000000);
-    
+
     // Support search functionality
     $searchQuery = $request->input('search');
-    
+
     // Support both single category_id and multiple category_ids
     $categoryId = $request->input('category_id');
     $categoryIds = $request->input('category_ids', []);
-    
+
     // If single category_id is provided, add it to the array
     if ($categoryId && !in_array($categoryId, $categoryIds)) {
         $categoryIds[] = $categoryId;
     }
-    
+
     // Support both single brand_slug and multiple brand_slugs
     $brandSlug = $request->input('brand_slug');
     $brandSlugs = $request->input('brand_slugs', []);
-    
+
     // If single brand_slug is provided, add it to the array
     if ($brandSlug && !in_array($brandSlug, $brandSlugs)) {
         $brandSlugs[] = $brandSlug;
     }
-    
+
     $subcategoryId = $request->input('subcategory_id');
     $subsubcategoryId = $request->input('subsubcategory_id');
     $color = $request->input('color');
@@ -97,10 +97,10 @@ class ShopPageController extends Controller
 
     // Fetch categories with product count
     $categories = Category::withCount('products')->get();
-    
+
     // Fetch brands with product count
     $brands = Brand::withCount('products')->get();
-    
+
     // Check if all categories are selected
     $allCategoriesSelected = false;
     if (!empty($categoryIds)) {
@@ -108,7 +108,7 @@ class ShopPageController extends Controller
         $selectedCategories = count($categoryIds);
         $allCategoriesSelected = ($selectedCategories === $totalCategories);
     }
-    
+
     // Check if all brands are selected
     $allBrandsSelected = false;
     if (!empty($brandSlugs)) {
@@ -144,7 +144,7 @@ class ShopPageController extends Controller
 
     public function showProductDetails($product_id)
     {
-        $product = Product::with(['images', 'variations', 'category'])->where('product_id', $product_id)->first();
+        $product = Product::with(['images', 'variations', 'category','fee'])->where('product_id', $product_id)->first();
         if (!$product) {
             abort(404);
         }

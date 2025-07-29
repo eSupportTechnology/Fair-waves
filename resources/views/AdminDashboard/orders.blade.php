@@ -16,6 +16,9 @@
         <a class="nav-link {{ request('status') === 'Pending' ? 'active' : '' }}" href="{{ route('orders', ['status' => 'Pending']) }}">Pending</a>
     </li>
     <li class="nav-item">
+        <a class="nav-link {{ request('status') === 'Accepted' ? 'active' : '' }}" href="{{ route('orders', ['status' => 'Accepted']) }}">Accepted</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link {{ request('status') === 'Packed' ? 'active' : '' }}" href="{{ route('orders', ['status' => 'Packed']) }}">Packed</a>
     </li>
     <li class="nav-item">
@@ -29,6 +32,12 @@
     </li>
     <li class="nav-item">
         <a class="nav-link {{ request('status') === 'In Transit' ? 'active' : '' }}" href="{{ route('orders', ['status' => 'In Transit']) }}">In Transit</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request('status') === 'Customer Unavailable' ? 'active' : '' }}" href="{{ route('orders', ['status' => 'Customer Unavailable']) }}">Customer Unavailable</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request('status') === 'Rescheduled' ? 'active' : '' }}" href="{{ route('orders', ['status' => 'Rescheduled']) }}">Rescheduled</a>
     </li>
     <li class="nav-item">
         <a class="nav-link {{ request('status') === 'Delivered' ? 'active' : '' }}" href="{{ route('orders', ['status' => 'Delivered']) }}">Delivered</a>
@@ -102,6 +111,19 @@
 </div>
 
 <style>
+    /* Status Styles */
+    .status.pending {
+        background-color: #f0ad4e; /* Orange for Pending */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+    .status.accepted {
+        background-color: #5cb85c; /* Green for Accepted */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
     .status.packed {
         background-color: #0275d8; /* Blue for Packed */
         color: white;
@@ -124,6 +146,13 @@
         padding: 5px 10px;
         border-radius: 5px;
     }
+    /* Shipped Status */
+    .status.shipped {
+        background-color: #5bc0de; /* Light Blue for Shipped */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
 
     /* In Transit Status */
     .status.in-transit {
@@ -132,6 +161,43 @@
         padding: 5px 10px;
         border-radius: 5px;
     }
+
+    /* Customer Unavailable Status */
+    .status.customer-unavailable {
+        background-color: #d9534f; /* Red for Customer Unavailable */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+    /* Rescheduled Status */
+    .status.rescheduled {
+        background-color: #f0ad4e; /* Orange for Rescheduled */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+    /* Delivered Status */
+    .status.delivered {
+        background-color: #5cb85c; /* Green for Delivered */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+    /* Cancelled Status */
+    .status.cancelled {
+        background-color: #d9534f; /* Red for Cancelled */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+    /* Returned Status */
+    .status.returned {
+        background-color: #d9534f; /* Red for Returned */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
 </style>
 
 <script>

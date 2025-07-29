@@ -187,8 +187,10 @@ class CartController extends Controller
         $selectedColor = $request->get('color');
         $quantity = (int)$request->get('quantity', 1);
 
+        $fee = $product->fee ? $product->fee->fee : 300; // Default fee if not set
+
         $subtotal = $product->normal_price * $quantity;
-        $total = $subtotal + 300;
+        $total = $subtotal + $fee;
 
         // ✅ Fetch default address if exists
         $defaultAddress = Address::where('user_id', $userId)->where('default', 1)->first();

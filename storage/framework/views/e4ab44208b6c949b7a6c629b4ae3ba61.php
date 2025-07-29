@@ -141,7 +141,14 @@
                             <i class="fas fa-shopping-cart"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge"
                                   id="cart-count">
-                                <?php echo e(session('cart_count', 0)); ?>
+                                <?php
+                                    $showroom_cart = session('showroom_cart', []);
+                                    $total_items = 0;
+                                    foreach ($showroom_cart as $item) {
+                                        $total_items += $item['quantity'] ?? 1;
+                                    }
+                                ?>
+                                <?php echo e($total_items); ?>
 
                             </span>
                         </a>

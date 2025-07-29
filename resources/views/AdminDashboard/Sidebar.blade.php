@@ -39,6 +39,9 @@
                             <a href="{{ route('brand_list') }}" class="{{ request()->is('admin/brands') ? 'active' : '' }}">
                                 Brands
                             </a>
+                            <a href="{{ route('fees.index') }}" class="{{ request()->is('fees.index') ? 'active' : '' }}">
+                                Delivery Fee
+                            </a>
                         </div>
                     </li>
                     <li class="menu-item {{ request()->routeIs('customers') ? 'active' : '' }}">

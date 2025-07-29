@@ -461,10 +461,8 @@
                                 $firstItem->dealerProductLink->dealer->dealerProfile->dealer_shop_name ?? null;
                         }
                     }
-                    Log::info('Dealer Shop Name: ' . $dealerShopName);
+                    // Log::info('Dealer Shop Name: ' . $dealerShopName);
                 ?>
-
-                <h1>in here <?php echo e($dealerShopName); ?> and here. this is shop name</h1>
 
                 <?php if($dealerShopName): ?>
                     <div style="text-align:center; margin: 30px 0;">

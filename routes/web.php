@@ -286,6 +286,7 @@ use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\BankDetailController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DealerController;
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\KYCDetailController;
 use App\Http\Controllers\ShowRoomController;
 use App\Http\Controllers\SliderController;
@@ -322,6 +323,12 @@ Route::post('/admin/profile/password', [AdminProfileController::class, 'updatePa
     Route::get('/admin/brands_list/{brand}/edit', [BrandController::class, 'edit'])->name('brands.edit');
     Route::delete('/admin/brands_list/{brand}', [BrandController::class, 'destroy'])->name('brands.destroy');
     Route::put('/admin/brands_list/{brand}', [BrandController::class, 'update'])->name('brands.update');
+
+    Route::get('/admin/delivery-fee', [FeeController::class, 'index'])->name('fees.index');
+    Route::post('/admin/delivery-fee', [FeeController::class, 'store'])->name('fees.store');
+    Route::get('/admin/delivery-fee/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit');
+    Route::delete('/admin/delivery-fee/{fee}', [FeeController::class, 'destroy'])->name('fees.destroy');
+    Route::put('/admin/delivery-fee/{fee}', [FeeController::class, 'update'])->name('fees.update');
 
     Route::get('/admins/slider', [SliderController::class, 'index'])->name('slider');
     Route::post('/admins/slider', [SliderController::class, 'store'])->name('slider.store');

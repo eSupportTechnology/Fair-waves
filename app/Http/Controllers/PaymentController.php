@@ -18,13 +18,20 @@ class PaymentController extends Controller
 
     public function showPaymentPage($order_code)
     {
-        $deliveryFee = 300;
         $order = CustomerOrder::where('order_code', $order_code)
                               ->with(['items.product', 'items.dealerProductLink.dealer.dealerProfile'])
                               ->firstOrFail();
 
+        // Get the maximum delivery fee from the related products in the order items
+        $deliveryFee = $order->items->max(function ($item) {
+            return optional($item->product)->fee->fee ?? 300;
+        });
+
+
         // Get dealer from the first order item's dealer product link
         $dealer = $order->items->first()?->dealerProductLink?->dealer;
+
+
 
         return view('frontend.payment', compact('order', 'dealer','deliveryFee'));
     }

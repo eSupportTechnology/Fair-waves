@@ -16,6 +16,7 @@ class Product extends Model
         'product_description',
         'category_id',
         'brand_id',
+        'fee_id', // Add fee_id to fillable attributes
         'subcategory_id',
         'sub_subcategory_id',
         'quantity',
@@ -75,7 +76,10 @@ class Product extends Model
         return $this->hasMany(Review::class, 'product_id');
     }
 
-
+    public function fee()
+    {
+        return $this->belongsTo(Fee::class);
+    }
 }
 
 

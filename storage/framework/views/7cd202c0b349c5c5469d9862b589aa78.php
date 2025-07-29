@@ -39,6 +39,9 @@
                             <a href="<?php echo e(route('brand_list')); ?>" class="<?php echo e(request()->is('admin/brands') ? 'active' : ''); ?>">
                                 Brands
                             </a>
+                            <a href="<?php echo e(route('fees.index')); ?>" class="<?php echo e(request()->is('fees.index') ? 'active' : ''); ?>">
+                                Delivery Fee
+                            </a>
                         </div>
                     </li>
                     <li class="menu-item <?php echo e(request()->routeIs('customers') ? 'active' : ''); ?>">

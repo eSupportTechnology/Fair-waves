@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use App\Models\CustomerOrderItems;
+use App\Models\Fee;
 
 class ProductController extends Controller
 {
@@ -71,7 +72,8 @@ class ProductController extends Controller
     {
         $categories = Category::with('subcategories.subSubcategories')->get();
         $brands = Brand::all();
-        return view('AdminDashboard.add_products', compact('categories', 'brands'));
+        $fees = Fee::all(); // Fetch all fees for the dropdown
+        return view('AdminDashboard.add_products', compact('categories', 'brands', 'fees'));
     }
 
     public function getSubcategories($categoryId)
@@ -99,6 +101,7 @@ class ProductController extends Controller
             'product_description' => 'nullable|string',
             'category_id' => 'required',
             'brand_id' => 'nullable',
+            'fee_id' => 'nullable', // Validate fee_id
             'subcategory_id' => 'nullable',
             'sub_subcategory_id' => 'nullable',
             'quantity' => 'required|integer',
@@ -132,6 +135,7 @@ class ProductController extends Controller
             'product_description' => $validatedData['product_description'],
             'category_id' => $validatedData['category_id'],
             'brand_id' => $validatedData['brand_id'],
+            'fee_id' => $validatedData['fee_id'], // Store fee_id
             'subcategory_id' => $validatedData['subcategory_id'],
             'sub_subcategory_id' => $request->input('sub_subcategory_id'),
             'quantity' => $validatedData['quantity'],
@@ -190,7 +194,8 @@ class ProductController extends Controller
         $product = Product::with(['category', 'subcategory', 'subSubcategory', 'variations'])->findOrFail($productId);
         $categories = Category::with('subcategories.subSubcategories')->get();
         $brands = Brand::all();
-        return view('AdminDashboard.edit_products', compact('product', 'categories', 'brands'));
+        $fees = Fee::all(); // Fetch all fees for the dropdown
+        return view('AdminDashboard.edit_products', compact('product', 'categories', 'brands', 'fees'));
     }
 
 
@@ -208,6 +213,7 @@ class ProductController extends Controller
                 'product_description' => 'nullable|string',
                 'category_id' => 'required',
                 'brand_id' => 'nullable',
+                'fee_id' => 'nullable', // Validate fee_id
                 'subcategory_id' => 'nullable',
                 'sub_subcategory_id' => 'nullable',
                 'quantity' => 'required|integer',
@@ -242,6 +248,7 @@ class ProductController extends Controller
                 'product_description' => $validatedData['product_description'],
                 'category_id' => $validatedData['category_id'],
                 'brand_id' => $validatedData['brand_id'],
+                'fee_id' => $validatedData['fee_id'], // Update fee_id
                 'subcategory_id' => $validatedData['subcategory_id'],
                 'sub_subcategory_id' => $validatedData['sub_subcategory_id'],
                 'quantity' => $validatedData['quantity'],

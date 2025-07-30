@@ -27,11 +27,11 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    margin-left: 4px; 
+    margin-left: 4px;
     vertical-align: middle;
     border: 1px solid #ccc;
 
-    
+
 }
 
 
@@ -126,7 +126,7 @@
                                                 </a>
                                                 <div class="table-product__content text-start">
                                                     <h6 class="title text-lg fw-semibold mb-8">
-                                                        <a href="<?php echo e(route('showProductDetails', $item->product_id)); ?>" class="link text-line-2" tabindex="0"><?php echo e($item->product_name); ?></a>                                                   
+                                                        <a href="<?php echo e(route('showProductDetails', $item->product_id)); ?>" class="link text-line-2" tabindex="0"><?php echo e($item->product_name); ?></a>
                                                     </h6>
                                                     <?php if($item->size || $item->color): ?>
                                                             <div class="mt-2">
@@ -192,13 +192,13 @@
                         </div>
                         <div class="mb-0 flex-between gap-8">
                             <span class="text-gray-900 font-heading-two">Delivery Fee</span>
-                            <span class="text-gray-900 fw-semibold">Rs 300.00</span>
+                            <span class="text-gray-900 fw-semibold">Rs <?php echo e(number_format($deliveryFee,2)); ?></span>
                         </div>
                     </div>
                     <div class="bg-color-three rounded-8 p-24 mt-24">
                         <div class="flex-between gap-8">
                             <span class="text-gray-900 text-xl fw-semibold">Total</span>
-                            <span class="text-gray-900 text-xl fw-semibold">Rs <?php echo e(number_format($cartItems->sum('subtotal') + 300, 2)); ?></span>
+                            <span class="text-gray-900 text-xl fw-semibold">Rs <?php echo e(number_format($cartItems->sum('subtotal') + $deliveryFee, 2)); ?></span>
                         </div>
                     </div>
                     <a href="<?php echo e(route('checkout')); ?>" class="btn btn-main mt-40 py-18 w-100 rounded-8">Proceed to checkout</a>
@@ -212,36 +212,36 @@
 
 
 
- 
+
 <!-- ================================ Cart Section End ================================ -->
 
-   
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
 $(document).ready(function () {
     // Handle the increment (plus button) click
     $('.quantity__plus').on('click', function () {
-        var input = $(this).siblings('.quantity__input'); 
+        var input = $(this).siblings('.quantity__input');
         var value = parseInt(input.val());
-        value++; 
-        input.val(value); 
-        
+        value++;
+        input.val(value);
+
         var form = $(this).closest('form');
-        form.find('[name="quantity"]').val(value); 
+        form.find('[name="quantity"]').val(value);
         form.submit();
     });
 
     $('.quantity__minus').on('click', function () {
-        var input = $(this).siblings('.quantity__input'); 
+        var input = $(this).siblings('.quantity__input');
         var value = parseInt(input.val());
-        if (value > 1) { 
-            value--; 
-            input.val(value); 
-            
+        if (value > 1) {
+            value--;
+            input.val(value);
+
             var form = $(this).closest('form');
-            form.find('[name="quantity"]').val(value); 
-            form.submit(); 
+            form.find('[name="quantity"]').val(value);
+            form.submit();
         }
     });
 });

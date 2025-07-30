@@ -167,14 +167,18 @@ Route::get('/terms-condition', function () {
     return view('frontend.TermsCondition');
 })->name('terms-condition');
 
+Route::get('/return-product', function () {
+    return view('frontend.ReturnProduct');
+})->name('return-product');
+
 
 Route::post('/contact', [InquiryController::class, 'store'])->name('store.inquiries');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-Route::get('/cart', function () {
-    return view('frontend.cart');
-})->name('cart');
+// Route::get('/cart', function () {
+//     return view('frontend.cart');
+// })->name('cart');
 
 Route::get('/wishlist', [WishlistController::class, 'showWishlist'])->name('wishlist');
 Route::delete('/wishlist/remove/{productId}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');

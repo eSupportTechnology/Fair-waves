@@ -98,7 +98,11 @@ class CustomerOrderController extends Controller
 
             // Calculate order totals
             $subtotal = $cartItems->sum('subtotal');
-            $deliveryFee = 300.00;
+
+            // Get the maximum delivery fee from the related products in the order items
+            $deliveryFee = $cartItems->max(function ($item) {
+                return optional($item->product)->fee->fee ?? 300;
+            });
             $totalCost = $subtotal + $deliveryFee;
 
             $customerName = $request->input('first_name') . ' ' . $request->input('last_name');
@@ -265,7 +269,7 @@ class CustomerOrderController extends Controller
                         }
                     } else {
                         // Log or handle cases where the product is not found
-                        \Log::warning('Product not found for ID: ' . $product['product_id']);
+                        Log::warning('Product not found for ID: ' . $product['product_id']);
                     }
                 }
 

@@ -48,7 +48,12 @@ class CartController extends Controller
             $item->subtotal = $item->price * $item->quantity;
         }
 
-        return view('frontend.cart', compact('cartItems'));
+        // Get the maximum delivery fee from the related products in the order items
+        $deliveryFee = $cartItems->max(function ($item) {
+            return optional($item->product)->fee->fee ?? 300;
+        });
+
+        return view('frontend.cart', compact('cartItems', 'deliveryFee'));
     }
 
 
@@ -165,10 +170,19 @@ class CartController extends Controller
             $item->subtotal = $item->price * $item->quantity;
         }
 
-        $subtotal = $cartItems->sum('subtotal');
-        $total = $subtotal + 300;
+        // Get the maximum delivery fee from the related products in the order items
+        $deliveryFee = $cartItems->max(function ($item) {
+            return optional($item->product)->fee->fee ?? 300;
+        });
 
-        return view('frontend.checkout', compact('cartItems', 'subtotal', 'total'));
+        // ✅ Fetch default address if exists
+        $defaultAddress = Address::where('user_id', $userId)->where('default', 1)->first();
+
+
+        $subtotal = $cartItems->sum('subtotal');
+        $total = $subtotal + $deliveryFee;
+
+        return view('frontend.checkout', compact('cartItems', 'subtotal', 'total', 'deliveryFee', 'defaultAddress'));
     }
 
 

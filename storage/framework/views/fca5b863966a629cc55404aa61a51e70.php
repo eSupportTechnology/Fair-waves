@@ -1,6 +1,4 @@
-@extends ('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <!-- ========================= Breadcrumb Start =============================== -->
 <div class="breadcrumb mb-0 py-26 bg-main-two-50">
@@ -26,8 +24,8 @@
 
     <!-- ================================= Checkout Page Start ===================================== -->
     <section class="checkout py-80">
-    <form action="{{ route('placeOrder') }}" method="POST">
-    @csrf
+    <form action="<?php echo e(route('placeOrder')); ?>" method="POST">
+    <?php echo csrf_field(); ?>
     <div class="container container-lg">
             <div class="row">
                 <div class="col-xl-8 col-lg-7">
@@ -35,28 +33,28 @@
                         <h3 class="text-lg fw-semibold mb-24">Billing Details</h3>
                         <div class="row gy-3">
                             <div class="col-sm-6 col-xs-6">
-                                <input type="text" name="first_name" class="common-input border-gray-100" placeholder="First Name" value="{{ old('first_name', $defaultAddress->fname ?? '') }}" required>
+                                <input type="text" name="first_name" class="common-input border-gray-100" placeholder="First Name" value="<?php echo e(old('first_name', $defaultAddress->fname ?? '')); ?>" required>
                             </div>
                             <div class="col-sm-6 col-xs-6">
-                                <input type="text" name="last_name" class="common-input border-gray-100" placeholder="Last Name" value="{{ old('last_name', $defaultAddress->lname ?? '') }}"  required>
+                                <input type="text" name="last_name" class="common-input border-gray-100" placeholder="Last Name" value="<?php echo e(old('last_name', $defaultAddress->lname ?? '')); ?>"  required>
                             </div>
                             <div class="col-12">
-                                <input type="text" name="house_no" class="common-input border-gray-100" placeholder="House number and street name" value="{{ old('house_no', $defaultAddress->address ?? '') }}" required>
+                                <input type="text" name="house_no" class="common-input border-gray-100" placeholder="House number and street name" value="<?php echo e(old('house_no', $defaultAddress->address ?? '')); ?>" required>
                             </div>
                             <div class="col-12">
-                                <input type="text" name="apartment" class="common-input border-gray-100" placeholder="Apartment, suite, unit, etc. (Optional)" value="{{ old('apartment', $defaultAddress->apartment ?? '') }}">
+                                <input type="text" name="apartment" class="common-input border-gray-100" placeholder="Apartment, suite, unit, etc. (Optional)" value="<?php echo e(old('apartment', $defaultAddress->apartment ?? '')); ?>">
                             </div>
                             <div class="col-sm-6 col-xs-6">
-                                <input type="text" name="city" class="common-input border-gray-100" placeholder="City" value="{{ old('city', $defaultAddress->city ?? '') }}" required>
+                                <input type="text" name="city" class="common-input border-gray-100" placeholder="City" value="<?php echo e(old('city', $defaultAddress->city ?? '')); ?>" required>
                             </div>
                             <div class="col-sm-6 col-xs-6">
-                                <input type="text" name="postal_code" class="common-input border-gray-100" placeholder="Postal Code" value="{{ old('postal_code', $defaultAddress->postal_code ?? '') }}" required>
+                                <input type="text" name="postal_code" class="common-input border-gray-100" placeholder="Postal Code" value="<?php echo e(old('postal_code', $defaultAddress->postal_code ?? '')); ?>" required>
                             </div>
                             <div class="col-12">
-                                <input type="number" name="phone" class="common-input border-gray-100" placeholder="Phone" value="{{ old('phone', $defaultAddress->phone_num ?? '') }}" required>
+                                <input type="number" name="phone" class="common-input border-gray-100" placeholder="Phone" value="<?php echo e(old('phone', $defaultAddress->phone_num ?? '')); ?>" required>
                             </div>
                             <div class="col-12">
-                                <input type="email" name="email" class="common-input border-gray-100" placeholder="Email Address" value="{{ old('email', $defaultAddress->email ?? '') }}" required>
+                                <input type="email" name="email" class="common-input border-gray-100" placeholder="Email Address" value="<?php echo e(old('email', $defaultAddress->email ?? '')); ?>" required>
                             </div>
                         </div>
                     </div>
@@ -73,29 +71,29 @@
                                 <span class="text-gray-900 fw-medium text-xl font-heading-two">Subtotal</span>
                             </div>
 
-                            @foreach($cartItems as $item)
+                            <?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="flex-between gap-24 mb-32">
                                 <div class="flex-align gap-12">
-                                    <span class="text-gray-900 fw-normal text-sm font-heading-two w-144">{{ $item->product_name }}</span>
+                                    <span class="text-gray-900 fw-normal text-sm font-heading-two w-144"><?php echo e($item->product_name); ?></span>
                                     <span class="text-gray-900 fw-normal text-sm font-heading-two"><i class="ph-bold ph-x"></i></span>
-                                    <span class="text-gray-900 fw-semibold text-sm font-heading-two">{{ $item->quantity }}</span>
+                                    <span class="text-gray-900 fw-semibold text-sm font-heading-two"><?php echo e($item->quantity); ?></span>
                                 </div>
-                                <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs {{ number_format($item->subtotal, 2) }}</span>
+                                <span class="text-gray-900 fw-bold text-sm font-heading-two">Rs <?php echo e(number_format($item->subtotal, 2)); ?></span>
                             </div>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                             <div class="border-top border-gray-100 pt-30 mt-30">
                                 <div class="mb-0 flex-between gap-8">
                                     <span class="text-gray-900 font-heading-two text-md fw-semibold">Subtotal</span>
-                                    <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs {{ number_format($subtotal, 2) }}</span>
+                                    <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs <?php echo e(number_format($subtotal, 2)); ?></span>
                                 </div>
                                 <div class="mb-32 flex-between gap-8">
                                     <span class="text-gray-900 font-heading-two text-md fw-semibold">Delivery Fee</span>
-                                    <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs {{ number_format($deliveryFee, 2) }}</span>
+                                    <span class="text-gray-900 font-heading-two text-md fw-semibold">Rs <?php echo e(number_format($deliveryFee, 2)); ?></span>
                                 </div>
                                 <div class="mb-0 flex-between gap-8">
                                     <span class="text-gray-900 font-heading-two text-xl fw-bold">Total</span>
-                                    <span class="text-gray-900 font-heading-two text-xl fw-bold">Rs {{ number_format($total, 2) }}</span>
+                                    <span class="text-gray-900 font-heading-two text-xl fw-bold">Rs <?php echo e(number_format($total, 2)); ?></span>
                                 </div>
                             </div>
                         </div>
@@ -114,4 +112,6 @@
 
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/checkout.blade.php ENDPATH**/ ?>

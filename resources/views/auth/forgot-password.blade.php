@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password - Fair Waves</title>
+    <title>Reset Password - {{ $companySettings->title ?? 'Fair Waves' }}</title>
     <link rel="icon" sizes="16x16" href="{{ asset('frontend\newstyle\assets\images\Fire Waves LOGO.png') }}" />
     <style>
         * {

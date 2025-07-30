@@ -558,7 +558,7 @@
 <div class="sidebar" id="sidebar">
     <!-- Sidebar Brand -->
     <div class="sidebar-brand">
-        <h5>Fair Waves</h5>
+        <h5><?php echo e($companySettings->title ?? 'Fair Waves'); ?></h5>
         <small>Dashboard</small>
     </div>
 

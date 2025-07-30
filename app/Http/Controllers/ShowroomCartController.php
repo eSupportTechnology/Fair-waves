@@ -16,7 +16,7 @@ class ShowroomCartController extends Controller
 {
     public function addToCart(Request $request, $dealer_shop_name, $productId)
     {
-        $product = Product::findOrFail($productId);
+        $product = Product::with('fee')->findOrFail($productId);
         $cart = Session::get('showroom_cart', []);
         
         // Clear buy_now session when user adds items to cart
@@ -61,7 +61,8 @@ class ShowroomCartController extends Controller
             'color' => $request->input('color'),
             'dealer_shop_name' => $dealer_shop_name,
             'dealer_product_link_id' => $dealerProductLink->id,  // Now we're guaranteed this is not null
-            'bv' => $product->bv ?? 0  // Add BV field like in ShowRoomController
+            'bv' => $product->bv ?? 0,  // Add BV field like in ShowRoomController
+            'delivery_fee' => $product->fee ? $product->fee->fee : 300  // Add delivery fee
         ];
 
         if (isset($cart[$productId])) {
@@ -127,13 +128,22 @@ class ShowroomCartController extends Controller
         foreach ($cart as $productId => $item) {
             $total += $item['price'] * $item['quantity'];
             
-            // Load the product with its images
-            $product = Product::with('images')->find($item['id']);
+            // Load the product with its images and fee
+            $product = Product::with(['images', 'fee'])->find($item['id']);
             $cart[$productId]['product'] = $product;
+            
+            // Update delivery fee if not already set
+            if (!isset($cart[$productId]['delivery_fee']) && $product && $product->fee) {
+                $cart[$productId]['delivery_fee'] = $product->fee->fee;
+            } elseif (!isset($cart[$productId]['delivery_fee'])) {
+                $cart[$productId]['delivery_fee'] = 300; // fallback
+            }
         }
 
         $subtotal = $total;
-        $deliveryFee = 300; // Fixed delivery fee
+        // Calculate delivery fee for cart - use highest delivery fee among cart items
+        $cartDeliveryFees = array_column($cart, 'delivery_fee');
+        $deliveryFee = !empty($cartDeliveryFees) ? max($cartDeliveryFees) : 300;
         $total = $subtotal + $deliveryFee;
 
         return view('frontend.DealerShowroom.cart.index', compact('cart', 'subtotal', 'deliveryFee', 'total', 'dealer', 'dealer_shop_name'));
@@ -248,22 +258,28 @@ class ShowroomCartController extends Controller
             }
             
             $subtotal = 0;
+            $cartDeliveryFees = [];
+            
             // Load product images and details for each cart item
             foreach ($cart as $productId => $item) {
                 $subtotal += $item['price'] * $item['quantity'];
                 
-                // Load the product with its images
-                $product = Product::with('images')->find($item['id']);
+                // Load the product with its images and fee
+                $product = Product::with(['images', 'fee'])->find($item['id']);
                 if ($product) {
                     $cart[$productId]['product'] = $product;
                     // Update image path if needed
                     if ($product->images->isNotEmpty()) {
                         $cart[$productId]['image'] = 'storage/' . $product->images->first()->image_path;
                     }
+                    // Store delivery fee in cart item and collect all fees
+                    $cart[$productId]['delivery_fee'] = $product->fee ? $product->fee->fee : 300;
+                    $cartDeliveryFees[] = $cart[$productId]['delivery_fee'];
                 }
             }
 
-            $deliveryFee = 300;
+            // Calculate delivery fee for cart - use highest delivery fee among cart items
+            $deliveryFee = !empty($cartDeliveryFees) ? max($cartDeliveryFees) : 300;
             $total = $subtotal + $deliveryFee;
 
             return view('frontend.DealerShowroom.checkout', compact('cart', 'subtotal', 'deliveryFee', 'total', 'dealer_shop_name', 'dealer'));
@@ -274,7 +290,8 @@ class ShowroomCartController extends Controller
             \Log::info('Using buy_now session for checkout');
             $item = session()->get('buy_now');
             $subtotal = $item['price'] * $item['quantity'];
-            $deliveryFee = 300; // Fixed delivery fee
+            // Get delivery fee from session (stored during buy now process), fallback to default
+            $deliveryFee = $item['delivery_fee'] ?? 300;
             $total = $subtotal + $deliveryFee;
             
             return view('frontend.DealerShowroom.checkout', compact('item', 'subtotal', 'deliveryFee', 'total', 'dealer_shop_name', 'dealer'));
@@ -314,10 +331,18 @@ class ShowroomCartController extends Controller
 
         // Calculate totals
         $subtotal = 0;
+        $cartDeliveryFees = [];
+        
         foreach ($cart as $item) {
             $subtotal += $item['price'] * $item['quantity'];
+            // Collect delivery fees from cart items
+            if (isset($item['delivery_fee'])) {
+                $cartDeliveryFees[] = $item['delivery_fee'];
+            }
         }
-        $deliveryFee = 300;
+        
+        // Calculate delivery fee for cart - use highest delivery fee among cart items
+        $deliveryFee = !empty($cartDeliveryFees) ? max($cartDeliveryFees) : 300;
         $total = $subtotal + $deliveryFee;
 
         // Store checkout data in session for payment processing

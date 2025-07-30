@@ -38,34 +38,26 @@ class CustomersExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
-            'ID',
+            'No.',
             'Name',
+            'DOB',
             'Email',
-            'Phone',
-            'Address',
-            'Date of Birth',
-            'Gender',
-            'Registration Date',
-            'Total Orders',
-            'Status'
+            'Phone Number',
+            'Address'
         ];
     }
 
     public function map($customer): array
     {
+        static $counter = 1;
+        
         return [
-            $customer->id,
+            $counter++,
             $customer->name,
+            $customer->dob ? Carbon::parse($customer->dob)->format('Y-m-d') : 'N/A',
             $customer->email,
             $customer->phone ?? 'N/A',
-            $customer->address ?? 'N/A',
-            $customer->dob ? Carbon::parse($customer->dob)->format('Y-m-d') : 'N/A',
-            $customer->gender ?? 'N/A',
-            $customer->created_at->format('Y-m-d'),
-            // TODO: Uncomment for future development - Total Orders functionality
-            // $customer->customer_orders_count,
-            '-', // Placeholder for future Total Orders column
-            $customer->customer_status == 1 ? 'Active' : 'Inactive'
+            $customer->address ?? 'N/A'
         ];
     }
 }

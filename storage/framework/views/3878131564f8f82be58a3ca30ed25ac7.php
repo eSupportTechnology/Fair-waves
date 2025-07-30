@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <!-- Title -->
-    <title>FAIR WAVES </title>
+    <title><?php echo e($companySettings->title ?? 'FAIR WAVES'); ?></title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo e(asset('frontend\newstyle\assets\images\Fire Waves LOGO.png')); ?>">
 

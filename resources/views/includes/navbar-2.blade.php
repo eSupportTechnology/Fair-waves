@@ -58,17 +58,17 @@
                             </div>
 
                             <div class="mobi-logo">
-                                {{-- @if ($siteLogo && $siteLogo->image_path)
-                                    <a href="{{ url('/') }}">
-                                        <img src="{{ asset('storage/logo_images/' . $siteLogo->image_path) }}"
-                                             alt="Site Logo" class="img-fluid" style="max-height: 60px;">
+                                @if ($companySettings && $companySettings->logo)
+                                    <a href="/">
+                                        <img src="{{ asset($companySettings->logo) }}"
+                                             alt="{{ $companySettings->title ?? 'Fair Waves' }}" style="max-height: 60px;" />
                                     </a>
-                                @else --}}
+                                @else
                                     <a href="/">
                                         <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}"
                                              alt="logo" />
                                     </a>
-                                {{-- @endif --}}
+                                @endif
                             </div>
                         </div>
 
@@ -356,8 +356,15 @@
                     <div class="site-common-con header-search">
                         <div class="destop-main-header">
                             <div class="des-logo">
-                                <a href="/"><img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}">
-                                </a>
+                                @if ($companySettings && $companySettings->logo)
+                                    <a href="/">
+                                        <img src="{{ asset($companySettings->logo) }}" alt="{{ $companySettings->title ?? 'Fair Waves' }}" style="max-height: 80px;">
+                                    </a>
+                                @else
+                                    <a href="/">
+                                        <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}">
+                                    </a>
+                                @endif
                             </div>
 
                             <div class="search-con search-container">
@@ -706,7 +713,7 @@
                                         </div>
                                         <div><a href="#" title="">
                                                 <i class="fa-solid fa-phone me-2"></i>
-                                                +94 112 251 202
+                                                {{ $companySettings->contact ?? '+94 112 251 202' }}
 
                                             </a>
                                         </div>
@@ -798,7 +805,7 @@
                     </div>
                     <div>
                         <div>HOT LINE</div>
-                        <strong>+94 112 251 202
+                        <strong>{{ $companySettings->contact ?? '+94 112 251 202' }}
                         </strong>
                     </div>
                 </div>

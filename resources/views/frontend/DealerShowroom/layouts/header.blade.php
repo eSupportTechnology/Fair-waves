@@ -8,23 +8,11 @@
                     @if(isset($dealer))
                         <!-- Dealer Information with Profile Image -->
                         <div class="dealer-info d-flex align-items-center">
-                            <!-- User Profile Image (Logged in user) -->
+                            <!-- Dealer Profile Image -->
                             <div class="dealer-profile-wrapper me-3">
-                                @if(auth()->check())
-                                    @if(auth()->user()->profile_image)
-                                        <img src="{{ auth()->user()->profile_image_url }}"
-                                             alt="{{ auth()->user()->name }}"
-                                             class="dealer-profile-img">
-                                    @else
-                                        <div class="dealer-profile-placeholder">
-                                            {{ substr(auth()->user()->name, 0, 1) }}
-                                        </div>
-                                    @endif
-                                @else
-                                    <div class="dealer-profile-placeholder">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                @endif
+                                <div class="dealer-profile-placeholder">
+                                    <i class="fas fa-store"></i>
+                                </div>
                             </div>
                             
                             <!-- Dealer Name and Details -->
@@ -51,28 +39,16 @@
                             </div>
                         </div>
                     @else
-                        <!-- Fallback when no dealer context - show logged in user -->
+                        <!-- Fallback when no dealer context -->
                         <div class="dealer-info d-flex align-items-center">
-                            <!-- User Profile Image (Logged in user) -->
+                            <!-- Default Profile Image -->
                             <div class="dealer-profile-wrapper me-3">
-                                @if(auth()->check())
-                                    @if(auth()->user()->profile_image)
-                                        <img src="{{ auth()->user()->profile_image_url }}"
-                                             alt="{{ auth()->user()->name }}"
-                                             class="dealer-profile-img">
-                                    @else
-                                        <div class="dealer-profile-placeholder">
-                                            {{ substr(auth()->user()->name, 0, 1) }}
-                                        </div>
-                                    @endif
-                                @else
-                                    <div class="dealer-profile-placeholder">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                @endif
+                                <div class="dealer-profile-placeholder">
+                                    <i class="fas fa-store"></i>
+                                </div>
                             </div>
                             
-                            <!-- User Name and Info -->
+                            <!-- Default Name and Info -->
                         <div class="dealer-content">
                             <h3 class="dealer-name mb-1 text-dark fw-bold">
                                 @if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
@@ -81,23 +57,10 @@
                                     </a>
                                 @elseif(isset($dealer))
                                     {{ $dealer->name }}
-                                @elseif(auth()->check())
-                                    {{ auth()->user()->name }}
                                 @else
-                                    Guest User
+                                    Showroom
                                 @endif
                             </h3>
-                            <div class="dealer-details">
-                                <small class="text-muted me-3 dealer-owner">
-                                    @if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name)
-                                        Dealer
-                                    @elseif(auth()->check())
-                                        User
-                                    @else
-                                        Welcome
-                                    @endif
-                                </small>
-                            </div>
                         </div>
                         </div>
                     @endif

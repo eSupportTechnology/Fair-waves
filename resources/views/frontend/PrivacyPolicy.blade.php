@@ -26,7 +26,21 @@
                 <h6 class="mb-0">Privacy Policy</h6>
                 <ul class="flex-wrap gap-8 flex-align">
                     <li class="text-sm">
-                        <a href="/" class="gap-8 text-gray-900 flex-align hover-text-main-600">
+                        <a hre                                <tr>
+                                <td>Email :</td>
+                                <td>
+                                    <a href="mailto:{{ $companySettings->email ?? 'fairwaves@gmail.com' }}">{{ $companySettings->email ?? 'fairwaves@gmail.com' }}</a>
+                                </td>
+                            </tr>           <!--tr>
+                                <td>Email :</td>
+                                <td>
+                                    <a href="mailto:{
+                                    { $companySettings->email ?? 'fairwaves@gmail.com' }}">{{ $companySettings->email ?? 'fairwaves@gmail.com' }}</a>
+                                </td>
+                            </tr>                   <td>
+                                    <a href="mailto:{
+                                    { $companySettings->email ?? 'fairwaves@gmail.com' }}">{{ $companySettings->email ?? 'fairwaves@gmail.com' }}</a>
+                                </td-->
                             <i class="ph ph-house"></i>
                             Home
                         </a>
@@ -56,16 +70,16 @@
                         <div id="accordion" role="tablist">
                             <h3 class="title-terms pt-0">Terms and Conditions</h3>
 
-                            <p>Welcome to www.fairwaves.lk, the online purchasing platform for Abans PLC (Sri Lanka).
-                                The fairwaves.lk website provides services to its valued customers under the following
+                            <p>Welcome to {{ $companySettings->website ?? 'www.fairwaves.lk' }}, the online purchasing platform for Abans PLC (Sri Lanka).
+                                The {{ $companySettings->website ?? 'fairwaves.lk' }} website provides services to its valued customers under the following
                                 conditions. Please read and accept the under-mentioned conditions and guidelines
                                 carefully before using the services of this website.</p>
 
-                            <h3 class="title-terms">Product information at fairwaves.lk website</h3>
-                            <p>The fairwaves.lk website attempts to be as accurate as possible with the information
-                                displayed on the site. However, fairwaves.lk does not guarantee that product
+                            <h3 class="title-terms">Product information at {{ $companySettings->website ?? 'fairwaves.lk' }} website</h3>
+                            <p>The {{ $companySettings->website ?? 'fairwaves.lk' }} website attempts to be as accurate as possible with the information
+                                displayed on the site. However, {{ $companySettings->website ?? 'fairwaves.lk' }} does not guarantee that product
                                 descriptions or other content on this site are 100% accurate, complete, reliable or
-                                completely free of errors. If a product offered by fairwaves.lk is not as described on
+                                completely free of errors. If a product offered by {{ $companySettings->website ?? 'fairwaves.lk' }} is not as described on
                                 the website, a customer’s sole remedy is to return it in an unused condition within two
                                 days of delivery. If there is any external damage to the package, a customer is
                                 responsible for checking the item when it is handed over. An item will not be exchanged
@@ -74,10 +88,10 @@
                                 faults and are subjected to a fine or penalty for the cost. </p>
 
                             <p>In case the item received is found defective, customers should immediately inform
-                                fairwaves.lk within 24 hours to arrange a replacement with a brand-new unit or a full
+                                {{ $companySettings->website ?? 'fairwaves.lk' }} within 24 hours to arrange a replacement with a brand-new unit or a full
                                 refund will be provided if the stock is unavailable. </p>
 
-                            <p>Regarding the items sold through fairwaves.lk, the price of an item cannot be confirmed
+                            <p>Regarding the items sold through {{ $companySettings->website ?? 'fairwaves.lk' }}, the price of an item cannot be confirmed
                                 until the customer orders the item. Even though every effort is made to provide accurate
                                 pricing, there may be a negligible probability that some items can be mispriced. If the
                                 new price is higher than the mentioned price, we will not cancel or deliver the item
@@ -86,7 +100,7 @@
                                 the additional amount but if you decide to cancel, we will issue a refund. </p>
 
                             <p>Due to current international exchange laws and conventions, even if delivery of the
-                                selected item is canceled, fairwaves.lk cannot refund your money. You will, however, be
+                                selected item is canceled, {{ $companySettings->website ?? 'fairwaves.lk' }} cannot refund your money. You will, however, be
                                 provided with credit on the website to purchase another available product up to the
                                 value of the previous item.</p>
 
@@ -135,7 +149,7 @@
                                     <li>In the event of purchasing an AC unit with low capacity, the consumer is only
                                         eligible for a credit note for the amount of their purchase or they can switch
                                         to a
-                                        unit with a higher capacity. fairwaves.lk will not be issuing refunds for these
+                                        unit with a higher capacity. {{ $companySettings->website ?? 'fairwaves.lk' }} will not be issuing refunds for these
                                         cases.</li>
                                     <li>Customers can use the BTU calculator when purchasing AC to calculate the exact
                                         capacity that best suits
@@ -151,25 +165,25 @@
                                         will only be issued under specific circumstances as outlined in our policy.</li>
                                 </ul>
 
-                                <p class="pt-2 pb-2">The prices for all the items mentioned on fairwaves.lk are the
+                                <p class="pt-2 pb-2">The prices for all the items mentioned on {{ $companySettings->website ?? 'fairwaves.lk' }} are the
                                     final
                                     and last prices of
                                     sale via online means.</p>
                             </div>
 
                             <div class="content-section">
-                                <h3 class="title-terms">Using fairwaves.lk accounts</h3>
+                                <h3 class="title-terms">Using {{ $companySettings->website ?? 'fairwaves.lk' }} accounts</h3>
                                 <p>It is the responsibility of the users of this site to keep their passwords, other
                                     account
                                     information, and the computer used to log on to the site, secure. Website account
                                     holders are solely responsible for all activities conducted via through their
-                                    fairwaves.lk account or their passwords and BuyAbans shall be indemnified from any
+                                    {{ $companySettings->website ?? 'fairwaves.lk' }} account or their passwords and BuyAbans shall be indemnified from any
                                     such
                                     liability.</p>
                             </div>
 
                             <div class="content-section">
-                                <h3 class="title-terms">Abans Duty Free purchase via www.fairwaves.lk</h3>
+                                <h3 class="title-terms">Abans Duty Free purchase via {{ $companySettings->website ?? 'www.fairwaves.lk' }}</h3>
                                 <p>The payment will be considered as conditional purchase as the transaction will
                                     complete
                                     once the passenger physically arrives to the BIA and fulfil the requirements of the
@@ -194,7 +208,7 @@
 
                             <div class="content-section">
                                 <h3 class="title-terms">Warranty:</h3>
-                                <p>The warranty provided through the fairwaves.lk website is the same as the common
+                                <p>The warranty provided through the {{ $companySettings->website ?? 'fairwaves.lk' }} website is the same as the common
                                     warranty
                                     provided to all Abans PLC showrooms. For any warranty-related issues, please contact
                                     the
@@ -498,15 +512,15 @@
 
                             <div class="content-section">
                                 <h3 class="title-terms">Exchange of Goods: </h3>
-                                <p>fairwaves.lk may exchange the purchased item on valid for another item requested by
+                                <p>{{ $companySettings->website ?? 'fairwaves.lk' }} may exchange the purchased item on valid for another item requested by
                                     the
                                     customer. The said customer will have to pay for any difference in the price and
                                     that
                                     payment will also need to be completed within 48 hours from the time of purchase.
                                 </p>
-                                <p>fairwaves.lk is not allowed to exchange any goods purchased at the BIA Duty Free
+                                <p>{{ $companySettings->website ?? 'fairwaves.lk' }} is not allowed to exchange any goods purchased at the BIA Duty Free
                                     unless
-                                    the products sold contain internal technical faults.fairwaves.lk can only provide
+                                    the products sold contain internal technical faults. {{ $companySettings->website ?? 'fairwaves.lk' }} can only provide
                                     like-for-like exchanges when stock is available at our showrooms outside the
                                     Duty-Free zones. </p>
 
@@ -514,10 +528,10 @@
 
 
                             <div class="content-section">
-                                <h3 class="title-terms">Policy for information gathered by fairwaves.lk</h3>
+                                <h3 class="title-terms">Policy for information gathered by {{ $companySettings->website ?? 'fairwaves.lk' }}</h3>
                                 <p>
 
-                                    All information entered in to fairwaves.lk by site visitors will be collected and
+                                    All information entered in to {{ $companySettings->website ?? 'fairwaves.lk' }} by site visitors will be collected and
                                     stored. If certain visitors decide not to provide certain information, they will not
                                     be
                                     able to acquire the valuable advantages and features of this website. This vital
@@ -528,7 +542,7 @@
                                     be
                                     divulged to 03rd parties. Customer information is used only as described below and
                                     with
-                                    affiliates of fairwaves.lk.</p>
+                                    affiliates of {{ $companySettings->website ?? 'fairwaves.lk' }}.</p>
 
 
                                 <p><i>Note: Customer is responsible for informing the change of his/her phone no. and/or
@@ -540,8 +554,8 @@
                                 <h3 class="title-terms">Copyrights</h3>
                                 <p>
 
-                                    The content of the fairwaves.lk site is the property of Abans PLC (Sri Lanka) and is
-                                    protected under international copyright laws. The trademark of www.fairwaves.lk is a
+                                    The content of the {{ $companySettings->website ?? 'fairwaves.lk' }} site is the property of Abans PLC (Sri Lanka) and is
+                                    protected under international copyright laws. The trademark of {{ $companySettings->website ?? 'www.fairwaves.lk' }} is a
                                     registered trademark and the sole rights of changing, modifying, assigning, or using
                                     this trademark is solely with Abans PLC (Sri Lanka). Anyone other than Abans PLC who
                                     is
@@ -552,12 +566,12 @@
                             </div>
 
                             <div class="content-section">
-                                <h3 class="title-terms">Communication between you and fairwaves.lk</h3>
+                                <h3 class="title-terms">Communication between you and {{ $companySettings->website ?? 'fairwaves.lk' }}</h3>
                                 <p>
 
-                                    When you visit the fairwaves.lk website or communicate with fairwaves.lk via
+                                    When you visit the {{ $companySettings->website ?? 'fairwaves.lk' }} website or communicate with {{ $companySettings->website ?? 'fairwaves.lk' }} via
                                     e-mails,
-                                    you are considered as communicating with fairwaves.lk. This permits fairwaves.lk to
+                                    you are considered as communicating with {{ $companySettings->website ?? 'fairwaves.lk' }}. This permits {{ $companySettings->website ?? 'fairwaves.lk' }} to
                                     send
                                     e-mails and to communicate with you and you are deemed as agreeing to all terms and
                                     conditions, notices and other means of communications that we provide to you
@@ -569,19 +583,17 @@
                                 <h3 class="title-terms">Contact Details:</h3>
 
                                 <div class="border-box-table">
-                                    <p><strong>www.fairwaves.lk</strong></p>
-                                    <p>No. 498,<br>
-                                        Galle Road, Colombo 03.<br>
-                                        Sri Lanka.</p>
+                                    <p><strong>{{ $companySettings->website ?? 'www.fairwaves.lk' }}</strong></p>
+                                    <p>{{ $companySettings->address ?? 'No. 498, Galle Road, Colombo 03. Sri Lanka.' }}</p>
                                     <table>
                                         <tr>
                                             <td>Tel</td>
-                                            <td> : +94 112 222 888</td>
+                                            <td> : {{ $companySettings->contact ?? '+94 112 222 888' }}</td>
                                         </tr>
 
                                         <tr>
                                             <td>Web </td>
-                                            <td> : www.fairwaves.lk</td>
+                                            <td> : {{ $companySettings->website ?? 'www.fairwaves.lk' }}</td>
                                         </tr>
 
 
@@ -624,14 +636,13 @@
                         aria-labelledby="v-pills-two-tab">
 
                         <h3 class="title-terms" style="padding-top: 0px;">Privacy Policy</h3>
-                        <p class="monial-graph">We, Abans PLC (PV 5301 PB/PQ), having its registered office at No. 498,
-                            Galle Road, Colombo 03 are pleased to provide our policy on privacy for the users of our
-                            website <a href="https://fairwaves.lk">fairwaves.lk</a>. We collect, use, maintain and
+                        <p class="monial-graph">We, {{ $companySettings->title ?? 'FairWaves' }}, having its registered office at {{ $companySettings->address ?? 'No. 498, Galle Road, Colombo 03' }} are pleased to provide our policy on privacy for the users of our
+                            website <a href="https://{{ $companySettings->website ?? 'fairwaves.lk' }}">{{ $companySettings->website ?? 'fairwaves.lk' }}</a>. We collect, use, maintain and
                             disclose
                             information collected from users of our website. We assure you that, we use our best and
                             reasonable
                             effort to protect the privacy of users of our website, <a
-                                href="https://fairwaves.lk">fairwaves.lk</a>.</p>
+                                href="https://{{ $companySettings->website ?? 'fairwaves.lk' }}">{{ $companySettings->website ?? 'fairwaves.lk' }}</a>.</p>
                         <p class="monial-graph">We receive your personal information such as Name, Address, E-mail
                             address,
                             National Identity Card Number, Mobile Number, Credit Card details &amp; Transaction
@@ -639,7 +650,7 @@
                             usage &amp; preference information, Log and device information, etc., and we only collect
                             and
                             store the information you submit voluntarily when you use our website, <a
-                                href="https://fairwaves.lk">fairwaves.lk</a>. You can always refuse to provide personal
+                                href="https://{{ $companySettings->website ?? 'fairwaves.lk' }}">{{ $companySettings->website ?? 'fairwaves.lk' }}</a>. You can always refuse to provide personal
                             information, except that it may prevent you from engaging in certain site-related
                             activities.
                         </p>
@@ -685,18 +696,18 @@
                             sites
                             that are subject to their privacy policies.</p>
                         <p class="monial-graph">The information contained on <a
-                                href="https://fairwaves.lk">fairwaves.lk</a>
+                                href="https://{{ $companySettings->website ?? 'fairwaves.lk' }}">{{ $companySettings->website ?? 'fairwaves.lk' }}</a>
                             website is for general information purposes only. The <a
-                                href="https://fairwaves.lk">fairwaves.lk</a> website assumes no responsibility for
+                                href="https://{{ $companySettings->website ?? 'fairwaves.lk' }}">{{ $companySettings->website ?? 'fairwaves.lk' }}</a> website assumes no responsibility for
                             errors or
                             omissions in the content of the services. In no event shall <a
-                                href="https://fairwaves.lk">fairwaves.lk</a> website be liable for any special, direct,
+                                href="https://{{ $companySettings->website ?? 'fairwaves.lk' }}">{{ $companySettings->website ?? 'fairwaves.lk' }}</a> website be liable for any special, direct,
                             indirect, consequential, or incidental damages or any damages whatsoever, whether in an
                             action
                             of contract, negligence or other tort, arising out of or in connection with the use of the
                             services or the content of the service. We reserve the right to make additions, deletions or
                             modifications to the content on the services at any time without prior notice. The <a
-                                href="https://fairwaves.lk">fairwaves.lk</a> website does not warrant that the website
+                                href="https://{{ $companySettings->website ?? 'fairwaves.lk' }}">{{ $companySettings->website ?? 'fairwaves.lk' }}</a> website does not warrant that the website
                             is
                             free from viruses or other harmful components.</p>
                         <p class="monial-graph">We may change this privacy policy from time to time, as necessary. When
@@ -728,7 +739,7 @@
                         <table style="margin-bottom: 1rem;">
                             <tr>
                                 <td>Tel :</td>
-                                <td><a href="tel:+94 112 222 888">+94 112 222 888</a></td>
+                                <td><a href="tel:{{ $companySettings->contact ?? '+94 112 222 888' }}">{{ $companySettings->contact ?? '+94 112 222 888' }}</a></td>
                             </tr>
 
                             <tr>

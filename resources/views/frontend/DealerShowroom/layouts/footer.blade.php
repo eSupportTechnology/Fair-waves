@@ -163,7 +163,7 @@
                         @if(isset($dealer))
                             {{ $dealer->dealerProfile->dealer_shop_name ?? $dealer->name }}
                         @else
-                            Fair Waves
+                            {{ $companySettings->title ?? 'Fair Waves' }}
                         @endif
                         . All rights reserved.
                     </p>

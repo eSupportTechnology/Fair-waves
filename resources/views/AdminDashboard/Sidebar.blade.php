@@ -140,6 +140,9 @@
                             <a href="{{ route('customerReport') }}" >
                                 Customers
                             </a>
+                            <a href="{{ route('dealerReport') }}" >
+                                Dealers
+                            </a>
                             <a href="{{ route('productReport') }}" >
                                 Products
                             </a>

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\CompanySettings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -56,9 +57,13 @@ class AppServiceProvider extends ServiceProvider
                 $cartCount = $cartItems->count();
             }
 
+            // Get company settings data
+            $companySettings = CompanySettings::first();
+
             $view->with('miniCart', $miniCart)
                 ->with('cartTotal', number_format($cartTotal, 2))
-                ->with('cartCount', $cartCount);
+                ->with('cartCount', $cartCount)
+                ->with('companySettings', $companySettings);
         });
     }
 }

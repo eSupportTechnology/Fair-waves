@@ -437,7 +437,7 @@
                                 <p class="monial-graph">The warranty will not be effective for <strong
                                         class="warrenty-second-strong">repairs/installations/services done by any 03rd party
                                         other
-                                        than Fair Waves or its authorized service agents, damage caused by
+                                        than {{ $companySettings->title ?? 'Fair Waves' }} or its authorized service agents, damage caused by
                                         ancillary equipment and non-recommended accessories, normal wear, tear and corrosion,
                                         corrosion of copper tanks, promotional Items given free of charge with the main product,
                                         damages due to split and liquid, drop damages, seepage, secretion from insects, rodents

@@ -165,7 +165,8 @@
                             <?php echo e($dealer->dealerProfile->dealer_shop_name ?? $dealer->name); ?>
 
                         <?php else: ?>
-                            Fair Waves
+                            <?php echo e($companySettings->title ?? 'Fair Waves'); ?>
+
                         <?php endif; ?>
                         . All rights reserved.
                     </p>

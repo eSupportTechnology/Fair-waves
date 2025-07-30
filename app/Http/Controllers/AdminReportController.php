@@ -16,6 +16,11 @@ class AdminReportController extends Controller
         return view('AdminDashboard.Reports.customer_report',compact('customers'));
     }
 
+    public function dealerReport(){
+        $dealers = User::where('role', 'dealer')->with('dealerProfile')->get();
+        return view('AdminDashboard.Reports.dealer_report',compact('dealers'));
+    }
+
     public function affiliateCustomerReport(){
         $affiliates = AffiliateUser::all();
         return view('AdminDashboard.Reports.affiliate_customer_report',compact('affiliates'));

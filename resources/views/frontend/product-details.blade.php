@@ -555,7 +555,7 @@
                                     class="flex-shrink-0 w-32 h-32 text-xl bg-white text-main-600 rounded-circle flex-center">
                                     <i class="ph-fill ph-truck"></i>
                                 </span>
-                                <span class="text-sm text-neutral-600">Ship from <span class="fw-semibold">Fair Waves</span>
+                                <span class="text-sm text-neutral-600">Ship from <span class="fw-semibold">{{ $companySettings->title ?? 'Fair Waves' }}</span>
                                 </span>
                             </div>
                             <div class="gap-24 px-16 py-8 mb-0 bg-main-50 rounded-8 flex-between">
@@ -563,7 +563,7 @@
                                     class="flex-shrink-0 w-32 h-32 text-xl bg-white text-main-600 rounded-circle flex-center">
                                     <i class="ph-fill ph-storefront"></i>
                                 </span>
-                                <span class="text-sm text-neutral-600">Sold by: <span class="fw-semibold">Fair Waves</span> </span>
+                                <span class="text-sm text-neutral-600">Sold by: <span class="fw-semibold">{{ $companySettings->title ?? 'Fair Waves' }}</span> </span>
                             </div>
                         </div>
                     </div>

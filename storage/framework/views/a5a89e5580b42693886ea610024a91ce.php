@@ -8,24 +8,11 @@
                     <?php if(isset($dealer)): ?>
                         <!-- Dealer Information with Profile Image -->
                         <div class="dealer-info d-flex align-items-center">
-                            <!-- User Profile Image (Logged in user) -->
+                            <!-- Dealer Profile Image -->
                             <div class="dealer-profile-wrapper me-3">
-                                <?php if(auth()->check()): ?>
-                                    <?php if(auth()->user()->profile_image): ?>
-                                        <img src="<?php echo e(auth()->user()->profile_image_url); ?>"
-                                             alt="<?php echo e(auth()->user()->name); ?>"
-                                             class="dealer-profile-img">
-                                    <?php else: ?>
-                                        <div class="dealer-profile-placeholder">
-                                            <?php echo e(substr(auth()->user()->name, 0, 1)); ?>
-
-                                        </div>
-                                    <?php endif; ?>
-                                <?php else: ?>
-                                    <div class="dealer-profile-placeholder">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                <?php endif; ?>
+                                <div class="dealer-profile-placeholder">
+                                    <i class="fas fa-store"></i>
+                                </div>
                             </div>
                             
                             <!-- Dealer Name and Details -->
@@ -54,29 +41,16 @@
                             </div>
                         </div>
                     <?php else: ?>
-                        <!-- Fallback when no dealer context - show logged in user -->
+                        <!-- Fallback when no dealer context -->
                         <div class="dealer-info d-flex align-items-center">
-                            <!-- User Profile Image (Logged in user) -->
+                            <!-- Default Profile Image -->
                             <div class="dealer-profile-wrapper me-3">
-                                <?php if(auth()->check()): ?>
-                                    <?php if(auth()->user()->profile_image): ?>
-                                        <img src="<?php echo e(auth()->user()->profile_image_url); ?>"
-                                             alt="<?php echo e(auth()->user()->name); ?>"
-                                             class="dealer-profile-img">
-                                    <?php else: ?>
-                                        <div class="dealer-profile-placeholder">
-                                            <?php echo e(substr(auth()->user()->name, 0, 1)); ?>
-
-                                        </div>
-                                    <?php endif; ?>
-                                <?php else: ?>
-                                    <div class="dealer-profile-placeholder">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                <?php endif; ?>
+                                <div class="dealer-profile-placeholder">
+                                    <i class="fas fa-store"></i>
+                                </div>
                             </div>
                             
-                            <!-- User Name and Info -->
+                            <!-- Default Name and Info -->
                         <div class="dealer-content">
                             <h3 class="dealer-name mb-1 text-dark fw-bold">
                                 <?php if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name): ?>
@@ -87,24 +61,10 @@
                                 <?php elseif(isset($dealer)): ?>
                                     <?php echo e($dealer->name); ?>
 
-                                <?php elseif(auth()->check()): ?>
-                                    <?php echo e(auth()->user()->name); ?>
-
                                 <?php else: ?>
-                                    Guest User
+                                    Showroom
                                 <?php endif; ?>
                             </h3>
-                            <div class="dealer-details">
-                                <small class="text-muted me-3 dealer-owner">
-                                    <?php if(isset($dealer) && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name): ?>
-                                        Dealer
-                                    <?php elseif(auth()->check()): ?>
-                                        User
-                                    <?php else: ?>
-                                        Welcome
-                                    <?php endif; ?>
-                                </small>
-                            </div>
                         </div>
                         </div>
                     <?php endif; ?>

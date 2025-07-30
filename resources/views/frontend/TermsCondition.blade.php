@@ -186,7 +186,7 @@
                             <div class="content-section">
                                 <h3 class="title-terms">Return and Refund Policy</h3>
                                 <ul>
-                                    <li><strong>Period :</strong> Fair Waves must be informed within 3 days for
+                                    <li><strong>Period :</strong> {{ $companySettings->title ?? 'Fair Waves' }} must be informed within 3 days for
                                         Electronics &
                                         7
                                         days for Lifestyle brands (Skechers, Under Armour, Hugo Boss) of receiving the
@@ -208,7 +208,7 @@
                                         route to us. Items damaged en route will not be accepted.</li>
                                     <li>It is the customer’s responsibility to ensure proof of postage for parcels that
                                         contain items to be returned.</li>
-                                    <li>Fair Waves will require minimum 05-07 business days to process your return request
+                                    <li>{{ $companySettings->title ?? 'Fair Waves' }} will require minimum 05-07 business days to process your return request
                                         and
                                         prepare the replacement unit. </li>
                                 </ul>
@@ -224,7 +224,7 @@
                                         to
                                         your credit card/ bank account may require additional time depending on the bank
                                         due
-                                        to its own operational time for which Fair Waves will not be responsible.</li>
+                                        to its own operational time for which {{ $companySettings->title ?? 'Fair Waves' }} will not be responsible.</li>
                                     <li>In the event of purchasing an AC unit with low capacity, the consumer is only
                                         eligible for a credit note for the amount of their purchase or they can switch
                                         to a

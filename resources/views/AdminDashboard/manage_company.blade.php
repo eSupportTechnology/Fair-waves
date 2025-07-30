@@ -36,13 +36,13 @@
                             <input class="form-control" type="text" name="website" placeholder="Type here" value="{{ old('website', $company->website ?? '') }}" />
                         </div>
                         
-                        <div class="col-lg-6 mb-3 text-center">
+                        <!--div class="col-lg-6 mb-3 text-center">
                             <div>
                                 <img id="logoPreview" src="{{ asset($company->logo ?? '/backend/assets/imgs/placeholder-logo.png') }}" 
                                     alt="Logo Preview" class="img-fluid mb-3" style="max-height: 150px;">
                             </div>
                             <input class="form-control" type="file" name="logo" accept="image/*" onchange="previewLogo(event)" />
-                        </div>
+                        </div-->
                     </div>
                 </div>
             </div>

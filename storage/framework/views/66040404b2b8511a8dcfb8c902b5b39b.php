@@ -57,12 +57,17 @@
                             </div>
 
                             <div class="mobi-logo">
-                                
+                                <?php if($companySettings && $companySettings->logo): ?>
+                                    <a href="/">
+                                        <img src="<?php echo e(asset($companySettings->logo)); ?>"
+                                             alt="<?php echo e($companySettings->title ?? 'Fair Waves'); ?>" style="max-height: 60px;" />
+                                    </a>
+                                <?php else: ?>
                                     <a href="/">
                                         <img src="<?php echo e(asset('frontend/newstyle/assets/images/logo.png')); ?>"
                                              alt="logo" />
                                     </a>
-                                
+                                <?php endif; ?>
                             </div>
                         </div>
 
@@ -349,8 +354,15 @@
                     <div class="site-common-con header-search">
                         <div class="destop-main-header">
                             <div class="des-logo">
-                                <a href="/"><img src="<?php echo e(asset('frontend/newstyle/assets/images/logo.png')); ?>">
-                                </a>
+                                <?php if($companySettings && $companySettings->logo): ?>
+                                    <a href="/">
+                                        <img src="<?php echo e(asset($companySettings->logo)); ?>" alt="<?php echo e($companySettings->title ?? 'Fair Waves'); ?>" style="max-height: 80px;">
+                                    </a>
+                                <?php else: ?>
+                                    <a href="/">
+                                        <img src="<?php echo e(asset('frontend/newstyle/assets/images/logo.png')); ?>">
+                                    </a>
+                                <?php endif; ?>
                             </div>
 
                             <div class="search-con search-container">
@@ -699,7 +711,8 @@
                                         </div>
                                         <div><a href="#" title="">
                                                 <i class="fa-solid fa-phone me-2"></i>
-                                                +94 112 251 202
+                                                <?php echo e($companySettings->contact ?? '+94 112 251 202'); ?>
+
 
                                             </a>
                                         </div>
@@ -791,7 +804,8 @@
                     </div>
                     <div>
                         <div>HOT LINE</div>
-                        <strong>+94 112 251 202
+                        <strong><?php echo e($companySettings->contact ?? '+94 112 251 202'); ?>
+
                         </strong>
                     </div>
                 </div>

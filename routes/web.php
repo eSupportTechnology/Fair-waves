@@ -454,6 +454,7 @@ Route::delete('/admin/edit_users/{id}', [UserController::class, 'destroy'])->nam
 
 // admin_reports
 Route::get('/admin/report/customer_report', [AdminReportController::class, 'customerReport'])->name('customerReport');
+Route::get('/admin/report/dealer_report', [AdminReportController::class, 'dealerReport'])->name('dealerReport');
 Route::get('/admin/report/affiliate_customer_report', [AdminReportController::class, 'affiliateCustomerReport'])->name('affiliateCustomerReport');
 Route::get('/admin/report/affiliate_bank_data', [AdminReportController::class, 'affiliateCusBankData'])->name('affiliateCusBankData');
 Route::get('/admin/report/vendor_report', [AdminReportController::class, 'vendorReport'])->name('vendorReport');

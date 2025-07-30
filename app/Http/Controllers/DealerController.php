@@ -823,7 +823,10 @@ class DealerController extends Controller
 
     public function exportDealers(Request $request)
     {
-        return Excel::download(new DealersExport($request->search), 'dealers.xlsx');
+        $search = $request->get('search');
+        $filename = 'dealers_' . date('Y-m-d_H-i-s') . '.xlsx';
+        
+        return Excel::download(new DealersExport($search), $filename);
     }
 
     public function adminGenealogy()

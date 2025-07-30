@@ -261,7 +261,7 @@
               
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <span style="color: #666; font-size: 16px;">Delivery Fee</span>
-                <span style="color: #333; font-size: 16px; font-weight: 500;">Rs. 300.00</span>
+                <span style="color: #333; font-size: 16px; font-weight: 500;">Rs. {{ number_format($order->delivery_fee ?? 300, 2) }}</span>
               </div>
               
               <hr style="margin: 20px 0; opacity: 0.1;">

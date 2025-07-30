@@ -270,12 +270,16 @@
         <div class="container footer-padding">
             <div class="row align-items-start">
                 <div class="col-md-4 address-info">
-                <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}" style="width: 180px;">
+                @if($companySettings && $companySettings->logo)
+                    <img src="{{ asset('storage/' . $companySettings->logo) }}" style="width: 180px;" alt="{{ $companySettings->title ?? 'Fair Waves' }}">
+                @else
+                    <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}" style="width: 180px;" alt="{{ $companySettings->title ?? 'Fair Waves' }}">
+                @endif
 
 
                     <div class="hotline">
                         <p>HOTLINE</p>
-                        <a class="tel-no" href="#">+94 112 251 202 </a>
+                        <a class="tel-no" href="#">{{ $companySettings->contact ?? '+94 112 251 202' }} </a>
                     </div>
                     <div class="social-media">
                     <ul>
@@ -385,7 +389,7 @@
 <div class="bank-image"><img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/UB1.webp') }}"></div>
 
                 </div>
-                <div class="copyright"><small>Copyright © 2025 FAIR WAVES. All Rights Reserved.</small></div>
+                <div class="copyright"><small>Copyright © 2025 {{ strtoupper($companySettings->title ?? 'FAIR WAVES') }}. All Rights Reserved.</small></div>
             </div>
         </div>
     </div>

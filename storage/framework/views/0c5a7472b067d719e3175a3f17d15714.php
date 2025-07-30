@@ -139,7 +139,9 @@
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                         <?php
-                            $deliveryFee = 300;
+                            // Calculate delivery fee for cart - use highest delivery fee among cart items
+                            $cartDeliveryFees = array_column($cart, 'delivery_fee');
+                            $deliveryFee = !empty($cartDeliveryFees) ? max($cartDeliveryFees) : 300;
                             $total = $cartSubtotal + $deliveryFee;
                         ?>
 
@@ -149,7 +151,8 @@
                             $item = session('buy_now');
                             $product = \App\Models\Product::find($item['id']);
                             $subtotal = $item['price'] * $item['quantity'];
-                            $deliveryFee = 300;
+                            // Get delivery fee from session (stored during buy now process), fallback to default
+                            $deliveryFee = $item['delivery_fee'] ?? 300;
                             $total = $subtotal + $deliveryFee;
                         ?>
 

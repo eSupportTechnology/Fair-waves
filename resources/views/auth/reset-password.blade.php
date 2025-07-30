@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password - Fair Waves</title>
+    <title>Reset Password - {{ $companySettings->title ?? 'Fair Waves' }}</title>
     <link rel="icon" sizes="16x16" href="{{ asset('frontend\newstyle\assets\images\Fire Waves LOGO.png') }}" />
     <style>
         * {
@@ -281,7 +281,7 @@
 
         <div class="form-section">
             <p class="description">
-                Create a new password for your Fair Waves account. Make sure it's strong and secure.
+                Create a new password for your {{ $companySettings->title ?? 'Fair Waves' }} account. Make sure it's strong and secure.
             </p>
 
             <!-- Status Messages -->

@@ -52,6 +52,7 @@ class ShowRoomController extends Controller
             'product.reviews',
             'product.category',
             'product.brand',
+            'product.fee',
             'dealer.dealerProfile'
         ])
             ->where('unique_code', $unique_code)
@@ -134,7 +135,7 @@ class ShowRoomController extends Controller
     public function dealerBuyNow($id,$dpid, Request $request)
     {
         try {
-            $product = Product::findOrFail($id);
+            $product = Product::with('fee')->findOrFail($id);
 
             // Get dealer shop name from dealer product link
             $dealerProductLink = DealerProductLink::with(['dealer.dealerProfile'])->findOrFail($dpid);
@@ -156,6 +157,9 @@ class ShowRoomController extends Controller
                 session()->forget('showroom_cart');
             }
 
+            // Get delivery fee from product's fee relationship, fallback to 300
+            $deliveryFee = $product->fee ? $product->fee->fee : 300;
+
             // Store only the current product in session for buy-now
             session()->put('buy_now', [
                 "id" => $product->id,
@@ -166,6 +170,7 @@ class ShowRoomController extends Controller
                 "color" => $request->input('color'), // can be null
                 "dealerProductLink"=> $dpid,
                 "bv" => $product->bv,
+                "delivery_fee" => $deliveryFee,
             ]);
 
             return redirect()->route('dealer.checkout.page', $dealerShopName);
@@ -179,7 +184,6 @@ class ShowRoomController extends Controller
     {
         try {
             $orderCode = 'ORD-' . strtoupper(Str::random(8));
-            $deliveryFee = 300;
             $subtotal = 0;
 
             // Validate basic fields
@@ -199,6 +203,9 @@ class ShowRoomController extends Controller
             if (!$buyNowItem) {
                 return redirect()->back()->with('error', 'Buy now session expired. Please try again.');
             }
+
+            // Get delivery fee from session (stored during buy now process), fallback to default
+            $deliveryFee = $buyNowItem['delivery_fee'] ?? 300;
 
             // Create products array from buy_now session data
             $products = [[
@@ -306,8 +313,16 @@ class ShowRoomController extends Controller
     public function showPaymentPage($order_code)
     {
         $order = CustomerOrder::where('order_code', $order_code)
-                              ->with(['items.product', 'items.dealerProductLink.dealer.dealerProfile'])
+                              ->with(['items.product.fee', 'items.dealerProductLink.dealer.dealerProfile'])
                               ->firstOrFail();
+
+        // Get the maximum delivery fee from the related products in the order items
+        $deliveryFee = $order->items->max(function ($item) {
+            return optional($item->product->fee)->fee ?? 300;
+        });
+
+        // Add delivery fee to order object for the view
+        $order->delivery_fee = $deliveryFee;
 
         // Get dealer from the first order item's dealer product link
         $dealer = $order->items->first()?->dealerProductLink?->dealer;

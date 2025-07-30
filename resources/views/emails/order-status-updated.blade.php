@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Fair Waves - Order Update</title>
+        <title>{{ $companySettings->title ?? 'Fair Waves' }} - Order Update</title>
         <style>
             body {
                 margin: 0;
@@ -378,7 +378,11 @@
     <body>
         <div class="email-container">
             <div class="header">
-                <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}" alt="Fair Waves Logo" class="logo">
+                @if($companySettings && $companySettings->logo)
+                    <img src="{{ asset('storage/' . $companySettings->logo) }}" alt="{{ $companySettings->title ?? 'Fair Waves' }} Logo" class="logo">
+                @else
+                    <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}" alt="{{ $companySettings->title ?? 'Fair Waves' }} Logo" class="logo">
+                @endif
                 <h1>Order Update</h1>
                 <div class="company-tagline">Enjoy Life with the Waves</div>
             </div>
@@ -476,11 +480,11 @@
             </div>
 
             <div class="footer">
-                <p><span class="thank-you">Thank you for shopping with Fair Waves! 🌊</span></p>
+                <p><span class="thank-you">Thank you for shopping with {{ $companySettings->title ?? 'Fair Waves' }}! 🌊</span></p>
                 <p>We appreciate your business and look forward to serving you again.</p>
 
                 <div class="company-info">
-                    <p><strong class="brand-accent">Fair Waves</strong> - Enjoy Life with the Waves</p>
+                    <p><strong class="brand-accent">{{ $companySettings->title ?? 'Fair Waves' }}</strong> - Enjoy Life with the Waves</p>
                     <p>Your trusted partner for quality products and exceptional service</p>
                 </div>
             </div>

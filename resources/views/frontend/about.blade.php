@@ -195,7 +195,7 @@
 ">
         <div class="col-12 col-xl-6">
             <h1 class="page-title-wrap">About Us</h1>
-            <h3 class="about-sub-head">We, at Fair Waves, offer you the convenience of browsing, purchasing, and
+            <h3 class="about-sub-head">We, at {{ $companySettings->title ?? 'Fair Waves' }}, offer you the convenience of browsing, purchasing, and
                 reserving products & services from across the Abans Group of Companies.</h3>
             <p class="common-p">Our virtual store boasts an endless array of globally recognizable brands and includes
                 only authentic products. We guarantee that our discounts are genuine, and your payments are secured. Our
@@ -217,7 +217,7 @@
     padding-top: 50px;
 ">
         <div class="col-xl-12">
-            <h2 class="text-center page-title-wrap">Fair Waves Fact Check</h2>
+            <h2 class="text-center page-title-wrap">{{ $companySettings->title ?? 'Fair Waves' }} Fact Check</h2>
         </div>
     </div>
 

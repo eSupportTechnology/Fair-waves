@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Password Reset | Fair Waves</title>
+    <title>Password Reset | {{ $companySettings->title ?? 'Fair Waves' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -87,7 +87,7 @@
 
         <div class="footer">
             Regards,<br>
-            <strong>Fair Waves</strong><br>
+            <strong>{{ $companySettings->title ?? 'Fair Waves' }}</strong><br>
             Enjoy life with the waves 🌊
         </div>
     </div>

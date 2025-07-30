@@ -39,36 +39,30 @@ class DealersExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
-            'ID',
+            'No.',
             'Name',
+            'Shop Name',
             'Email',
-            'Phone',
-            'Address',
-            'Date of Birth',
-            'Gender',
-            'Registration Date',
+            'Phone Number',
             'Dealer Code',
-            'Total Orders',
-            'Status'
+            'Rank',
+            'Tier'
         ];
     }
 
     public function map($dealer): array
     {
+        static $counter = 1;
+        
         return [
-            $dealer->id,
-            $dealer->name,
-            $dealer->email,
+            $counter++,
+            $dealer->name ?? 'N/A',
+            $dealer->dealerProfile->dealer_shop_name ?? 'N/A',
+            $dealer->email ?? 'N/A',
             $dealer->phone ?? 'N/A',
-            $dealer->address ?? 'N/A',
-            $dealer->dob ? Carbon::parse($dealer->dob)->format('Y-m-d') : 'N/A',
-            $dealer->gender ?? 'N/A',
-            $dealer->created_at->format('Y-m-d'),
             $dealer->dealerProfile->dealer_code ?? 'N/A',
-            // TODO: Uncomment for future development - Total Orders functionality
-            // $dealer->customer_orders_count,
-            '', // Empty placeholder for Total Orders column
-            $dealer->dealer_status == 1 ? 'Active' : 'Inactive'
+            $dealer->dealerProfile->rank ?? 'N/A',
+            $dealer->dealerProfile->tier ?? 'N/A'
         ];
     }
 }

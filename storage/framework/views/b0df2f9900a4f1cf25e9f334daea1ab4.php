@@ -1,8 +1,6 @@
-@extends('frontend.DealerShowroom.master')
+<?php $__env->startSection('title', 'About ' . $dealer->dealerProfile->dealer_shop_name); ?>
 
-@section('title', 'About ' . $dealer->dealerProfile->dealer_shop_name)
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <style>
     /* About Page Styles */
@@ -207,10 +205,10 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="page-title">About {{ $dealer->dealerProfile->dealer_shop_name }}</h1>
+                <h1 class="page-title">About <?php echo e($dealer->dealerProfile->dealer_shop_name); ?></h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">About</li>
                     </ol>
                 </nav>
@@ -242,7 +240,7 @@
                                 </div>
                                 <div class="about-details">
                                     <h5>Store Information</h5>
-                                    <p>Welcome to <strong>{{ $dealer->dealerProfile->dealer_shop_name }}</strong>, your trusted partner for quality products and excellent service. We are committed to providing you with the best shopping experience and premium products at competitive prices.</p>
+                                    <p>Welcome to <strong><?php echo e($dealer->dealerProfile->dealer_shop_name); ?></strong>, your trusted partner for quality products and excellent service. We are committed to providing you with the best shopping experience and premium products at competitive prices.</p>
                                 </div>
                             </div>
 
@@ -285,7 +283,7 @@
                                 </div>
                                 <div class="contact-details">
                                     <label>Dealer Name</label>
-                                    <p>{{ $dealer->name }}</p>
+                                    <p><?php echo e($dealer->name); ?></p>
                                 </div>
                             </div>
 
@@ -295,11 +293,11 @@
                                 </div>
                                 <div class="contact-details">
                                     <label>Shop Name</label>
-                                    <p>{{ $dealer->dealerProfile->dealer_shop_name }}</p>
+                                    <p><?php echo e($dealer->dealerProfile->dealer_shop_name); ?></p>
                                 </div>
                             </div>
 
-                            @if($dealer->dealerProfile->phone)
+                            <?php if($dealer->dealerProfile->phone): ?>
                             <div class="contact-item">
                                 <div class="contact-icon">
                                     <i class="fas fa-phone"></i>
@@ -307,15 +305,16 @@
                                 <div class="contact-details">
                                     <label>Phone</label>
                                     <p>
-                                        <a href="tel:{{ $dealer->dealerProfile->phone }}" class="contact-link">
-                                            {{ $dealer->dealerProfile->phone }}
+                                        <a href="tel:<?php echo e($dealer->dealerProfile->phone); ?>" class="contact-link">
+                                            <?php echo e($dealer->dealerProfile->phone); ?>
+
                                         </a>
                                     </p>
                                 </div>
                             </div>
-                            @endif
+                            <?php endif; ?>
 
-                            @if($dealer->email)
+                            <?php if($dealer->email): ?>
                             <div class="contact-item">
                                 <div class="contact-icon">
                                     <i class="fas fa-envelope"></i>
@@ -323,54 +322,55 @@
                                 <div class="contact-details">
                                     <label>Email</label>
                                     <p>
-                                        <a href="mailto:{{ $dealer->email }}" class="contact-link">
-                                            {{ $dealer->email }}
+                                        <a href="mailto:<?php echo e($dealer->email); ?>" class="contact-link">
+                                            <?php echo e($dealer->email); ?>
+
                                         </a>
                                     </p>
                                 </div>
                             </div>
-                            @endif
+                            <?php endif; ?>
 
-                            @if($dealer->dealerProfile->address)
+                            <?php if($dealer->dealerProfile->address): ?>
                             <div class="contact-item">
                                 <div class="contact-icon">
                                     <i class="fas fa-map-marker-alt"></i>
                                 </div>
                                 <div class="contact-details">
                                     <label>Address</label>
-                                    <p>{{ $dealer->dealerProfile->address }}</p>
+                                    <p><?php echo e($dealer->dealerProfile->address); ?></p>
                                 </div>
                             </div>
-                            @endif
+                            <?php endif; ?>
 
-                            @if($dealer->dealerProfile->dealer_code)
+                            <?php if($dealer->dealerProfile->dealer_code): ?>
                             <div class="contact-item">
                                 <div class="contact-icon">
                                     <i class="fas fa-id-card"></i>
                                 </div>
                                 <div class="contact-details">
                                     <label>Dealer Code</label>
-                                    <p class="dealer-code">{{ $dealer->dealerProfile->dealer_code }}</p>
+                                    <p class="dealer-code"><?php echo e($dealer->dealerProfile->dealer_code); ?></p>
                                 </div>
                             </div>
-                            @endif
+                            <?php endif; ?>
                         </div>
 
                         <!-- Action Buttons -->
                         <div class="contact-actions mt-4">
-                            @if($dealer->dealerProfile->phone)
-                            <a href="tel:{{ $dealer->dealerProfile->phone }}" class="btn btn-primary-custom w-100 mb-2">
+                            <?php if($dealer->dealerProfile->phone): ?>
+                            <a href="tel:<?php echo e($dealer->dealerProfile->phone); ?>" class="btn btn-primary-custom w-100 mb-2">
                                 <i class="fas fa-phone me-2"></i>Call Now
                             </a>
-                            @endif
+                            <?php endif; ?>
 
-                            @if($dealer->email)
-                            <a href="mailto:{{ $dealer->email }}" class="btn btn-outline-custom w-100 mb-2">
+                            <?php if($dealer->email): ?>
+                            <a href="mailto:<?php echo e($dealer->email); ?>" class="btn btn-outline-custom w-100 mb-2">
                                 <i class="fas fa-envelope me-2"></i>Send Email
                             </a>
-                            @endif
+                            <?php endif; ?>
 
-                            <a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="btn btn-success w-100">
+                            <a href="<?php echo e(route('showroom.index', $dealer->dealerProfile->dealer_shop_name)); ?>" class="btn btn-success w-100">
                                 <i class="fas fa-arrow-left me-2"></i>Back to Showroom
                             </a>
                         </div>
@@ -821,4 +821,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.DealerShowroom.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/DealerShowroom/about/index.blade.php ENDPATH**/ ?>

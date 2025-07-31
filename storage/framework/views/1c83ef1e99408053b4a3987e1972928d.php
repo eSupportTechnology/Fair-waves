@@ -46,6 +46,24 @@
 <link rel="stylesheet" href="<?php echo e(asset('frontend/newstyle/mainmin.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset('frontend/newstyle/responsivemin.css')); ?>">
 
+<style>
+    /* Cart count animation */
+    .cart-count-updated {
+        animation: cartCountPulse 0.6s ease-in-out;
+        background-color: #28a745 !important;
+    }
+    
+    @keyframes cartCountPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+    }
+    
+    .cart-badge {
+        transition: all 0.3s ease;
+    }
+</style>
+
 
 
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
@@ -54,11 +72,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="icon" sizes="16x16" href="<?php echo e(asset('frontend\newstyle\assets\images\Fire Waves LOGO.png')); ?>" />
-
-    <!-- <link rel="stylesheet" href="assets/libs/owl-carousel/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/libs/owl-carousel/assets/owl.theme.default.min.css">
-    <link rel="stylesheet" href="assets/libs/owl-carousel/owl.carousel.js">
-    <link rel="stylesheet" href="assets/libs/owl-carousel/owl.carousel.min.js"> -->
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -69,21 +82,6 @@
 
 <!-- Your custom styles -->
 <link rel="stylesheet" href="<?php echo e(asset('css/app.css')); ?>">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </head>
@@ -187,7 +185,7 @@
     <body>
 
 
-        <?php echo $__env->make('includes.navbar-2', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php echo $__env->make('frontend.DealerShowroom.layouts.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
         <?php echo $__env->yieldContent('content'); ?>
@@ -216,6 +214,11 @@
                                     toast.addEventListener('mouseleave', Swal.resumeTimer);
                                 }
                             });
+                            
+                            // Update cart count when product is added successfully
+                            <?php if(str_contains(session('success'), 'cart')): ?>
+                                updateCartCount();
+                            <?php endif; ?>
                         <?php endif; ?>
 
                         <?php if(session('error')): ?>
@@ -239,7 +242,7 @@
                 </script>
       </div>
 
-        <?php echo $__env->make('includes.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php echo $__env->make('frontend.DealerShowroom.layouts.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
 
@@ -288,13 +291,56 @@
     });
     </script>
     <script>
+        // Global function to update cart count - can be called from anywhere
+        window.updateCartCount = function() {
+            <?php if(isset($dealer) && $dealer && $dealer->dealerProfile && $dealer->dealerProfile->dealer_shop_name): ?>
+                // Use showroom cart count for dealer showroom
+                $.get("<?php echo e(route('showroom.cart.count', $dealer->dealerProfile->dealer_shop_name)); ?>", function(data) {
+                    if (data.total_items !== undefined) {
+                        $('#cart-count').text(data.total_items);
+                        // Add animation to highlight the update
+                        $('#cart-count').addClass('cart-count-updated');
+                        setTimeout(() => {
+                            $('#cart-count').removeClass('cart-count-updated');
+                        }, 1000);
+                    }
+                }).fail(function() {
+                    console.error('Failed to update cart count');
+                });
+            <?php elseif(isset($dealer_shop_name)): ?>
+                // Use showroom cart count if dealer_shop_name is available
+                $.get("<?php echo e(route('showroom.cart.count', $dealer_shop_name)); ?>", function(data) {
+                    if (data.total_items !== undefined) {
+                        $('#cart-count').text(data.total_items);
+                        // Add animation to highlight the update
+                        $('#cart-count').addClass('cart-count-updated');
+                        setTimeout(() => {
+                            $('#cart-count').removeClass('cart-count-updated');
+                        }, 1000);
+                    }
+                }).fail(function() {
+                    console.error('Failed to update cart count');
+                });
+            <?php else: ?>
+                // Fallback to regular cart count
+                $.get("<?php echo e(route('cart.count')); ?>", function(data) {
+                    if (data.cart_count !== undefined) {
+                        $('#cart-count').text(data.cart_count);
+                        // Add animation to highlight the update
+                        $('#cart-count').addClass('cart-count-updated');
+                        setTimeout(() => {
+                            $('#cart-count').removeClass('cart-count-updated');
+                        }, 1000);
+                    }
+                }).fail(function() {
+                    console.error('Failed to update cart count');
+                });
+            <?php endif; ?>
+        }
+        
         $(document).ready(function() {
-            $.get("<?php echo e(route('cart.count')); ?>", function(data) {
-                if (data.cart_count !== undefined) {
-                    $('#cart-count').text(data.cart_count);
-                }
-            });
-
+            // Load cart count on page load
+            updateCartCount();
         });
     </script>
     <script>
@@ -392,4 +438,4 @@
 
 
     </html>
-<?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/master.blade.php ENDPATH**/ ?>
+<?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/DealerShowroom/master.blade.php ENDPATH**/ ?>

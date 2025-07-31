@@ -167,9 +167,12 @@ Route::get('/terms-condition', function () {
     return view('frontend.TermsCondition');
 })->name('terms-condition');
 
-Route::get('/return-product', function () {
-    return view('frontend.ReturnProduct');
-})->name('return-product');
+Route::get('/return-product', [App\Http\Controllers\ReturnRequestController::class, 'show'])->name('return-product');
+
+// Return Request Routes
+Route::post('/return-product/submit', [App\Http\Controllers\ReturnRequestController::class, 'submit'])->name('return-product.submit');
+Route::post('/admin/return-request/{id}/approve', [App\Http\Controllers\ReturnRequestController::class, 'approve'])->name('return-request.approve');
+Route::post('/admin/return-request/{id}/reject', [App\Http\Controllers\ReturnRequestController::class, 'reject'])->name('return-request.reject');
 
 
 Route::post('/contact', [InquiryController::class, 'store'])->name('store.inquiries');

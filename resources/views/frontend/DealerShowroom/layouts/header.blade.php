@@ -10,9 +10,15 @@
                         <div class="dealer-info d-flex align-items-center">
                             <!-- Dealer Profile Image -->
                             <div class="dealer-profile-wrapper me-3">
-                                <div class="dealer-profile-placeholder">
-                                    <i class="fas fa-store"></i>
-                                </div>
+                                @if($dealer->profile_image)
+                                    <img src="{{ $dealer->profile_image_url }}"
+                                         alt="{{ $dealer->name }}"
+                                         class="dealer-profile-img">
+                                @else
+                                    <div class="dealer-profile-placeholder">
+                                        {{ substr($dealer->name, 0, 1) }}
+                                    </div>
+                                @endif
                             </div>
                             
                             <!-- Dealer Name and Details -->
@@ -43,9 +49,31 @@
                         <div class="dealer-info d-flex align-items-center">
                             <!-- Default Profile Image -->
                             <div class="dealer-profile-wrapper me-3">
-                                <div class="dealer-profile-placeholder">
-                                    <i class="fas fa-store"></i>
-                                </div>
+                                @php
+                                    // Try to get dealer from URL if not provided in context
+                                    $dealer_shop_name = request()->segment(2);
+                                    $fallback_dealer = null;
+                                    
+                                    if ($dealer_shop_name && $dealer_shop_name !== 'default') {
+                                        $fallback_dealer = \App\Models\User::whereHas('dealerProfile', function($query) use ($dealer_shop_name) {
+                                            $query->where('dealer_shop_name', $dealer_shop_name);
+                                        })->where('role', 'dealer')->with('dealerProfile')->first();
+                                    }
+                                @endphp
+                                
+                                @if($fallback_dealer && $fallback_dealer->profile_image)
+                                    <img src="{{ $fallback_dealer->profile_image_url }}"
+                                         alt="{{ $fallback_dealer->name }}"
+                                         class="dealer-profile-img">
+                                @elseif($fallback_dealer)
+                                    <div class="dealer-profile-placeholder">
+                                        {{ substr($fallback_dealer->name, 0, 1) }}
+                                    </div>
+                                @else
+                                    <div class="dealer-profile-placeholder">
+                                        <i class="fas fa-store"></i>
+                                    </div>
+                                @endif
                             </div>
                             
                             <!-- Default Name and Info -->
@@ -57,6 +85,10 @@
                                     </a>
                                 @elseif(isset($dealer))
                                     {{ $dealer->name }}
+                                @elseif($fallback_dealer && $fallback_dealer->dealerProfile)
+                                    <a href="{{ route('showroom.index', $fallback_dealer->dealerProfile->dealer_shop_name) }}" class="text-dark text-decoration-none">
+                                        {{ $fallback_dealer->dealerProfile->dealer_shop_name }}
+                                    </a>
                                 @else
                                     Showroom
                                 @endif

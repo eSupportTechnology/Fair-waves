@@ -62,6 +62,18 @@ class CustomerOrder extends Model
 
     public function customeritems()
     {
-        return $this->hasMany(CustomerOrderItems::class);
+        return $this->hasMany(CustomerOrderItems::class, 'order_code', 'order_code');
+    }
+
+    // Relationship with ReturnRequest
+    public function returnRequests()
+    {
+        return $this->hasMany(ReturnRequest::class, 'order_code', 'order_code');
+    }
+
+    // Get pending return request
+    public function pendingReturnRequest()
+    {
+        return $this->returnRequests()->where('status', 'pending')->first();
     }
 }

@@ -1230,7 +1230,7 @@
             <div class="dealer-card fade-in" id="dealer-info">
                 <h6 class="section-title mb-3">
                     <i class="fas fa-store me-2"></i>
-                    Dealer Information
+                    Seller Information
                 </h6>
 
                 <div class="dealer-info-content">
@@ -1239,7 +1239,7 @@
                             <i class="fas fa-user"></i>
                         </div>
                         <div>
-                            <small class="text-muted d-block">Dealer Name</small>
+                            <small class="text-muted d-block">Seller Name</small>
                             <strong>{{ $productLink->dealer->name }}</strong>
                         </div>
                     </div>

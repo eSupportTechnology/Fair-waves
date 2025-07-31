@@ -484,7 +484,7 @@
                     {{ $dealer->dealerProfile->dealer_shop_name ?? 'Authorized Dealer Showroom' }}
                 </h3>
                 <p class="text-muted mb-2">
-                    <strong>Dealer:</strong> {{ $dealer->name }}
+                    <strong>Seller:</strong> {{ $dealer->name }}
                 </p>
                 @if($dealer->dealerProfile->address)
                 <p class="text-muted mb-2">

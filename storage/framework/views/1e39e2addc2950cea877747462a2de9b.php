@@ -1,6 +1,4 @@
-@extends('frontend.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <main class="content-container">
 
     <style>
@@ -565,33 +563,34 @@
                         aria-labelledby="v-pills-five-tab">
                         <h3 class="title-terms">Return Products Request</h3>
 
-                        {{-- Display Success Message --}}
-                        @if(session('success'))
+                        
+                        <?php if(session('success')): ?>
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Success!</strong> {{ session('success') }}
+                                <strong>Success!</strong> <?php echo e(session('success')); ?>
+
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
-                        {{-- Display Error Messages --}}
-                        @if($errors->any())
+                        
+                        <?php if($errors->any()): ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <strong>Error!</strong>
                                 <ul class="mb-0">
-                                    @foreach($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
+                                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <li><?php echo e($error); ?></li>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </ul>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
-                        <form action="{{ route('return-product.submit') }}" method="POST">
-                            @csrf
+                        <form action="<?php echo e(route('return-product.submit')); ?>" method="POST">
+                            <?php echo csrf_field(); ?>
                         <div class="row">
                             <p class="order-title">Order Information</p>
                             <div class="form-group col-sm-6">
@@ -679,4 +678,6 @@
 
 
 </main>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/frontend/ReturnProduct.blade.php ENDPATH**/ ?>

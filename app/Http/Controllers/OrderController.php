@@ -46,9 +46,16 @@ class OrderController extends Controller
 
     public function showOrderDetails($orderCode)
     {
-        $order = CustomerOrder::with('items.product')->where('order_code', $orderCode)->first();
-        $order = CustomerOrder::with('items.product.images')->where('order_code', $orderCode)->first();
-        return view('AdminDashboard.order-details', compact('order'));
+        $order = CustomerOrder::with(['items.product.images', 'returnRequests'])->where('order_code', $orderCode)->first();
+        
+        if (!$order) {
+            return redirect()->route('orders')->with('error', 'Order not found.');
+        }
+        
+        // Get pending return request if exists
+        $pendingReturnRequest = $order->pendingReturnRequest();
+        
+        return view('AdminDashboard.order-details', compact('order', 'pendingReturnRequest'));
     }
 
 

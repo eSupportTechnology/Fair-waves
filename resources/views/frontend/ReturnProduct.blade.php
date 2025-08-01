@@ -563,7 +563,7 @@
 
                     <div class="tab-pane fade  show active " id="v-pills-five" role="tabpanel"
                         aria-labelledby="v-pills-five-tab">
-                        <h3 class="title-terms">Return Products Request</h3>
+                        <h3 class="title-terms">Return or Cancel Products Request</h3>
 
                         {{-- Display Success Message --}}
                         @if(session('success'))
@@ -592,31 +592,67 @@
 
                         <form action="{{ route('return-product.submit') }}" method="POST">
                             @csrf
+                            
+                            {{-- Add CSS styles for auto-fill functionality --}}
+                            <style>
+                                .auto-filled {
+                                    background-color: #e8f5e8 !important;
+                                    border-color: #28a745 !important;
+                                }
+                                .loading-field {
+                                    background-color: #f8f9fa !important;
+                                    border-color: #007bff !important;
+                                }
+                                .auto-fill-message {
+                                    margin-top: 5px;
+                                    margin-bottom: 5px;
+                                }
+                                .order-id-field {
+                                    position: relative;
+                                }
+                                .order-id-field .loading-spinner {
+                                    position: absolute;
+                                    right: 10px;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    display: none;
+                                }
+                            </style>
+                            
                         <div class="row">
                             <p class="order-title">Order Information</p>
                             <div class="form-group col-sm-6">
                                 <label class="fs-14">Order ID<span class="req">*</span></label>
-                                <input type="text" class="form-control" name="order_id" id="order_id" required>
+                                <input type="text" class="form-control" name="order_id" id="order_id" required 
+                                       placeholder="Enter your order ID (e.g., ORD-XXXXXXXX)" 
+                                       title="Enter your order ID to auto-fill customer information">
+                                <small class="form-text text-muted">
+                                    <i class="fa fa-info-circle"></i> Enter your Order ID to automatically fill customer details
+                                </small>
                             </div>
 
                             <div class="form-group col-sm-6">
                                 <label class="fs-14">Billing customer name <span class="req">*</span></label>
-                                <input type="text" class="form-control" name="customer_name" id="customer_name" required>
+                                <input type="text" class="form-control" name="customer_name" id="customer_name" required
+                                       placeholder="Will be auto-filled when Order ID is entered">
                             </div>
 
                             <div class="form-group col-sm-6">
                                 <label class="fs-14">Phone <span class="req">*</span></label>
-                                <input type="text" class="form-control" name="phone" id="phone" required>
+                                <input type="text" class="form-control" name="phone" id="phone" required
+                                       placeholder="Will be auto-filled when Order ID is entered">
                             </div>
                             
                             <div class="form-group col-sm-6">
                                 <label class="fs-14">Order Date<span class="req">*</span></label>
-                                <input type="date" class="form-control" name="order_date" id="order_date" required>
+                                <input type="date" class="form-control" name="order_date" id="order_date" required
+                                       title="Will be auto-filled when Order ID is entered">
                             </div>
                             
                             <div class="form-group col-sm-6">
                                 <label class="fs-14">Email<span class="req">*</span></label>
-                                <input type="email" class="form-control" name="email" id="email" required>
+                                <input type="email" class="form-control" name="email" id="email" required
+                                       placeholder="Will be auto-filled when Order ID is entered">
                             </div>
 
                             <div class="form-group col-sm-6">
@@ -629,7 +665,7 @@
                             </div>
 
                             <div class="form-group col-sm-12">
-                                <label class="fs-14" id="reason_label">Why do you want to cancel this order?<span class="req">*</span></label>
+                                <label class="fs-14" id="reason_label">Why do you want to cancel or reject this order?<span class="req">*</span></label>
                                 <textarea class="form-control" name="reason" id="reason" rows="4" placeholder="Please explain your reason..." required></textarea>
                             </div>
 
@@ -653,6 +689,154 @@
                         </form>
 
                         <script>
+                        // Auto-fill functionality for Order ID
+                        let orderLookupTimeout;
+                        
+                        document.getElementById('order_id').addEventListener('input', function() {
+                            const orderCode = this.value.trim();
+                            
+                            // Clear previous timeout
+                            if (orderLookupTimeout) {
+                                clearTimeout(orderLookupTimeout);
+                            }
+                            
+                            // Clear fields if order code is empty
+                            if (!orderCode) {
+                                clearFormFields();
+                                return;
+                            }
+                            
+                            // Debounce the API call (wait 800ms after user stops typing)
+                            orderLookupTimeout = setTimeout(() => {
+                                fetchOrderData(orderCode);
+                            }, 800);
+                        });
+
+                        function fetchOrderData(orderCode) {
+                            // Show loading state
+                            showLoadingState(true);
+                            
+                            // Make API call to fetch order data
+                            fetch(`{{ url('/api/order') }}/${orderCode}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    showLoadingState(false);
+                                    
+                                    if (data.success) {
+                                        // Auto-fill the form fields
+                                        const customerNameField = document.getElementById('customer_name');
+                                        const phoneField = document.getElementById('phone');
+                                        const emailField = document.getElementById('email');
+                                        const orderDateField = document.getElementById('order_date');
+                                        
+                                        customerNameField.value = data.data.customer_name || '';
+                                        phoneField.value = data.data.phone || '';
+                                        emailField.value = data.data.email || '';
+                                        
+                                        // Format and set the order date
+                                        if (data.data.order_date) {
+                                            // Convert date to YYYY-MM-DD format for date input
+                                            const orderDate = new Date(data.data.order_date);
+                                            const formattedDate = orderDate.toISOString().split('T')[0];
+                                            orderDateField.value = formattedDate;
+                                        }
+                                        
+                                        // Add visual feedback for auto-filled fields
+                                        [customerNameField, phoneField, emailField, orderDateField].forEach(field => {
+                                            field.classList.add('auto-filled');
+                                            field.placeholder = 'Auto-filled from order data';
+                                        });
+                                        
+                                        // Show success message
+                                        showMessage('✓ Order found! Customer details auto-filled successfully.', 'success');
+                                        
+                                        // Remove auto-filled class after 3 seconds
+                                        setTimeout(() => {
+                                            [customerNameField, phoneField, emailField, orderDateField].forEach(field => {
+                                                field.classList.remove('auto-filled');
+                                            });
+                                        }, 3000);
+                                        
+                                    } else {
+                                        // Clear fields and show error
+                                        clearFormFields();
+                                        showMessage('⚠ ' + (data.message || 'Order not found. Please check the Order ID.'), 'error');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching order data:', error);
+                                    showLoadingState(false);
+                                    clearFormFields();
+                                    showMessage('⚠ Error fetching order data. Please try again.', 'error');
+                                });
+                        }
+
+                        function clearFormFields() {
+                            const fields = ['customer_name', 'phone', 'email', 'order_date'];
+                            fields.forEach(fieldId => {
+                                const field = document.getElementById(fieldId);
+                                field.value = '';
+                                field.classList.remove('auto-filled');
+                                // Reset placeholders
+                                const placeholders = {
+                                    'customer_name': 'Will be auto-filled when Order ID is entered',
+                                    'phone': 'Will be auto-filled when Order ID is entered',
+                                    'email': 'Will be auto-filled when Order ID is entered',
+                                    'order_date': ''
+                                };
+                                if (placeholders[fieldId]) {
+                                    field.placeholder = placeholders[fieldId];
+                                }
+                            });
+                        }
+
+                        function showLoadingState(isLoading) {
+                            const orderIdField = document.getElementById('order_id');
+                            const formFields = ['customer_name', 'phone', 'email', 'order_date'];
+                            
+                            if (isLoading) {
+                                orderIdField.classList.add('loading-field');
+                                formFields.forEach(fieldId => {
+                                    document.getElementById(fieldId).classList.add('loading-field');
+                                    document.getElementById(fieldId).placeholder = 'Loading...';
+                                });
+                            } else {
+                                orderIdField.classList.remove('loading-field');
+                                formFields.forEach(fieldId => {
+                                    document.getElementById(fieldId).classList.remove('loading-field');
+                                });
+                            }
+                        }
+
+                        function showMessage(message, type) {
+                            // Remove existing messages
+                            const existingMessages = document.querySelectorAll('.auto-fill-message');
+                            existingMessages.forEach(msg => msg.remove());
+                            
+                            // Create new message
+                            const messageDiv = document.createElement('div');
+                            messageDiv.className = `alert alert-${type === 'success' ? 'success' : 'warning'} alert-dismissible fade show auto-fill-message`;
+                            messageDiv.style.marginTop = '10px';
+                            messageDiv.innerHTML = `
+                                <small><i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}</small>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            `;
+                            
+                            // Insert after the order_id field
+                            const orderIdGroup = document.getElementById('order_id').closest('.form-group');
+                            orderIdGroup.insertAdjacentElement('afterend', messageDiv);
+                            
+                            // Auto-hide after 3 seconds
+                            setTimeout(() => {
+                                if (messageDiv.parentNode) {
+                                    messageDiv.remove();
+                                }
+                            }, 3000);
+                        }
+
+                        // Request type change functionality
                         document.getElementById('request_type').addEventListener('change', function() {
                             const requestType = this.value;
                             const reasonLabel = document.getElementById('reason_label');

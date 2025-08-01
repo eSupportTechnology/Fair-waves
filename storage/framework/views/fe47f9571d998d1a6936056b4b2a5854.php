@@ -1,6 +1,4 @@
-@extends('layouts.user_sidebar')
-
-@section('dashboard-content')
+<?php $__env->startSection('dashboard-content'); ?>
 <style>
     :root {
         --primary-gradient: linear-gradient(135deg, #ff6b00, #ff3c00);
@@ -425,27 +423,28 @@
     .stat-card:nth-child(4) { animation-delay: 0.4s; }
 </style>
 
-@if (!Auth::check())
+<?php if(!Auth::check()): ?>
     <script>
-        window.location.href = "{{ route('login') }}";
+        window.location.href = "<?php echo e(route('login')); ?>";
     </script>
-    @php exit; @endphp
-@endif
+    <?php exit; ?>
+<?php endif; ?>
 
 <!-- Welcome Banner -->
 <div class="welcome-banner">
     <div class="banner-content">
         <div class="profile-avatar">
-            @if($user->profile_image)
-                <img src="{{ $user->profile_image_url }}" alt="Profile Image">
-            @else
+            <?php if($user->profile_image): ?>
+                <img src="<?php echo e($user->profile_image_url); ?>" alt="Profile Image">
+            <?php else: ?>
                 <div class="profile-placeholder">
-                    {{ substr($user->name, 0, 1) }}
+                    <?php echo e(substr($user->name, 0, 1)); ?>
+
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
         <div class="welcome-text">
-            <h1>Welcome back, {{ $user->name }}!</h1>
+            <h1>Welcome back, <?php echo e($user->name); ?>!</h1>
             <p>Manage your orders and track your purchases with ease</p>
         </div>
     </div>
@@ -458,7 +457,7 @@
 <div class="orders-section">
     <div class="section-title">My Orders</div>
     <div class="orders-grid">
-        <a href="{{ route('user.unpaid.orders') }}" class="order-card">
+        <a href="<?php echo e(route('user.unpaid.orders')); ?>" class="order-card">
             <div class="order-icon">
                 <img src="https://icons.veryicon.com/png/128/miscellaneous/bigmk_app_icon/unpaid-2.png" alt="Unpaid">
             </div>
@@ -466,7 +465,7 @@
             <div class="order-description">Orders awaiting payment</div>
         </a>
         
-        <a href="{{ route('user.to.be.shipped') }}" class="order-card">
+        <a href="<?php echo e(route('user.to.be.shipped')); ?>" class="order-card">
             <div class="order-icon">
                 <img src="https://icons.veryicon.com/png/128/miscellaneous/cb/to-be-shipped-25.png" alt="To be shipped">
             </div>
@@ -474,7 +473,7 @@
             <div class="order-description">Orders being prepared</div>
         </a>
         
-        <a href="{{ route('user.shipped.orders') }}" class="order-card">
+        <a href="<?php echo e(route('user.shipped.orders')); ?>" class="order-card">
             <div class="order-icon">
                 <img src="https://icons.veryicon.com/png/128/miscellaneous/bigmk_app_icon/in-transit.png" alt="Shipped">
             </div>
@@ -482,7 +481,7 @@
             <div class="order-description">Orders on the way</div>
         </a>
         
-        <a href="{{ route('My-Reviews') }}" class="order-card">
+        <a href="<?php echo e(route('My-Reviews')); ?>" class="order-card">
             <div class="order-icon">
                 <img src="https://icons.veryicon.com/png/128/miscellaneous/document-format/reviewed-5.png" alt="To be reviewed">
             </div>
@@ -492,4 +491,6 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\pramu\Desktop\GIT Projects\Fair-waves\resources\views/user_dashboard/dashboard.blade.php ENDPATH**/ ?>

@@ -7,9 +7,12 @@ use App\Models\ProductImage;
 use App\Models\DealerProductOrder;
 use App\Models\DealerProductLink;
 use App\Models\User;
+use App\Mail\OrderConfirmationMail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ShowroomCartController extends Controller
@@ -468,6 +471,16 @@ class ShowroomCartController extends Controller
                 }
             }
 
+            // Send order confirmation email to customer
+            if ($order->email) {
+                try {
+                    Mail::to($order->email)->send(new OrderConfirmationMail($order));
+                    Log::info('Order confirmation email sent for COD payment', ['order_code' => $order_code, 'email' => $order->email]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send order confirmation email for COD payment: ' . $e->getMessage());
+                }
+            }
+
             // Clear sessions after successful order
             Session::forget('showroom_cart');
             Session::forget('checkout_data');
@@ -535,6 +548,16 @@ class ShowroomCartController extends Controller
                 $productModel = Product::find($item['id']);
                 if ($productModel) {
                     $productModel->decrement('quantity', $item['quantity']);
+                }
+            }
+
+            // Send order confirmation email to customer
+            if ($order->email) {
+                try {
+                    Mail::to($order->email)->send(new OrderConfirmationMail($order));
+                    Log::info('Order confirmation email sent for card payment', ['order_code' => $order_code, 'email' => $order->email]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send order confirmation email for card payment: ' . $e->getMessage());
                 }
             }
 

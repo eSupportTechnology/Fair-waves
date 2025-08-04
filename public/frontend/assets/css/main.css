@@ -426,56 +426,51 @@
 
 /* Main Button */
 .btn-main {
-    background-color: #001ed4 !important;
-    /* Red color */
-    border-color: #001ed4 !important;
-    /* Red border */
+    background-color: #ff5800 !important;
+    /* Orange color */
+    border-color: #ff5800 !important;
+    /* Orange border */
 }
 
 .btn-main:hover {
-    background-color: #001ed4 !important;
-    /* Darker red for hover */
-    border-color: #001ed4 !important;
-    /* Darker red border */
+    background-color: #e54d00 !important;
+    /* Darker orange for hover */
+    border-color: #e54d00 !important;
+    /* Darker orange border */
 }
 
 /* Main Outline Button */
 .btn-outline-main {
     background-color: transparent !important;
-    border-color: #001ed4 !important;
-    /* Red border */
-    color: #001ed4 !important;
-    /* Red text */
+    border-color: #ff5800 !important;
+    /* Orange border */
+    color: #ff5800 !important;
+    /* Orange text */
 }
 
 .btn-outline-main:hover {
-    background-color: rgba(206,
-            22,
-            22,
+    background-color: rgba(255,
+            88,
+            0,
             0.15) !important;
-    /* Light red background on hover */
-    border-color: rgba(206,
-            22,
-            22,
+    /* Light orange background on hover */
+    border-color: rgba(255,
+            88,
+            0,
             0.4) !important;
-    /* Light red border on hover */
+    /* Light orange border on hover */
 }
 
 /* Main Two Button */
 .btn-main-two {
-    background-color: #bd0f0f !important;
-    /* Darker red */
-    border-color: #bd0f0f !important;
-    /* Darker red border */
+    background-color: var(--main-two-600) !important;
+    border-color: var(--main-two-600) !important;
     color: #ffffff !important;
-    /* White text */
 }
 
 .btn-main-two:hover {
-    background-color: #801111 !important;
-    /* Darker red for hover */
-    border-color: #801111 !important;
-    /* Darker red border */
+    background-color: var(--main-two-700) !important;
+    border-color: var(--main-two-700) !important;
 }
 
 /* Main Two Outline Button */
@@ -7126,8 +7121,7 @@ input:focus-visible {
 }
 
 .hover-bg-main-600:hover {
-    background-color: #ce1616 !important;
-    /* Original color */
+    background-color: var(--main-two-600) !important;
 }
 
 .hover-bg-main-700:hover {
@@ -10718,4 +10712,31 @@ a.disabled {
 
 .heart-icon.active i {
     class: "fa-solid fa-heart";
+}
+
+/* ========================= Custom Add to Cart Button Styles ======================== */
+/* Override bg-gray-50 for Add to Cart buttons specifically */
+.product-card__cart.btn.bg-gray-50 {
+    background-color: var(--main-two-50) !important;
+    color: var(--main-two-600) !important;
+    border: 1px solid var(--main-two-200) !important;
+}
+
+.product-card__cart.btn.bg-gray-50:hover {
+    background-color: var(--main-two-600) !important;
+    color: white !important;
+    border-color: var(--main-two-600) !important;
+}
+
+/* Alternative Add to Cart button style */
+.add-to-cart-btn.btn.bg-gray-50 {
+    background-color: var(--main-two-50) !important;
+    color: var(--main-two-600) !important;
+    border: 1px solid var(--main-two-200) !important;
+}
+
+.add-to-cart-btn.btn.bg-gray-50:hover {
+    background-color: var(--main-two-600) !important;
+    color: white !important;
+    border-color: var(--main-two-600) !important;
 }

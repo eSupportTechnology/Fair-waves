@@ -14,10 +14,13 @@ use App\Models\User;
 use App\Models\WithdrawalRequest;
 use App\Models\BankDetail;
 use App\Models\CustomerOrder;
+use App\Mail\EmailVerificationMail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Auth\Events\Registered;
@@ -552,7 +555,7 @@ class DealerController extends Controller
         $referrerProfile = DealerProfile::where('dealer_code', $request->dealer_code)->first();
         $referrerUser = $referrerProfile->user;
 
-        // Step 2: Create New User
+        // Step 2: Create New User without email verification initially
         $user = User::create([
             'name' => $request->fname . " " . $request->lname,
             'fname' => $request->fname,
@@ -563,12 +566,11 @@ class DealerController extends Controller
             'dob' => $request->dob,
             'gender' => $request->gender,
             'phone' => $request->phone,
-            'role' => 'dealer', // or 'customer' based on your logic
+            'role' => 'dealer', // Set as dealer
             'referred_by' => $referrerUser->id, // Set the referrer
+            'customer_status' => 1, // Default to active
+            'email_verified_at' => null, // Email not verified yet
         ]);
-
-        event(new Registered($user));
-        Auth::login($user);
 
         // Step 3: Create Dealer Profile
         $dealer_code_generated = 'D-' . strtoupper(uniqid());
@@ -589,10 +591,36 @@ class DealerController extends Controller
             'approved' => false, // allow referrer to approve later via dashboard
         ]);
 
-        // Optional: Notify referrer (event or notification)
-        // Notification::send($referrerUser, new NewReferralNotification($user));
+        // Step 5: Prepare user data for email verification
+        $userData = [
+            'id' => $user->id,
+            'fname' => $user->fname,
+            'lname' => $user->lname,
+            'email' => $user->email,
+            'phone' => $user->phone,
+            'address' => $user->address,
+        ];
 
-        return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
+        // Step 6: Send email verification
+        try {
+            Mail::to($user->email)->send(new EmailVerificationMail($userData));
+            Log::info('Dealer email verification sent successfully', ['user_email' => $user->email, 'user_role' => 'dealer']);
+            
+            return redirect()->route('login')->with('success', 'Dealer registration successful! Please check your email and click the verification link to activate your account before logging in.');
+            
+        } catch (\Exception $e) {
+            Log::error('Failed to send dealer verification email', [
+                'user_email' => $user->email,
+                'user_role' => 'dealer',
+                'error' => $e->getMessage()
+            ]);
+            
+            return redirect()->route('login')->with('warning', 'Dealer registration successful! However, we encountered an issue sending the verification email. Please contact support.');
+        }
+
+        // Note: We don't auto-login users anymore - they must verify email first
+        // event(new Registered($user)); // Optional: Can still trigger this event
+        // Auth::login($user); // Removed: No auto-login until email verified
     }
 
     public function checkShopName(Request $request)

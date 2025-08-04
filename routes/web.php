@@ -540,7 +540,11 @@ Route::get('/affiliate/dashboard/payment/withdrawals', [AffiliateReportControlle
 Route::get('/affiliate/dashboard/payment/payment_info', [AffiliateReportController::class, 'showPaymentInfo'])->name('payment_info');
 Route::post('/affiliate/dashboard/payment/realtime_tracking', [AffiliateReportController::class, 'realtimereport'])->name('realtime_tracking');
 
-
+// Email Verification Route
+use App\Http\Controllers\Auth\CustomEmailVerificationController;
+Route::get('/verify-email/{id}/{email}/{hash}', [CustomEmailVerificationController::class, 'verify'])
+    ->middleware(['signed'])
+    ->name('verification.verify');
 
 require __DIR__.'/auth.php';
 

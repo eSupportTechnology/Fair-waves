@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\OnepayHelper;
+use App\Mail\OrderConfirmationMail;
 use App\Mail\OrderStatusUpdatedMail;
 use App\Models\CustomerOrder;
 use App\Models\CustomerOrderItems;
@@ -49,9 +50,9 @@ class PaymentController extends Controller
                 'payment_status' => 'Not Paid',
             ]);
 
-            // Send email to customer
+            // Send order confirmation email to customer
             if ($order->email) {
-                Mail::to($order->email)->send(new OrderStatusUpdatedMail($order, $order->status));
+                Mail::to($order->email)->send(new OrderConfirmationMail($order));
             }
 
 
@@ -211,6 +212,16 @@ class PaymentController extends Controller
             if (strtoupper($statusMessage) === 'SUCCESS') {
                 $order->update(['payment_status' => 'Paid']);
                 Log::info('Order marked as Paid', ['order_code' => $order->order_code]);
+
+                // Send order confirmation email to customer
+                if ($order->email) {
+                    try {
+                        Mail::to($order->email)->send(new OrderConfirmationMail($order));
+                        Log::info('Order confirmation email sent', ['order_code' => $order->order_code, 'email' => $order->email]);
+                    } catch (\Exception $e) {
+                        Log::error('Failed to send order confirmation email: ' . $e->getMessage());
+                    }
+                }
 
                 // // ✅ Send SMS to vendor
                 // try {

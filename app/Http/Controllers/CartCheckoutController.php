@@ -8,9 +8,11 @@ use App\Models\DealerProductLink;
 use App\Models\DealerProductOrder;
 use App\Models\CustomerOrder;
 use App\Models\CustomerOrderItems;
+use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class CartCheckoutController extends Controller
@@ -199,6 +201,16 @@ class CartCheckoutController extends Controller
 
             \Log::info('Order items created successfully');
 
+            // Send order confirmation email to customer
+            if ($order->email) {
+                try {
+                    Mail::to($order->email)->send(new OrderConfirmationMail($order));
+                    \Log::info('Order confirmation email sent', ['order_code' => $order_code, 'email' => $order->email]);
+                } catch (\Exception $e) {
+                    \Log::error('Failed to send order confirmation email: ' . $e->getMessage());
+                }
+            }
+
             // Clear cart and checkout data
             session()->forget(['showroom_cart', 'cart_summary', 'checkout_info']);
 
@@ -278,6 +290,16 @@ class CartCheckoutController extends Controller
             }
 
             \Log::info('Card payment order items created successfully');
+
+            // Send order confirmation email to customer
+            if ($order->email) {
+                try {
+                    Mail::to($order->email)->send(new OrderConfirmationMail($order));
+                    \Log::info('Order confirmation email sent for card payment', ['order_code' => $order_code, 'email' => $order->email]);
+                } catch (\Exception $e) {
+                    \Log::error('Failed to send order confirmation email for card payment: ' . $e->getMessage());
+                }
+            }
 
             // Clear cart and checkout data
             session()->forget(['showroom_cart', 'cart_summary', 'checkout_info']);

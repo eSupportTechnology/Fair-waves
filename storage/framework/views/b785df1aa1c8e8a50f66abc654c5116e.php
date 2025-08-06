@@ -310,7 +310,7 @@
     <div class="email-container">
         <!-- Header -->
         <div class="header">
-            <img src="<?php echo e(asset('frontend/assets/images/logo/logo.png')); ?>" alt="Fair Waves Logo" class="logo">
+            <img src="<?php echo e(asset('frontend\newstyle\assets\images\logo.png')); ?>" alt="Fair Waves Logo" class="logo">
             <h1>Order Confirmed!</h1>
             <p class="company-tagline">Thank you for choosing Fair Waves</p>
         </div>

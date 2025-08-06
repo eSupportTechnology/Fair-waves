@@ -11,10 +11,12 @@ use App\Models\Product;
 use App\Models\RaffleTicket;
 use App\Models\Review;
 use App\Models\User;
+use App\Mail\OrderConfirmationMail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ShowRoomController extends Controller
@@ -349,6 +351,16 @@ class ShowRoomController extends Controller
                 'payment_status' => 'Not Paid', // Set payment status for COD orders
             ]);
 
+            // Send order confirmation email to customer
+            if ($order->email) {
+                try {
+                    Mail::to($order->email)->send(new OrderConfirmationMail($order));
+                    Log::info('Order confirmation email sent', ['order_code' => $order_code, 'email' => $order->email]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send order confirmation email: ' . $e->getMessage());
+                }
+            }
+
             // Clear the buy_now session after successful order
             session()->forget('buy_now');
 
@@ -388,6 +400,16 @@ class ShowRoomController extends Controller
                 'payment_method' => 'Card',
                 'payment_status' => 'Paid',
             ]);
+
+            // Send order confirmation email to customer
+            if ($order->email) {
+                try {
+                    Mail::to($order->email)->send(new OrderConfirmationMail($order));
+                    Log::info('Order confirmation email sent for card payment', ['order_code' => $order_code, 'email' => $order->email]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send order confirmation email for card payment: ' . $e->getMessage());
+                }
+            }
 
             // Clear the buy_now session after successful order
             session()->forget('buy_now');

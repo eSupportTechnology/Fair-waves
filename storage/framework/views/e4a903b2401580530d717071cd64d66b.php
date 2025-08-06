@@ -790,7 +790,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, #ff5800, #ff7a3d);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -820,9 +820,16 @@
                 <div class="col-md-1 col-2 text-center">
                     <!-- Profile Image -->
                     <div class="profile-image-container">
-                        <img src="<?php echo e($dealerProfile->user->profile_image_url); ?>"
-                             alt="Profile Image"
-                             class="profile-image-dashboard">
+                        <?php if($dealerProfile->user->profile_image): ?>
+                            <img src="<?php echo e($dealerProfile->user->profile_image_url); ?>"
+                                 alt="Profile Image"
+                                 class="profile-image-dashboard">
+                        <?php else: ?>
+                            <div class="profile-placeholder-dashboard">
+                                <?php echo e(substr($dealerProfile->user->name, 0, 1)); ?>
+
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="col-md-7 col-10">

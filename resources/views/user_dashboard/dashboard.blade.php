@@ -78,17 +78,25 @@
         transform: scale(1.05);
     }
 
-    .profile-avatar::after {
-        content: '';
-        position: absolute;
-        top: -2px;
-        right: -2px;
-        width: 24px;
-        height: 24px;
-        background: #10b981;
-        border: 3px solid white;
+    /* Default Profile Placeholder */
+    .profile-placeholder {
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        background: linear-gradient(135deg, #ff5800, #ff7a3d);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 32px;
+        font-weight: 600;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        transition: transform 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .profile-avatar:hover .profile-placeholder {
+        transform: scale(1.05);
     }
 
     .welcome-text h1 {
@@ -324,9 +332,14 @@
             gap: 1rem;
         }
 
-        .profile-avatar img {
+        .profile-avatar img,
+        .profile-placeholder {
             width: 70px;
             height: 70px;
+        }
+
+        .profile-placeholder {
+            font-size: 28px;
         }
 
         .welcome-text h1 {
@@ -423,7 +436,13 @@
 <div class="welcome-banner">
     <div class="banner-content">
         <div class="profile-avatar">
-            <img src="{{ $user->profile_image_url }}" alt="Profile Image">
+            @if($user->profile_image)
+                <img src="{{ $user->profile_image_url }}" alt="Profile Image">
+            @else
+                <div class="profile-placeholder">
+                    {{ substr($user->name, 0, 1) }}
+                </div>
+            @endif
         </div>
         <div class="welcome-text">
             <h1>Welcome back, {{ $user->name }}!</h1>

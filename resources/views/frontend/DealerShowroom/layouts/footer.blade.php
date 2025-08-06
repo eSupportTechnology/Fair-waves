@@ -14,20 +14,17 @@
             <!-- Dealer Information -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="footer-widget">
-             
-                    <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
+                    <!-- Return/Cancel Order Button -->
+                    <div class="return-order-section mb-4">
+                        <h6 class="footer-title">Need Help with Your Order?</h6>
+                        <button type="button" class="btn btn-return-order" data-bs-toggle="modal" data-bs-target="#returnOrderModal">
+                            <i class="fas fa-undo-alt me-2"></i>
+                            Return/Cancel Order
+                        </button>
+                        <p class="mt-2 mb-0 text-muted small">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Quick and easy return or cancellation process
+                        </p>
                     </div>
                 </div>
             </div>
@@ -37,11 +34,17 @@
                 <div class="footer-widget">
                     <h6 class="footer-title">Quick Links</h6>
                     <ul class="footer-links">
-                        <li><a href="#" class="footer-link">Home</a></li>
-                        <li><a href="#" class="footer-link">Products</a></li>
-                        <li><a href="#" class="footer-link">About Us</a></li>
-                        <li><a href="#" class="footer-link">Contact</a></li>
-                        <li><a href="#" class="footer-link">Showroom</a></li>
+                        @if(isset($dealer))
+                            <li><a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}" class="footer-link">Home</a></li>
+                            <li><a href="{{ route('showroom.index', $dealer->dealerProfile->dealer_shop_name) }}#products-section" class="footer-link">Products</a></li>
+                            <li><a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}" class="footer-link">About Us</a></li>
+                            <li><a href="{{ route('showroom.about', $dealer->dealerProfile->dealer_shop_name) }}#contact-section" class="footer-link contact-about-scroll">Contact</a></li>
+                        @else
+                            <li><a href="" class="footer-link">Home</a></li>
+                            <li><a href="" class="footer-link">Products</a></li>
+                            <li><a href="" class="footer-link">About Us</a></li>
+                            <li><a href="" class="footer-link">Contact</a></li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -55,7 +58,7 @@
                         <li><a href="#" class="footer-link">Shipping Information</a></li>
                         <li><a href="#" class="footer-link">Returns & Exchanges</a></li>
                         <li><a href="#" class="footer-link">Warranty Policy</a></li>
-                        <li><a href="#" class="footer-link">Track Your Order</a></li>
+                        
                     </ul>
                 </div>
             </div>
@@ -145,9 +148,9 @@
                             <div class="payment-item">
                                 <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/BOC1.webp') }}" alt="Bank of Ceylon" class="payment-logo">
                             </div>
-                            <div class="payment-item">
+                            <!--div class="payment-item">
                                 <img src="{{ asset('frontend/newstyle/assets/images/new-bank-logo/NSB1.webp') }}" alt="NSB" class="payment-logo">
-                            </div>
+                            </div-->
                         </div>
                     </div>
                 </div>
@@ -181,6 +184,137 @@
         </div>
     </div>
 </footer>
+
+<!-- Return/Cancel Order Modal -->
+<div class="modal fade" id="returnOrderModal" tabindex="-1" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title" id="returnOrderModalLabel">
+                    <i class="fas fa-undo-alt me-2"></i>Return or Cancel Products Request
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{-- Display Success Message --}}
+                <div id="modal-success-alert" class="alert alert-success alert-dismissible fade" role="alert" style="display: none;">
+                    <strong>Success!</strong> <span id="modal-success-message"></span>
+                    <button type="button" class="close" onclick="this.parentElement.style.display='none';" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                {{-- Display Error Messages --}}
+                <div id="modal-error-alert" class="alert alert-danger alert-dismissible fade" role="alert" style="display: none;">
+                    <strong>Error!</strong>
+                    <ul id="modal-error-list" class="mb-0"></ul>
+                    <button type="button" class="close" onclick="this.parentElement.style.display='none';" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Quick Return:</strong> Enter your Order ID to auto-fill your details and submit a return request.
+                </div>
+
+                <form id="returnOrderForm" method="POST" action="{{ route('return-product.submit') }}">
+                    @csrf
+                    
+                    {{-- Add CSS styles for auto-fill functionality --}}
+                    <style>
+                        .modal-auto-filled {
+                            background-color: #e8f5e8 !important;
+                            border-color: #28a745 !important;
+                        }
+                        .modal-loading-field {
+                            background-color: #f8f9fa !important;
+                            border-color: #007bff !important;
+                        }
+                        .modal-auto-fill-message {
+                            margin-top: 5px;
+                            margin-bottom: 5px;
+                        }
+                        .modal .form-group {
+                            margin-bottom: 1rem;
+                        }
+                        .modal .req {
+                            color: #dc3545;
+                        }
+                    </style>
+                    
+                    <div class="row">
+                        <p class="order-title fw-bold text-primary mb-3">Order Information</p>
+                        
+                        <div class="form-group col-sm-6">
+                            <label class="form-label">Order ID<span class="req">*</span></label>
+                            <input type="text" class="form-control" name="order_id" id="modal_order_id" required 
+                                   placeholder="Enter your order ID (e.g., ORD-XXXXXXXX)" 
+                                   title="Enter your order ID to auto-fill customer information">
+                            <small class="form-text text-muted">
+                                <i class="fa fa-info-circle"></i> Enter your Order ID to automatically fill customer details
+                            </small>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="form-label">Billing customer name <span class="req">*</span></label>
+                            <input type="text" class="form-control" name="customer_name" id="modal_customer_name" required
+                                   placeholder="Will be auto-filled when Order ID is entered">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="form-label">Phone <span class="req">*</span></label>
+                            <input type="text" class="form-control" name="phone" id="modal_phone" required
+                                   placeholder="Will be auto-filled when Order ID is entered">
+                        </div>
+                        
+                        <div class="form-group col-sm-6">
+                            <label class="form-label">Order Date<span class="req">*</span></label>
+                            <input type="date" class="form-control" name="order_date" id="modal_order_date" required
+                                   title="Will be auto-filled when Order ID is entered">
+                        </div>
+                        
+                        <div class="form-group col-sm-6">
+                            <label class="form-label">Email<span class="req">*</span></label>
+                            <input type="email" class="form-control" name="email" id="modal_email" required
+                                   placeholder="Will be auto-filled when Order ID is entered">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="form-label">Request Type<span class="req">*</span></label>
+                            <select class="form-control" name="request_type" id="modal_request_type" required>
+                                <option value="">Select Request Type</option>
+                                <option value="cancel">Cancel Order</option>
+                                <option value="return">Return Product</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="form-label" id="modal_reason_label">Why do you want to cancel or reject this order?<span class="req">*</span></label>
+                            <textarea class="form-control" name="reason" id="modal_reason" rows="4" placeholder="Please explain your reason..." required></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <div class="tacbox terms-conditions-container">
+                            <input id="modal_t_and_c_agree" type="checkbox" name="t_and_c_agree" required="required"> 
+                            <label for="modal_t_and_c_agree" class="form-label">I agree to <a href="#" target="_blank">Terms & Conditions</a></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="submit" form="returnOrderForm" class="btn btn-primary">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Request
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
 /* Professional Footer Styling */
@@ -495,6 +629,77 @@
     font-weight: 300;
 }
 
+/* Return/Cancel Order Button Styling */
+.btn-return-order {
+    background: linear-gradient(135deg, #ff5800 0%, #ff7a3d 100%);
+    color: white !important;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(255, 88, 0, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 200px;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.btn-return-order i,
+.btn-return-order span {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-return-order:focus {
+    outline: none;
+    box-shadow: 0 4px 15px rgba(255, 88, 0, 0.3), 0 0 0 3px rgba(255, 88, 0, 0.1);
+}
+
+/* Return Order Section Enhanced Styling */
+.return-order-section {
+    background: rgba(255, 88, 0, 0.05);
+    border: 1px solid rgba(255, 88, 0, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.return-order-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff5800, #ff7a3d, #ff5800);
+}
+
+.return-order-section:hover {
+    background: rgba(255, 88, 0, 0.08);
+    border-color: rgba(255, 88, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 88, 0, 0.1);
+}
+
+.return-order-section .footer-title {
+    color: #ff5800;
+    margin-bottom: 20px;
+}
+
+.return-order-section p.text-muted {
+    color: #94a3b8 !important;
+    font-style: italic;
+    margin-top: 15px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .professional-footer {
@@ -562,3 +767,426 @@
     }
 }
 </style>
+
+<script>
+// Auto-fill functionality for Return Order Modal
+document.addEventListener('DOMContentLoaded', function() {
+    const modalOrderIdInput = document.getElementById('modal_order_id');
+    const modalLoadingSpinner = document.getElementById('modal_loading_spinner');
+    const modalOrderStatus = document.getElementById('modal_order_status');
+    
+    // Form fields to auto-fill
+    const modalCustomerName = document.getElementById('modal_customer_name');
+    const modalPhone = document.getElementById('modal_phone');
+    const modalEmail = document.getElementById('modal_email');
+    const modalOrderDate = document.getElementById('modal_order_date');
+
+    let debounceTimer;
+
+    if (modalOrderIdInput) {
+        modalOrderIdInput.addEventListener('input', function() {
+            const orderId = this.value.trim();
+            
+            // Clear previous timer
+            clearTimeout(debounceTimer);
+            
+            // Clear previous status
+            modalOrderStatus.innerHTML = '';
+            
+            if (orderId.length >= 3) {
+                // Show loading spinner
+                modalLoadingSpinner.style.display = 'block';
+                
+                // Debounce the API call
+                debounceTimer = setTimeout(function() {
+                    fetchOrderData(orderId);
+                }, 500);
+            } else {
+                modalLoadingSpinner.style.display = 'none';
+                clearFormFields();
+            }
+        });
+    }
+
+    function fetchOrderData(orderId) {
+        fetch(`/api/order/${orderId}`)
+            .then(response => response.json())
+            .then(data => {
+                modalLoadingSpinner.style.display = 'none';
+                
+                if (data.success) {
+                    // Auto-fill form fields
+                    modalCustomerName.value = data.customer_name || '';
+                    modalPhone.value = data.phone || '';
+                    modalEmail.value = data.email || '';
+                    modalOrderDate.value = data.order_date || '';
+                    
+                    // Show success message
+                    modalOrderStatus.innerHTML = `
+                        <div class="alert alert-success alert-sm mb-0">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Order found! Customer details have been auto-filled.
+                        </div>
+                    `;
+                } else {
+                    // Show error message
+                    modalOrderStatus.innerHTML = `
+                        <div class="alert alert-warning alert-sm mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            ${data.message || 'Order not found. Please check your Order ID.'}
+                        </div>
+                    `;
+                    clearFormFields();
+                }
+            })
+            .catch(error => {
+                modalLoadingSpinner.style.display = 'none';
+                console.error('Error fetching order data:', error);
+                
+                modalOrderStatus.innerHTML = `
+                    <div class="alert alert-danger alert-sm mb-0">
+                        <i class="fas fa-times-circle me-2"></i>
+                        Error loading order data. Please try again.
+                    </div>
+                `;
+                clearFormFields();
+            });
+    }
+
+    function clearFormFields() {
+        modalCustomerName.value = '';
+        modalPhone.value = '';
+        modalEmail.value = '';
+        modalOrderDate.value = '';
+    }
+
+    // Reset form when modal is closed
+    const returnModal = document.getElementById('returnOrderModal');
+    if (returnModal) {
+        returnModal.addEventListener('hidden.bs.modal', function() {
+            document.getElementById('returnOrderForm').reset();
+            modalOrderStatus.innerHTML = '';
+            modalLoadingSpinner.style.display = 'none';
+        });
+    }
+
+    // Handle form submission
+    const returnForm = document.getElementById('returnOrderForm');
+    if (returnForm) {
+        returnForm.addEventListener('submit', function(e) {
+            // Add any additional validation if needed
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+            submitBtn.disabled = true;
+            
+            // The form will submit normally, but we show loading state
+            // Reset button state after a short delay if there's an error
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 5000);
+        });
+    }
+});
+</script>
+
+<!-- Return/Cancel Order Modal Auto-fill JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let modalOrderIdTimeout;
+    const modalOrderIdInput = document.getElementById('modal_order_id');
+    const modalCustomerNameInput = document.getElementById('modal_customer_name');
+    const modalPhoneInput = document.getElementById('modal_phone');
+    const modalEmailInput = document.getElementById('modal_email');
+    const modalOrderDateInput = document.getElementById('modal_order_date');
+    const modalRequestTypeSelect = document.getElementById('modal_request_type');
+    const modalReasonLabel = document.getElementById('modal_reason_label');
+    const modalForm = document.getElementById('returnOrderForm');
+    
+    // Auto-fill functionality for Order ID
+    if (modalOrderIdInput) {
+        modalOrderIdInput.addEventListener('input', function() {
+            clearTimeout(modalOrderIdTimeout);
+            const orderId = this.value.trim();
+            
+            if (orderId.length >= 3) {
+                modalOrderIdTimeout = setTimeout(() => {
+                    fetchModalOrderData(orderId);
+                }, 800); // Debounce for 800ms
+            } else {
+                clearModalAutoFilledFields();
+            }
+        });
+    }
+    
+    // Update reason label based on request type
+    if (modalRequestTypeSelect) {
+        modalRequestTypeSelect.addEventListener('change', function() {
+            const selectedType = this.value;
+            if (selectedType === 'cancel') {
+                modalReasonLabel.innerHTML = 'Why do you want to cancel this order?<span class="req">*</span>';
+            } else if (selectedType === 'return') {
+                modalReasonLabel.innerHTML = 'Why do you want to return this product?<span class="req">*</span>';
+            } else {
+                modalReasonLabel.innerHTML = 'Why do you want to cancel or reject this order?<span class="req">*</span>';
+            }
+        });
+    }
+    
+    // Form submission handling
+    if (modalForm) {
+        const submitButton = document.querySelector('button[form="returnOrderForm"]');
+        
+        modalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            console.log('Footer modal form submitted'); // Debug log
+            
+            const formData = new FormData(this);
+            const originalText = submitButton ? submitButton.innerHTML : 'Submit Request';
+            
+            // Show loading state
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+            }
+            
+            // Debug: Log form data
+            console.log('Form data being sent:', Object.fromEntries(formData.entries()));
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => {
+                console.log('Response received:', response.status, response.statusText);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    showModalSuccess(data.message);
+                    this.reset();
+                    clearModalAutoFilledFields();
+                    
+                    // Close modal after 2 seconds
+                    setTimeout(() => {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('returnOrderModal'));
+                        if (modal) modal.hide();
+                    }, 2000);
+                } else {
+                    showModalErrors(data.errors || ['An error occurred while submitting your request.']);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModalErrors(['A network error occurred. Please try again.']);
+            })
+            .finally(() => {
+                // Restore button state
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalText;
+                }
+            });
+        });
+        
+        // Also handle button click directly
+        if (submitButton) {
+            submitButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Submit button clicked'); // Debug log
+                modalForm.dispatchEvent(new Event('submit'));
+            });
+        }
+    }
+    
+    function fetchModalOrderData(orderId) {
+        // Show loading state
+        setModalLoadingState(true);
+        
+        fetch(`/api/order/${orderId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data) {
+                    populateModalOrderData(data.data);
+                    showModalAutoFillMessage('Order found! Customer details have been auto-filled.', 'success');
+                } else {
+                    clearModalAutoFilledFields();
+                    showModalAutoFillMessage(data.message || 'Order not found. Please check your Order ID.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching order data:', error);
+                clearModalAutoFilledFields();
+                showModalAutoFillMessage('Error fetching order data. Please try again.', 'error');
+            })
+            .finally(() => {
+                setModalLoadingState(false);
+            });
+    }
+    
+    function populateModalOrderData(orderData) {
+        // Auto-fill fields and add styling
+        if (modalCustomerNameInput) {
+            modalCustomerNameInput.value = orderData.customer_name || '';
+            modalCustomerNameInput.classList.add('modal-auto-filled');
+        }
+        
+        if (modalPhoneInput) {
+            modalPhoneInput.value = orderData.phone || '';
+            modalPhoneInput.classList.add('modal-auto-filled');
+        }
+        
+        if (modalEmailInput) {
+            modalEmailInput.value = orderData.email || '';
+            modalEmailInput.classList.add('modal-auto-filled');
+        }
+        
+        if (modalOrderDateInput) {
+            modalOrderDateInput.value = orderData.order_date || '';
+            modalOrderDateInput.classList.add('modal-auto-filled');
+        }
+    }
+    
+    function clearModalAutoFilledFields() {
+        const fields = [modalCustomerNameInput, modalPhoneInput, modalEmailInput, modalOrderDateInput];
+        
+        fields.forEach(field => {
+            if (field) {
+                field.value = '';
+                field.classList.remove('modal-auto-filled', 'modal-loading-field');
+            }
+        });
+        
+        // Clear any auto-fill messages
+        const existingMessage = document.querySelector('.modal-auto-fill-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+    }
+    
+    function setModalLoadingState(isLoading) {
+        const fields = [modalCustomerNameInput, modalPhoneInput, modalEmailInput, modalOrderDateInput];
+        
+        fields.forEach(field => {
+            if (field) {
+                if (isLoading) {
+                    field.classList.add('modal-loading-field');
+                    field.classList.remove('modal-auto-filled');
+                } else {
+                    field.classList.remove('modal-loading-field');
+                }
+            }
+        });
+    }
+    
+    function showModalAutoFillMessage(message, type) {
+        // Remove existing message
+        const existingMessage = document.querySelector('.modal-auto-fill-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
+        // Create new message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `modal-auto-fill-message small ${type === 'success' ? 'text-success' : 'text-danger'}`;
+        messageDiv.innerHTML = `<i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+        
+        // Insert after order ID input
+        if (modalOrderIdInput && modalOrderIdInput.parentNode) {
+            modalOrderIdInput.parentNode.appendChild(messageDiv);
+        }
+    }
+    
+    function showModalSuccess(message) {
+        const successAlert = document.getElementById('modal-success-alert');
+        const successMessage = document.getElementById('modal-success-message');
+        
+        if (successAlert && successMessage) {
+            successMessage.textContent = message;
+            successAlert.style.display = 'block';
+            successAlert.classList.add('show');
+            
+            // Hide error alert if visible
+            const errorAlert = document.getElementById('modal-error-alert');
+            if (errorAlert) {
+                errorAlert.style.display = 'none';
+                errorAlert.classList.remove('show');
+            }
+        }
+    }
+    
+    function showModalErrors(errors) {
+        const errorAlert = document.getElementById('modal-error-alert');
+        const errorList = document.getElementById('modal-error-list');
+        
+        if (errorAlert && errorList) {
+            errorList.innerHTML = '';
+            
+            if (Array.isArray(errors)) {
+                errors.forEach(error => {
+                    const li = document.createElement('li');
+                    li.textContent = error;
+                    errorList.appendChild(li);
+                });
+            } else if (typeof errors === 'object') {
+                Object.values(errors).flat().forEach(error => {
+                    const li = document.createElement('li');
+                    li.textContent = error;
+                    errorList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = errors.toString();
+                errorList.appendChild(li);
+            }
+            
+            errorAlert.style.display = 'block';
+            errorAlert.classList.add('show');
+            
+            // Hide success alert if visible
+            const successAlert = document.getElementById('modal-success-alert');
+            if (successAlert) {
+                successAlert.style.display = 'none';
+                successAlert.classList.remove('show');
+            }
+        }
+    }
+
+    // Handle contact navigation for footer links (same as header)
+    // Smooth scrolling for contact links (for current page dealer info)
+    document.querySelectorAll('.footer-link.contact-scroll').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Handle contact navigation to about page for footer links
+    document.querySelectorAll('.footer-link.contact-about-scroll').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#contact-section')) {
+                // Let the browser handle navigation to the about page
+                // The hash will be handled by the about page's JavaScript
+                window.location.href = href;
+            }
+        });
+    });
+});
+</script>

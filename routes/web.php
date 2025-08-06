@@ -171,8 +171,7 @@ Route::get('/return-product', [App\Http\Controllers\ReturnRequestController::cla
 
 // Return Request Routes
 Route::post('/return-product/submit', [App\Http\Controllers\ReturnRequestController::class, 'submit'])->name('return-product.submit');
-Route::post('/admin/return-request/{id}/approve', [App\Http\Controllers\ReturnRequestController::class, 'approve'])->name('return-request.approve');
-Route::post('/admin/return-request/{id}/reject', [App\Http\Controllers\ReturnRequestController::class, 'reject'])->name('return-request.reject');
+Route::get('/api/order/{orderCode}', [App\Http\Controllers\ReturnRequestController::class, 'getOrderData'])->name('api.order.data');
 
 
 Route::post('/contact', [InquiryController::class, 'store'])->name('store.inquiries');
@@ -397,6 +396,10 @@ Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->nam
 Route::get('/admin/order-details/{orderCode}', [OrderController::class, 'showOrderDetails'])->name('order-details');
 Route::patch('/order/update-status/{order_code}', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
 
+// Return Request Admin Routes (Admin Authentication Required)
+Route::post('/admin/return-request/{id}/approve', [App\Http\Controllers\ReturnRequestController::class, 'approve'])->name('return-request.approve');
+Route::post('/admin/return-request/{id}/reject', [App\Http\Controllers\ReturnRequestController::class, 'reject'])->name('return-request.reject');
+
 // dealer Admin Actions
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -537,7 +540,11 @@ Route::get('/affiliate/dashboard/payment/withdrawals', [AffiliateReportControlle
 Route::get('/affiliate/dashboard/payment/payment_info', [AffiliateReportController::class, 'showPaymentInfo'])->name('payment_info');
 Route::post('/affiliate/dashboard/payment/realtime_tracking', [AffiliateReportController::class, 'realtimereport'])->name('realtime_tracking');
 
-
+// Email Verification Route
+use App\Http\Controllers\Auth\CustomEmailVerificationController;
+Route::get('/verify-email/{id}/{email}/{hash}', [CustomEmailVerificationController::class, 'verify'])
+    ->middleware(['signed'])
+    ->name('verification.verify');
 
 require __DIR__.'/auth.php';
 
@@ -555,6 +562,11 @@ Route::post('/kyc/submit', [KYCDetailController::class, 'store'])->name('user.ky
 Route::get('/test-profile-upload', function() {
     return view('test-profile-upload');
 })->middleware('auth')->name('test.profile.upload');
+
+// Test route for footer modal debugging
+Route::get('/test-footer-modal', function() {
+    return view('test_footer_modal');
+})->name('test.footer.modal');
 Route::post('/test-profile-upload', function(Request $request) {
     Log::info('Test profile upload request received');
     Log::info('Request data:', $request->all());

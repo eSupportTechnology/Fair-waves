@@ -6,6 +6,26 @@
     </div>
 
     <div class="card">
+        
+        <?php if(session('success')): ?>
+            <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                <i class="material-icons md-check_circle"></i>
+                <?php echo e(session('success')); ?>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
+        <?php if($errors->any()): ?>
+            <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                <i class="material-icons md-error"></i>
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php echo e($error); ?><br>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
         <header class="card-header">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
@@ -347,7 +367,16 @@
                                         <tr>
                                             <td><strong>Status:</strong></td>
                                             <td>
-                                                <span class="badge bg-secondary"><?php echo e(ucfirst($returnRequest->status)); ?></span>
+                                                <?php
+                                                    $statusDisplay = $returnRequest->status === 'confirmed' ? 'Confirmed' : ucfirst($returnRequest->status);
+                                                    $badgeClass = match($returnRequest->status) {
+                                                        'pending' => 'bg-warning',
+                                                        'confirmed' => 'bg-success',
+                                                        'rejected' => 'bg-danger',
+                                                        default => 'bg-secondary'
+                                                    };
+                                                ?>
+                                                <span class="badge <?php echo e($badgeClass); ?>"><?php echo e($statusDisplay); ?></span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -424,7 +453,12 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <div class="alert alert-info mb-0">
-                                    This request has already been <?php echo e($returnRequest->status); ?>.
+                                    <?php
+                                        $statusMessage = $returnRequest->status === 'confirmed' 
+                                            ? 'confirmed' 
+                                            : $returnRequest->status;
+                                    ?>
+                                    This request has already been <?php echo e($statusMessage); ?>.
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -435,49 +469,135 @@
             
             <script>
                 function processReturnRequest(action, requestId) {
+                    console.log('Processing return request:', action, requestId);
+                    
                     const adminResponse = document.getElementById('adminResponse').value;
+                    console.log('Admin response:', adminResponse);
                     
-                    // Show confirmation dialog
-                    const actionText = action === 'approve' ? 'approve' : 'reject';
-                    const confirmMessage = `Are you sure you want to ${actionText} this request?`;
-                    
-                    if (!confirm(confirmMessage)) {
-                        return;
-                    }
-
                     // If rejecting and no reason provided, ask for one
                     if (action === 'reject' && !adminResponse.trim()) {
-                        alert('Please provide a reason for rejecting this request.');
+                        Swal.fire({
+                            title: 'Admin Response Required',
+                            text: 'Please provide a reason for rejecting this request.',
+                            icon: 'warning',
+                            confirmButtonText: 'OK'
+                        });
                         document.getElementById('adminResponse').focus();
                         return;
                     }
 
-                    // Create form and submit
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = `/admin/return-request/${requestId}/${action}`;
+                    // Show confirmation dialog with SweetAlert
+                    const actionText = action === 'approve' ? 'approve' : 'reject';
+                    const confirmMessage = `Are you sure you want to ${actionText} this request?`;
                     
-                    // Add CSRF token
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = '_token';
-                    csrfInput.value = csrfToken;
-                    form.appendChild(csrfInput);
-                    
-                    // Add admin response if provided
-                    if (adminResponse.trim()) {
-                        const responseInput = document.createElement('input');
-                        responseInput.type = 'hidden';
-                        responseInput.name = 'admin_response';
-                        responseInput.value = adminResponse.trim();
-                        form.appendChild(responseInput);
+                    Swal.fire({
+                        title: 'Confirm Action',
+                        text: confirmMessage,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: action === 'approve' ? '#28a745' : '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: `Yes, ${actionText}!`,
+                        cancelButtonText: 'Cancel',
+                        showLoaderOnConfirm: true,
+                        preConfirm: () => {
+                            return submitRequest(action, requestId, adminResponse);
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Show success message and reload page
+                            Swal.fire({
+                                title: 'Processing...',
+                                text: 'Please wait while we process your request.',
+                                icon: 'info',
+                                allowOutsideClick: false,
+                                showConfirmButton: false,
+                                willOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                        }
+                    });
+                }
+
+                function submitRequest(action, requestId, adminResponse) {
+                    return new Promise((resolve, reject) => {
+                        console.log('Submitting request - Action:', action, 'ID:', requestId);
+                        
+                        // Create form and submit using Laravel route helper
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.style.display = 'none';
+                        
+                        // Use Laravel route helper for proper URL generation
+                        if (action === 'approve') {
+                            form.action = "<?php echo e(url('/admin/return-request')); ?>/" + requestId + "/approve";
+                        } else {
+                            form.action = "<?php echo e(url('/admin/return-request')); ?>/" + requestId + "/reject";  
+                        }
+                        
+                        console.log('Form action URL:', form.action);
+                        
+                        // Add CSRF token
+                        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+                        if (!csrfToken) {
+                            reject('CSRF token not found. Please refresh the page.');
+                            return;
+                        }
+                        
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken.getAttribute('content');
+                        form.appendChild(csrfInput);
+                        
+                        // Add admin response if provided
+                        if (adminResponse && adminResponse.trim()) {
+                            const responseInput = document.createElement('input');
+                            responseInput.type = 'hidden';
+                            responseInput.name = 'admin_response';
+                            responseInput.value = adminResponse.trim();
+                            form.appendChild(responseInput);
+                            console.log('Added admin response:', adminResponse.trim());
+                        }
+                        
+                        console.log('Form elements created, submitting...');
+                        
+                        // Add form to DOM and submit
+                        document.body.appendChild(form);
+                        
+                        // Add error handling for form submission
+                        form.addEventListener('submit', function(e) {
+                            console.log('Form submit event triggered');
+                        });
+                        
+                        try {
+                            form.submit();
+                            console.log('Form submitted successfully');
+                            resolve();
+                        } catch (error) {
+                            console.error('Error submitting form:', error);
+                            reject('Error submitting form: ' + error.message);
+                        }
+                    });
+                }
+
+                // Auto-show modal if return_request_id is present in URL
+                document.addEventListener('DOMContentLoaded', function() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.has('return_request_id')) {
+                        console.log('Auto-showing modal for return request:', urlParams.get('return_request_id'));
+                        const modal = new bootstrap.Modal(document.getElementById('returnRequestModal'));
+                        modal.show();
                     }
                     
-                    // Submit form
-                    document.body.appendChild(form);
-                    form.submit();
-                }
+                    // Debug: Log current admin session info
+                    console.log('Page loaded - debugging info:');
+                    console.log('Current URL:', window.location.href);
+                    console.log('CSRF token present:', !!document.querySelector('meta[name="csrf-token"]'));
+                    console.log('Return request modal:', !!document.getElementById('returnRequestModal'));
+                });
             </script>
         <?php endif; ?>
     <?php endif; ?>

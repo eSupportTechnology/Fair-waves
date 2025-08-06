@@ -381,7 +381,7 @@
                 @if($companySettings && $companySettings->logo)
                     <img src="{{ asset('storage/' . $companySettings->logo) }}" alt="{{ $companySettings->title ?? 'Fair Waves' }} Logo" class="logo">
                 @else
-                    <img src="{{ asset('frontend/newstyle/assets/images/logo.png') }}" alt="{{ $companySettings->title ?? 'Fair Waves' }} Logo" class="logo">
+                    <img src="{{ asset('frontend\newstyle\assets\images\logo.png') }}" alt="{{ $companySettings->title ?? 'Fair Waves' }} Logo" class="logo">
                 @endif
                 <h1>Order Update</h1>
                 <div class="company-tagline">Enjoy Life with the Waves</div>

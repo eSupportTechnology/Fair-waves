@@ -95,6 +95,20 @@ class DealerController extends Controller
         // Optional: Notify referrer (event or notification)
         // Notification::send($referrerUser, new NewReferralNotification($user));
 
+        Notification::create([
+            'user_id' => $referrerUser->id,
+            'type' => 'new_referral',
+            'message' => 'You Have a New Referral: ' . $user->name,
+            'is_read' => false,
+        ]);
+
+        Notification::create([
+            'user_id' => $user->id,
+            'type' => 'registration_success',
+            'message' => 'You become a dealer successfully! Please wait for your referral to approve your application.',
+            'is_read' => false,
+        ]);
+
         return redirect()->back()->with('success', 'Your dealer application has been submitted successfully.');
     }
 
@@ -354,10 +368,24 @@ class DealerController extends Controller
     {
         $notifications = Notification::where('user_id', Auth::id())
             ->latest()
-            ->get();
+            ->paginate(10); // ✅ This returns a LengthAwarePaginator
+
 
         return view('frontend.dealer.notifications', compact('notifications'));
     }
+
+    public function markAsRead($id)
+    {
+        $notification = Notification::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $notification->is_read = true;
+        $notification->save();
+
+        return back()->with('success', 'Notification marked as read.');
+    }
+
 
     public function approveReferral($id)
     {
@@ -406,7 +434,7 @@ class DealerController extends Controller
 
     public function requestWithdrawal()
     {
-        \Log::info('=== WITHDRAWAL REQUEST INITIATED ===', [
+        Log::info('=== WITHDRAWAL REQUEST INITIATED ===', [
             'user_id' => Auth::id(),
             'timestamp' => now(),
             'user_authenticated' => Auth::check(),
@@ -415,7 +443,7 @@ class DealerController extends Controller
 
         // Check if user is logged in
         if (!Auth::check()) {
-            \Log::warning('Withdrawal request failed: User not authenticated');
+            Log::warning('Withdrawal request failed: User not authenticated');
             return redirect()->route('login')->with('error', 'You must be logged in to request withdrawal.');
         }
 
@@ -423,7 +451,7 @@ class DealerController extends Controller
         $dealer = User::where('id', $userId)->where('role', 'dealer')->first();
 
         if (!$dealer) {
-            \Log::warning('Withdrawal request failed: User is not a dealer', ['user_id' => $userId]);
+            Log::warning('Withdrawal request failed: User is not a dealer', ['user_id' => $userId]);
             return redirect()->back()->with('error', 'You are not authorized to make withdrawal requests.');
         }
 
@@ -431,7 +459,7 @@ class DealerController extends Controller
         $bankDetail = BankDetail::where('user_id', $userId)->first();
 
         if (!$bankDetail || $bankDetail->bank_status !== 'approved') {
-            \Log::warning('Withdrawal request failed: Bank details not approved', [
+            Log::warning('Withdrawal request failed: Bank details not approved', [
                 'user_id' => $userId,
                 'has_bank_detail' => !is_null($bankDetail),
                 'bank_status' => $bankDetail->bank_status ?? 'no_bank_detail'
@@ -443,13 +471,13 @@ class DealerController extends Controller
         $dealerProfile = DealerProfile::where('user_id', $userId)->first();
 
         if (!$dealerProfile) {
-            \Log::warning('Withdrawal request failed: Dealer profile not found', ['user_id' => $userId]);
+            Log::warning('Withdrawal request failed: Dealer profile not found', ['user_id' => $userId]);
             return redirect()->back()->with('error', 'Dealer profile not found.');
         }
 
         // Check if dealer has available BV for withdrawal
         if ($dealerProfile->bv <= 0) {
-            \Log::warning('Withdrawal request failed: No available BV', [
+            Log::warning('Withdrawal request failed: No available BV', [
                 'user_id' => $userId,
                 'bv' => $dealerProfile->bv
             ]);
@@ -459,7 +487,7 @@ class DealerController extends Controller
         // Calculate amount (BV * 100)
         $amount = $dealerProfile->bv * 100;
 
-        \Log::info('Creating withdrawal request', [
+        Log::info('Creating withdrawal request', [
             'user_id' => $userId,
             'amount' => $amount,
             'bv' => $dealerProfile->bv,
@@ -478,7 +506,7 @@ class DealerController extends Controller
             'status' => 'pending',
         ]);
 
-        \Log::info('Withdrawal request created successfully', ['user_id' => $userId]);
+        Log::info('Withdrawal request created successfully', ['user_id' => $userId]);
         return redirect()->back()->with('success', 'Withdrawal request submitted successfully. Your request is now pending approval.');
     }
 
@@ -601,20 +629,34 @@ class DealerController extends Controller
             'address' => $user->address,
         ];
 
+        Notification::create([
+            'user_id' => $referrerUser->id,
+            'type' => 'new_referral',
+            'message' => 'You Have a New Referral: ' . $user->name,
+            'is_read' => false,
+        ]);
+
+        Notification::create([
+            'user_id' => $user->id,
+            'type' => 'registration_success',
+            'message' => 'Your dealer registration is successful! Please wait for your referral to approve your application.',
+            'is_read' => false,
+        ]);
+
         // Step 6: Send email verification
         try {
             Mail::to($user->email)->send(new EmailVerificationMail($userData));
             Log::info('Dealer email verification sent successfully', ['user_email' => $user->email, 'user_role' => 'dealer']);
-            
+
             return redirect()->route('login')->with('success', 'Dealer registration successful! Please check your email and click the verification link to activate your account before logging in.');
-            
+
         } catch (\Exception $e) {
             Log::error('Failed to send dealer verification email', [
                 'user_email' => $user->email,
                 'user_role' => 'dealer',
                 'error' => $e->getMessage()
             ]);
-            
+
             return redirect()->route('login')->with('warning', 'Dealer registration successful! However, we encountered an issue sending the verification email. Please contact support.');
         }
 
@@ -853,7 +895,7 @@ class DealerController extends Controller
     {
         $search = $request->get('search');
         $filename = 'dealers_' . date('Y-m-d_H-i-s') . '.xlsx';
-        
+
         return Excel::download(new DealersExport($search), $filename);
     }
 

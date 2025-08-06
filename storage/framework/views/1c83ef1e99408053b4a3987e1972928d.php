@@ -136,13 +136,13 @@
 }
 
 .btn-main {
-    background-color:color:  #ff5800 !important;
-    border-color: color:  #ff5800 !important;
+    background-color: #ff5800 !important;
+    border-color: #ff5800 !important;
 }
 
 .btn-main:hover {
-    background-color:   #ff5800 !important;
-    border-color:   #ff5800 !important;
+    background-color: #e54d00 !important;
+    border-color: #e54d00 !important;
 }
 
 .products-btn-set:hover{

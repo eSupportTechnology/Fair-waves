@@ -381,7 +381,7 @@
                 <?php if($companySettings && $companySettings->logo): ?>
                     <img src="<?php echo e(asset('storage/' . $companySettings->logo)); ?>" alt="<?php echo e($companySettings->title ?? 'Fair Waves'); ?> Logo" class="logo">
                 <?php else: ?>
-                    <img src="<?php echo e(asset('frontend/newstyle/assets/images/logo.png')); ?>" alt="<?php echo e($companySettings->title ?? 'Fair Waves'); ?> Logo" class="logo">
+                    <img src="<?php echo e(asset('frontend\newstyle\assets\images\logo.png')); ?>" alt="<?php echo e($companySettings->title ?? 'Fair Waves'); ?> Logo" class="logo">
                 <?php endif; ?>
                 <h1>Order Update</h1>
                 <div class="company-tagline">Enjoy Life with the Waves</div>

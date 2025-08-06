@@ -12,6 +12,7 @@ use App\Models\RaffleTicket;
 use App\Models\Review;
 use App\Models\User;
 use App\Mail\OrderConfirmationMail;
+use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -361,6 +362,18 @@ class ShowRoomController extends Controller
                 }
             }
 
+            $dealerId = optional($order->customeritems->first()?->dealerProductLink)->dealer_id;
+
+            if ($dealerId) {
+                Notification::create([
+                    'user_id' => $dealerId,
+                    'type' => 'new_order',
+                    'message' => 'New order placed: ' . $order_code,
+                    'is_read' => false,
+                ]);
+            }
+
+
             // Clear the buy_now session after successful order
             session()->forget('buy_now');
 
@@ -409,6 +422,17 @@ class ShowRoomController extends Controller
                 } catch (\Exception $e) {
                     Log::error('Failed to send order confirmation email for card payment: ' . $e->getMessage());
                 }
+            }
+
+            $dealerId = optional($order->customeritems->first()?->dealerProductLink)->dealer_id;
+
+            if ($dealerId) {
+                Notification::create([
+                    'user_id' => $dealerId,
+                    'type' => 'new_order',
+                    'message' => 'New order placed: ' . $order_code,
+                    'is_read' => false,
+                ]);
             }
 
             // Clear the buy_now session after successful order

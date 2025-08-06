@@ -208,7 +208,7 @@
                     <div class="toatal-div-main">
                         <div class="sub-total-label">Cart Subtotal</div>
                         <div class="pro-amount">
-                            <span id= "cart-count-4">0</span> Items Added
+                            <span id= "cart-count-4"><?php echo e($cartCount ?? 0); ?></span> Items Added
                         </div>
                     </div>
                     <div class="sub-total">Rs. <?php echo e($cartTotal); ?></div>

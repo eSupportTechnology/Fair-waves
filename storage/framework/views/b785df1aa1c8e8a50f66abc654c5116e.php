@@ -310,7 +310,7 @@
     <div class="email-container">
         <!-- Header -->
         <div class="header">
-            <img src="{{ asset('frontend\newstyle\assets\images\logo.png') }}" alt="Fair Waves Logo" class="logo">
+            <img src="<?php echo e(asset('frontend/assets/images/logo/logo.png')); ?>" alt="Fair Waves Logo" class="logo">
             <h1>Order Confirmed!</h1>
             <p class="company-tagline">Thank you for choosing Fair Waves</p>
         </div>
@@ -318,7 +318,7 @@
         <!-- Content -->
         <div class="content">
             <!-- Greeting -->
-            <h2 style="color: #333; margin-bottom: 20px;">Hello {{ $order->customer_name }},</h2>
+            <h2 style="color: #333; margin-bottom: 20px;">Hello <?php echo e($order->customer_name); ?>,</h2>
             <p style="font-size: 16px; color: #666; margin-bottom: 30px;">
                 Great news! We've received your order and it's being processed. Here are the details:
             </p>
@@ -327,40 +327,42 @@
             <div class="order-info-grid">
                 <div class="info-card">
                     <h3>Order Details</h3>
-                    <p><strong>Order ID:</strong> {{ $order->order_code }}</p>
-                    <p><strong>Order Date:</strong> {{ $order->created_at->format('M d, Y') }}</p>
+                    <p><strong>Order ID:</strong> <?php echo e($order->order_code); ?></p>
+                    <p><strong>Order Date:</strong> <?php echo e($order->created_at->format('M d, Y')); ?></p>
                     <p><strong>Status:</strong>
-                        <span class="order-status status-{{ strtolower(str_replace(' ', '-', $order->status)) }}">
-                            {{ $order->status }}
+                        <span class="order-status status-<?php echo e(strtolower(str_replace(' ', '-', $order->status))); ?>">
+                            <?php echo e($order->status); ?>
+
                         </span>
                     </p>
                 </div>
 
                 <div class="info-card">
                     <h3>Customer Information</h3>
-                    <p><strong>Name:</strong> {{ $order->customer_name }}</p>
-                    <p><strong>Email:</strong> {{ $order->email }}</p>
-                    <p><strong>Phone:</strong> {{ $order->phone }}</p>
+                    <p><strong>Name:</strong> <?php echo e($order->customer_name); ?></p>
+                    <p><strong>Email:</strong> <?php echo e($order->email); ?></p>
+                    <p><strong>Phone:</strong> <?php echo e($order->phone); ?></p>
                 </div>
 
                 <div class="info-card">
                     <h3>Delivery Address</h3>
-                    <p>{{ $order->house_no }}</p>
-                    @if($order->apartment)
-                        <p>{{ $order->apartment }}</p>
-                    @endif
-                    <p>{{ $order->city }}</p>
-                    @if($order->postal_code)
-                        <p>{{ $order->postal_code }}</p>
-                    @endif
+                    <p><?php echo e($order->house_no); ?></p>
+                    <?php if($order->apartment): ?>
+                        <p><?php echo e($order->apartment); ?></p>
+                    <?php endif; ?>
+                    <p><?php echo e($order->city); ?></p>
+                    <?php if($order->postal_code): ?>
+                        <p><?php echo e($order->postal_code); ?></p>
+                    <?php endif; ?>
                 </div>
 
                 <div class="info-card">
                     <h3>Payment Information</h3>
-                    <div class="payment-method">{{ $order->payment_method ?? 'Not Specified' }}</div>
+                    <div class="payment-method"><?php echo e($order->payment_method ?? 'Not Specified'); ?></div>
                     <p><strong>Payment Status:</strong>
-                        <span class="order-status status-{{ strtolower(str_replace(' ', '-', $order->payment_status)) }}">
-                            {{ $order->payment_status }}
+                        <span class="order-status status-<?php echo e(strtolower(str_replace(' ', '-', $order->payment_status))); ?>">
+                            <?php echo e($order->payment_status); ?>
+
                         </span>
                     </p>
                 </div>
@@ -369,41 +371,42 @@
             <!-- Products Section -->
             <div class="products-section">
                 <h2 class="section-title">Order Items</h2>
-                @foreach($orderItems as $item)
+                <?php $__currentLoopData = $orderItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="product-item">
-                        @if($item->product && $item->product->images->first())
-                            <img src="{{ asset('storage/' . $item->product->images->first()->image_path) }}"
-                                 alt="{{ $item->product->product_name }}"
+                        <?php if($item->product && $item->product->images->first()): ?>
+                            <img src="<?php echo e(asset('storage/' . $item->product->images->first()->image_path)); ?>"
+                                 alt="<?php echo e($item->product->product_name); ?>"
                                  class="product-image">
-                        @else
-                            <img src="{{ asset('images/placeholder-product.png') }}"
+                        <?php else: ?>
+                            <img src="<?php echo e(asset('images/placeholder-product.png')); ?>"
                                  alt="Product Image"
                                  class="product-image">
-                        @endif
+                        <?php endif; ?>
 
                         <div class="product-details">
-                            <div class="product-name">{{ $item->product->product_name ?? 'Product' }}</div>
-                            <div class="product-meta">Quantity: {{ $item->quantity }}</div>
-                            @if($item->size)
-                                <div class="product-meta">Size: {{ $item->size }}</div>
-                            @endif
-                            @if($item->color)
-                                <div class="product-meta">Color: {{ $item->color }}</div>
-                            @endif
+                            <div class="product-name"><?php echo e($item->product->product_name ?? 'Product'); ?></div>
+                            <div class="product-meta">Quantity: <?php echo e($item->quantity); ?></div>
+                            <?php if($item->size): ?>
+                                <div class="product-meta">Size: <?php echo e($item->size); ?></div>
+                            <?php endif; ?>
+                            <?php if($item->color): ?>
+                                <div class="product-meta">Color: <?php echo e($item->color); ?></div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="product-price">
-                            Rs. {{ number_format($item->cost, 2) }}
+                            Rs. <?php echo e(number_format($item->cost, 2)); ?>
+
                         </div>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             <!-- Order Summary -->
             <div class="order-summary">
                 <h3 style="margin-top: 0; color: #333;">Order Summary</h3>
 
-                @php
+                <?php
                     $subtotal = $orderItems->sum('cost');
                     $deliveryFee = 300; // Default delivery fee
 
@@ -413,44 +416,44 @@
                             $deliveryFee = max($deliveryFee, $item->product->fee->fee);
                         }
                     }
-                @endphp
+                ?>
 
                 <div class="summary-row">
                     <span>Subtotal:</span>
-                    <span>Rs. {{ number_format($subtotal, 2) }}</span>
+                    <span>Rs. <?php echo e(number_format($subtotal, 2)); ?></span>
                 </div>
 
                 <div class="summary-row">
                     <span>Delivery Fee:</span>
-                    <span>Rs. {{ number_format($deliveryFee, 2) }}</span>
+                    <span>Rs. <?php echo e(number_format($deliveryFee, 2)); ?></span>
                 </div>
 
                 <div class="summary-row">
                     <span>Total Amount:</span>
-                    <span>Rs. {{ number_format($order->total_cost, 2) }}</span>
+                    <span>Rs. <?php echo e(number_format($order->total_cost, 2)); ?></span>
                 </div>
             </div>
 
             <!-- Payment Instructions -->
-            @if($order->payment_method === 'COD')
+            <?php if($order->payment_method === 'COD'): ?>
                 <div class="payment-info">
                     <h3 style="color: #FF5722; margin-top: 0;">Cash on Delivery Instructions</h3>
                     <p>💰 <strong>Payment Method:</strong> Cash on Delivery (COD)</p>
-                    <p>📦 You will pay <strong>Rs. {{ number_format($order->total_cost, 2) }}</strong> in cash when you receive your order.</p>
+                    <p>📦 You will pay <strong>Rs. <?php echo e(number_format($order->total_cost, 2)); ?></strong> in cash when you receive your order.</p>
                     <p>✅ Please have the exact amount ready for our delivery team.</p>
                     <p>📋 Don't forget to inspect your items before making the payment.</p>
                 </div>
-            @else
+            <?php else: ?>
                 <div class="payment-info">
                     <h3 style="color: #FF5722; margin-top: 0;">Payment Confirmation</h3>
-                    <p>✅ <strong>Payment Status:</strong> {{ $order->payment_status }}</p>
-                    @if($order->payment_status === 'Paid')
+                    <p>✅ <strong>Payment Status:</strong> <?php echo e($order->payment_status); ?></p>
+                    <?php if($order->payment_status === 'Paid'): ?>
                         <p>🎉 Your payment has been successfully processed!</p>
-                    @else
+                    <?php else: ?>
                         <p>⏳ Your payment is being processed and will be confirmed shortly.</p>
-                    @endif
+                    <?php endif; ?>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <!-- Next Steps -->
             <div class="next-steps">
@@ -463,7 +466,7 @@
                 </ul>
             </div>
 
-            @php
+            <?php
                     // Get the dealer shop name from the first order item's dealer product link
                     $dealerShopName = null;
                     if ($order->items && $order->items->count() > 0) {
@@ -478,13 +481,13 @@
                         }
                     }
                     // Log::info('Dealer Shop Name: ' . $dealerShopName);
-                @endphp
+                ?>
 
             <!-- Track Order Button -->
             <div style="text-align: center; margin: 40px 0;">
                 <a
-                {{-- href="{{ route('user.track-order', $order->order_code) }}" --}}
-                href="{{ route('showroom.productTrackingView', ['dealer_shop_name' => $dealerShopName, 'order_code' => $order->order_code]) }}"
+                
+                href="<?php echo e(route('showroom.productTrackingView', ['dealer_shop_name' => $dealerShopName, 'order_code' => $order->order_code])); ?>"
                    style="display: inline-block; background: #FF5722; color: white; padding: 15px 30px;
                           text-decoration: none; border-radius: 25px; font-weight: 600; font-size: 16px;">
                     Track Your Order
@@ -525,3 +528,4 @@
 </body>
 
 </html>
+<?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/emails/order-confirmation.blade.php ENDPATH**/ ?>

@@ -1,6 +1,4 @@
-@extends('layouts.user_sidebar')
-
-@section('dashboard-content')
+<?php $__env->startSection('dashboard-content'); ?>
 <div class="container py-4">
     <br>
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -8,62 +6,64 @@
             <h4 class="mb-0 d-flex align-items-center">
                 <i class="fas fa-bell text-warning me-2"></i> Your Notifications
             </h4>
-            @php $unreadCount = $notifications->where('is_read', false)->count(); @endphp
-            @if($unreadCount > 0)
-                <span class="badge bg-danger ms-3 notification-badge">{{ $unreadCount }}</span>
-            @endif
+            <?php $unreadCount = $notifications->where('is_read', false)->count(); ?>
+            <?php if($unreadCount > 0): ?>
+                <span class="badge bg-danger ms-3 notification-badge"><?php echo e($unreadCount); ?></span>
+            <?php endif; ?>
         </div>
 
 
     </div>
 
     <div class="notifications-wrapper">
-        @forelse ($notifications as $note)
-            <div class="notification-card {{ $note->is_read ? 'notification-read' : 'notification-unread' }}"
-                 data-notification-id="{{ $note->id }}">
+        <?php $__empty_1 = true; $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $note): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <div class="notification-card <?php echo e($note->is_read ? 'notification-read' : 'notification-unread'); ?>"
+                 data-notification-id="<?php echo e($note->id); ?>">
                 <div class="notification-indicator"></div>
 
                 <div class="notification-content">
                     <div class="notification-header">
                         <div class="notification-type-wrapper">
-                            <i class="notification-icon {{ getNotificationTypeIcon($note->type) }}"></i>
-                            <span class="notification-type">{{ ucwords(str_replace('_', ' ', $note->type)) }}</span>
-                            @unless($note->is_read)
+                            <i class="notification-icon <?php echo e(getNotificationTypeIcon($note->type)); ?>"></i>
+                            <span class="notification-type"><?php echo e(ucwords(str_replace('_', ' ', $note->type))); ?></span>
+                            <?php if (! ($note->is_read)): ?>
                                 <span class="new-badge">NEW</span>
-                            @endunless
+                            <?php endif; ?>
                         </div>
                         <div class="notification-actions">
-                            @unless($note->is_read)
-                                <form action="{{ route('dealer.notifications.markAsRead', $note->id) }}" method="POST" class="d-inline">
-                                    @csrf
+                            <?php if (! ($note->is_read)): ?>
+                                <form action="<?php echo e(route('dealer.notifications.markAsRead', $note->id)); ?>" method="POST" class="d-inline">
+                                    <?php echo csrf_field(); ?>
                                     <button type="submit" class="btn btn-sm btn-success mark-read-btn">
                                         <i class="fas fa-check me-1"></i>Mark as Read
                                     </button>
                                 </form>
-                            @endunless
+                            <?php endif; ?>
 
 
                         </div>
                     </div>
 
                     <div class="notification-message">
-                        {{ $note->message }}
+                        <?php echo e($note->message); ?>
+
                     </div>
 
                     <div class="notification-footer">
                         <small class="badge bg-light text-dark ms-2">
                             <i class="fas fa-clock me-1"></i>
-                            {{ $note->created_at->diffForHumans() }}
+                            <?php echo e($note->created_at->diffForHumans()); ?>
+
                         </small>
-                        @if($note->created_at->isToday())
+                        <?php if($note->created_at->isToday()): ?>
                             <small class="badge bg-light text-dark ms-2">Today</small>
-                        @elseif($note->created_at->isYesterday())
+                        <?php elseif($note->created_at->isYesterday()): ?>
                             <small class="badge bg-light text-dark ms-2">Yesterday</small>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
-        @empty
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <div class="empty-notifications">
                 <div class="empty-icon">
                     <i class="fas fa-bell-slash"></i>
@@ -71,14 +71,15 @@
                 <h5 class="empty-title">No Notifications Yet</h5>
                 <p class="empty-description">You're all caught up! New notifications will appear here when they arrive.</p>
             </div>
-        @endforelse
+        <?php endif; ?>
     </div>
 
-    @if($notifications->hasPages())
+    <?php if($notifications->hasPages()): ?>
         <div class="d-flex justify-content-center mt-4">
-            {{ $notifications->links() }}
+            <?php echo e($notifications->links()); ?>
+
         </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 <style>
@@ -317,7 +318,7 @@
 }
 </style>
 
-@php
+<?php
 function getNotificationTypeIcon($type) {
     $icons = [
         'info' => 'fas fa-info-circle',
@@ -335,5 +336,7 @@ function getNotificationTypeIcon($type) {
 
     return $icons[$type] ?? 'fas fa-bell';
 }
-@endphp
-@endsection
+?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.user_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/frontend/dealer/notifications.blade.php ENDPATH**/ ?>

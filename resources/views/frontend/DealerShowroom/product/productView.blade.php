@@ -1303,14 +1303,14 @@
                         <a href="tel:{{ $productLink->dealer->dealerProfile->phone }}"
                            class="btn btn-primary-custom">
                             <i class="fas fa-phone me-2"></i>
-                            Call Dealer
+                            Call Seller
                         </a>
                         @endif
                         @if($productLink->dealer->email)
                         <a href="mailto:{{ $productLink->dealer->email }}"
                            class="btn btn-outline-custom">
                             <i class="fas fa-envelope me-2"></i>
-                            Email Dealer
+                            Email Seller
                         </a>
                         @endif
                     </div>
@@ -1327,7 +1327,7 @@
                     <i class="fas fa-star me-2"></i>
                     Product Reviews & Ratings
                 </h6>
-                
+
                 @if($totalReviews > 0)
                     <div class="row mb-4">
                         <!-- Reviews List -->
@@ -1356,13 +1356,13 @@
                                                 <small class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
                                             </div>
                                         </div>
-                                        
+
                                         @if($review->review)
                                             <div class="review-content">
                                                 <p>{{ $review->review }}</p>
                                             </div>
                                         @endif
-                                        
+
                                         @if($review->media)
                                             <div class="review-media">
                                                 @php
@@ -1372,13 +1372,13 @@
                                                     <div class="media-gallery">
                                                         @foreach($mediaFiles as $media)
                                                             @if(in_array(pathinfo($media, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
-                                                                <img src="{{ asset('storage/' . $media) }}" 
-                                                                     alt="Review Image" 
+                                                                <img src="{{ asset('storage/' . $media) }}"
+                                                                     alt="Review Image"
                                                                      class="review-image"
                                                                      onclick="openImageModal('{{ asset('storage/' . $media) }}')">
                                                             @elseif(in_array(pathinfo($media, PATHINFO_EXTENSION), ['mp4', 'avi', 'mov', 'webm']))
                                                                 <video controls class="review-video">
-                                                                    <source src="{{ asset('storage/' . $media) }}" 
+                                                                    <source src="{{ asset('storage/' . $media) }}"
                                                                             type="video/{{ pathinfo($media, PATHINFO_EXTENSION) }}">
                                                                     Your browser does not support the video tag.
                                                                 </video>
@@ -1392,7 +1392,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        
+
                         <!-- Rating Summary -->
                         <div class="col-lg-4">
                             <div class="rating-summary">
@@ -1418,7 +1418,7 @@
                                         <small class="text-muted">Based on {{ $totalReviews }} {{ $totalReviews == 1 ? 'review' : 'reviews' }}</small>
                                     </div>
                                 </div>
-                                
+
                                 <div class="rating-breakdown">
                                     @foreach(array_reverse($ratingCounts->toArray(), true) as $rating => $count)
                                         @php
@@ -1469,20 +1469,20 @@ function copyOptionalSelections(form) {
 // AJAX Add to Cart function
 function handleAddToCart(event, form) {
     event.preventDefault(); // Prevent normal form submission
-    
+
     // Copy selections before submitting
     copyOptionalSelections(form);
-    
+
     const submitButton = form.querySelector('button[type="submit"]');
     const originalText = submitButton.innerHTML;
-    
+
     // Show loading state
     submitButton.disabled = true;
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Adding...';
-    
+
     // Create FormData from form
     const formData = new FormData(form);
-    
+
     // Submit via AJAX
     fetch(form.action, {
         method: 'POST',
@@ -1518,7 +1518,7 @@ function handleAddToCart(event, form) {
             document.body.appendChild(notification);
             setTimeout(() => notification.remove(), 3000);
         }
-        
+
         // Update cart count - this is the key fix!
         if (typeof window.updateCartCount === 'function') {
             window.updateCartCount();
@@ -1526,7 +1526,7 @@ function handleAddToCart(event, form) {
     })
     .catch(error => {
         console.error('Error:', error);
-        
+
         // Show error message
         if (typeof Swal !== 'undefined') {
             Swal.fire({
@@ -1553,7 +1553,7 @@ function handleAddToCart(event, form) {
         submitButton.disabled = false;
         submitButton.innerHTML = originalText;
     });
-    
+
     return false; // Prevent form submission
 }
 </script>
@@ -1806,14 +1806,14 @@ function openImageModal(imageSrc) {
             </div>
         </div>
     `;
-    
+
     // Add modal to body
     document.body.appendChild(modal);
-    
+
     // Initialize and show modal
     const bsModal = new bootstrap.Modal(modal.querySelector('#imageModal'));
     bsModal.show();
-    
+
     // Remove modal from DOM when hidden
     modal.querySelector('#imageModal').addEventListener('hidden.bs.modal', function() {
         document.body.removeChild(modal);

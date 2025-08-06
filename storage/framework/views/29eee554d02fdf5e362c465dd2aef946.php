@@ -63,29 +63,29 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ asset('frontend\newstyle\assets\images\logo.png') }}" alt="Logo" class="logo">
+            <img src="<?php echo e(asset('frontend\newstyle\assets\images\logo.png')); ?>" alt="Logo" class="logo">
             <h1 style="color: #333;">Verify Your Email Address</h1>
         </div>
 
         <div class="content">
-            <p>Dear {{ $userData['fname'] }} {{ $userData['lname'] }},</p>
+            <p>Dear <?php echo e($userData['fname']); ?> <?php echo e($userData['lname']); ?>,</p>
 
             <p>Thank you for registering with us! To complete your registration, please verify your email address by clicking the button below.</p>
 
             <div class="user-details">
                 <h3>Registration Details:</h3>
-                <p><strong>Name:</strong> {{ $userData['fname'] }} {{ $userData['lname'] }}</p>
-                <p><strong>Email:</strong> {{ $userData['email'] }}</p>
-                <p><strong>Phone:</strong> {{ $userData['phone'] }}</p>
-                <p><strong>Address:</strong> {{ $userData['address'] }}</p>
+                <p><strong>Name:</strong> <?php echo e($userData['fname']); ?> <?php echo e($userData['lname']); ?></p>
+                <p><strong>Email:</strong> <?php echo e($userData['email']); ?></p>
+                <p><strong>Phone:</strong> <?php echo e($userData['phone']); ?></p>
+                <p><strong>Address:</strong> <?php echo e($userData['address']); ?></p>
             </div>
 
             <div style="text-align: center;">
-                <a href="{{ $verificationUrl }}" class="verify-button">Verify Email Address</a>
+                <a href="<?php echo e($verificationUrl); ?>" class="verify-button">Verify Email Address</a>
             </div>
 
             <p>If the button above doesn't work, you can copy and paste the following link into your browser:</p>
-            <p style="word-break: break-all; color: #007bff;">{{ $verificationUrl }}</p>
+            <p style="word-break: break-all; color: #007bff;"><?php echo e($verificationUrl); ?></p>
 
             <p><strong>Note:</strong> This verification link will expire in 60 minutes for security reasons.</p>
 
@@ -94,8 +94,9 @@
 
         <div class="footer">
             <p>This is an automated email. Please do not reply to this email.</p>
-            <p>&copy; {{ date('Y') }} Fair Waves. All rights reserved.</p>
+            <p>&copy; <?php echo e(date('Y')); ?> Fair Waves. All rights reserved.</p>
         </div>
     </div>
 </body>
 </html>
+<?php /**PATH D:\Manulas Doc\Project\Intern\Project\Fair-waves\resources\views/emails/email-verification.blade.php ENDPATH**/ ?>

@@ -8,6 +8,8 @@ use App\Models\DealerProductOrder;
 use App\Models\DealerProductLink;
 use App\Models\User;
 use App\Mail\OrderConfirmationMail;
+use App\Models\DealerProfile;
+use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -21,38 +23,38 @@ class ShowroomCartController extends Controller
     {
         $product = Product::with('fee')->findOrFail($productId);
         $cart = Session::get('showroom_cart', []);
-        
+
         // Clear buy_now session when user adds items to cart
         // This prevents conflicts between buy now and cart checkout flows
         if (session()->has('buy_now')) {
             session()->forget('buy_now');
         }
-        
+
         // Find the dealer and dealer product link
         $dealer = User::whereHas('dealerProfile', function($query) use ($dealer_shop_name) {
             $query->where('dealer_shop_name', $dealer_shop_name);
         })->where('role', 'dealer')->first();
-        
+
         if (!$dealer) {
             return redirect()->back()->with('error', 'Dealer not found.');
         }
-        
+
         // Find the dealer product link
         $dealerProductLink = DealerProductLink::where('dealer_id', $dealer->id)
             ->where('product_id', $product->id)  // Use product->id which is the primary key
             ->first();
-        
+
         // If dealer product link is not found, log the issue for debugging
         if (!$dealerProductLink) {
-            \Log::warning("DealerProductLink not found for dealer {$dealer->id} and product {$product->id}");
+            Log::warning("DealerProductLink not found for dealer {$dealer->id} and product {$product->id}");
             // Return error instead of continuing with null dealer_product_link_id
             return redirect()->back()->with('error', 'This product is not available in this dealer showroom.');
         }
-        
+
         // Get the first image from product_images table using relationship
         $productImage = ProductImage::where('product_id', $product->product_id)->first();
         $imagePath = $productImage ? 'storage/' . $productImage->image_path : 'images/default-product.jpg';
-        
+
         $cartItem = [
             'id' => $product->id,
             'product_id' => $product->product_id,
@@ -75,7 +77,7 @@ class ShowroomCartController extends Controller
         }
 
         Session::put('showroom_cart', $cart);
-        
+
         // Check if this is an AJAX request
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -85,7 +87,7 @@ class ShowroomCartController extends Controller
                 'total_items' => array_sum(array_column($cart, 'quantity'))
             ]);
         }
-        
+
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
@@ -104,13 +106,13 @@ class ShowroomCartController extends Controller
                 $dealerProductLink = \App\Models\DealerProductLink::where('product_id', $firstItem['product_id'])
                     ->with(['dealer.dealerProfile'])
                     ->first();
-                
+
                 if ($dealerProductLink && $dealerProductLink->dealer) {
                     $dealer = $dealerProductLink->dealer;
                 }
             }
         }
-        
+
         // If no dealer found from cart, find by shop name
         if (!$dealer) {
             $dealerProfile = \App\Models\DealerProfile::where('dealer_shop_name', $dealer_shop_name)
@@ -130,11 +132,11 @@ class ShowroomCartController extends Controller
         // Load product images for each cart item
         foreach ($cart as $productId => $item) {
             $total += $item['price'] * $item['quantity'];
-            
+
             // Load the product with its images and fee
             $product = Product::with(['images', 'fee'])->find($item['id']);
             $cart[$productId]['product'] = $product;
-            
+
             // Update delivery fee if not already set
             if (!isset($cart[$productId]['delivery_fee']) && $product && $product->fee) {
                 $cart[$productId]['delivery_fee'] = $product->fee->fee;
@@ -155,12 +157,12 @@ class ShowroomCartController extends Controller
     public function removeFromCart(Request $request, $dealer_shop_name, $productId)
     {
         $cart = Session::get('showroom_cart', []);
-        
+
         if (isset($cart[$productId])) {
             unset($cart[$productId]);
             Session::put('showroom_cart', $cart);
         }
-        
+
         // Check if this is an AJAX request
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -181,11 +183,11 @@ class ShowroomCartController extends Controller
         ]);
 
         $cart = Session::get('showroom_cart', []);
-        
+
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity'] = $request->input('quantity');
             Session::put('showroom_cart', $cart);
-            
+
             // Calculate updated totals
             $subtotal = 0;
             foreach ($cart as $item) {
@@ -193,7 +195,7 @@ class ShowroomCartController extends Controller
             }
             $deliveryFee = 300; // Fixed delivery fee
             $total = $subtotal + $deliveryFee;
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Cart updated successfully',
@@ -218,11 +220,11 @@ class ShowroomCartController extends Controller
     {
         $cart = Session::get('showroom_cart', []);
         $totalItems = 0;
-        
+
         foreach ($cart as $item) {
             $totalItems += $item['quantity'];
         }
-        
+
         return response()->json([
             'cart_count' => count($cart),
             'total_items' => $totalItems
@@ -241,32 +243,32 @@ class ShowroomCartController extends Controller
         }
 
         // Debug session state
-        \Log::info('Checkout Session Debug', [
+        Log::info('Checkout Session Debug', [
             'has_cart' => session()->has('showroom_cart'),
             'cart_count' => count(session('showroom_cart', [])),
             'has_buy_now' => session()->has('buy_now'),
             'dealer_shop_name' => $dealer_shop_name
         ]);
-        
+
         // Check if this is a cart checkout (prioritize cart over buy_now)
         $cart = Session::get('showroom_cart', []);
-        
+
         // If we have items in cart, use cart checkout regardless of buy_now session
         // Also clear buy_now session to prevent conflicts
         if (!empty($cart)) {
             // Clear buy_now session when proceeding to cart checkout
             if (session()->has('buy_now')) {
                 session()->forget('buy_now');
-                \Log::info('Cleared buy_now session because cart has items');
+                Log::info('Cleared buy_now session because cart has items');
             }
-            
+
             $subtotal = 0;
             $cartDeliveryFees = [];
-            
+
             // Load product images and details for each cart item
             foreach ($cart as $productId => $item) {
                 $subtotal += $item['price'] * $item['quantity'];
-                
+
                 // Load the product with its images and fee
                 $product = Product::with(['images', 'fee'])->find($item['id']);
                 if ($product) {
@@ -287,21 +289,21 @@ class ShowroomCartController extends Controller
 
             return view('frontend.DealerShowroom.checkout', compact('cart', 'subtotal', 'deliveryFee', 'total', 'dealer_shop_name', 'dealer'));
         }
-        
+
         // If this is a direct buy-now checkout and no cart items
         if (session()->has('buy_now')) {
-            \Log::info('Using buy_now session for checkout');
+            Log::info('Using buy_now session for checkout');
             $item = session()->get('buy_now');
             $subtotal = $item['price'] * $item['quantity'];
             // Get delivery fee from session (stored during buy now process), fallback to default
             $deliveryFee = $item['delivery_fee'] ?? 300;
             $total = $subtotal + $deliveryFee;
-            
+
             return view('frontend.DealerShowroom.checkout', compact('item', 'subtotal', 'deliveryFee', 'total', 'dealer_shop_name', 'dealer'));
         }
 
         // If neither cart nor buy_now exists, redirect to cart with error
-        \Log::info('No cart or buy_now session found, redirecting to cart');
+        Log::info('No cart or buy_now session found, redirecting to cart');
         return redirect()->route('showroom.cart', $dealer_shop_name)->with('error', 'Your cart is empty');
     }
 
@@ -319,7 +321,7 @@ class ShowroomCartController extends Controller
 
         $orderCode = 'ORD-' . strtoupper(Str::random(8));
         $cart = Session::get('showroom_cart', []);
-        
+
         // Always prioritize cart over buy_now session
         // If cart is not empty, clear buy_now session and use cart data
         if (!empty($cart)) {
@@ -335,7 +337,7 @@ class ShowroomCartController extends Controller
         // Calculate totals
         $subtotal = 0;
         $cartDeliveryFees = [];
-        
+
         foreach ($cart as $item) {
             $subtotal += $item['price'] * $item['quantity'];
             // Collect delivery fees from cart items
@@ -343,7 +345,7 @@ class ShowroomCartController extends Controller
                 $cartDeliveryFees[] = $item['delivery_fee'];
             }
         }
-        
+
         // Calculate delivery fee for cart - use highest delivery fee among cart items
         $deliveryFee = !empty($cartDeliveryFees) ? max($cartDeliveryFees) : 300;
         $total = $subtotal + $deliveryFee;
@@ -366,7 +368,7 @@ class ShowroomCartController extends Controller
     public function showPayment($dealer_shop_name, $order_code)
     {
         $checkoutData = Session::get('checkout_data');
-        
+
         if (!$checkoutData || $checkoutData['order_code'] !== $order_code) {
             return redirect()->route('showroom.cart', $dealer_shop_name)->with('error', 'Invalid order. Please try again.');
         }
@@ -381,7 +383,7 @@ class ShowroomCartController extends Controller
         foreach ($checkoutData['cart'] as $productId => $item) {
             // Load product details with images
             $product = Product::with('images')->find($item['id']);
-            
+
             // Get image path safely
             $imagePath = 'images/default-product.jpg';
             if (isset($item['image']) && !empty($item['image'])) {
@@ -390,7 +392,7 @@ class ShowroomCartController extends Controller
                 $firstImage = $product->images->first();
                 $imagePath = 'storage/' . $firstImage['image_path'];
             }
-            
+
             $orderItems[] = [
                 'name' => $item['name'],
                 'price' => $item['price'],
@@ -418,7 +420,7 @@ class ShowroomCartController extends Controller
     public function confirmCODPayment($dealer_shop_name, $order_code)
     {
         $checkoutData = Session::get('checkout_data');
-        
+
         if (!$checkoutData || $checkoutData['order_code'] !== $order_code) {
             return redirect()->route('showroom.cart', $dealer_shop_name)->with('error', 'Invalid order. Please try again.');
         }
@@ -471,6 +473,15 @@ class ShowroomCartController extends Controller
                 }
             }
 
+            $sellDealer = DealerProfile::where('dealer_shop_name', $dealer_shop_name)->first();
+
+            Notification::create([
+                'user_id' => $sellDealer->user_id,
+                'type' => 'new_order',
+                'message' => 'New order placed: ' . $order_code,
+                'is_read' => false,
+            ]);
+
             // Send order confirmation email to customer
             if ($order->email) {
                 try {
@@ -489,7 +500,7 @@ class ShowroomCartController extends Controller
                         ->with('success', 'Order placed successfully! You will pay cash on delivery.');
 
         } catch (\Exception $e) {
-            \Log::error('COD Payment Error: ' . $e->getMessage());
+            Log::error('COD Payment Error: ' . $e->getMessage());
             return redirect()->route('showroom.cart', $dealer_shop_name)
                         ->with('error', 'Failed to place order. Please try again.');
         }
@@ -498,7 +509,7 @@ class ShowroomCartController extends Controller
     public function confirmCardPayment($dealer_shop_name, $order_code)
     {
         $checkoutData = Session::get('checkout_data');
-        
+
         if (!$checkoutData || $checkoutData['order_code'] !== $order_code) {
             return redirect()->route('showroom.cart', $dealer_shop_name)->with('error', 'Invalid order. Please try again.');
         }
@@ -561,6 +572,15 @@ class ShowroomCartController extends Controller
                 }
             }
 
+            $sellDealer = DealerProfile::where('dealer_shop_name', $dealer_shop_name)->first();
+
+            Notification::create([
+                'user_id' => $sellDealer->user_id,
+                'type' => 'new_order',
+                'message' => 'New order placed: ' . $order_code,
+                'is_read' => false,
+            ]);
+
             // Clear sessions after successful order
             Session::forget('showroom_cart');
             Session::forget('checkout_data');
@@ -569,7 +589,7 @@ class ShowroomCartController extends Controller
                         ->with('success', 'Order placed successfully! Payment confirmed.');
 
         } catch (\Exception $e) {
-            \Log::error('Card Payment Error: ' . $e->getMessage());
+            Log::error('Card Payment Error: ' . $e->getMessage());
             return redirect()->route('showroom.cart', $dealer_shop_name)
                         ->with('error', 'Failed to place order. Please try again.');
         }
@@ -581,7 +601,7 @@ class ShowroomCartController extends Controller
             $order = \App\Models\CustomerOrder::where('order_code', $order_code)
                 ->with(['items.product'])
                 ->first();
-            
+
             if (!$order) {
                 return redirect()->route('showroom.cart', $dealer_shop_name)->with('error', 'Order not found.');
             }
